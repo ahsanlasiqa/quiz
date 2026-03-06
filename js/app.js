@@ -5,10 +5,11 @@
 // ── State ──────────────────────────────────
 const state = {
   apiKey: localStorage.getItem('quizgen_api_key') || '',
-  images: [],        // { file, dataUrl, base64, mimeType }
-  quizData: null,    // parsed quiz JSON
+  images: [],
+  quizData: null,
   settings: {
     level: 'elementary',
+    grade: 1,
     numQuestions: 10,
     types: ['multiple_choice', 'true_false', 'fill_blank', 'short_answer'],
     studentName: '',
@@ -16,29 +17,57 @@ const state = {
   }
 };
 
+// ── Grade Config ───────────────────────────
+const GRADE_CONFIG = {
+  elementary: {
+    label: 'Elementary School', emoji: '🎒',
+    grades: [
+      { value: 1, label: 'Grade 1' }, { value: 2, label: 'Grade 2' },
+      { value: 3, label: 'Grade 3' }, { value: 4, label: 'Grade 4' },
+      { value: 5, label: 'Grade 5' }, { value: 6, label: 'Grade 6' },
+    ]
+  },
+  junior_high: {
+    label: 'Junior High School', emoji: '📚',
+    grades: [
+      { value: 7, label: 'Grade 7' }, { value: 8, label: 'Grade 8' },
+      { value: 9, label: 'Grade 9' },
+    ]
+  },
+  high_school: {
+    label: 'High School', emoji: '🎓',
+    grades: [
+      { value: 10, label: 'Grade 10' }, { value: 11, label: 'Grade 11' },
+      { value: 12, label: 'Grade 12' },
+    ]
+  }
+};
+
 // ── DOM Refs ───────────────────────────────
-const modalOverlay       = document.getElementById('modal-overlay');
-const apiKeyInput        = document.getElementById('api-key-input');
-const btnModalSave       = document.getElementById('btn-modal-save');
-const uploadZone         = document.getElementById('upload-zone');
-const fileInput          = document.getElementById('file-input');
-const imagePreviewGrid   = document.getElementById('image-preview-grid');
-const btnGenerate        = document.getElementById('btn-generate');
-const generateHint       = document.getElementById('generate-hint');
-const loadingOverlay     = document.getElementById('loading-overlay');
-const loadingText        = document.getElementById('loading-text');
-const stepResults        = document.getElementById('step-results');
-const quizOutput         = document.getElementById('quiz-output');
-const quizMetaText       = document.getElementById('quiz-meta-text');
-const btnPdf             = document.getElementById('btn-pdf');
-const btnNew             = document.getElementById('btn-new');
-const btnRegenerate      = document.getElementById('btn-regenerate');
-const numQuestionsInput  = document.getElementById('num-questions');
-const numMinus           = document.getElementById('num-minus');
-const numPlus            = document.getElementById('num-plus');
-const levelToggle        = document.getElementById('level-toggle');
-const studentNameInput   = document.getElementById('student-name');
-const quizDateInput      = document.getElementById('quiz-date');
+const modalOverlay      = document.getElementById('modal-overlay');
+const apiKeyInput       = document.getElementById('api-key-input');
+const btnModalSave      = document.getElementById('btn-modal-save');
+const uploadZone        = document.getElementById('upload-zone');
+const fileInput         = document.getElementById('file-input');
+const imagePreviewGrid  = document.getElementById('image-preview-grid');
+const btnGenerate       = document.getElementById('btn-generate');
+const generateHint      = document.getElementById('generate-hint');
+const loadingOverlay    = document.getElementById('loading-overlay');
+const loadingText       = document.getElementById('loading-text');
+const stepResults       = document.getElementById('step-results');
+const quizOutput        = document.getElementById('quiz-output');
+const quizMetaText      = document.getElementById('quiz-meta-text');
+const btnPdf            = document.getElementById('btn-pdf');
+const btnNew            = document.getElementById('btn-new');
+const btnRegenerate     = document.getElementById('btn-regenerate');
+const numQuestionsInput = document.getElementById('num-questions');
+const numMinus          = document.getElementById('num-minus');
+const numPlus           = document.getElementById('num-plus');
+const levelToggle       = document.getElementById('level-toggle');
+const gradeSelector     = document.getElementById('grade-selector');
+const gradePills        = document.getElementById('grade-pills');
+const studentNameInput  = document.getElementById('student-name');
+const quizDateInput     = document.getElementById('quiz-date');
 
 // ── Init ───────────────────────────────────
 (function init() {
@@ -48,6 +77,7 @@ const quizDateInput      = document.getElementById('quiz-date');
     modalOverlay.classList.add('hidden');
   }
   quizDateInput.valueAsDate = new Date();
+  renderGrades('elementary');
 })();
 
 // ── API Key Modal ──────────────────────────
@@ -69,13 +99,35 @@ btnModalSave.addEventListener('click', () => {
 });
 
 // ── Level Toggle ───────────────────────────
-levelToggle.querySelectorAll('.toggle-btn').forEach(btn => {
+levelToggle.querySelectorAll('.level-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    levelToggle.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    levelToggle.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     state.settings.level = btn.dataset.value;
+    renderGrades(btn.dataset.value);
   });
 });
+
+function renderGrades(level) {
+  const config = GRADE_CONFIG[level];
+  gradePills.innerHTML = '';
+  config.grades.forEach((g, i) => {
+    const pill = document.createElement('button');
+    pill.className = 'grade-pill' + (i === 0 ? ' active' : '');
+    pill.textContent = g.label;
+    pill.dataset.value = g.value;
+    pill.addEventListener('click', () => {
+      gradePills.querySelectorAll('.grade-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      state.settings.grade = parseInt(g.value);
+    });
+    gradePills.appendChild(pill);
+  });
+  // Set default grade to first of this level
+  state.settings.grade = config.grades[0].value;
+  // Animate in
+  gradeSelector.classList.add('visible');
+}
 
 // ── Number of Questions ────────────────────
 numMinus.addEventListener('click', () => {
@@ -130,7 +182,7 @@ function renderPreviews() {
     div.className = 'preview-item';
     div.innerHTML = `
       <img src="${img.dataUrl}" alt="Page ${i+1}" />
-      <button class="preview-remove" data-idx="${i}" title="Remove">✕</button>
+      <button class="preview-remove" data-idx="${i}" title="Remove">x</button>
       <span class="preview-num">Page ${i+1}</span>
     `;
     imagePreviewGrid.appendChild(div);
@@ -145,7 +197,9 @@ function renderPreviews() {
 
 // ── Collect Settings ───────────────────────
 function collectSettings() {
-  state.settings.level = levelToggle.querySelector('.toggle-btn.active').dataset.value;
+  state.settings.level = levelToggle.querySelector('.level-btn.active').dataset.value;
+  const activePill = gradePills.querySelector('.grade-pill.active');
+  state.settings.grade = activePill ? parseInt(activePill.dataset.value) : GRADE_CONFIG[state.settings.level].grades[0].value;
   state.settings.numQuestions = parseInt(numQuestionsInput.value) || 10;
   state.settings.types = Array.from(document.querySelectorAll('input[name="qtype"]:checked')).map(c => c.value);
   state.settings.studentName = studentNameInput.value.trim();
@@ -158,20 +212,16 @@ btnRegenerate.addEventListener('click', generateQuiz);
 
 async function generateQuiz() {
   collectSettings();
-
-  // Validation
   if (state.images.length === 0) {
-    generateHint.textContent = '⚠ Please upload at least one photo of the learning material.';
+    generateHint.textContent = 'Please upload at least one photo of the learning material.';
     return;
   }
   if (state.settings.types.length === 0) {
-    generateHint.textContent = '⚠ Please select at least one question type.';
+    generateHint.textContent = 'Please select at least one question type.';
     return;
   }
   generateHint.textContent = '';
-
-  showLoading('Reading your material…');
-
+  showLoading('Reading your material...');
   try {
     const quiz = await callClaude();
     state.quizData = quiz;
@@ -180,7 +230,7 @@ async function generateQuiz() {
     stepResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (err) {
     console.error(err);
-    generateHint.textContent = '⚠ Error: ' + (err.message || 'Could not generate quiz. Check your API key.');
+    generateHint.textContent = 'Error: ' + (err.message || 'Could not generate quiz. Check your API key.');
   } finally {
     hideLoading();
   }
@@ -188,14 +238,13 @@ async function generateQuiz() {
 
 // ── Claude API Call ────────────────────────
 async function callClaude() {
-  loadingText.textContent = 'Analyzing content…';
+  loadingText.textContent = 'Analyzing content...';
 
-  const levelLabel = state.settings.level === 'elementary'
-    ? 'Elementary School (ages 7–12, simple vocabulary, fun tone)'
-    : 'Junior High School (ages 12–15, moderate complexity, clear academic tone)';
+  const config = GRADE_CONFIG[state.settings.level];
+  const levelLabel = `${config.label}, Grade ${state.settings.grade}`;
 
   const typeNames = {
-    multiple_choice: 'Multiple Choice (4 options labeled A–D)',
+    multiple_choice: 'Multiple Choice (4 options labeled A-D)',
     true_false: 'True / False',
     fill_blank: 'Fill in the Blank (use ___ for the blank)',
     short_answer: 'Short Answer / Essay'
@@ -254,7 +303,6 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
   ]
 }`;
 
-  // Build content array with all images
   const contentParts = [{ type: 'text', text: prompt }];
   state.images.forEach(img => {
     contentParts.push({
@@ -263,7 +311,7 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
     });
   });
 
-  loadingText.textContent = 'Generating questions…';
+  loadingText.textContent = 'Generating questions...';
 
   const response = await fetch('/api/generate', {
     method: 'POST',
@@ -285,8 +333,6 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
 
   const data = await response.json();
   const rawText = data.content.map(b => b.text || '').join('');
-
-  // Strip any markdown fences
   const clean = rawText.replace(/```json|```/g, '').trim();
   const parsed = JSON.parse(clean);
   return parsed;
@@ -294,8 +340,9 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
 
 // ── Render Quiz ────────────────────────────
 function renderQuiz(quiz) {
-  const levelLabel = state.settings.level === 'elementary' ? '🎒 Elementary' : '📚 Junior High';
-  quizMetaText.textContent = `${quiz.subject || 'Quiz'} · ${levelLabel} · ${quiz.questions.length} questions · ${quiz.language || ''}`;
+  const config = GRADE_CONFIG[state.settings.level];
+  const gradeLabel = `${config.emoji} ${config.label} · Grade ${state.settings.grade}`;
+  quizMetaText.textContent = `${quiz.subject || 'Quiz'} · ${gradeLabel} · ${quiz.questions.length} questions · ${quiz.language || ''}`;
 
   let html = '';
   quiz.questions.forEach((q, i) => {
@@ -317,7 +364,7 @@ function renderQuiz(quiz) {
       const rendered = q.question.replace(/___/g, '<span class="q-blank-line"></span>');
       body = `<p class="q-text">${rendered}</p>`;
     } else {
-      body = `<p class="q-text">${q.question}</p><p class="q-essay-hint">Answer in 2–4 sentences.</p>`;
+      body = `<p class="q-text">${q.question}</p><p class="q-essay-hint">Answer in 2-4 sentences.</p>`;
     }
 
     html += `
@@ -330,10 +377,9 @@ function renderQuiz(quiz) {
       </div>`;
   });
 
-  // Answer Key
   let akHtml = `
     <div class="answer-key-section">
-      <div class="answer-key-title">🗝 Answer Key</div>
+      <div class="answer-key-title">Answer Key</div>
       <ul class="answer-key-list">`;
   quiz.questions.forEach(q => {
     akHtml += `<li><strong>Q${q.number}.</strong> ${q.answer}</li>`;
@@ -353,19 +399,13 @@ function generatePDF(quiz) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
-  const pageW = 210;
-  const pageH = 297;
-  const margin = 18;
+  const pageW = 210, pageH = 297, margin = 18;
   const contentW = pageW - margin * 2;
   let y = margin;
 
   const colors = {
-    ink: [26, 18, 8],
-    teal: [26, 122, 110],
-    amber: [232, 160, 32],
-    muted: [138, 122, 104],
-    lightBg: [253, 248, 240],
-    lineBg: [212, 201, 184]
+    ink: [26, 18, 8], teal: [26, 122, 110], amber: [232, 160, 32],
+    muted: [138, 122, 104], lightBg: [253, 248, 240], lineBg: [212, 201, 184]
   };
 
   function setFont(size, style = 'normal', color = colors.ink) {
@@ -376,9 +416,7 @@ function generatePDF(quiz) {
 
   function checkPageBreak(needed = 20) {
     if (y + needed > pageH - margin) {
-      doc.addPage();
-      y = margin;
-      drawPageHeader();
+      doc.addPage(); y = margin; drawPageHeader();
     }
   }
 
@@ -393,8 +431,7 @@ function generatePDF(quiz) {
     doc.line(margin, 10, pageW - margin, 10);
   }
 
-  // ─ COVER HEADER ─
-  // Decorative top strip
+  // Cover header
   doc.setFillColor(...colors.teal);
   doc.rect(0, 0, pageW, 18, 'F');
   doc.setFillColor(...colors.amber);
@@ -405,81 +442,54 @@ function generatePDF(quiz) {
   doc.text(quiz.subject || 'Quiz', margin, y);
   y += 8;
 
-  const levelLabel = state.settings.level === 'elementary' ? 'Elementary School' : 'Junior High School';
+  const config = GRADE_CONFIG[state.settings.level];
+  const gradeLabel = `${config.label} · Grade ${state.settings.grade}`;
   setFont(10, 'normal', colors.muted);
-  doc.text(`${levelLabel} · ${quiz.questions.length} Questions · ${quiz.language || ''}`, margin, y);
+  doc.text(`${gradeLabel} · ${quiz.questions.length} Questions · ${quiz.language || ''}`, margin, y);
   y += 10;
 
-  // Student Name & Date fields
-  if (state.settings.studentName || state.settings.date) {
-    doc.setFillColor(245, 240, 232);
-    doc.roundedRect(margin, y, contentW, 16, 3, 3, 'F');
-    y += 5;
-    setFont(9, 'normal', colors.muted);
+  // Student info box
+  doc.setFillColor(245, 240, 232);
+  doc.roundedRect(margin, y, contentW, 16, 3, 3, 'F');
+  y += 5;
+  setFont(9, 'normal', colors.muted);
+  const nameText = state.settings.studentName ? `Name: ${state.settings.studentName}` : 'Name: ___________________________';
+  const dateStr = state.settings.date
+    ? new Date(state.settings.date + 'T00:00:00').toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })
+    : '___________________';
+  doc.text(nameText, margin + 6, y + 2);
+  doc.text(`Date: ${dateStr}`, pageW / 2, y + 2);
+  y += 16;
 
-    if (state.settings.studentName) {
-      doc.text(`Name: ${state.settings.studentName}`, margin + 6, y + 2);
-    } else {
-      doc.text('Name: ___________________________', margin + 6, y + 2);
-    }
-
-    const dateStr = state.settings.date
-      ? new Date(state.settings.date + 'T00:00:00').toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })
-      : '___________________';
-    doc.text(`Date: ${dateStr}`, pageW / 2, y + 2);
-    y += 16;
-  } else {
-    // blank fields
-    doc.setFillColor(245, 240, 232);
-    doc.roundedRect(margin, y, contentW, 16, 3, 3, 'F');
-    y += 5;
-    setFont(9, 'normal', colors.muted);
-    doc.text('Name: ___________________________', margin + 6, y + 2);
-    doc.text('Date: ___________________', pageW / 2, y + 2);
-    y += 16;
-  }
-
-  // Separator
   doc.setDrawColor(...colors.lineBg);
   doc.setLineWidth(0.5);
   doc.line(margin, y, pageW - margin, y);
   y += 8;
 
   const typeLabelMap = {
-    multiple_choice: 'Multiple Choice',
-    true_false: 'True / False',
-    fill_blank: 'Fill in the Blank',
-    short_answer: 'Short Answer'
+    multiple_choice: 'Multiple Choice', true_false: 'True / False',
+    fill_blank: 'Fill in the Blank', short_answer: 'Short Answer'
   };
 
-  // ─ QUESTIONS ─
+  // Questions
   quiz.questions.forEach((q, i) => {
     checkPageBreak(30);
-
-    // Question number pill background
     doc.setFillColor(i % 2 === 0 ? 232 : 26, i % 2 === 0 ? 160 : 122, i % 2 === 0 ? 32 : 110);
     doc.roundedRect(margin, y, 18, 6, 2, 2, 'F');
-
-    // Question number
-    doc.setFontSize(7);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(7); doc.setFont('helvetica', 'bold'); doc.setTextColor(255, 255, 255);
     doc.text(`Q${q.number}`, margin + 9, y + 4.2, { align: 'center' });
 
-    // Type badge
     const typeLabel = typeLabelMap[q.type] || q.type;
     setFont(7, 'normal', colors.muted);
     doc.text(typeLabel, margin + 22, y + 4);
     y += 9;
 
-    // Question text
     setFont(10, 'bold', colors.ink);
     const qLines = doc.splitTextToSize(q.question, contentW);
     checkPageBreak(qLines.length * 5 + 12);
     doc.text(qLines, margin, y);
     y += qLines.length * 5 + 3;
 
-    // Options
     if (q.type === 'multiple_choice' && q.options.length) {
       q.options.forEach(opt => {
         checkPageBreak(8);
@@ -493,11 +503,7 @@ function generatePDF(quiz) {
       setFont(9.5, 'normal', [60, 50, 38]);
       doc.text('A. True          B. False', margin + 6, y);
       y += 7;
-    } else if (q.type === 'fill_blank') {
-      // already rendered in question text with ___
-      y += 2;
     } else if (q.type === 'short_answer') {
-      // answer lines
       checkPageBreak(22);
       for (let l = 0; l < 3; l++) {
         doc.setDrawColor(...colors.lineBg);
@@ -507,59 +513,43 @@ function generatePDF(quiz) {
       }
       y += 2;
     }
-
-    // Bottom spacing
     y += 4;
-
-    // Light separator between questions
     if (i < quiz.questions.length - 1) {
-      doc.setDrawColor(225, 215, 200);
-      doc.setLineWidth(0.3);
+      doc.setDrawColor(225, 215, 200); doc.setLineWidth(0.3);
       doc.line(margin + 10, y, pageW - margin - 10, y);
       y += 5;
     }
   });
 
-  // ─ ANSWER KEY (last page) ─
-  doc.addPage();
-  y = margin;
-
-  // Header strip
+  // Answer Key page
+  doc.addPage(); y = margin;
   doc.setFillColor(...colors.ink);
   doc.rect(0, 0, pageW, 18, 'F');
   setFont(13, 'bold', [255, 255, 255]);
   doc.text('Answer Key', margin, 12);
   setFont(8, 'normal', [180, 170, 160]);
-  doc.text(`${quiz.subject || 'Quiz'} — for teacher use only`, pageW - margin, 12, { align: 'right' });
+  doc.text(`${quiz.subject || 'Quiz'} - for teacher use only`, pageW - margin, 12, { align: 'right' });
 
   y = 26;
-
   setFont(9, 'normal', colors.muted);
-  doc.text(`Generated by QuizGen  ·  ${new Date().toLocaleDateString()}`, margin, y);
+  doc.text(`Generated by QuizGen  -  ${new Date().toLocaleDateString()}`, margin, y);
   y += 8;
-
-  doc.setDrawColor(...colors.lineBg);
-  doc.setLineWidth(0.5);
+  doc.setDrawColor(...colors.lineBg); doc.setLineWidth(0.5);
   doc.line(margin, y, pageW - margin, y);
   y += 6;
 
   quiz.questions.forEach((q, i) => {
     checkPageBreak(14);
-
     doc.setFillColor(i % 2 === 0 ? 245 : 250, i % 2 === 0 ? 240 : 248, i % 2 === 0 ? 232 : 244);
     doc.roundedRect(margin, y - 1, contentW, 10, 2, 2, 'F');
-
     setFont(9, 'bold', colors.teal);
     doc.text(`Q${q.number}.`, margin + 4, y + 6);
-
     setFont(9, 'normal', colors.ink);
     const ansLines = doc.splitTextToSize(q.answer, contentW - 20);
     doc.text(ansLines, margin + 14, y + 6);
-
     y += Math.max(ansLines.length * 5.5, 12) + 2;
   });
 
-  // Footer
   const totalPages = doc.internal.getNumberOfPages();
   for (let p = 1; p <= totalPages; p++) {
     doc.setPage(p);
@@ -567,7 +557,7 @@ function generatePDF(quiz) {
     doc.text(`${p} / ${totalPages}`, pageW - margin, pageH - 8, { align: 'right' });
   }
 
-  const filename = `${(quiz.subject || 'quiz').replace(/\s+/g, '_').toLowerCase()}_quiz.pdf`;
+  const filename = `${(quiz.subject || 'quiz').replace(/\s+/g, '_').toLowerCase()}_grade${state.settings.grade}_quiz.pdf`;
   doc.save(filename);
 }
 
@@ -583,7 +573,7 @@ btnNew.addEventListener('click', () => {
 });
 
 // ── Loading Helpers ────────────────────────
-function showLoading(msg = 'Generating…') {
+function showLoading(msg = 'Generating...') {
   loadingText.textContent = msg;
   loadingOverlay.classList.remove('hidden');
   btnGenerate.disabled = true;
