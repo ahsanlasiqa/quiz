@@ -1,5 +1,6 @@
 /* ============================================
-   QUIZGEN — APP LOGIC
+   QUIZGEN — APP LOGIC v6
+   Fixes: 504 timeout, diagrams, PDF upload
    ============================================ */
 
 // ── State ──────────────────────────────────
@@ -54,6 +55,7 @@ const btnGenerate       = document.getElementById('btn-generate');
 const generateHint      = document.getElementById('generate-hint');
 const loadingOverlay    = document.getElementById('loading-overlay');
 const loadingText       = document.getElementById('loading-text');
+const loadingSub        = document.getElementById('loading-sub');
 const stepResults       = document.getElementById('step-results');
 const quizOutput        = document.getElementById('quiz-output');
 const quizMetaText      = document.getElementById('quiz-meta-text');
@@ -68,6 +70,15 @@ const gradeSelector     = document.getElementById('grade-selector');
 const gradePills        = document.getElementById('grade-pills');
 const studentNameInput  = document.getElementById('student-name');
 const quizDateInput     = document.getElementById('quiz-date');
+const pdfProgress       = document.getElementById('pdf-progress');
+const pdfProgressFill   = document.getElementById('pdf-progress-fill');
+const pdfProgressText   = document.getElementById('pdf-progress-text');
+
+// ── PDF.js setup ───────────────────────────
+if (window.pdfjsLib) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
 
 // ── Init ───────────────────────────────────
 (function init() {
@@ -123,9 +134,7 @@ function renderGrades(level) {
     });
     gradePills.appendChild(pill);
   });
-  // Set default grade to first of this level
   state.settings.grade = config.grades[0].value;
-  // Animate in
   gradeSelector.classList.add('visible');
 }
 
@@ -161,27 +170,75 @@ fileInput.addEventListener('change', () => {
   fileInput.value = '';
 });
 
-function handleFiles(files) {
-  const imageFiles = files.filter(f => f.type.startsWith('image/'));
-  imageFiles.forEach(file => {
+async function handleFiles(files) {
+  for (const file of files) {
+    if (file.type === 'application/pdf') {
+      await handlePDF(file);
+    } else if (file.type.startsWith('image/')) {
+      await handleImage(file);
+    }
+  }
+}
+
+// ── PDF → Images ───────────────────────────
+async function handlePDF(file) {
+  pdfProgress.classList.remove('hidden');
+  pdfProgressText.textContent = `Loading ${file.name}…`;
+  pdfProgressFill.style.width = '0%';
+
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const totalPages = pdf.numPages;
+
+    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+      pdfProgressText.textContent = `Converting page ${pageNum} of ${totalPages}…`;
+      pdfProgressFill.style.width = `${(pageNum / totalPages) * 100}%`;
+
+      const page = await pdf.getPage(pageNum);
+      const scale = 1.5; // Good balance: readable but not too large
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      const ctx = canvas.getContext('2d');
+
+      await page.render({ canvasContext: ctx, viewport }).promise;
+
+      // Compress to JPEG like we do for images
+      const dataUrl = compressCanvas(canvas);
+      const base64 = dataUrl.split(',')[1];
+      state.images.push({
+        file: { name: `${file.name} p.${pageNum}` },
+        dataUrl,
+        base64,
+        mimeType: 'image/jpeg',
+        fromPDF: true,
+        pdfName: file.name
+      });
+    }
+    renderPreviews();
+  } catch (err) {
+    console.error('PDF error:', err);
+    generateHint.textContent = `Could not read PDF: ${err.message}`;
+  } finally {
+    pdfProgress.classList.add('hidden');
+  }
+}
+
+// ── Image handler ──────────────────────────
+function handleImage(file) {
+  return new Promise(resolve => {
     const reader = new FileReader();
     reader.onload = e => {
       const img = new Image();
       img.onload = () => {
-        // Resize to max 1600px and compress — fixes 413 errors on mobile
-        const MAX = 1600;
-        let { width, height } = img;
-        if (width > MAX || height > MAX) {
-          if (width >= height) { height = Math.round(height * MAX / width); width = MAX; }
-          else { width = Math.round(width * MAX / height); height = MAX; }
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = width; canvas.height = height;
-        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.80);
+        const dataUrl = compressCanvas(imageToCanvas(img));
         const base64 = dataUrl.split(',')[1];
         state.images.push({ file, dataUrl, base64, mimeType: 'image/jpeg' });
         renderPreviews();
+        resolve();
       };
       img.src = e.target.result;
     };
@@ -189,15 +246,46 @@ function handleFiles(files) {
   });
 }
 
+function imageToCanvas(img) {
+  const MAX = 1600;
+  let { width, height } = img;
+  if (width > MAX || height > MAX) {
+    if (width >= height) { height = Math.round(height * MAX / width); width = MAX; }
+    else { width = Math.round(width * MAX / height); height = MAX; }
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = width; canvas.height = height;
+  canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+  return canvas;
+}
+
+function compressCanvas(canvas) {
+  // If still too large, scale down further
+  const MAX = 1600;
+  if (canvas.width > MAX || canvas.height > MAX) {
+    const ratio = Math.min(MAX / canvas.width, MAX / canvas.height);
+    const c2 = document.createElement('canvas');
+    c2.width = Math.round(canvas.width * ratio);
+    c2.height = Math.round(canvas.height * ratio);
+    c2.getContext('2d').drawImage(canvas, 0, 0, c2.width, c2.height);
+    return c2.toDataURL('image/jpeg', 0.82);
+  }
+  return canvas.toDataURL('image/jpeg', 0.82);
+}
+
+// ── Previews ───────────────────────────────
 function renderPreviews() {
   imagePreviewGrid.innerHTML = '';
   state.images.forEach((img, i) => {
     const div = document.createElement('div');
     div.className = 'preview-item';
+    const label = img.fromPDF
+      ? `<span class="preview-pdf-badge">PDF</span><span class="preview-num">p.${i+1}</span>`
+      : `<span class="preview-num">Page ${i+1}</span>`;
     div.innerHTML = `
       <img src="${img.dataUrl}" alt="Page ${i+1}" />
-      <button class="preview-remove" data-idx="${i}" title="Remove">x</button>
-      <span class="preview-num">Page ${i+1}</span>
+      <button class="preview-remove" data-idx="${i}" title="Remove">✕</button>
+      ${label}
     `;
     imagePreviewGrid.appendChild(div);
   });
@@ -227,7 +315,7 @@ btnRegenerate.addEventListener('click', generateQuiz);
 async function generateQuiz() {
   collectSettings();
   if (state.images.length === 0) {
-    generateHint.textContent = 'Please upload at least one photo of the learning material.';
+    generateHint.textContent = 'Please upload at least one photo or PDF page.';
     return;
   }
   if (state.settings.types.length === 0) {
@@ -235,7 +323,9 @@ async function generateQuiz() {
     return;
   }
   generateHint.textContent = '';
-  showLoading('Reading your material...');
+  const n = state.settings.numQuestions;
+  const estimatedSecs = Math.max(20, n * 3);
+  showLoading('Analyzing your material…', `Generating ${n} questions — may take up to ${estimatedSecs}s`);
   try {
     const quiz = await callClaude();
     state.quizData = quiz;
@@ -252,8 +342,6 @@ async function generateQuiz() {
 
 // ── Claude API Call ────────────────────────
 async function callClaude() {
-  loadingText.textContent = 'Analyzing content...';
-
   const config = GRADE_CONFIG[state.settings.level];
   const levelLabel = `${config.label}, Grade ${state.settings.grade}`;
 
@@ -275,44 +363,63 @@ INSTRUCTIONS:
 1. Carefully read ALL the text and content in the provided images.
 2. Generate exactly ${state.settings.numQuestions} questions based ONLY on the material shown.
 3. Distribute question types as evenly as possible across: ${selectedTypes}
-4. Match the language used in the material (if material is in Bahasa Indonesia, write questions in Bahasa Indonesia; if English, write in English).
-5. Adjust difficulty and vocabulary appropriately for: ${levelLabel}
-6. For multiple choice: provide exactly 4 options labeled A, B, C, D with only one correct answer.
-7. For fill in blank: replace key terms with ___ in a sentence from the material.
+4. Match the language used in the material (Bahasa Indonesia or English).
+5. Adjust difficulty appropriately for: ${levelLabel}
+6. For multiple choice: exactly 4 options labeled A, B, C, D.
+7. For fill in blank: replace key terms with ___.
 8. For short answer: ask open-ended questions about main concepts.
 
-Respond ONLY with a valid JSON object in this exact format (no markdown, no extra text):
+DIAGRAM INSTRUCTIONS (very important):
+- For any question involving shapes, geometry, measurement, graphs, diagrams, or visual concepts, you MUST include an SVG diagram.
+- The SVG should be simple, clean, and directly illustrate the question (e.g. a square with labeled sides for a perimeter question).
+- Use stroke="#1a7a6e" fill="none" or fill="#fef3d0" for shapes. Use font-size="12" for labels.
+- Keep SVG width="200" height="150" viewBox="0 0 200 150".
+- If no diagram is needed, set "svg" to null.
+
+Respond ONLY with valid JSON, no markdown, no extra text:
 {
   "subject": "detected subject name",
-  "language": "detected language (English or Bahasa Indonesia)",
+  "language": "detected language",
   "questions": [
     {
       "number": 1,
       "type": "multiple_choice",
       "question": "question text",
       "options": ["A. option1", "B. option2", "C. option3", "D. option4"],
-      "answer": "A. option1"
+      "answer": "A. option1",
+      "svg": null
     },
     {
       "number": 2,
-      "type": "true_false",
-      "question": "statement to judge as true or false",
-      "options": ["True", "False"],
-      "answer": "True"
+      "type": "multiple_choice",
+      "question": "What is the perimeter of the square below?",
+      "options": ["A. 16 cm", "B. 20 cm", "C. 24 cm", "D. 12 cm"],
+      "answer": "A. 16 cm",
+      "svg": "<svg width='200' height='150' viewBox='0 0 200 150' xmlns='http://www.w3.org/2000/svg'><rect x='50' y='25' width='100' height='100' stroke='#1a7a6e' stroke-width='2' fill='#fef3d0'/><text x='95' y='18' font-size='12' fill='#1a1208'>4 cm</text><text x='160' y='80' font-size='12' fill='#1a1208'>4 cm</text></svg>"
     },
     {
       "number": 3,
-      "type": "fill_blank",
-      "question": "The ___ is the powerhouse of the cell.",
+      "type": "true_false",
+      "question": "statement",
       "options": [],
-      "answer": "mitochondria"
+      "answer": "True",
+      "svg": null
     },
     {
       "number": 4,
-      "type": "short_answer",
-      "question": "Explain in your own words...",
+      "type": "fill_blank",
+      "question": "The ___ of a square is calculated by adding all four sides.",
       "options": [],
-      "answer": "Model answer: ..."
+      "answer": "perimeter",
+      "svg": null
+    },
+    {
+      "number": 5,
+      "type": "short_answer",
+      "question": "Explain...",
+      "options": [],
+      "answer": "Model answer: ...",
+      "svg": null
     }
   ]
 }`;
@@ -325,7 +432,7 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
     });
   });
 
-  loadingText.textContent = 'Generating questions...';
+  loadingText.textContent = 'Generating questions…';
 
   const response = await fetch('/api/generate', {
     method: 'POST',
@@ -335,7 +442,7 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-5',
-      max_tokens: 4000,
+      max_tokens: 8000,
       messages: [{ role: 'user', content: contentParts }]
     })
   });
@@ -368,21 +475,26 @@ function renderQuiz(quiz) {
     };
     const typeLabel = typeLabelMap[q.type] || q.type;
 
+    // SVG diagram block
+    const svgBlock = q.svg
+      ? `<div class="q-diagram">${q.svg}</div>`
+      : '';
+
     let body = '';
     if (q.type === 'multiple_choice' && q.options.length) {
       const optHtml = q.options.map(o => `<li>${o}</li>`).join('');
-      body = `<p class="q-text">${q.question}</p><ul class="q-options">${optHtml}</ul>`;
+      body = `<p class="q-text">${q.question}</p>${svgBlock}<ul class="q-options">${optHtml}</ul>`;
     } else if (q.type === 'true_false') {
-      body = `<p class="q-text">${q.question}</p><ul class="q-options"><li>A. True</li><li>B. False</li></ul>`;
+      body = `<p class="q-text">${q.question}</p>${svgBlock}<ul class="q-options"><li>A. True</li><li>B. False</li></ul>`;
     } else if (q.type === 'fill_blank') {
       const rendered = q.question.replace(/___/g, '<span class="q-blank-line"></span>');
-      body = `<p class="q-text">${rendered}</p>`;
+      body = `<p class="q-text">${rendered}</p>${svgBlock}`;
     } else {
-      body = `<p class="q-text">${q.question}</p><p class="q-essay-hint">Answer in 2-4 sentences.</p>`;
+      body = `<p class="q-text">${q.question}</p>${svgBlock}<p class="q-essay-hint">Answer in 2–4 sentences.</p>`;
     }
 
     html += `
-      <div class="quiz-question" style="animation-delay:${i * 0.05}s">
+      <div class="quiz-question" style="animation-delay:${i * 0.04}s">
         <div>
           <span class="q-number">Question ${q.number}</span>
           <span class="q-type-badge">${typeLabel}</span>
@@ -393,7 +505,7 @@ function renderQuiz(quiz) {
 
   let akHtml = `
     <div class="answer-key-section">
-      <div class="answer-key-title">Answer Key</div>
+      <div class="answer-key-title">🗝 Answer Key</div>
       <ul class="answer-key-list">`;
   quiz.questions.forEach(q => {
     akHtml += `<li><strong>Q${q.number}.</strong> ${q.answer}</li>`;
@@ -419,7 +531,7 @@ function generatePDF(quiz) {
 
   const colors = {
     ink: [26, 18, 8], teal: [26, 122, 110], amber: [232, 160, 32],
-    muted: [138, 122, 104], lightBg: [253, 248, 240], lineBg: [212, 201, 184]
+    muted: [138, 122, 104], lineBg: [212, 201, 184]
   };
 
   function setFont(size, style = 'normal', color = colors.ink) {
@@ -504,6 +616,22 @@ function generatePDF(quiz) {
     doc.text(qLines, margin, y);
     y += qLines.length * 5 + 3;
 
+    // Embed SVG diagram as rendered image in PDF
+    if (q.svg) {
+      try {
+        const svgBlob = new Blob([q.svg], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(svgBlob);
+        // Render SVG to canvas synchronously via a pre-drawn image
+        // We'll add a placeholder note since async isn't ideal in sync PDF generation
+        // Instead, draw a simple inline representation using jsPDF shapes
+        drawSVGShapesPDF(doc, q.svg, margin, y, contentW, colors);
+        y += 46;
+        URL.revokeObjectURL(url);
+      } catch(e) {
+        // Skip diagram on error
+      }
+    }
+
     if (q.type === 'multiple_choice' && q.options.length) {
       q.options.forEach(opt => {
         checkPageBreak(8);
@@ -520,8 +648,7 @@ function generatePDF(quiz) {
     } else if (q.type === 'short_answer') {
       checkPageBreak(22);
       for (let l = 0; l < 3; l++) {
-        doc.setDrawColor(...colors.lineBg);
-        doc.setLineWidth(0.4);
+        doc.setDrawColor(...colors.lineBg); doc.setLineWidth(0.4);
         doc.line(margin, y + 4, pageW - margin, y + 4);
         y += 7;
       }
@@ -575,6 +702,82 @@ function generatePDF(quiz) {
   doc.save(filename);
 }
 
+// ── SVG → PDF shapes (basic parser) ────────
+function drawSVGShapesPDF(doc, svgStr, x, y, maxW, colors) {
+  // Draw a light box as diagram placeholder with note
+  doc.setFillColor(240, 248, 245);
+  doc.setDrawColor(...colors.teal);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(x, y, maxW, 40, 3, 3, 'FD');
+
+  // Parse and draw basic SVG shapes
+  try {
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgStr, 'image/svg+xml');
+    const svgEl = svgDoc.querySelector('svg');
+    if (!svgEl) return;
+
+    const vbW = 200, vbH = 150;
+    const scaleX = (maxW - 10) / vbW;
+    const scaleY = 38 / vbH;
+    const sc = Math.min(scaleX, scaleY);
+    const offX = x + 5;
+    const offY = y + 1;
+
+    svgEl.querySelectorAll('rect').forEach(el => {
+      const rx = parseFloat(el.getAttribute('x') || 0) * sc + offX;
+      const ry = parseFloat(el.getAttribute('y') || 0) * sc + offY;
+      const rw = parseFloat(el.getAttribute('width') || 0) * sc;
+      const rh = parseFloat(el.getAttribute('height') || 0) * sc;
+      const fill = el.getAttribute('fill');
+      if (fill && fill !== 'none') doc.setFillColor(254, 243, 208);
+      doc.setDrawColor(...colors.teal);
+      doc.setLineWidth(0.6);
+      doc.rect(rx, ry, rw, rh, fill && fill !== 'none' ? 'FD' : 'D');
+    });
+
+    svgEl.querySelectorAll('circle').forEach(el => {
+      const cx = parseFloat(el.getAttribute('cx') || 0) * sc + offX;
+      const cy = parseFloat(el.getAttribute('cy') || 0) * sc + offY;
+      const r = parseFloat(el.getAttribute('r') || 0) * sc;
+      doc.setDrawColor(...colors.teal);
+      doc.circle(cx, cy, r, 'D');
+    });
+
+    svgEl.querySelectorAll('line').forEach(el => {
+      const x1 = parseFloat(el.getAttribute('x1') || 0) * sc + offX;
+      const y1 = parseFloat(el.getAttribute('y1') || 0) * sc + offY;
+      const x2 = parseFloat(el.getAttribute('x2') || 0) * sc + offX;
+      const y2 = parseFloat(el.getAttribute('y2') || 0) * sc + offY;
+      doc.setDrawColor(...colors.teal);
+      doc.line(x1, y1, x2, y2);
+    });
+
+    svgEl.querySelectorAll('text').forEach(el => {
+      const tx = parseFloat(el.getAttribute('x') || 0) * sc + offX;
+      const ty = parseFloat(el.getAttribute('y') || 0) * sc + offY;
+      doc.setFontSize(6); doc.setFont('helvetica', 'normal');
+      doc.setTextColor(...colors.ink);
+      doc.text(el.textContent || '', tx, ty);
+    });
+
+    svgEl.querySelectorAll('polygon').forEach(el => {
+      const pts = (el.getAttribute('points') || '').trim().split(/\s+|,/).map(Number);
+      if (pts.length >= 4) {
+        const coords = [];
+        for (let i = 0; i < pts.length - 1; i += 2) {
+          coords.push([pts[i] * sc + offX, pts[i+1] * sc + offY]);
+        }
+        doc.setDrawColor(...colors.teal); doc.setLineWidth(0.6);
+        for (let i = 0; i < coords.length; i++) {
+          const next = coords[(i + 1) % coords.length];
+          doc.line(coords[i][0], coords[i][1], next[0], next[1]);
+        }
+      }
+    });
+  } catch(e) { /* silently skip */ }
+}
+
 // ── New Quiz ───────────────────────────────
 btnNew.addEventListener('click', () => {
   state.images = [];
@@ -587,8 +790,9 @@ btnNew.addEventListener('click', () => {
 });
 
 // ── Loading Helpers ────────────────────────
-function showLoading(msg = 'Generating...') {
+function showLoading(msg = 'Generating…', sub = 'This may take a few seconds') {
   loadingText.textContent = msg;
+  loadingSub.textContent = sub;
   loadingOverlay.classList.remove('hidden');
   btnGenerate.disabled = true;
 }
