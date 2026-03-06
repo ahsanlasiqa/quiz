@@ -752,3 +752,57 @@ body {
   .grade-pills { gap: 8px; }
   .grade-pill { flex: 1 1 calc(33% - 8px); justify-content: center; }
 }
+
+/* ── PDF PROGRESS BAR ── */
+.pdf-progress {
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pdf-progress-bar {
+  height: 6px;
+  background: #e8e0d4;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.pdf-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--teal-light));
+  border-radius: 10px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+.pdf-progress-text {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+/* ── PDF BADGE ON PREVIEW ── */
+.preview-pdf-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: var(--teal);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+}
+
+/* ── DIAGRAM BLOCK ── */
+.q-diagram {
+  margin: 10px 0 8px;
+  display: flex;
+  justify-content: center;
+  background: rgba(255,255,255,0.7);
+  border-radius: 10px;
+  padding: 10px;
+  border: 1.5px solid rgba(26,122,110,0.15);
+}
+.q-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
