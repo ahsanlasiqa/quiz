@@ -166,10 +166,24 @@ function handleFiles(files) {
   imageFiles.forEach(file => {
     const reader = new FileReader();
     reader.onload = e => {
-      const dataUrl = e.target.result;
-      const base64 = dataUrl.split(',')[1];
-      state.images.push({ file, dataUrl, base64, mimeType: file.type });
-      renderPreviews();
+      const img = new Image();
+      img.onload = () => {
+        // Resize to max 1600px and compress — fixes 413 errors on mobile
+        const MAX = 1600;
+        let { width, height } = img;
+        if (width > MAX || height > MAX) {
+          if (width >= height) { height = Math.round(height * MAX / width); width = MAX; }
+          else { width = Math.round(width * MAX / height); height = MAX; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.80);
+        const base64 = dataUrl.split(',')[1];
+        state.images.push({ file, dataUrl, base64, mimeType: 'image/jpeg' });
+        renderPreviews();
+      };
+      img.src = e.target.result;
     };
     reader.readAsDataURL(file);
   });
