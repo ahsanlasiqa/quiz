@@ -706,14 +706,14 @@ body {
   overflow: hidden;
   max-height: 0;
   opacity: 0;
-  transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease;
+  transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
   margin-top: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 .grade-selector.visible {
-  max-height: 120px;
+  max-height: 200px;
   opacity: 1;
   margin-top: 14px;
 }
@@ -723,7 +723,7 @@ body {
   gap: 8px;
 }
 .grade-pill {
-  padding: 7px 18px;
+  padding: 8px 20px;
   border: 2px solid #e8e0d4;
   border-radius: 30px;
   background: white;
@@ -733,6 +733,10 @@ body {
   color: var(--ink-muted);
   cursor: pointer;
   transition: all 0.15s;
+  /* Ensure tappable size on mobile */
+  min-height: 40px;
+  display: flex;
+  align-items: center;
 }
 .grade-pill:hover {
   border-color: var(--amber);
@@ -742,4 +746,9 @@ body {
   background: var(--amber);
   border-color: var(--amber);
   color: white;
+}
+@media (max-width: 520px) {
+  .grade-selector.visible { max-height: 260px; }
+  .grade-pills { gap: 8px; }
+  .grade-pill { flex: 1 1 calc(33% - 8px); justify-content: center; }
 }
