@@ -5,7 +5,6 @@
 
 // ── State ──────────────────────────────────
 const state = {
-  apiKey: localStorage.getItem('quizgen_api_key') || '',
   images: [],
   quizData: null,
   settings: {
@@ -45,9 +44,7 @@ const GRADE_CONFIG = {
 };
 
 // ── DOM Refs ───────────────────────────────
-const modalOverlay      = document.getElementById('modal-overlay');
-const apiKeyInput       = document.getElementById('api-key-input');
-const btnModalSave      = document.getElementById('btn-modal-save');
+
 const uploadZone        = document.getElementById('upload-zone');
 const fileInput         = document.getElementById('file-input');
 const imagePreviewGrid  = document.getElementById('image-preview-grid');
@@ -82,32 +79,9 @@ if (window.pdfjsLib) {
 
 // ── Init ───────────────────────────────────
 (function init() {
-  if (!state.apiKey) {
-    modalOverlay.classList.remove('hidden');
-  } else {
-    modalOverlay.classList.add('hidden');
-  }
   quizDateInput.valueAsDate = new Date();
   renderGrades('elementary');
 })();
-
-// ── API Key Modal ──────────────────────────
-document.getElementById('btn-change-key').addEventListener('click', () => {
-  apiKeyInput.value = '';
-  modalOverlay.classList.remove('hidden');
-});
-
-btnModalSave.addEventListener('click', () => {
-  const key = apiKeyInput.value.trim();
-  if (!key.startsWith('sk-ant-')) {
-    apiKeyInput.style.borderColor = '#e05c3a';
-    apiKeyInput.placeholder = 'Key must start with sk-ant-...';
-    return;
-  }
-  state.apiKey = key;
-  localStorage.setItem('quizgen_api_key', key);
-  modalOverlay.classList.add('hidden');
-});
 
 // ── Level Toggle ───────────────────────────
 levelToggle.querySelectorAll('.level-btn').forEach(btn => {
@@ -466,7 +440,6 @@ Respond ONLY with valid JSON, no markdown, no extra text:
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': state.apiKey,
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-5',
