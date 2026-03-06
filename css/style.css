@@ -320,7 +320,45 @@ body {
   border-color: var(--amber);
   background: var(--amber-pale);
 }
-.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+/* file inputs are hidden and triggered by buttons */
+.upload-btn-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.upload-btn {
+  flex: 1;
+  min-width: 140px;
+  padding: 14px 20px;
+  border: 2.5px solid var(--teal);
+  border-radius: var(--radius-sm);
+  background: var(--teal-pale);
+  color: var(--teal);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.18s;
+  -webkit-tap-highlight-color: transparent;
+}
+.upload-btn:hover, .upload-btn:active {
+  background: var(--teal);
+  color: white;
+}
+.upload-btn-camera {
+  border-color: var(--amber);
+  background: var(--amber-pale);
+  color: #b07a10;
+}
+.upload-btn-camera:hover, .upload-btn-camera:active {
+  background: var(--amber);
+  color: white;
+}
 .upload-icon { font-size: 2.5rem; margin-bottom: 10px; }
 .upload-text { font-size: 0.95rem; color: var(--ink-light); margin-bottom: 4px; }
 .upload-link { color: var(--teal); font-weight: 600; text-decoration: underline; }
