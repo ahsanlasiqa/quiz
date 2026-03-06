@@ -120,9 +120,22 @@
 
       <div class="upload-zone" id="upload-zone">
         <div class="upload-icon">📎</div>
-        <p class="upload-text">Drag & drop files here, or <span class="upload-link">click to browse</span></p>
+        <p class="upload-text">Drag & drop files here</p>
         <p class="upload-hint">JPG, PNG, WEBP, PDF supported · Unlimited pages</p>
-        <input type="file" id="file-input" multiple accept="image/*,.pdf" />
+      </div>
+
+      <!-- Hidden file inputs — triggered by buttons below -->
+      <input type="file" id="file-input" multiple accept="image/*,.pdf" style="display:none" />
+      <input type="file" id="camera-input" multiple accept="image/*" capture="environment" style="display:none" />
+
+      <!-- Mobile-friendly upload buttons -->
+      <div class="upload-btn-row">
+        <button class="upload-btn" id="btn-browse-files">
+          <span>🗂</span> Browse Files
+        </button>
+        <button class="upload-btn upload-btn-camera" id="btn-camera">
+          <span>📷</span> Take Photo
+        </button>
       </div>
 
       <!-- PDF processing progress -->
