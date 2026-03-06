@@ -155,6 +155,9 @@ numQuestionsInput.addEventListener('change', () => {
 });
 
 // ── Upload Zone ────────────────────────────
+const cameraInput = document.getElementById('camera-input');
+
+// Drag and drop (desktop)
 uploadZone.addEventListener('dragover', e => {
   e.preventDefault();
   uploadZone.classList.add('dragover');
@@ -165,9 +168,34 @@ uploadZone.addEventListener('drop', e => {
   uploadZone.classList.remove('dragover');
   handleFiles(Array.from(e.dataTransfer.files));
 });
+
+// Browse button — triggers hidden file input
+document.getElementById('btn-browse-files').addEventListener('click', () => {
+  fileInput.click();
+});
+
+// Camera button — triggers camera input (mobile uses rear camera)
+document.getElementById('btn-camera').addEventListener('click', () => {
+  cameraInput.click();
+});
+
+// Also allow clicking the upload zone itself on desktop
+uploadZone.addEventListener('click', () => {
+  fileInput.click();
+});
+
 fileInput.addEventListener('change', () => {
-  handleFiles(Array.from(fileInput.files));
-  fileInput.value = '';
+  if (fileInput.files.length) {
+    handleFiles(Array.from(fileInput.files));
+    fileInput.value = '';
+  }
+});
+
+cameraInput.addEventListener('change', () => {
+  if (cameraInput.files.length) {
+    handleFiles(Array.from(cameraInput.files));
+    cameraInput.value = '';
+  }
 });
 
 async function handleFiles(files) {
