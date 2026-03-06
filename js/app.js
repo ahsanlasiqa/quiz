@@ -51,6 +51,11 @@ const quizDateInput      = document.getElementById('quiz-date');
 })();
 
 // ── API Key Modal ──────────────────────────
+document.getElementById('btn-change-key').addEventListener('click', () => {
+  apiKeyInput.value = '';
+  modalOverlay.classList.remove('hidden');
+});
+
 btnModalSave.addEventListener('click', () => {
   const key = apiKeyInput.value.trim();
   if (!key.startsWith('sk-ant-')) {
@@ -267,7 +272,7 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
       'x-api-key': state.apiKey,
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-5',
       max_tokens: 4000,
       messages: [{ role: 'user', content: contentParts }]
     })
