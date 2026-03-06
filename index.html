@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <!-- PDF.js for PDF-to-image conversion -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- jsPDF for PDF export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
@@ -113,13 +116,21 @@
     <section class="card step-card" id="step-upload">
       <div class="step-label">Step 2</div>
       <h2 class="step-title">Upload Learning Material</h2>
-      <p class="step-desc">Take photos of textbook pages or worksheets and upload them here. You can add as many pages as needed.</p>
+      <p class="step-desc">Upload photos or PDF files of textbook pages. You can mix images and PDFs — all pages will be processed together.</p>
+
       <div class="upload-zone" id="upload-zone">
-        <div class="upload-icon">📷</div>
-        <p class="upload-text">Drag & drop photos here, or <span class="upload-link">click to browse</span></p>
-        <p class="upload-hint">JPG, PNG, WEBP supported · Unlimited pages</p>
-        <input type="file" id="file-input" multiple accept="image/*" />
+        <div class="upload-icon">📎</div>
+        <p class="upload-text">Drag & drop files here, or <span class="upload-link">click to browse</span></p>
+        <p class="upload-hint">JPG, PNG, WEBP, PDF supported · Unlimited pages</p>
+        <input type="file" id="file-input" multiple accept="image/*,.pdf" />
       </div>
+
+      <!-- PDF processing progress -->
+      <div class="pdf-progress hidden" id="pdf-progress">
+        <div class="pdf-progress-bar"><div class="pdf-progress-fill" id="pdf-progress-fill"></div></div>
+        <p class="pdf-progress-text" id="pdf-progress-text">Converting PDF pages…</p>
+      </div>
+
       <div class="image-preview-grid" id="image-preview-grid"></div>
     </section>
 
@@ -149,7 +160,7 @@
       <div class="loading-card">
         <div class="spinner"></div>
         <p class="loading-text" id="loading-text">Reading your material…</p>
-        <p class="loading-sub">This may take a few seconds</p>
+        <p class="loading-sub" id="loading-sub">This may take a few seconds</p>
       </div>
     </div>
 
