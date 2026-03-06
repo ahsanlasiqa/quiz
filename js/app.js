@@ -260,9 +260,12 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
 
   loadingText.textContent = 'Generating questions…';
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  const response = await fetch('/api/generate', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': state.apiKey,
+    },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 4000,
@@ -584,4 +587,3 @@ function hideLoading() {
   loadingOverlay.classList.add('hidden');
   btnGenerate.disabled = false;
 }
-
