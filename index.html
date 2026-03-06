@@ -12,12 +12,10 @@
 </head>
 <body>
 
-  <!-- BACKGROUND BLOBS -->
   <div class="bg-blob blob-1"></div>
   <div class="bg-blob blob-2"></div>
   <div class="bg-blob blob-3"></div>
 
-  <!-- HEADER -->
   <header class="site-header">
     <div class="logo">
       <span class="logo-icon">✦</span>
@@ -27,26 +25,39 @@
     <button class="btn-change-key" id="btn-change-key">🔑 Change API Key</button>
   </header>
 
-  <!-- MAIN APP -->
   <main class="app-container">
 
-    <!-- STEP 1: SETTINGS -->
     <section class="card step-card" id="step-settings">
       <div class="step-label">Step 1</div>
       <h2 class="step-title">Quiz Settings</h2>
 
       <div class="settings-grid">
 
-        <!-- Student Level -->
-        <div class="setting-group">
-          <label class="setting-label">Student Level</label>
-          <div class="toggle-group" id="level-toggle">
-            <button class="toggle-btn active" data-value="elementary">🎒 Elementary</button>
-            <button class="toggle-btn" data-value="junior_high">📚 Junior High</button>
+        <div class="setting-group full-width">
+          <label class="setting-label">School Level</label>
+          <div class="level-toggle-group" id="level-toggle">
+            <button class="level-btn active" data-value="elementary">
+              <span class="level-emoji">🎒</span>
+              <span class="level-name">Elementary</span>
+              <span class="level-sub">Grade 1–6</span>
+            </button>
+            <button class="level-btn" data-value="junior_high">
+              <span class="level-emoji">📚</span>
+              <span class="level-name">Junior High</span>
+              <span class="level-sub">Grade 7–9</span>
+            </button>
+            <button class="level-btn" data-value="high_school">
+              <span class="level-emoji">🎓</span>
+              <span class="level-name">High School</span>
+              <span class="level-sub">Grade 10–12</span>
+            </button>
+          </div>
+          <div class="grade-selector" id="grade-selector">
+            <label class="setting-label">Grade</label>
+            <div class="grade-pills" id="grade-pills"></div>
           </div>
         </div>
 
-        <!-- Number of Questions -->
         <div class="setting-group">
           <label class="setting-label">Number of Questions</label>
           <div class="number-input-wrap">
@@ -56,7 +67,6 @@
           </div>
         </div>
 
-        <!-- Question Types -->
         <div class="setting-group full-width">
           <label class="setting-label">Question Types</label>
           <div class="checkbox-group">
@@ -83,7 +93,6 @@
           </div>
         </div>
 
-        <!-- Student Name & Date on PDF -->
         <div class="setting-group full-width">
           <label class="setting-label">Student Info on PDF</label>
           <div class="two-col">
@@ -101,23 +110,19 @@
       </div>
     </section>
 
-    <!-- STEP 2: UPLOAD IMAGES -->
     <section class="card step-card" id="step-upload">
       <div class="step-label">Step 2</div>
       <h2 class="step-title">Upload Learning Material</h2>
       <p class="step-desc">Take photos of textbook pages or worksheets and upload them here. You can add as many pages as needed.</p>
-
       <div class="upload-zone" id="upload-zone">
         <div class="upload-icon">📷</div>
         <p class="upload-text">Drag & drop photos here, or <span class="upload-link">click to browse</span></p>
         <p class="upload-hint">JPG, PNG, WEBP supported · Unlimited pages</p>
         <input type="file" id="file-input" multiple accept="image/*" />
       </div>
-
       <div class="image-preview-grid" id="image-preview-grid"></div>
     </section>
 
-    <!-- GENERATE BUTTON -->
     <div class="generate-wrap">
       <button class="btn-generate" id="btn-generate">
         <span class="btn-icon">⚡</span>
@@ -126,29 +131,20 @@
       <p class="generate-hint" id="generate-hint"></p>
     </div>
 
-    <!-- STEP 3: RESULTS -->
     <section class="card step-card hidden" id="step-results">
       <div class="step-label">Step 3</div>
       <h2 class="step-title">Your Quiz is Ready!</h2>
-
       <div class="quiz-meta-bar">
         <span id="quiz-meta-text"></span>
         <button class="btn-regenerate" id="btn-regenerate">↺ Regenerate</button>
       </div>
-
       <div id="quiz-output"></div>
-
       <div class="result-actions">
-        <button class="btn-pdf" id="btn-pdf">
-          <span>⬇</span> Download PDF
-        </button>
-        <button class="btn-new" id="btn-new">
-          <span>＋</span> New Quiz
-        </button>
+        <button class="btn-pdf" id="btn-pdf"><span>⬇</span> Download PDF</button>
+        <button class="btn-new" id="btn-new"><span>＋</span> New Quiz</button>
       </div>
     </section>
 
-    <!-- LOADING -->
     <div class="loading-overlay hidden" id="loading-overlay">
       <div class="loading-card">
         <div class="spinner"></div>
@@ -159,7 +155,6 @@
 
   </main>
 
-  <!-- API KEY MODAL -->
   <div class="modal-overlay" id="modal-overlay">
     <div class="modal-card">
       <div class="modal-icon">🔑</div>
