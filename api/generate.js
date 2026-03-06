@@ -3,6 +3,7 @@ export const config = {
     bodyParser: {
       sizeLimit: '20mb',
     },
+    maxDuration: 60,
   },
 };
 
