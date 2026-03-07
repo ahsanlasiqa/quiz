@@ -10,12 +10,11 @@
   <link rel="stylesheet" href="css/style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- Firebase -->
-  <script type="module" src="js/auth.js"></script>
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <!-- Midtrans Snap (payment popup) — use sandbox for testing, production for live -->
-  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-7Ug9XgmZauqkVjM4"></script>
+  <!-- Midtrans Snap -->
+  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="REPLACE_WITH_MIDTRANS_CLIENT_KEY"></script>
 </head>
 <body>
 
@@ -194,8 +193,9 @@
     </main>
   </div>
 
-  <!-- Auth init first, then app -->
+  <!-- Load in order: Firebase config → Auth logic → App -->
   <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

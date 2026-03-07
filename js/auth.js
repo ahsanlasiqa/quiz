@@ -1,7 +1,9 @@
 // ── Auth Logic ──────────────────────────────
+// Plain script (no module) — loaded after firebase-config.js
+
 window.quizgenAuthed = false;
 window.quizgenUser = null;
-window.quizgenAccess = null; // 'invited' | 'subscribed' | 'free_trial' | 'trial_expired'
+window.quizgenAccess = null;
 
 window.getIdToken = async function() {
   if (!window.quizgenUser) return null;
@@ -9,17 +11,22 @@ window.getIdToken = async function() {
 };
 
 window.initAuth = function() {
-  const loginScreen  = document.getElementById('login-screen');
-  const appScreen    = document.getElementById('app-screen');
-  const btnLogin     = document.getElementById('btn-google-login');
-  const btnSignout   = document.getElementById('btn-signout');
-  const loginError   = document.getElementById('login-error');
-  const loginMsg     = document.getElementById('login-msg');
+  const loginScreen = document.getElementById('login-screen');
+  const appScreen   = document.getElementById('app-screen');
+  const btnLogin    = document.getElementById('btn-google-login');
+  const btnSignout  = document.getElementById('btn-signout');
+  const loginError  = document.getElementById('login-error');
+  const loginMsg    = document.getElementById('login-msg');
+
+  if (!btnLogin) {
+    console.error('QuizGen: btn-google-login not found in DOM');
+    return;
+  }
 
   const urlParams  = new URLSearchParams(window.location.search);
   const inviteCode = urlParams.get('invite') || '';
 
-  if (inviteCode) {
+  if (inviteCode && loginMsg) {
     loginMsg.textContent = "🎉 You've been invited! Sign in with Google to get access.";
     loginMsg.classList.remove('hidden');
   }
@@ -40,24 +47,26 @@ window.initAuth = function() {
     loginScreen.classList.add('hidden');
     appScreen.classList.remove('hidden');
     if (inviteCode) window.history.replaceState({}, '', window.location.pathname);
-    // Update subscription UI
     if (window.updateSubscriptionUI) window.updateSubscriptionUI(accessData);
   }
 
   function resetLoginBtn() {
     btnLogin.disabled = false;
-    btnLogin.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" /> Sign in with Google`;
+    btnLogin.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" /> Sign in with Google';
   }
 
-  window.firebaseAuth.onAuthStateChanged(async user => {
-    if (!user) { showLogin(); return; }
-
+  // Watch Firebase auth state changes
+  window.firebaseAuth.onAuthStateChanged(async function(user) {
+    if (!user) {
+      showLogin();
+      return;
+    }
     try {
       const idToken = await user.getIdToken();
       const res = await fetch('/api/check-auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken, inviteCode })
+        body: JSON.stringify({ idToken: idToken, inviteCode: inviteCode })
       });
       const data = await res.json();
 
@@ -71,29 +80,38 @@ window.initAuth = function() {
         showLogin(data.error || 'Access denied.');
       }
     } catch (err) {
+      console.error('Auth check error:', err);
       await window.firebaseAuth.signOut();
       resetLoginBtn();
       showLogin('Could not verify your account. Please try again.');
     }
   });
 
-  btnLogin.addEventListener('click', async () => {
+  // Google Sign-In button
+  btnLogin.addEventListener('click', function() {
     loginError.classList.add('hidden');
     btnLogin.disabled = true;
-    btnLogin.innerHTML = `<span class="btn-spinner"></span> Signing in…`;
-    try {
-      await window.firebaseAuth.signInWithPopup(window.googleProvider);
-    } catch (err) {
-      resetLoginBtn();
-      if (err.code !== 'auth/popup-closed-by-user') showLogin('Sign-in failed. Please try again.');
-    }
+    btnLogin.innerHTML = '<span class="btn-spinner"></span> Signing in…';
+
+    window.firebaseAuth.signInWithPopup(window.googleProvider)
+      .catch(function(err) {
+        console.error('Sign-in error:', err.code, err.message);
+        resetLoginBtn();
+        if (err.code === 'auth/popup-blocked') {
+          showLogin('Popup was blocked. Please allow popups for this site and try again.');
+        } else if (err.code !== 'auth/popup-closed-by-user') {
+          showLogin('Sign-in failed (' + err.code + '). Please try again.');
+        }
+      });
   });
 
-  btnSignout.addEventListener('click', async () => {
-    await window.firebaseAuth.signOut();
-    window.quizgenAuthed = false;
-    window.quizgenUser = null;
-    window.quizgenAccess = null;
-    showLogin();
+  // Sign out button
+  btnSignout.addEventListener('click', function() {
+    window.firebaseAuth.signOut().then(function() {
+      window.quizgenAuthed = false;
+      window.quizgenUser = null;
+      window.quizgenAccess = null;
+      showLogin();
+    });
   });
 };
