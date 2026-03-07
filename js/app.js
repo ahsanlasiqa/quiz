@@ -79,9 +79,64 @@ if (window.pdfjsLib) {
 
 // ── Init ───────────────────────────────────
 (function init() {
+  document.getElementById('login-screen').classList.remove('hidden');
+  window.initAuth();
   quizDateInput.valueAsDate = new Date();
   renderGrades('elementary');
+
+  // Handle post-payment redirect
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('subscribed') === '1') {
+    window.history.replaceState({}, '', window.location.pathname);
+    setTimeout(() => generateHint.textContent = '🎉 Subscription active! You now have unlimited quizzes.', 1000);
+  }
 })();
+
+// ── Subscription UI ────────────────────────
+window.updateSubscriptionUI = function(accessData) {
+  const banner = document.getElementById('subscription-banner');
+  if (!banner) return;
+
+  if (accessData.access === 'invited' || accessData.access === 'subscribed') {
+    banner.classList.add('hidden');
+    return;
+  }
+
+  if (accessData.access === 'free_trial') {
+    const left = accessData.freeQuizzesLimit - accessData.freeQuizzesUsed;
+    banner.className = 'subscription-banner trial';
+    banner.innerHTML = `
+      <span>🎁 Free trial: <strong>${left} quiz${left !== 1 ? 'zes' : ''} remaining</strong></span>
+      <button class="btn-subscribe" onclick="startCheckout()">Subscribe Rp 47.000/mo</button>
+    `;
+    banner.classList.remove('hidden');
+    return;
+  }
+
+  if (accessData.access === 'trial_expired') {
+    banner.className = 'subscription-banner expired';
+    banner.innerHTML = `
+      <span>⏰ Your free trial has ended.</span>
+      <button class="btn-subscribe" onclick="startCheckout()">Subscribe to continue — Rp 47.000/mo</button>
+    `;
+    banner.classList.remove('hidden');
+  }
+};
+
+window.startCheckout = async function() {
+  try {
+    const idToken = await window.getIdToken();
+    const res = await fetch('/api/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-id-token': idToken }
+    });
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
+    else alert('Could not start checkout: ' + (data.error || 'Unknown error'));
+  } catch (err) {
+    alert('Checkout error: ' + err.message);
+  }
+};
 
 // ── Level Toggle ───────────────────────────
 levelToggle.querySelectorAll('.level-btn').forEach(btn => {
@@ -336,7 +391,12 @@ async function generateQuiz() {
     stepResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (err) {
     console.error(err);
-    generateHint.textContent = 'Error: ' + (err.message || 'Could not generate quiz. Check your API key.');
+    if (err.message === 'trial_expired' || (err.message && err.message.includes('trial_expired'))) {
+      generateHint.textContent = '';
+      window.startCheckout();
+    } else {
+      generateHint.textContent = 'Error: ' + (err.message || 'Could not generate quiz.');
+    }
   } finally {
     hideLoading();
   }
@@ -436,10 +496,12 @@ Respond ONLY with valid JSON, no markdown, no extra text:
 
   loadingText.textContent = 'Generating questions…';
 
+  const idToken = await window.getIdToken();
   const response = await fetch('/api/generate', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'x-id-token': idToken || '',
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-5',
@@ -450,7 +512,10 @@ Respond ONLY with valid JSON, no markdown, no extra text:
 
   if (!response.ok) {
     const err = await response.json().catch(() => ({}));
-    throw new Error(err?.error?.message || `API error ${response.status}`);
+    if (response.status === 403 && err?.error === 'trial_expired') {
+      throw new Error('trial_expired');
+    }
+    throw new Error(err?.error?.message || err?.error || `API error ${response.status}`);
   }
 
   const data = await response.json();

@@ -8,10 +8,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
-  <!-- PDF.js for PDF-to-image conversion -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <!-- jsPDF for PDF export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- Firebase -->
+  <script type="module" src="js/auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
 
@@ -19,166 +21,179 @@
   <div class="bg-blob blob-2"></div>
   <div class="bg-blob blob-3"></div>
 
-  <header class="site-header">
-    <div class="logo">
-      <span class="logo-icon">✦</span>
-      <span class="logo-text">QuizGen</span>
-    </div>
-    <p class="logo-tagline">Turn textbook pages into ready-to-print quizzes</p>
-  </header>
-
-  <main class="app-container">
-
-    <section class="card step-card" id="step-settings">
-      <div class="step-label">Step 1</div>
-      <h2 class="step-title">Quiz Settings</h2>
-
-      <div class="settings-grid">
-
-        <div class="setting-group full-width">
-          <label class="setting-label">School Level</label>
-          <div class="level-toggle-group" id="level-toggle">
-            <button class="level-btn active" data-value="elementary">
-              <span class="level-emoji">🎒</span>
-              <span class="level-name">Elementary</span>
-              <span class="level-sub">Grade 1–6</span>
-            </button>
-            <button class="level-btn" data-value="junior_high">
-              <span class="level-emoji">📚</span>
-              <span class="level-name">Junior High</span>
-              <span class="level-sub">Grade 7–9</span>
-            </button>
-            <button class="level-btn" data-value="high_school">
-              <span class="level-emoji">🎓</span>
-              <span class="level-name">High School</span>
-              <span class="level-sub">Grade 10–12</span>
-            </button>
-          </div>
-          <div class="grade-selector" id="grade-selector">
-            <label class="setting-label">Grade</label>
-            <div class="grade-pills" id="grade-pills"></div>
-          </div>
-        </div>
-
-        <div class="setting-group">
-          <label class="setting-label">Number of Questions</label>
-          <div class="number-input-wrap">
-            <button class="num-btn" id="num-minus">−</button>
-            <input type="number" id="num-questions" value="10" min="1" max="50" />
-            <button class="num-btn" id="num-plus">+</button>
-          </div>
-        </div>
-
-        <div class="setting-group full-width">
-          <label class="setting-label">Question Types</label>
-          <div class="checkbox-group">
-            <label class="checkbox-item">
-              <input type="checkbox" name="qtype" value="multiple_choice" checked />
-              <span class="checkbox-box"></span>
-              <span>Multiple Choice</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="checkbox" name="qtype" value="true_false" checked />
-              <span class="checkbox-box"></span>
-              <span>True / False</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="checkbox" name="qtype" value="fill_blank" checked />
-              <span class="checkbox-box"></span>
-              <span>Fill in the Blank</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="checkbox" name="qtype" value="short_answer" checked />
-              <span class="checkbox-box"></span>
-              <span>Short Answer / Essay</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="setting-group full-width">
-          <label class="setting-label">Student Info on PDF</label>
-          <div class="two-col">
-            <div class="input-field">
-              <label>Student Name (optional)</label>
-              <input type="text" id="student-name" placeholder="e.g. Andi" />
-            </div>
-            <div class="input-field">
-              <label>Date (optional)</label>
-              <input type="date" id="quiz-date" />
-            </div>
-          </div>
-        </div>
-
+  <!-- ── LOGIN SCREEN ── -->
+  <div id="login-screen" class="login-screen hidden">
+    <div class="login-card">
+      <div class="login-logo">
+        <span class="logo-icon" style="font-size:2.5rem">✦</span>
+        <span class="logo-text" style="font-size:2.2rem">QuizGen</span>
       </div>
-    </section>
-
-    <section class="card step-card" id="step-upload">
-      <div class="step-label">Step 2</div>
-      <h2 class="step-title">Upload Learning Material</h2>
-      <p class="step-desc">Upload photos or PDF files of textbook pages. You can mix images and PDFs — all pages will be processed together.</p>
-
-      <div class="upload-zone" id="upload-zone">
-        <div class="upload-icon">📎</div>
-        <p class="upload-text">Drag & drop files here</p>
-        <p class="upload-hint">JPG, PNG, WEBP, PDF supported · Unlimited pages</p>
-      </div>
-
-      <!-- Hidden file inputs — triggered by buttons below -->
-      <input type="file" id="file-input" multiple accept="image/*,.pdf" style="display:none" />
-      <input type="file" id="camera-input" multiple accept="image/*" capture="environment" style="display:none" />
-
-      <!-- Mobile-friendly upload buttons -->
-      <div class="upload-btn-row">
-        <button class="upload-btn" id="btn-browse-files">
-          <span>🗂</span> Browse Files
-        </button>
-        <button class="upload-btn upload-btn-camera" id="btn-camera">
-          <span>📷</span> Take Photo
-        </button>
-      </div>
-
-      <!-- PDF processing progress -->
-      <div class="pdf-progress hidden" id="pdf-progress">
-        <div class="pdf-progress-bar"><div class="pdf-progress-fill" id="pdf-progress-fill"></div></div>
-        <p class="pdf-progress-text" id="pdf-progress-text">Converting PDF pages…</p>
-      </div>
-
-      <div class="image-preview-grid" id="image-preview-grid"></div>
-    </section>
-
-    <div class="generate-wrap">
-      <button class="btn-generate" id="btn-generate">
-        <span class="btn-icon">⚡</span>
-        <span class="btn-text">Generate Quiz</span>
+      <p class="login-tagline">Smart quiz maker for your kids</p>
+      <p class="login-desc">Sign in with your Google account to continue. Access is by invitation only.</p>
+      <p class="login-msg hidden" id="login-msg"></p>
+      <button class="btn-google" id="btn-google-login">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" />
+        Sign in with Google
       </button>
-      <p class="generate-hint" id="generate-hint"></p>
+      <p class="login-error hidden" id="login-error"></p>
     </div>
+  </div>
 
-    <section class="card step-card hidden" id="step-results">
-      <div class="step-label">Step 3</div>
-      <h2 class="step-title">Your Quiz is Ready!</h2>
-      <div class="quiz-meta-bar">
-        <span id="quiz-meta-text"></span>
-        <button class="btn-regenerate" id="btn-regenerate">↺ Regenerate</button>
+  <!-- ── MAIN APP (hidden until logged in) ── -->
+  <div id="app-screen" class="hidden">
+
+    <header class="site-header">
+      <div class="logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">QuizGen</span>
       </div>
-      <div id="quiz-output"></div>
-      <div class="result-actions">
-        <button class="btn-pdf" id="btn-pdf"><span>⬇</span> Download PDF</button>
-        <button class="btn-new" id="btn-new"><span>＋</span> New Quiz</button>
+      <p class="logo-tagline">Turn textbook pages into ready-to-print quizzes</p>
+      <div class="header-actions">
+        <button class="btn-manage-sub hidden" id="btn-manage-sub" onclick="window.startCheckout()">⭐ Subscribe</button>
+        <button class="btn-signout" id="btn-signout">Sign out</button>
       </div>
-    </section>
+    </header>
 
-    <div class="loading-overlay hidden" id="loading-overlay">
-      <div class="loading-card">
-        <div class="spinner"></div>
-        <p class="loading-text" id="loading-text">Reading your material…</p>
-        <p class="loading-sub" id="loading-sub">This may take a few seconds</p>
+    <!-- Subscription status banner -->
+    <div id="subscription-banner" class="subscription-banner hidden"></div>
+
+    <main class="app-container">
+
+      <section class="card step-card" id="step-settings">
+        <div class="step-label">Step 1</div>
+        <h2 class="step-title">Quiz Settings</h2>
+        <div class="settings-grid">
+
+          <div class="setting-group full-width">
+            <label class="setting-label">School Level</label>
+            <div class="level-toggle-group" id="level-toggle">
+              <button class="level-btn active" data-value="elementary">
+                <span class="level-emoji">🎒</span>
+                <span class="level-name">Elementary</span>
+                <span class="level-sub">Grade 1–6</span>
+              </button>
+              <button class="level-btn" data-value="junior_high">
+                <span class="level-emoji">📚</span>
+                <span class="level-name">Junior High</span>
+                <span class="level-sub">Grade 7–9</span>
+              </button>
+              <button class="level-btn" data-value="high_school">
+                <span class="level-emoji">🎓</span>
+                <span class="level-name">High School</span>
+                <span class="level-sub">Grade 10–12</span>
+              </button>
+            </div>
+            <div class="grade-selector" id="grade-selector">
+              <label class="setting-label">Grade</label>
+              <div class="grade-pills" id="grade-pills"></div>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <label class="setting-label">Number of Questions</label>
+            <div class="number-input-wrap">
+              <button class="num-btn" id="num-minus">−</button>
+              <input type="number" id="num-questions" value="10" min="1" max="50" />
+              <button class="num-btn" id="num-plus">+</button>
+            </div>
+          </div>
+
+          <div class="setting-group full-width">
+            <label class="setting-label">Question Types</label>
+            <div class="checkbox-group">
+              <label class="checkbox-item">
+                <input type="checkbox" name="qtype" value="multiple_choice" checked />
+                <span class="checkbox-box"></span><span>Multiple Choice</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="qtype" value="true_false" checked />
+                <span class="checkbox-box"></span><span>True / False</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="qtype" value="fill_blank" checked />
+                <span class="checkbox-box"></span><span>Fill in the Blank</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="qtype" value="short_answer" checked />
+                <span class="checkbox-box"></span><span>Short Answer / Essay</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-group full-width">
+            <label class="setting-label">Student Info on PDF</label>
+            <div class="two-col">
+              <div class="input-field">
+                <label>Student Name (optional)</label>
+                <input type="text" id="student-name" placeholder="e.g. Andi" />
+              </div>
+              <div class="input-field">
+                <label>Date (optional)</label>
+                <input type="date" id="quiz-date" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="card step-card" id="step-upload">
+        <div class="step-label">Step 2</div>
+        <h2 class="step-title">Upload Learning Material</h2>
+        <p class="step-desc">Upload photos or PDF files of textbook pages. You can mix images and PDFs — all pages will be processed together.</p>
+        <div class="upload-zone" id="upload-zone">
+          <div class="upload-icon">📎</div>
+          <p class="upload-text">Drag & drop files here</p>
+          <p class="upload-hint">JPG, PNG, WEBP, PDF supported · Unlimited pages</p>
+        </div>
+        <input type="file" id="file-input" multiple accept="image/*,.pdf" style="display:none" />
+        <input type="file" id="camera-input" multiple accept="image/*" capture="environment" style="display:none" />
+        <div class="upload-btn-row">
+          <button class="upload-btn" id="btn-browse-files"><span>🗂</span> Browse Files</button>
+          <button class="upload-btn upload-btn-camera" id="btn-camera"><span>📷</span> Take Photo</button>
+        </div>
+        <div class="pdf-progress hidden" id="pdf-progress">
+          <div class="pdf-progress-bar"><div class="pdf-progress-fill" id="pdf-progress-fill"></div></div>
+          <p class="pdf-progress-text" id="pdf-progress-text">Converting PDF pages…</p>
+        </div>
+        <div class="image-preview-grid" id="image-preview-grid"></div>
+      </section>
+
+      <div class="generate-wrap">
+        <button class="btn-generate" id="btn-generate">
+          <span class="btn-icon">⚡</span>
+          <span class="btn-text">Generate Quiz</span>
+        </button>
+        <p class="generate-hint" id="generate-hint"></p>
       </div>
-    </div>
 
-  </main>
+      <section class="card step-card hidden" id="step-results">
+        <div class="step-label">Step 3</div>
+        <h2 class="step-title">Your Quiz is Ready!</h2>
+        <div class="quiz-meta-bar">
+          <span id="quiz-meta-text"></span>
+          <button class="btn-regenerate" id="btn-regenerate">↺ Regenerate</button>
+        </div>
+        <div id="quiz-output"></div>
+        <div class="result-actions">
+          <button class="btn-pdf" id="btn-pdf"><span>⬇</span> Download PDF</button>
+          <button class="btn-new" id="btn-new"><span>＋</span> New Quiz</button>
+        </div>
+      </section>
 
+      <div class="loading-overlay hidden" id="loading-overlay">
+        <div class="loading-card">
+          <div class="spinner"></div>
+          <p class="loading-text" id="loading-text">Reading your material…</p>
+          <p class="loading-sub" id="loading-sub">This may take a few seconds</p>
+        </div>
+      </div>
 
+    </main>
+  </div>
+
+  <!-- Auth init first, then app -->
+  <script src="js/firebase-config.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

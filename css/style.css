@@ -844,3 +844,197 @@ body {
   max-width: 100%;
   height: auto;
 }
+
+/* ── LOGIN SCREEN ── */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  z-index: 1;
+}
+.login-card {
+  background: var(--warm-white);
+  border-radius: var(--radius);
+  padding: 48px 40px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(26,18,8,0.06);
+  text-align: center;
+  animation: popIn 0.3s ease;
+}
+.login-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.login-tagline {
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+.login-desc {
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  padding: 0 8px;
+}
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 20px;
+  background: white;
+  border: 2px solid #e8e0d4;
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.18s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.btn-google:hover {
+  border-color: var(--teal-light);
+  box-shadow: 0 4px 16px rgba(26,122,110,0.15);
+  transform: translateY(-1px);
+}
+.btn-google:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.login-error {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: var(--coral);
+  font-weight: 500;
+  line-height: 1.5;
+  padding: 10px 14px;
+  background: var(--coral-pale);
+  border-radius: var(--radius-sm);
+}
+
+/* ── SIGN OUT BUTTON ── */
+.btn-signout {
+  margin-top: 8px;
+  padding: 5px 14px;
+  background: transparent;
+  border: 1.5px solid #d4c9b8;
+  border-radius: 20px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-signout:hover {
+  border-color: var(--coral);
+  color: var(--coral);
+}
+
+/* ── LOGIN MSG (invite welcome) ── */
+.login-msg {
+  margin-bottom: 16px;
+  font-size: 0.88rem;
+  color: var(--teal);
+  font-weight: 600;
+  line-height: 1.5;
+  padding: 10px 14px;
+  background: var(--teal-pale);
+  border-radius: var(--radius-sm);
+}
+
+/* ── BUTTON SPINNER ── */
+.btn-spinner {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid #ccc;
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+}
+
+/* ── SUBSCRIPTION BANNER ── */
+.subscription-banner {
+  position: relative;
+  z-index: 2;
+  max-width: 780px;
+  margin: 0 auto 16px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.subscription-banner > span {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--ink-light);
+}
+.subscription-banner.trial {
+  background: var(--amber-pale);
+  border: 1.5px solid var(--amber-light);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+}
+.subscription-banner.expired {
+  background: var(--coral-pale);
+  border: 1.5px solid #f0b0a0;
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+}
+.btn-subscribe {
+  padding: 8px 18px;
+  background: linear-gradient(135deg, var(--teal), var(--teal-light));
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s;
+  box-shadow: 0 2px 8px rgba(26,122,110,0.25);
+}
+.btn-subscribe:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(26,122,110,0.35);
+}
+
+/* ── HEADER ACTIONS ── */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.btn-manage-sub {
+  padding: 5px 14px;
+  background: linear-gradient(135deg, var(--amber), var(--amber-light));
+  border: none;
+  border-radius: 20px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-manage-sub:hover { opacity: 0.85; }
