@@ -126,15 +126,33 @@ window.updateSubscriptionUI = function(accessData) {
 window.startCheckout = async function() {
   try {
     const idToken = await window.getIdToken();
-    const res = await fetch('/api/create-checkout', {
+    const res = await fetch('/api/create-transaction', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken }
     });
     const data = await res.json();
-    if (data.url) window.location.href = data.url;
-    else alert('Could not start checkout: ' + (data.error || 'Unknown error'));
+    if (!data.token) {
+      alert('Could not start payment: ' + (data.error || 'Unknown error'));
+      return;
+    }
+    // Open Midtrans Snap payment popup
+    window.snap.pay(data.token, {
+      onSuccess: function(result) {
+        generateHint.textContent = '🎉 Payment successful! Refreshing your access…';
+        setTimeout(() => window.location.reload(), 2000);
+      },
+      onPending: function(result) {
+        generateHint.textContent = '⏳ Payment pending. Your access will be activated once confirmed.';
+      },
+      onError: function(result) {
+        generateHint.textContent = '❌ Payment failed. Please try again.';
+      },
+      onClose: function() {
+        // User closed popup without paying — do nothing
+      }
+    });
   } catch (err) {
-    alert('Checkout error: ' + err.message);
+    alert('Payment error: ' + err.message);
   }
 };
 

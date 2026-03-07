@@ -1,14 +1,13 @@
 {
   "functions": {
-    "api/generate.js": { "maxDuration": 60 },
-    "api/check-auth.js": { "maxDuration": 15 },
-    "api/create-checkout.js": { "maxDuration": 15 },
-    "api/stripe-webhook.js": { "maxDuration": 15 },
-    "api/get-status.js": { "maxDuration": 15 },
-    "api/cancel-subscription.js": { "maxDuration": 15 }
+    "api/generate.js":           { "maxDuration": 60 },
+    "api/check-auth.js":         { "maxDuration": 15 },
+    "api/create-transaction.js": { "maxDuration": 15 },
+    "api/midtrans-webhook.js":   { "maxDuration": 15 },
+    "api/get-status.js":         { "maxDuration": 15 }
   },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/(.*)",     "destination": "/index.html" }
   ]
 }
