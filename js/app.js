@@ -86,41 +86,51 @@ if (window.pdfjsLib) {
 
   // Handle post-payment redirect
   const params = new URLSearchParams(window.location.search);
-  if (params.get('subscribed') === '1') {
+  if (params.get('payment') === 'finish') {
     window.history.replaceState({}, '', window.location.pathname);
-    setTimeout(() => generateHint.textContent = '🎉 Subscription active! You now have unlimited quizzes.', 1000);
+    setTimeout(() => generateHint.textContent = '🎉 Payment successful! Your generations have been added.', 800);
+  } else if (params.get('payment') === 'pending') {
+    window.history.replaceState({}, '', window.location.pathname);
+    setTimeout(() => generateHint.textContent = '⏳ Payment pending. Generations will be added once confirmed.', 800);
   }
 })();
 
-// ── Subscription UI ────────────────────────
+// ── Credits UI ────────────────────────────
+window._currentCredits = 0;
+window._isInvited = false;
+
 window.updateSubscriptionUI = function(accessData) {
+  window._isInvited = accessData.isInvited || false;
+  window._currentCredits = accessData.credits ?? 0;
+  window.renderCreditsBanner();
+};
+
+window.renderCreditsBanner = function() {
   const banner = document.getElementById('subscription-banner');
   if (!banner) return;
 
-  if (accessData.access === 'invited' || accessData.access === 'subscribed') {
+  // Invited (family) — no banner needed
+  if (window._isInvited) {
     banner.classList.add('hidden');
     return;
   }
 
-  if (accessData.access === 'free_trial') {
-    const left = accessData.freeQuizzesLimit - accessData.freeQuizzesUsed;
+  const credits = window._currentCredits;
+
+  if (credits > 0) {
     banner.className = 'subscription-banner trial';
     banner.innerHTML = `
-      <span>🎁 Free trial: <strong>${left} quiz${left !== 1 ? 'zes' : ''} remaining</strong></span>
-      <button class="btn-subscribe" onclick="startCheckout()">Subscribe Rp 47.000/mo</button>
+      <span>⚡ <strong>${credits} generation${credits !== 1 ? 's' : ''}</strong> remaining</span>
+      <button class="btn-subscribe" onclick="window.startCheckout()">+ Buy 60 more — Rp 47.000</button>
     `;
-    banner.classList.remove('hidden');
-    return;
-  }
-
-  if (accessData.access === 'trial_expired') {
+  } else {
     banner.className = 'subscription-banner expired';
     banner.innerHTML = `
-      <span>⏰ Your free trial has ended.</span>
-      <button class="btn-subscribe" onclick="startCheckout()">Subscribe to continue — Rp 47.000/mo</button>
+      <span>🪫 You've used all your generations.</span>
+      <button class="btn-subscribe" onclick="window.startCheckout()">Buy 60 generations — Rp 47.000</button>
     `;
-    banner.classList.remove('hidden');
   }
+  banner.classList.remove('hidden');
 };
 
 window.startCheckout = async function() {
@@ -138,8 +148,9 @@ window.startCheckout = async function() {
     // Open Midtrans Snap payment popup
     window.snap.pay(data.token, {
       onSuccess: function(result) {
-        generateHint.textContent = '🎉 Payment successful! Refreshing your access…';
-        setTimeout(() => window.location.reload(), 2000);
+        window._currentCredits += 60;
+        window.renderCreditsBanner();
+        generateHint.textContent = '🎉 Payment successful! 60 generations added to your account.';
       },
       onPending: function(result) {
         generateHint.textContent = '⏳ Payment pending. Your access will be activated once confirmed.';
@@ -409,8 +420,9 @@ async function generateQuiz() {
     stepResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (err) {
     console.error(err);
-    if (err.message === 'trial_expired' || (err.message && err.message.includes('trial_expired'))) {
+    if (err.message === 'no_credits' || (err.message && err.message.includes('no_credits'))) {
       generateHint.textContent = '';
+      window.renderCreditsBanner();
       window.startCheckout();
     } else {
       generateHint.textContent = 'Error: ' + (err.message || 'Could not generate quiz.');
@@ -530,13 +542,20 @@ Respond ONLY with valid JSON, no markdown, no extra text:
 
   if (!response.ok) {
     const err = await response.json().catch(() => ({}));
-    if (response.status === 403 && err?.error === 'trial_expired') {
-      throw new Error('trial_expired');
+    if (response.status === 403 && err?.error === 'no_credits') {
+      throw new Error('no_credits');
     }
     throw new Error(err?.error?.message || err?.error || `API error ${response.status}`);
   }
 
   const data = await response.json();
+
+  // Update credit counter if server returned it
+  if (typeof data._credits === 'number') {
+    window._currentCredits = data._credits;
+    window.renderCreditsBanner();
+  }
+
   const rawText = data.content.map(b => b.text || '').join('');
   const clean = rawText.replace(/```json|```/g, '').trim();
   const parsed = JSON.parse(clean);

@@ -1,12 +1,13 @@
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getFirestore } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 
 export const config = {
   api: { bodyParser: { sizeLimit: '1mb' }, maxDuration: 15 }
 };
 
-const FREE_QUIZ_LIMIT = 3;
+const FREE_CREDITS = 3;
+const PAID_CREDITS = 60;
 
 function getAdminApp() {
   if (getApps().length > 0) return getApps()[0];
@@ -25,8 +26,8 @@ export default async function handler(req, res) {
 
   try {
     const app = getAdminApp();
-    const auth = getAuth(app);
     const db = getFirestore(app);
+    const auth = getAuth(app);
 
     const decoded = await auth.verifyIdToken(idToken);
     const email = decoded.email?.toLowerCase();
@@ -43,54 +44,23 @@ export default async function handler(req, res) {
         name: decoded.name || '',
         createdAt: new Date().toISOString(),
         isInvited: validInvite,
-        freeQuizzesUsed: 0,
-        subscriptionStatus: 'none',
-        stripeCustomerId: null,
-        stripeSubscriptionId: null,
-        subscriptionEnd: null,
+        credits: FREE_CREDITS,
+        totalPurchased: 0,
       });
       return res.status(200).json({
         ok: true, email,
-        access: 'free_trial',
-        freeQuizzesUsed: 0,
-        freeQuizzesLimit: FREE_QUIZ_LIMIT,
         isInvited: validInvite,
-        newUser: true
+        credits: FREE_CREDITS,
+        newUser: true,
       });
     }
 
     // ── EXISTING USER ─────────────────────────
     const user = userDoc.data();
-
-    // Invited users always have full access
-    if (user.isInvited) {
-      return res.status(200).json({ ok: true, email, access: 'invited' });
-    }
-
-    // Active subscriber
-    if (user.subscriptionStatus === 'active') {
-      return res.status(200).json({
-        ok: true, email, access: 'subscribed',
-        subscriptionEnd: user.subscriptionEnd
-      });
-    }
-
-    // Free trial remaining
-    if (user.freeQuizzesUsed < FREE_QUIZ_LIMIT) {
-      return res.status(200).json({
-        ok: true, email,
-        access: 'free_trial',
-        freeQuizzesUsed: user.freeQuizzesUsed,
-        freeQuizzesLimit: FREE_QUIZ_LIMIT
-      });
-    }
-
-    // Trial expired, not subscribed
     return res.status(200).json({
       ok: true, email,
-      access: 'trial_expired',
-      freeQuizzesUsed: user.freeQuizzesUsed,
-      freeQuizzesLimit: FREE_QUIZ_LIMIT
+      isInvited: user.isInvited || false,
+      credits: user.credits ?? 0,
     });
 
   } catch (err) {

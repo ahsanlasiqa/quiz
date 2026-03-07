@@ -1,4 +1,3 @@
-// Creates a Midtrans Snap transaction token for monthly subscription payment
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
@@ -7,6 +6,9 @@ import midtransClient from 'midtrans-client';
 export const config = {
   api: { bodyParser: { sizeLimit: '1mb' }, maxDuration: 15 }
 };
+
+const PRICE_IDR = 47000;
+const CREDITS_PER_PACK = 60;
 
 function getAdminApp() {
   if (getApps().length > 0) return getApps()[0];
@@ -33,19 +35,8 @@ export default async function handler(req, res) {
     const name = decoded.name || email;
     if (!email) return res.status(401).json({ error: 'No email' });
 
-    // Get or create user doc
-    const userRef = db.collection('users').doc(email);
-    const userDoc = await userRef.get();
-    const user = userDoc.exists ? userDoc.data() : {};
-
-    // Generate unique order ID with timestamp
     const orderId = `quizgen-${email.replace(/[^a-z0-9]/g, '-')}-${Date.now()}`;
 
-    // Price in IDR (Rp 47.000)
-    const PRICE_IDR = 47000;
-    const SUBSCRIPTION_MONTHS = 1;
-
-    // Init Midtrans Snap
     const snap = new midtransClient.Snap({
       isProduction: process.env.MIDTRANS_ENV === 'production',
       serverKey: process.env.MIDTRANS_SERVER_KEY,
@@ -57,10 +48,10 @@ export default async function handler(req, res) {
         gross_amount: PRICE_IDR,
       },
       item_details: [{
-        id: 'quizgen-monthly',
+        id: 'quizgen-credits-60',
         price: PRICE_IDR,
-        quantity: SUBSCRIPTION_MONTHS,
-        name: 'QuizGen Langganan Bulanan',
+        quantity: 1,
+        name: `QuizGen 60 Generasi`,
         brand: 'QuizGen',
         category: 'Education',
       }],
@@ -70,27 +61,24 @@ export default async function handler(req, res) {
         email: email,
       },
       callbacks: {
-        finish: `${process.env.APP_URL}?payment=finish`,
-        error: `${process.env.APP_URL}?payment=error`,
-        pending: `${process.env.APP_URL}?payment=pending`,
+        finish: `${process.env.APP_URL || 'https://quiz-pi-kohl.vercel.app'}?payment=finish`,
+        error:  `${process.env.APP_URL || 'https://quiz-pi-kohl.vercel.app'}?payment=error`,
+        pending:`${process.env.APP_URL || 'https://quiz-pi-kohl.vercel.app'}?payment=pending`,
       },
     };
 
     const transaction = await snap.createTransaction(parameter);
 
-    // Save pending order to Firestore
+    // Save pending order
     await db.collection('orders').doc(orderId).set({
-      orderId,
-      email,
+      orderId, email,
       amount: PRICE_IDR,
+      credits: CREDITS_PER_PACK,
       status: 'pending',
       createdAt: new Date().toISOString(),
     });
 
-    return res.status(200).json({
-      token: transaction.token,
-      orderId,
-    });
+    return res.status(200).json({ token: transaction.token, orderId });
 
   } catch (err) {
     console.error('Midtrans error:', err);

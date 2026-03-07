@@ -6,8 +6,6 @@ export const config = {
   api: { bodyParser: { sizeLimit: '20mb' }, maxDuration: 60 }
 };
 
-const FREE_QUIZ_LIMIT = 3;
-
 function getAdminApp() {
   if (getApps().length > 0) return getApps()[0];
   return initializeApp({ credential: cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)) });
@@ -20,7 +18,6 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // Verify identity + access
   const idToken = req.headers['x-id-token'];
   if (!idToken) return res.status(401).json({ error: 'Not authenticated' });
 
@@ -38,14 +35,12 @@ export default async function handler(req, res) {
     if (!userDoc.exists) return res.status(403).json({ error: 'User not found' });
 
     const user = userDoc.data();
+    const isInvited = user.isInvited || false;
+    const credits = user.credits ?? 0;
 
-    // Check access
-    const isInvited = user.isInvited;
-    const isSubscribed = user.subscriptionStatus === 'active';
-    const trialOk = user.freeQuizzesUsed < FREE_QUIZ_LIMIT;
-
-    if (!isInvited && !isSubscribed && !trialOk) {
-      return res.status(403).json({ error: 'trial_expired' });
+    // Invited users always have unlimited access
+    if (!isInvited && credits <= 0) {
+      return res.status(403).json({ error: 'no_credits' });
     }
 
     // Call Anthropic API
@@ -65,12 +60,16 @@ export default async function handler(req, res) {
     const data = await response.json();
     if (!response.ok) return res.status(response.status).json(data);
 
-    // Deduct free quiz if on trial
-    if (!isInvited && !isSubscribed) {
-      await userRef.update({ freeQuizzesUsed: FieldValue.increment(1) });
+    // Deduct 1 credit (invited users are exempt)
+    if (!isInvited) {
+      await userRef.update({ credits: FieldValue.increment(-1) });
     }
 
-    return res.status(200).json(data);
+    // Return remaining credits along with response
+    return res.status(200).json({
+      ...data,
+      _credits: isInvited ? null : credits - 1,
+    });
 
   } catch (err) {
     console.error('Generate error:', err);
