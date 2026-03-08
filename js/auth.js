@@ -1,6 +1,4 @@
-// ── Auth Logic ──────────────────────────────
-// Plain script (no module) — loaded after firebase-config.js
-
+// Auth Logic — waits for Firebase to be ready before initializing
 window.quizgenAuthed = false;
 window.quizgenUser = null;
 window.quizgenAccess = null;
@@ -10,7 +8,7 @@ window.getIdToken = async function() {
   return await window.quizgenUser.getIdToken();
 };
 
-window.initAuth = function() {
+function startAuth() {
   const loginScreen = document.getElementById('login-screen');
   const appScreen   = document.getElementById('app-screen');
   const btnLogin    = document.getElementById('btn-google-login');
@@ -18,10 +16,7 @@ window.initAuth = function() {
   const loginError  = document.getElementById('login-error');
   const loginMsg    = document.getElementById('login-msg');
 
-  if (!btnLogin) {
-    console.error('QuizGen: btn-google-login not found in DOM');
-    return;
-  }
+  if (!btnLogin) { console.error('btn-google-login not found'); return; }
 
   const urlParams  = new URLSearchParams(window.location.search);
   const inviteCode = urlParams.get('invite') || '';
@@ -55,12 +50,12 @@ window.initAuth = function() {
     btnLogin.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" /> Sign in with Google';
   }
 
-  // Watch Firebase auth state changes
+  // Show login screen immediately
+  showLogin();
+
+  // Watch Firebase auth state
   window.firebaseAuth.onAuthStateChanged(async function(user) {
-    if (!user) {
-      showLogin();
-      return;
-    }
+    if (!user) { showLogin(); return; }
     try {
       const idToken = await user.getIdToken();
       const res = await fetch('/api/check-auth', {
@@ -69,7 +64,6 @@ window.initAuth = function() {
         body: JSON.stringify({ idToken: idToken, inviteCode: inviteCode })
       });
       const data = await res.json();
-
       if (res.ok && data.ok) {
         window.quizgenAuthed = true;
         window.quizgenUser = user;
@@ -87,12 +81,11 @@ window.initAuth = function() {
     }
   });
 
-  // Google Sign-In button
+  // Sign in button
   btnLogin.addEventListener('click', function() {
     loginError.classList.add('hidden');
     btnLogin.disabled = true;
     btnLogin.innerHTML = '<span class="btn-spinner"></span> Signing in…';
-
     window.firebaseAuth.signInWithPopup(window.googleProvider)
       .catch(function(err) {
         console.error('Sign-in error:', err.code, err.message);
@@ -114,4 +107,11 @@ window.initAuth = function() {
       showLogin();
     });
   });
-};
+}
+
+// Wait for Firebase to be ready before starting auth
+if (window.firebaseReady) {
+  startAuth();
+} else {
+  window.addEventListener('firebase-ready', startAuth);
+}

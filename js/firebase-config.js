@@ -1,5 +1,4 @@
-// Firebase config is loaded from the server to keep keys out of GitHub
-// The actual values are stored as Vercel environment variables
+// Firebase config loaded from server — keeps keys out of GitHub
 (async function() {
   try {
     const res = await fetch('/api/firebase-client-config');
@@ -7,7 +6,6 @@
 
     if (firebaseConfig.error) {
       console.error('Firebase config error:', firebaseConfig.error);
-      document.body.innerHTML = '<div style="padding:40px;text-align:center;font-family:sans-serif"><h2>Configuration error</h2><p>Please contact the app owner.</p></div>';
       return;
     }
 
@@ -15,8 +13,9 @@
     window.firebaseAuth = firebase.auth();
     window.googleProvider = new firebase.auth.GoogleAuthProvider();
 
-    // Now safe to init auth and app
-    if (window.initAuth) window.initAuth();
+    // Signal that Firebase is ready
+    window.firebaseReady = true;
+    window.dispatchEvent(new Event('firebase-ready'));
 
   } catch (err) {
     console.error('Failed to load Firebase config:', err);
