@@ -418,7 +418,6 @@ async function generateQuiz() {
     renderQuiz(quiz);
     // Hide quiz content initially — show only action buttons
     document.getElementById('quiz-output').classList.add('hidden');
-    document.getElementById('quiz-answer-key').classList.add('hidden');
     document.getElementById('quiz-meta-bar').classList.add('hidden');
     stepResults.classList.remove('hidden');
     stepResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -631,7 +630,6 @@ btnPdf.addEventListener('click', () => {
   if (!state.quizData) return;
   // Reveal quiz preview before downloading
   document.getElementById('quiz-output').classList.remove('hidden');
-  document.getElementById('quiz-answer-key').classList.remove('hidden');
   document.getElementById('quiz-meta-bar').classList.remove('hidden');
   generatePDF(state.quizData);
 });
