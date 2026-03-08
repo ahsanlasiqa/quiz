@@ -102,27 +102,12 @@ function startAuth() {
     }
   });
 
-  // Sign in button — try popup first, fall back to redirect
+  // Sign in button — use redirect (most compatible across all browsers)
   btnLogin.addEventListener('click', function() {
     loginError.classList.add('hidden');
     btnLogin.disabled = true;
-    btnLogin.innerHTML = '<span class="btn-spinner"></span> Signing in…';
-
-    window.firebaseAuth.signInWithPopup(window.googleProvider)
-      .catch(function(err) {
-        console.error('Popup error:', err.code);
-        // If popup fails, fall back to redirect (works on all mobile browsers)
-        if (err.code === 'auth/popup-blocked' ||
-            err.code === 'auth/popup-closed-by-user' ||
-            err.code === 'auth/cancelled-popup-request' ||
-            err.code === 'auth/operation-not-supported-in-this-environment') {
-          btnLogin.innerHTML = '<span class="btn-spinner"></span> Redirecting…';
-          window.firebaseAuth.signInWithRedirect(window.googleProvider);
-        } else {
-          resetLoginBtn();
-          showLogin('Sign-in failed (' + err.code + '). Please try again.');
-        }
-      });
+    btnLogin.innerHTML = '<span class="btn-spinner"></span> Redirecting to Google…';
+    window.firebaseAuth.signInWithRedirect(window.googleProvider);
   });
 
   // Sign out
