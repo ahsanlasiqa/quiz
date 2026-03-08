@@ -13,7 +13,16 @@
     window.firebaseAuth = firebase.auth();
     window.googleProvider = new firebase.auth.GoogleAuthProvider();
 
-    // Signal that Firebase is ready
+    // Handle redirect result IMMEDIATELY after init, before anything else
+    try {
+      const result = await window.firebaseAuth.getRedirectResult();
+      window._redirectResult = result;
+    } catch(err) {
+      window._redirectError = err;
+      console.error('Redirect result error:', err.code, err.message);
+    }
+
+    // Signal that Firebase is ready (with redirect result already fetched)
     window.firebaseReady = true;
     window.dispatchEvent(new Event('firebase-ready'));
 

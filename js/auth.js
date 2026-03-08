@@ -29,11 +29,10 @@ function startAuth() {
   function showLogin(errorMsg) {
     loginScreen.classList.remove('hidden');
     appScreen.classList.add('hidden');
+    loginError.classList.add('hidden');
     if (errorMsg) {
       loginError.textContent = errorMsg;
       loginError.classList.remove('hidden');
-    } else {
-      loginError.classList.add('hidden');
     }
   }
 
@@ -76,33 +75,42 @@ function startAuth() {
     }
   }
 
-  // Show login screen immediately
-  showLogin();
+  // Show loading state while checking redirect result
+  loginScreen.classList.remove('hidden');
+  appScreen.classList.add('hidden');
+  btnLogin.disabled = true;
+  btnLogin.innerHTML = '<span class="btn-spinner"></span> Checking…';
 
-  // Handle redirect result first (for mobile browsers that use redirect instead of popup)
-  window.firebaseAuth.getRedirectResult().then(function(result) {
-    if (result && result.user) {
-      btnLogin.disabled = true;
-      btnLogin.innerHTML = '<span class="btn-spinner"></span> Verifying…';
-      checkAndShowApp(result.user);
-    }
-  }).catch(function(err) {
-    console.error('Redirect result error:', err);
-    if (err.code !== 'auth/no-auth-event') {
-      showLogin('Sign-in failed (' + err.code + '). Please try again.');
-    }
-  });
+  // Use the redirect result already fetched in firebase-config.js
+  const redirectResult = window._redirectResult;
+  const redirectError  = window._redirectError;
 
-  // Watch Firebase auth state
-  window.firebaseAuth.onAuthStateChanged(async function(user) {
-    if (!user) { showLogin(); return; }
-    // Only handle if not already processing a redirect
-    if (!window.quizgenAuthed) {
-      checkAndShowApp(user);
-    }
-  });
+  if (redirectError && redirectError.code !== 'auth/no-auth-event') {
+    console.error('Redirect error:', redirectError);
+    resetLoginBtn();
+    showLogin('Sign-in failed (' + redirectError.code + '). Please try again.');
+  } else if (redirectResult && redirectResult.user) {
+    // Coming back from Google redirect — verify and enter app
+    checkAndShowApp(redirectResult.user);
+  } else {
+    // No redirect in progress — show normal login
+    resetLoginBtn();
+    showLogin();
 
-  // Sign in button — use redirect (most compatible across all browsers)
+    // Also check if already signed in (persistent session)
+    window.firebaseAuth.onAuthStateChanged(function(user) {
+      if (user && !window.quizgenAuthed) {
+        btnLogin.disabled = true;
+        btnLogin.innerHTML = '<span class="btn-spinner"></span> Signing in…';
+        checkAndShowApp(user);
+      } else if (!user) {
+        resetLoginBtn();
+        showLogin();
+      }
+    });
+  }
+
+  // Sign in button
   btnLogin.addEventListener('click', function() {
     loginError.classList.add('hidden');
     btnLogin.disabled = true;
@@ -116,6 +124,7 @@ function startAuth() {
       window.quizgenAuthed = false;
       window.quizgenUser = null;
       window.quizgenAccess = null;
+      resetLoginBtn();
       showLogin();
     });
   });
