@@ -416,6 +416,10 @@ async function generateQuiz() {
     const quiz = await callClaude();
     state.quizData = quiz;
     renderQuiz(quiz);
+    // Hide quiz content initially — show only action buttons
+    document.getElementById('quiz-output').classList.add('hidden');
+    document.getElementById('quiz-answer-key').classList.add('hidden');
+    document.getElementById('quiz-meta-bar').classList.add('hidden');
     stepResults.classList.remove('hidden');
     stepResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (err) {
@@ -625,6 +629,10 @@ function renderQuiz(quiz) {
 // ── PDF Download ───────────────────────────
 btnPdf.addEventListener('click', () => {
   if (!state.quizData) return;
+  // Reveal quiz preview before downloading
+  document.getElementById('quiz-output').classList.remove('hidden');
+  document.getElementById('quiz-answer-key').classList.remove('hidden');
+  document.getElementById('quiz-meta-bar').classList.remove('hidden');
   generatePDF(state.quizData);
 });
 
@@ -893,6 +901,9 @@ function drawSVGShapesPDF(doc, svgStr, x, y, maxW, colors) {
 
 // ── New Quiz ───────────────────────────────
 btnNew.addEventListener('click', () => {
+  // Reset quiz output visibility for next generation
+  document.getElementById('quiz-output').classList.add('hidden');
+  document.getElementById('quiz-meta-bar').classList.add('hidden');
   state.images = [];
   state.quizData = null;
   imagePreviewGrid.innerHTML = '';

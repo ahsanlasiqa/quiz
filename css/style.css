@@ -1278,3 +1278,23 @@ body {
   .interactive-modal { padding: 20px 16px 32px; }
   .iq-score-number { font-size: 2rem; }
 }
+
+/* ── Result actions top layout ── */
+.result-actions-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  padding: 24px 0 28px;
+  border-bottom: 1.5px solid #ede8e0;
+  margin-bottom: 24px;
+}
+.result-actions-top .btn-pdf,
+.result-actions-top .btn-interactive,
+.result-actions-top .btn-new {
+  flex: 1;
+  min-width: 160px;
+  justify-content: center;
+  font-size: 1rem;
+  padding: 16px 24px;
+}

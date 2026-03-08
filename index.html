@@ -170,17 +170,22 @@
 
       <section class="card step-card hidden" id="step-results">
         <div class="step-label">Step 3</div>
-        <h2 class="step-title">Your Quiz is Ready!</h2>
-        <div class="quiz-meta-bar">
-          <span id="quiz-meta-text"></span>
-          <button class="btn-regenerate" id="btn-regenerate">↺ Regenerate</button>
-        </div>
-        <div id="quiz-output"></div>
-        <div class="result-actions">
+        <h2 class="step-title">Your Quiz is Ready! 🎉</h2>
+        <p class="step-desc">Choose how you want to use this quiz:</p>
+
+        <!-- Action buttons shown first -->
+        <div class="result-actions result-actions-top">
           <button class="btn-pdf" id="btn-pdf"><span>⬇</span> Download PDF</button>
           <button class="btn-interactive" id="btn-interactive"><span>▶</span> Start Interactive Quiz</button>
           <button class="btn-new" id="btn-new"><span>＋</span> New Quiz</button>
         </div>
+
+        <!-- Quiz preview — hidden until PDF is chosen -->
+        <div id="quiz-meta-bar" class="quiz-meta-bar hidden">
+          <span id="quiz-meta-text"></span>
+          <button class="btn-regenerate" id="btn-regenerate">↺ Regenerate</button>
+        </div>
+        <div id="quiz-output" class="hidden"></div>
       </section>
 
       <div class="loading-overlay hidden" id="loading-overlay">
