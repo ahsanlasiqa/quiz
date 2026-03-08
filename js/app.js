@@ -59,6 +59,7 @@ const quizMetaText      = document.getElementById('quiz-meta-text');
 const btnPdf            = document.getElementById('btn-pdf');
 const btnNew            = document.getElementById('btn-new');
 const btnRegenerate     = document.getElementById('btn-regenerate');
+const btnInteractive    = document.getElementById('btn-interactive');
 const numQuestionsInput = document.getElementById('num-questions');
 const numMinus          = document.getElementById('num-minus');
 const numPlus           = document.getElementById('num-plus');
@@ -478,6 +479,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
       "question": "question text",
       "options": ["A. option1", "B. option2", "C. option3", "D. option4"],
       "answer": "A. option1",
+      "explanation": "Brief explanation of why this answer is correct (1-2 sentences).",
       "svg": null
     },
     {
@@ -494,6 +496,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
       "question": "statement",
       "options": [],
       "answer": "True",
+      "explanation": "Brief explanation.",
       "svg": null
     },
     {
@@ -502,6 +505,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
       "question": "The ___ of a square is calculated by adding all four sides.",
       "options": [],
       "answer": "perimeter",
+      "explanation": "Brief explanation.",
       "svg": null
     },
     {
@@ -510,6 +514,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
       "question": "Explain...",
       "options": [],
       "answer": "Model answer: ...",
+      "explanation": "Key points to look for in the answer.",
       "svg": null
     }
   ]
@@ -621,6 +626,12 @@ function renderQuiz(quiz) {
 btnPdf.addEventListener('click', () => {
   if (!state.quizData) return;
   generatePDF(state.quizData);
+});
+
+// ── Interactive Quiz ────────────────────────
+btnInteractive.addEventListener('click', () => {
+  if (!state.quizData) return;
+  startInteractiveQuiz(state.quizData);
 });
 
 function generatePDF(quiz) {
@@ -901,4 +912,230 @@ function showLoading(msg = 'Generating…', sub = 'This may take a few seconds')
 function hideLoading() {
   loadingOverlay.classList.add('hidden');
   btnGenerate.disabled = false;
+}
+
+// ══════════════════════════════════════════════
+//  INTERACTIVE QUIZ MODE
+// ══════════════════════════════════════════════
+
+function startInteractiveQuiz(quiz) {
+  const overlay = document.getElementById('interactive-overlay');
+  const container = document.getElementById('interactive-container');
+  overlay.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+
+  // Render all questions interactively
+  let html = `
+    <div class="iq-header">
+      <div class="iq-title">📝 ${quiz.subject || 'Interactive Quiz'}</div>
+      <div class="iq-meta">${quiz.questions.length} questions · Answer all then submit</div>
+    </div>
+    <div class="iq-questions">`;
+
+  quiz.questions.forEach((q, i) => {
+    html += renderInteractiveQuestion(q, i);
+  });
+
+  html += `</div>
+    <div class="iq-submit-wrap">
+      <button class="iq-btn-submit" id="iq-submit">Submit Quiz ⚡</button>
+      <p class="iq-submit-hint" id="iq-submit-hint"></p>
+    </div>`;
+
+  container.innerHTML = html;
+
+  // Submit handler
+  document.getElementById('iq-submit').addEventListener('click', () => {
+    submitInteractiveQuiz(quiz);
+  });
+
+  // Close button
+  document.getElementById('iq-close').addEventListener('click', closeInteractiveQuiz);
+}
+
+function renderInteractiveQuestion(q, i) {
+  const typeLabelMap = {
+    multiple_choice: 'Multiple Choice',
+    true_false: 'True / False',
+    fill_blank: 'Fill in the Blank',
+    short_answer: 'Short Answer'
+  };
+  const typeLabel = typeLabelMap[q.type] || q.type;
+  const svgBlock = q.svg ? `<div class="q-diagram">${q.svg}</div>` : '';
+
+  let inputHtml = '';
+
+  if (q.type === 'multiple_choice') {
+    inputHtml = '<div class="iq-options">' +
+      q.options.map((opt, oi) => `
+        <label class="iq-option" data-qi="${i}" data-oi="${oi}">
+          <input type="radio" name="q${i}" value="${opt}" />
+          <span class="iq-option-box"></span>
+          <span class="iq-option-text">${opt}</span>
+        </label>`).join('') +
+      '</div>';
+  } else if (q.type === 'true_false') {
+    inputHtml = '<div class="iq-options">' +
+      ['True', 'False'].map(opt => `
+        <label class="iq-option" data-qi="${i}">
+          <input type="radio" name="q${i}" value="${opt}" />
+          <span class="iq-option-box"></span>
+          <span class="iq-option-text">${opt}</span>
+        </label>`).join('') +
+      '</div>';
+  } else if (q.type === 'fill_blank') {
+    const rendered = q.question.replace(/___/g, '<span class="q-blank-line"></span>');
+    inputHtml = `<p class="iq-fill-label">Your answer:</p>
+      <input type="text" class="iq-text-input" data-qi="${i}" placeholder="Type your answer…" />`;
+    return `
+      <div class="iq-question" id="iq-q${i}">
+        <div class="iq-q-header">
+          <span class="q-number">Question ${q.number}</span>
+          <span class="q-type-badge">${typeLabel}</span>
+        </div>
+        <p class="q-text">${rendered}</p>
+        ${svgBlock}
+        ${inputHtml}
+      </div>`;
+  } else {
+    // Short answer / essay
+    inputHtml = `<p class="iq-fill-label">Your answer:</p>
+      <textarea class="iq-textarea" data-qi="${i}" placeholder="Write your answer here…" rows="3"></textarea>`;
+  }
+
+  return `
+    <div class="iq-question" id="iq-q${i}">
+      <div class="iq-q-header">
+        <span class="q-number">Question ${q.number}</span>
+        <span class="q-type-badge">${typeLabel}</span>
+      </div>
+      <p class="q-text">${q.type !== 'fill_blank' ? q.question : ''}</p>
+      ${svgBlock}
+      ${inputHtml}
+    </div>`;
+}
+
+function submitInteractiveQuiz(quiz) {
+  const hint = document.getElementById('iq-submit-hint');
+  const container = document.getElementById('interactive-container');
+
+  // Collect answers
+  const answers = [];
+  let unanswered = [];
+
+  quiz.questions.forEach((q, i) => {
+    let userAnswer = null;
+    if (q.type === 'multiple_choice' || q.type === 'true_false') {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      userAnswer = selected ? selected.value : null;
+    } else {
+      const input = document.querySelector(`[data-qi="${i}"]`);
+      userAnswer = input ? input.value.trim() : null;
+    }
+    answers.push(userAnswer);
+    if (!userAnswer) unanswered.push(q.number);
+  });
+
+  // Warn if unanswered (but allow submit anyway)
+  if (unanswered.length > 0) {
+    hint.textContent = `⚠️ ${unanswered.length} question(s) unanswered (Q${unanswered.join(', Q')}). Submit anyway?`;
+    hint.style.color = 'var(--amber)';
+    // Change button to confirm
+    const btn = document.getElementById('iq-submit');
+    btn.textContent = 'Yes, Submit Anyway ⚡';
+    btn.onclick = () => showInteractiveResults(quiz, answers);
+    return;
+  }
+
+  showInteractiveResults(quiz, answers);
+}
+
+function isCorrect(q, userAnswer) {
+  if (!userAnswer) return false;
+  const correct = (q.answer || '').toString().trim().toLowerCase();
+  const user = userAnswer.toString().trim().toLowerCase();
+
+  // For multiple choice — check if answer starts with or contains the correct letter/text
+  if (q.type === 'multiple_choice') {
+    // answer might be "A. Paris" or just "A" or "Paris"
+    const correctLetter = correct.charAt(0);
+    const userLetter = user.charAt(0);
+    if (correctLetter === userLetter) return true;
+    return user.includes(correct) || correct.includes(user);
+  }
+  if (q.type === 'true_false') {
+    return correct.startsWith(user) || user.startsWith(correct);
+  }
+  // Fill blank — loose match
+  return correct.includes(user) || user.includes(correct);
+}
+
+function showInteractiveResults(quiz, answers) {
+  const container = document.getElementById('interactive-container');
+  let score = 0;
+  let resultsHtml = '';
+
+  quiz.questions.forEach((q, i) => {
+    const userAnswer = answers[i];
+    const correct = isCorrect(q, userAnswer);
+    if (correct) score++;
+
+    const statusIcon = correct ? '✅' : '❌';
+    const statusClass = correct ? 'iq-correct' : 'iq-incorrect';
+
+    let userAnswerDisplay = userAnswer || '<em>No answer</em>';
+    let optionsReview = '';
+
+    if (q.type === 'multiple_choice') {
+      optionsReview = '<div class="iq-review-options">' +
+        q.options.map(opt => {
+          const isCorrectOpt = (opt.trim().toLowerCase().charAt(0) === q.answer.trim().toLowerCase().charAt(0)) ||
+                               opt.trim().toLowerCase().includes(q.answer.trim().toLowerCase()) ||
+                               q.answer.trim().toLowerCase().includes(opt.trim().toLowerCase().substring(0, 3));
+          const isUserOpt = userAnswer && opt.trim().toLowerCase().charAt(0) === userAnswer.trim().toLowerCase().charAt(0);
+          let cls = 'iq-review-opt';
+          if (isCorrectOpt) cls += ' iq-opt-correct';
+          if (isUserOpt && !isCorrectOpt) cls += ' iq-opt-wrong';
+          return `<div class="${cls}">${opt}${isCorrectOpt ? ' ✓' : ''}${isUserOpt && !isCorrectOpt ? ' ✗' : ''}</div>`;
+        }).join('') +
+      '</div>';
+    }
+
+    resultsHtml += `
+      <div class="iq-result-item ${statusClass}">
+        <div class="iq-result-header">
+          <span class="iq-result-status">${statusIcon}</span>
+          <span class="q-number">Question ${q.number}</span>
+          <span class="iq-result-verdict">${correct ? 'Correct!' : 'Incorrect'}</span>
+        </div>
+        <p class="iq-result-question">${q.question}</p>
+        ${q.svg ? `<div class="q-diagram">${q.svg}</div>` : ''}
+        ${optionsReview}
+        <div class="iq-result-answers">
+          ${!correct ? `<div class="iq-your-answer">Your answer: <strong>${userAnswerDisplay}</strong></div>` : ''}
+          <div class="iq-correct-answer">Correct answer: <strong>${q.answer}</strong></div>
+        </div>
+        ${q.explanation ? `<div class="iq-explanation">💡 <strong>Explanation:</strong> ${q.explanation}</div>` : ''}
+      </div>`;
+  });
+
+  const pct = Math.round((score / quiz.questions.length) * 100);
+  const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '👍' : pct >= 40 ? '📚' : '💪';
+  const msg = pct >= 80 ? 'Excellent work!' : pct >= 60 ? 'Good job!' : pct >= 40 ? 'Keep studying!' : 'Don\'t give up!';
+
+  container.innerHTML = `
+    <div class="iq-score-banner">
+      <div class="iq-score-emoji">${emoji}</div>
+      <div class="iq-score-number">${score} / ${quiz.questions.length}</div>
+      <div class="iq-score-pct">${pct}% · ${msg}</div>
+    </div>
+    <div class="iq-results-list">${resultsHtml}</div>
+    <div class="iq-done-wrap">
+      <button class="iq-btn-done" onclick="closeInteractiveQuiz()">✓ Done</button>
+    </div>`;
+}
+
+function closeInteractiveQuiz() {
+  document.getElementById('interactive-overlay').classList.add('hidden');
+  document.body.style.overflow = '';
 }

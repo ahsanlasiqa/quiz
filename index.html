@@ -178,6 +178,7 @@
         <div id="quiz-output"></div>
         <div class="result-actions">
           <button class="btn-pdf" id="btn-pdf"><span>⬇</span> Download PDF</button>
+          <button class="btn-interactive" id="btn-interactive"><span>▶</span> Start Interactive Quiz</button>
           <button class="btn-new" id="btn-new"><span>＋</span> New Quiz</button>
         </div>
       </section>
@@ -191,6 +192,14 @@
       </div>
 
     </main>
+  </div>
+
+  <!-- Interactive Quiz Overlay -->
+  <div class="interactive-overlay hidden" id="interactive-overlay">
+    <div class="interactive-modal">
+      <button class="iq-close" id="iq-close">✕ Close</button>
+      <div class="interactive-container" id="interactive-container"></div>
+    </div>
   </div>
 
   <!-- Load in order: Firebase config → Auth logic → App -->
