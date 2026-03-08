@@ -994,8 +994,13 @@ function renderInteractiveQuestion(q, i) {
       '</div>';
   } else if (q.type === 'fill_blank') {
     const rendered = q.question.replace(/___/g, '<span class="q-blank-line"></span>');
-    inputHtml = `<p class="iq-fill-label">Your answer:</p>
-      <input type="text" class="iq-text-input" data-qi="${i}" placeholder="Type your answer…" />`;
+    // Count blanks to hint format
+    const blankCount = (q.question.match(/___/g) || []).length;
+    const hint = blankCount > 1
+      ? `Type ${blankCount} answers separated by commas (e.g. answer1, answer2)`
+      : 'Type your answer';
+    inputHtml = `<p class="iq-fill-label">Your answer: <span class="iq-format-hint">${hint}</span></p>
+      <input type="text" class="iq-text-input" data-qi="${i}" placeholder="${hint}…" />`;
     return `
       <div class="iq-question" id="iq-q${i}">
         <div class="iq-q-header">
@@ -1008,7 +1013,7 @@ function renderInteractiveQuestion(q, i) {
       </div>`;
   } else {
     // Short answer / essay
-    inputHtml = `<p class="iq-fill-label">Your answer:</p>
+    inputHtml = `<p class="iq-fill-label">Your answer: <span class="iq-format-hint">Write 2–4 sentences</span></p>
       <textarea class="iq-textarea" data-qi="${i}" placeholder="Write your answer here…" rows="3"></textarea>`;
   }
 
@@ -1059,24 +1064,41 @@ function submitInteractiveQuiz(quiz) {
   showInteractiveResults(quiz, answers);
 }
 
+function normalizeAnswer(str) {
+  return str.toString().trim().toLowerCase()
+    .replace(/[.,;:!?]/g, '')      // remove punctuation
+    .replace(/\s+/g, ' ')          // normalize spaces
+    .replace(/,\s*/g, ' ')         // normalize commas to spaces
+    .replace(/\s*dan\s*/g, ' ')    // normalize "dan" (Indonesian "and")
+    .replace(/\s*and\s*/g, ' ')    // normalize "and"
+    .trim();
+}
+
 function isCorrect(q, userAnswer) {
   if (!userAnswer) return false;
-  const correct = (q.answer || '').toString().trim().toLowerCase();
-  const user = userAnswer.toString().trim().toLowerCase();
+  const correct = normalizeAnswer(q.answer || '');
+  const user = normalizeAnswer(userAnswer);
 
-  // For multiple choice — check if answer starts with or contains the correct letter/text
   if (q.type === 'multiple_choice') {
-    // answer might be "A. Paris" or just "A" or "Paris"
+    // Match by first letter (A/B/C/D) or full text
     const correctLetter = correct.charAt(0);
     const userLetter = user.charAt(0);
-    if (correctLetter === userLetter) return true;
-    return user.includes(correct) || correct.includes(user);
+    if (correctLetter === userLetter && /[a-d]/.test(correctLetter)) return true;
+    return user === correct || user.includes(correct) || correct.includes(user);
   }
+
   if (q.type === 'true_false') {
-    return correct.startsWith(user) || user.startsWith(correct);
+    const cFirst = correct.charAt(0);
+    const uFirst = user.charAt(0);
+    return cFirst === uFirst; // t/f match
   }
-  // Fill blank — loose match
-  return correct.includes(user) || user.includes(correct);
+
+  // Fill blank & short answer — normalize then compare
+  if (user === correct) return true;
+  // Allow partial match only if user answer is reasonably long
+  if (user.length >= 3 && correct.includes(user)) return true;
+  if (user.length >= 3 && user.includes(correct)) return true;
+  return false;
 }
 
 function showInteractiveResults(quiz, answers) {

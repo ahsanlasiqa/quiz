@@ -1298,3 +1298,12 @@ body {
   font-size: 1rem;
   padding: 16px 24px;
 }
+
+/* ── Format hint in interactive quiz ── */
+.iq-format-hint {
+  font-size: 0.78rem;
+  color: var(--teal);
+  font-weight: 500;
+  font-style: italic;
+  margin-left: 4px;
+}
