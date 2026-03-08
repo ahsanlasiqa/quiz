@@ -1,4 +1,4 @@
-// Auth Logic — waits for Firebase to be ready before initializing
+// Auth Logic using Firebase popup with redirect fallback
 window.quizgenAuthed = false;
 window.quizgenUser = null;
 window.quizgenAccess = null;
@@ -16,8 +16,6 @@ function startAuth() {
   const loginError  = document.getElementById('login-error');
   const loginMsg    = document.getElementById('login-msg');
 
-  if (!btnLogin) { console.error('btn-google-login not found'); return; }
-
   const urlParams  = new URLSearchParams(window.location.search);
   const inviteCode = urlParams.get('invite') || '';
 
@@ -34,13 +32,13 @@ function startAuth() {
       loginError.textContent = errorMsg;
       loginError.classList.remove('hidden');
     }
+    resetLoginBtn();
   }
 
   function showApp(accessData) {
     window.quizgenAccess = accessData;
     loginScreen.classList.add('hidden');
     appScreen.classList.remove('hidden');
-    if (inviteCode) window.history.replaceState({}, '', window.location.pathname);
     if (window.updateSubscriptionUI) window.updateSubscriptionUI(accessData);
   }
 
@@ -49,9 +47,14 @@ function startAuth() {
     btnLogin.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" /> Sign in with Google';
   }
 
+  function setBtnLoading(text) {
+    btnLogin.disabled = true;
+    btnLogin.innerHTML = '<span class="btn-spinner"></span> ' + text;
+  }
+
   async function checkAndShowApp(user) {
     try {
-      const idToken = await user.getIdToken();
+      const idToken = await user.getIdToken(true);
       const res = await fetch('/api/check-auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -64,59 +67,69 @@ function startAuth() {
         showApp(data);
       } else {
         await window.firebaseAuth.signOut();
-        resetLoginBtn();
         showLogin(data.error || 'Access denied.');
       }
     } catch (err) {
-      console.error('Auth check error:', err);
+      console.error('checkAndShowApp error:', err);
       await window.firebaseAuth.signOut();
-      resetLoginBtn();
       showLogin('Could not verify your account. Please try again.');
     }
   }
 
-  // Show loading state while checking redirect result
-  loginScreen.classList.remove('hidden');
-  appScreen.classList.add('hidden');
-  btnLogin.disabled = true;
-  btnLogin.innerHTML = '<span class="btn-spinner"></span> Checking…';
+  // Show login initially
+  showLogin();
 
-  // Use the redirect result already fetched in firebase-config.js
-  const redirectResult = window._redirectResult;
-  const redirectError  = window._redirectError;
+  // Listen for auth state — covers both popup success and persistent sessions
+  window.firebaseAuth.onAuthStateChanged(function(user) {
+    console.log('onAuthStateChanged:', user ? user.email : 'null');
+    if (user && !window.quizgenAuthed) {
+      setBtnLoading('Verifying…');
+      checkAndShowApp(user);
+    } else if (!user && !window.quizgenAuthed) {
+      showLogin();
+    }
+  });
 
-  if (redirectError && redirectError.code !== 'auth/no-auth-event') {
-    console.error('Redirect error:', redirectError);
-    resetLoginBtn();
-    showLogin('Sign-in failed (' + redirectError.code + '). Please try again.');
-  } else if (redirectResult && redirectResult.user) {
-    // Coming back from Google redirect — verify and enter app
-    checkAndShowApp(redirectResult.user);
-  } else {
-    // No redirect in progress — show normal login
-    resetLoginBtn();
-    showLogin();
-
-    // Also check if already signed in (persistent session)
-    window.firebaseAuth.onAuthStateChanged(function(user) {
-      if (user && !window.quizgenAuthed) {
-        btnLogin.disabled = true;
-        btnLogin.innerHTML = '<span class="btn-spinner"></span> Signing in…';
-        checkAndShowApp(user);
-      } else if (!user) {
-        resetLoginBtn();
-        showLogin();
-      }
-    });
-  }
-
-  // Sign in button
+  // Sign in button — popup mode
   btnLogin.addEventListener('click', function() {
     loginError.classList.add('hidden');
-    btnLogin.disabled = true;
-    btnLogin.innerHTML = '<span class="btn-spinner"></span> Redirecting to Google…';
-    window.firebaseAuth.signInWithRedirect(window.googleProvider);
+    setBtnLoading('Opening Google…');
+
+    window.firebaseAuth.signInWithPopup(window.googleProvider)
+      .then(function(result) {
+        // onAuthStateChanged will handle the rest
+        console.log('Popup success:', result.user.email);
+      })
+      .catch(function(err) {
+        console.error('Popup failed:', err.code, err.message);
+        if (err.code === 'auth/popup-blocked' ||
+            err.code === 'auth/operation-not-supported-in-this-environment') {
+          // Fall back to redirect
+          setBtnLoading('Redirecting…');
+          window.firebaseAuth.signInWithRedirect(window.googleProvider);
+        } else if (err.code === 'auth/popup-closed-by-user' ||
+                   err.code === 'auth/cancelled-popup-request') {
+          showLogin();
+        } else {
+          showLogin('Sign-in failed: ' + err.message);
+        }
+      });
   });
+
+  // Handle redirect result (when coming back from Google)
+  window.firebaseAuth.getRedirectResult()
+    .then(function(result) {
+      if (result && result.user) {
+        console.log('Redirect result user:', result.user.email);
+        // onAuthStateChanged handles it
+      }
+    })
+    .catch(function(err) {
+      console.error('getRedirectResult error:', err.code, err.message);
+      if (err.code !== 'auth/no-auth-event') {
+        showLogin('Sign-in failed: ' + err.message);
+      }
+    });
 
   // Sign out
   btnSignout.addEventListener('click', function() {
@@ -124,13 +137,11 @@ function startAuth() {
       window.quizgenAuthed = false;
       window.quizgenUser = null;
       window.quizgenAccess = null;
-      resetLoginBtn();
       showLogin();
     });
   });
 }
 
-// Wait for Firebase to be ready
 if (window.firebaseReady) {
   startAuth();
 } else {

@@ -1,4 +1,4 @@
-// Firebase config loaded from server — keeps keys out of GitHub
+// Firebase config loaded from server
 (async function() {
   try {
     const res = await fetch('/api/firebase-client-config');
@@ -12,17 +12,8 @@
     firebase.initializeApp(firebaseConfig);
     window.firebaseAuth = firebase.auth();
     window.googleProvider = new firebase.auth.GoogleAuthProvider();
+    window.firebaseProjectId = firebaseConfig.projectId;
 
-    // Handle redirect result IMMEDIATELY after init, before anything else
-    try {
-      const result = await window.firebaseAuth.getRedirectResult();
-      window._redirectResult = result;
-    } catch(err) {
-      window._redirectError = err;
-      console.error('Redirect result error:', err.code, err.message);
-    }
-
-    // Signal that Firebase is ready (with redirect result already fetched)
     window.firebaseReady = true;
     window.dispatchEvent(new Event('firebase-ready'));
 
