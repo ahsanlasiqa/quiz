@@ -50,12 +50,7 @@ function startAuth() {
     btnLogin.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" /> Sign in with Google';
   }
 
-  // Show login screen immediately
-  showLogin();
-
-  // Watch Firebase auth state
-  window.firebaseAuth.onAuthStateChanged(async function(user) {
-    if (!user) { showLogin(); return; }
+  async function checkAndShowApp(user) {
     try {
       const idToken = await user.getIdToken();
       const res = await fetch('/api/check-auth', {
@@ -79,26 +74,58 @@ function startAuth() {
       resetLoginBtn();
       showLogin('Could not verify your account. Please try again.');
     }
+  }
+
+  // Show login screen immediately
+  showLogin();
+
+  // Handle redirect result first (for mobile browsers that use redirect instead of popup)
+  window.firebaseAuth.getRedirectResult().then(function(result) {
+    if (result && result.user) {
+      btnLogin.disabled = true;
+      btnLogin.innerHTML = '<span class="btn-spinner"></span> Verifying…';
+      checkAndShowApp(result.user);
+    }
+  }).catch(function(err) {
+    console.error('Redirect result error:', err);
+    if (err.code !== 'auth/no-auth-event') {
+      showLogin('Sign-in failed (' + err.code + '). Please try again.');
+    }
   });
 
-  // Sign in button
+  // Watch Firebase auth state
+  window.firebaseAuth.onAuthStateChanged(async function(user) {
+    if (!user) { showLogin(); return; }
+    // Only handle if not already processing a redirect
+    if (!window.quizgenAuthed) {
+      checkAndShowApp(user);
+    }
+  });
+
+  // Sign in button — try popup first, fall back to redirect
   btnLogin.addEventListener('click', function() {
     loginError.classList.add('hidden');
     btnLogin.disabled = true;
     btnLogin.innerHTML = '<span class="btn-spinner"></span> Signing in…';
+
     window.firebaseAuth.signInWithPopup(window.googleProvider)
       .catch(function(err) {
-        console.error('Sign-in error:', err.code, err.message);
-        resetLoginBtn();
-        if (err.code === 'auth/popup-blocked') {
-          showLogin('Popup was blocked. Please allow popups for this site and try again.');
-        } else if (err.code !== 'auth/popup-closed-by-user') {
+        console.error('Popup error:', err.code);
+        // If popup fails, fall back to redirect (works on all mobile browsers)
+        if (err.code === 'auth/popup-blocked' ||
+            err.code === 'auth/popup-closed-by-user' ||
+            err.code === 'auth/cancelled-popup-request' ||
+            err.code === 'auth/operation-not-supported-in-this-environment') {
+          btnLogin.innerHTML = '<span class="btn-spinner"></span> Redirecting…';
+          window.firebaseAuth.signInWithRedirect(window.googleProvider);
+        } else {
+          resetLoginBtn();
           showLogin('Sign-in failed (' + err.code + '). Please try again.');
         }
       });
   });
 
-  // Sign out button
+  // Sign out
   btnSignout.addEventListener('click', function() {
     window.firebaseAuth.signOut().then(function() {
       window.quizgenAuthed = false;
@@ -109,7 +136,7 @@ function startAuth() {
   });
 }
 
-// Wait for Firebase to be ready before starting auth
+// Wait for Firebase to be ready
 if (window.firebaseReady) {
   startAuth();
 } else {
