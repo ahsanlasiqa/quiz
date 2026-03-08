@@ -80,7 +80,7 @@ if (window.pdfjsLib) {
 // ── Init ───────────────────────────────────
 (function init() {
   document.getElementById('login-screen').classList.remove('hidden');
-  window.initAuth();
+  // initAuth() is called by firebase-config.js after config loads
   quizDateInput.valueAsDate = new Date();
   renderGrades('elementary');
 

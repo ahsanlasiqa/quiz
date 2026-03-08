@@ -1,10 +1,11 @@
 {
   "functions": {
-    "api/generate.js":           { "maxDuration": 60 },
-    "api/check-auth.js":         { "maxDuration": 15 },
-    "api/create-transaction.js": { "maxDuration": 15 },
-    "api/midtrans-webhook.js":   { "maxDuration": 15 },
-    "api/get-status.js":         { "maxDuration": 15 }
+    "api/generate.js":              { "maxDuration": 60 },
+    "api/check-auth.js":            { "maxDuration": 15 },
+    "api/create-transaction.js":    { "maxDuration": 15 },
+    "api/midtrans-webhook.js":      { "maxDuration": 15 },
+    "api/get-status.js":            { "maxDuration": 15 },
+    "api/firebase-client-config.js":{ "maxDuration": 5  }
   },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },

@@ -1,15 +1,24 @@
-// ── Firebase Configuration ──────────────────
-// Replace these values with your own Firebase project config
-// Get them from: Firebase Console → Project Settings → Your Apps → Web
-const firebaseConfig = {
-  apiKey: "AIzaSyCdGUw0s01tUQKu1Xuqy03srW0ndT2Zy40",
-  authDomain: "quizgen-b244d.firebaseapp.com",
-  projectId: "quizgen-b244d",
-  storageBucket: "quizgen-b244d.firebasestorage.app",
-  messagingSenderId: "642908662787",
-  appId: "1:642908662787:web:a6163cee38a1675b2c7236"
-};
+// Firebase config is loaded from the server to keep keys out of GitHub
+// The actual values are stored as Vercel environment variables
+(async function() {
+  try {
+    const res = await fetch('/api/firebase-client-config');
+    const firebaseConfig = await res.json();
 
-firebase.initializeApp(firebaseConfig);
-window.firebaseAuth = firebase.auth();
-window.googleProvider = new firebase.auth.GoogleAuthProvider();
+    if (firebaseConfig.error) {
+      console.error('Firebase config error:', firebaseConfig.error);
+      document.body.innerHTML = '<div style="padding:40px;text-align:center;font-family:sans-serif"><h2>Configuration error</h2><p>Please contact the app owner.</p></div>';
+      return;
+    }
+
+    firebase.initializeApp(firebaseConfig);
+    window.firebaseAuth = firebase.auth();
+    window.googleProvider = new firebase.auth.GoogleAuthProvider();
+
+    // Now safe to init auth and app
+    if (window.initAuth) window.initAuth();
+
+  } catch (err) {
+    console.error('Failed to load Firebase config:', err);
+  }
+})();
