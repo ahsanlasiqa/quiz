@@ -90,9 +90,35 @@
             </div>
           </div>
 
+          <div class="setting-group">
+            <label class="setting-label">Number of Questions</label>
+            <div class="number-input-wrap">
+              <button class="num-btn" id="num-minus">−</button>
+              <input type="number" id="num-questions" value="10" min="1" max="18" />
+              <button class="num-btn" id="num-plus">+</button>
+            </div>
+            <p class="questions-counter" id="questions-counter">10 / 18 questions</p>
+          </div>
+
           <div class="setting-group full-width">
-            <div class="quiz-composition-badge">
-              📋 18 Questions: 10 Multiple Choice · 3 True/False · 3 Fill in the Blank · 2 Short Answer
+            <label class="setting-label">Question Types</label>
+            <div class="checkbox-group">
+              <label class="checkbox-item">
+                <input type="checkbox" name="qtype" value="multiple_choice" checked />
+                <span class="checkbox-box"></span><span>Multiple Choice</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="qtype" value="true_false" checked />
+                <span class="checkbox-box"></span><span>True / False</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="qtype" value="fill_blank" checked />
+                <span class="checkbox-box"></span><span>Fill in the Blank</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="qtype" value="short_answer" checked />
+                <span class="checkbox-box"></span><span>Short Answer / Essay</span>
+              </label>
             </div>
           </div>
 
