@@ -6,9 +6,7 @@
 // ── Limits ─────────────────────────────────
 const LIMITS = {
   maxImages: 15,
-  maxQuestions: 18,
   warnImages: 12,
-  warnQuestions: 15,
 };
 
 // ── State ──────────────────────────────────
@@ -18,8 +16,6 @@ const state = {
   settings: {
     level: 'elementary',
     grade: 1,
-    numQuestions: 10,
-    types: ['multiple_choice', 'true_false', 'fill_blank', 'short_answer'],
     studentName: '',
     date: ''
   }
@@ -68,9 +64,7 @@ const btnPdf            = document.getElementById('btn-pdf');
 const btnNew            = document.getElementById('btn-new');
 const btnRegenerate     = document.getElementById('btn-regenerate');
 const btnInteractive    = document.getElementById('btn-interactive');
-const numQuestionsInput = document.getElementById('num-questions');
-const numMinus          = document.getElementById('num-minus');
-const numPlus           = document.getElementById('num-plus');
+// num-questions controls removed — fixed 18-question composition
 const levelToggle       = document.getElementById('level-toggle');
 const gradeSelector     = document.getElementById('grade-selector');
 const gradePills        = document.getElementById('grade-pills');
@@ -204,37 +198,7 @@ function renderGrades(level) {
   gradeSelector.classList.add('visible');
 }
 
-// ── Number of Questions ────────────────────
-function updateQuestionsCounter(v) {
-  const counter = document.getElementById('questions-counter');
-  if (!counter) return;
-  if (v >= LIMITS.maxQuestions) {
-    counter.textContent = `${v} / ${LIMITS.maxQuestions} questions · Maximum reached`;
-    counter.className = 'questions-counter warn';
-  } else if (v >= LIMITS.warnQuestions) {
-    counter.textContent = `${v} / ${LIMITS.maxQuestions} questions · Getting close to the limit`;
-    counter.className = 'questions-counter warn-soft';
-  } else {
-    counter.textContent = `${v} / ${LIMITS.maxQuestions} questions`;
-    counter.className = 'questions-counter';
-  }
-}
-
-numMinus.addEventListener('click', () => {
-  const v = parseInt(numQuestionsInput.value);
-  if (v > 1) { numQuestionsInput.value = v - 1; updateQuestionsCounter(v - 1); }
-});
-numPlus.addEventListener('click', () => {
-  const v = parseInt(numQuestionsInput.value);
-  if (v < LIMITS.maxQuestions) { numQuestionsInput.value = v + 1; updateQuestionsCounter(v + 1); }
-});
-numQuestionsInput.addEventListener('change', () => {
-  let v = parseInt(numQuestionsInput.value);
-  if (isNaN(v) || v < 1) v = 1;
-  if (v > LIMITS.maxQuestions) v = LIMITS.maxQuestions;
-  numQuestionsInput.value = v;
-  updateQuestionsCounter(v);
-});
+// ── Question composition is fixed (no UI needed) ──
 
 // ── Upload Zone ────────────────────────────
 const cameraInput = document.getElementById('camera-input');
@@ -440,8 +404,6 @@ function collectSettings() {
   state.settings.level = levelToggle.querySelector('.level-btn.active').dataset.value;
   const activePill = gradePills.querySelector('.grade-pill.active');
   state.settings.grade = activePill ? parseInt(activePill.dataset.value) : GRADE_CONFIG[state.settings.level].grades[0].value;
-  state.settings.numQuestions = parseInt(numQuestionsInput.value) || 10;
-  state.settings.types = Array.from(document.querySelectorAll('input[name="qtype"]:checked')).map(c => c.value);
   state.settings.studentName = studentNameInput.value.trim();
   state.settings.date = quizDateInput.value;
 }
@@ -456,13 +418,7 @@ async function generateQuiz() {
     generateHint.textContent = 'Please upload at least one photo or PDF page.';
     return;
   }
-  if (state.settings.types.length === 0) {
-    generateHint.textContent = 'Please select at least one question type.';
-    return;
-  }
   generateHint.textContent = '';
-  const n = state.settings.numQuestions;
-  const estimatedSecs = Math.max(20, n * 3);
   showLoading('Step 1/2: Reading your material…', `Analyzing ${state.images.length} image${state.images.length !== 1 ? 's' : ''}…`);
   try {
     const quiz = await callClaude();
@@ -491,13 +447,13 @@ async function generateQuiz() {
 async function callClaude() {
   const config = GRADE_CONFIG[state.settings.level];
   const levelLabel = `${config.label}, Grade ${state.settings.grade}`;
-  const typeNames = {
-    multiple_choice: 'Multiple Choice (4 options labeled A-D)',
-    true_false: 'True / False',
-    fill_blank: 'Fill in the Blank (use ___ for the blank)',
-    short_answer: 'Short Answer / Essay'
+  // Fixed question composition
+  const FIXED_COMPOSITION = {
+    multiple_choice: 10,
+    true_false: 3,
+    fill_blank: 3,
+    short_answer: 2,
   };
-  const selectedTypes = state.settings.types.map(t => typeNames[t]).join(', ');
   const idToken = await window.getIdToken();
 
   // ── STEP 1: Extract content from images (batched) ──
@@ -560,17 +516,18 @@ MATERIAL SUMMARY:
 ${materialSummary}
 
 STUDENT LEVEL: ${levelLabel}
-NUMBER OF QUESTIONS: ${state.settings.numQuestions}
-QUESTION TYPES TO USE: ${selectedTypes}
 
 INSTRUCTIONS:
-1. Generate exactly ${state.settings.numQuestions} questions based ONLY on the material above.
-2. Distribute question types as evenly as possible across: ${selectedTypes}
+1. Generate EXACTLY 18 questions based ONLY on the material above, with this exact breakdown:
+   - 10 Multiple Choice questions (each with exactly 4 options labeled A, B, C, D)
+   - 3 True / False questions
+   - 3 Fill in the Blank questions (use ___ for each blank)
+   - 2 Short Answer / Essay questions
+2. Number questions 1–18 in this order: multiple choice first, then true/false, then fill in blank, then short answer.
 3. Match the language used in the material (Bahasa Indonesia or English).
 4. Adjust difficulty appropriately for: ${levelLabel}
-5. For multiple choice: exactly 4 options labeled A, B, C, D.
-6. For fill in blank: replace key terms with ___.
-7. For short answer: ask open-ended questions about main concepts.
+5. For fill in blank: replace key terms with ___.
+6. For short answer: ask open-ended questions about main concepts.
 
 DIAGRAM INSTRUCTIONS (very important):
 - Whenever a diagram, illustration, or visual would help clarify or enrich a question, you MUST include an SVG. This applies to ALL subjects, not just math. Examples:

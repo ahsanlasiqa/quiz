@@ -1324,3 +1324,27 @@ body {
   color: var(--amber);
   font-weight: 600;
 }
+
+/* ── Fixed quiz composition badge ── */
+.quiz-composition-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--teal-pale);
+  border: 1.5px solid var(--teal-light);
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--teal);
+  white-space: nowrap;
+  overflow-x: auto;
+  max-width: 100%;
+}
+@media (max-width: 600px) {
+  .quiz-composition-badge {
+    white-space: normal;
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+  }
+}
