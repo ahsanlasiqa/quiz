@@ -5,10 +5,10 @@
 
 // ── Limits ─────────────────────────────────
 const LIMITS = {
-  maxImages: 10,
-  maxQuestions: 30,
-  warnImages: 8,
-  warnQuestions: 25,
+  maxImages: 15,
+  maxQuestions: 18,
+  warnImages: 12,
+  warnQuestions: 15,
 };
 
 // ── State ──────────────────────────────────
@@ -208,11 +208,14 @@ function renderGrades(level) {
 function updateQuestionsCounter(v) {
   const counter = document.getElementById('questions-counter');
   if (!counter) return;
-  if (v > LIMITS.maxQuestions) {
-    counter.textContent = `⚠️ ${v} questions may cause timeout — recommended max: ${LIMITS.maxQuestions}`;
+  if (v >= LIMITS.maxQuestions) {
+    counter.textContent = `${v} / ${LIMITS.maxQuestions} questions · Maximum reached`;
     counter.className = 'questions-counter warn';
+  } else if (v >= LIMITS.warnQuestions) {
+    counter.textContent = `${v} / ${LIMITS.maxQuestions} questions · Getting close to the limit`;
+    counter.className = 'questions-counter warn-soft';
   } else {
-    counter.textContent = `${v} question${v !== 1 ? 's' : ''} · Recommended max: ${LIMITS.maxQuestions}`;
+    counter.textContent = `${v} / ${LIMITS.maxQuestions} questions`;
     counter.className = 'questions-counter';
   }
 }
@@ -223,12 +226,12 @@ numMinus.addEventListener('click', () => {
 });
 numPlus.addEventListener('click', () => {
   const v = parseInt(numQuestionsInput.value);
-  if (v < 50) { numQuestionsInput.value = v + 1; updateQuestionsCounter(v + 1); }
+  if (v < LIMITS.maxQuestions) { numQuestionsInput.value = v + 1; updateQuestionsCounter(v + 1); }
 });
 numQuestionsInput.addEventListener('change', () => {
   let v = parseInt(numQuestionsInput.value);
   if (isNaN(v) || v < 1) v = 1;
-  if (v > 50) v = 50;
+  if (v > LIMITS.maxQuestions) v = LIMITS.maxQuestions;
   numQuestionsInput.value = v;
   updateQuestionsCounter(v);
 });
@@ -279,6 +282,10 @@ cameraInput.addEventListener('change', () => {
 
 async function handleFiles(files) {
   for (const file of files) {
+    if (state.images.length >= LIMITS.maxImages) {
+      generateHint.textContent = `Maximum ${LIMITS.maxImages} images reached. Remove some before adding more.`;
+      break;
+    }
     if (file.type === 'application/pdf') {
       await handlePDF(file);
     } else if (file.type.startsWith('image/')) {
@@ -299,6 +306,10 @@ async function handlePDF(file) {
     const totalPages = pdf.numPages;
 
     for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+      if (state.images.length >= LIMITS.maxImages) {
+        pdfProgressText.textContent = `Stopped at page ${pageNum - 1} — maximum ${LIMITS.maxImages} images reached.`;
+        break;
+      }
       pdfProgressText.textContent = `Converting page ${pageNum} of ${totalPages}…`;
       pdfProgressFill.style.width = `${(pageNum / totalPages) * 100}%`;
 
@@ -388,14 +399,14 @@ function updateImageCounter() {
   if (count === 0) {
     counter.textContent = '';
     counter.className = 'image-counter';
-  } else if (count > LIMITS.maxImages) {
-    counter.textContent = `⚠️ ${count} images — recommended max is ${LIMITS.maxImages}. May cause timeout.`;
+  } else if (count >= LIMITS.maxImages) {
+    counter.textContent = `${count} / ${LIMITS.maxImages} images · Maximum reached`;
     counter.className = 'image-counter warn';
   } else if (count >= LIMITS.warnImages) {
     counter.textContent = `${count} / ${LIMITS.maxImages} images · Getting close to the limit`;
     counter.className = 'image-counter warn-soft';
   } else {
-    counter.textContent = `${count} image${count !== 1 ? 's' : ''} uploaded · Recommended max: ${LIMITS.maxImages}`;
+    counter.textContent = `${count} / ${LIMITS.maxImages} images`;
     counter.className = 'image-counter';
   }
 }
