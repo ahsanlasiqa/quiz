@@ -489,43 +489,56 @@ async function callClaude() {
   const selectedTypes = state.settings.types.map(t => typeNames[t]).join(', ');
   const idToken = await window.getIdToken();
 
-  // ── STEP 1: Extract content from images ──
-  const extractPrompt = `You are a teacher's assistant. Carefully read ALL the content in these ${state.images.length} image(s) of textbook/learning material pages.
-
-Extract and return a comprehensive summary including:
-1. The subject/topic name
-2. The language used (Bahasa Indonesia or English)
-3. ALL key concepts, facts, definitions, formulas, and information present
-4. Any important terms, names, dates, or numbers
-5. Any diagrams, charts, or visual content described in detail
-
-Be thorough — this summary will be used to generate quiz questions. Include everything important.`;
-
-  const extractParts = [{ type: 'text', text: extractPrompt }];
-  state.images.forEach(img => {
-    extractParts.push({
-      type: 'image',
-      source: { type: 'base64', media_type: img.mimeType, data: img.base64 }
-    });
-  });
-
-  const extractRes = await fetch('/api/extract', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-5',
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: extractParts }]
-    })
-  });
-
-  if (!extractRes.ok) {
-    const err = await extractRes.json().catch(() => ({}));
-    throw new Error(err?.error?.message || err?.error || `Extract error ${extractRes.status}`);
+  // ── STEP 1: Extract content from images (batched) ──
+  const BATCH_SIZE = 5;
+  const batches = [];
+  for (let i = 0; i < state.images.length; i += BATCH_SIZE) {
+    batches.push(state.images.slice(i, i + BATCH_SIZE));
   }
 
-  const extractData = await extractRes.json();
-  const materialSummary = extractData.content.map(b => b.text || '').join('');
+  const extractPromptText = (batchNum, total) =>
+    `You are a teacher's assistant. Carefully read ALL the content in these images (batch ${batchNum} of ${total}).
+
+Extract a concise but complete summary including:
+1. Subject/topic name and language (Bahasa Indonesia or English)
+2. ALL key concepts, facts, definitions, formulas
+3. Important terms, names, dates, numbers
+4. Any diagrams or visual content described briefly
+
+Be thorough but concise — max 800 words. This will be used to generate quiz questions.`;
+
+  const summaries = [];
+  for (let b = 0; b < batches.length; b++) {
+    showLoading(
+      `Step 1/2: Reading images… (batch ${b + 1}/${batches.length})`,
+      `Processing images ${b * BATCH_SIZE + 1}–${Math.min((b + 1) * BATCH_SIZE, state.images.length)} of ${state.images.length}`
+    );
+
+    const parts = [{ type: 'text', text: extractPromptText(b + 1, batches.length) }];
+    batches[b].forEach(img => {
+      parts.push({ type: 'image', source: { type: 'base64', media_type: img.mimeType, data: img.base64 } });
+    });
+
+    const extractRes = await fetch('/api/extract', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-5',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: parts }]
+      })
+    });
+
+    if (!extractRes.ok) {
+      const err = await extractRes.json().catch(() => ({}));
+      throw new Error(err?.error?.message || err?.error || `Extract error ${extractRes.status}`);
+    }
+
+    const extractData = await extractRes.json();
+    summaries.push(extractData.content.map(b => b.text || '').join(''));
+  }
+
+  const materialSummary = summaries.join('\n\n---\n\n');
 
   // ── STEP 2: Generate quiz from summary ───
   showLoading('Step 2/2: Generating questions…', `Creating ${state.settings.numQuestions} questions from extracted content…`);
@@ -611,7 +624,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
       model: 'claude-sonnet-4-5',
-      max_tokens: 8000,
+      max_tokens: 5000,
       messages: [{ role: 'user', content: quizPrompt }]
     })
   });
