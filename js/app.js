@@ -452,7 +452,7 @@ async function generateQuiz() {
   generateHint.textContent = '';
   const n = state.settings.numQuestions;
   const estimatedSecs = Math.max(20, n * 3);
-  showLoading('Analyzing your material…', `Generating ${n} questions — may take up to ${estimatedSecs}s`);
+  showLoading('Step 1/2: Reading your material…', `Analyzing ${state.images.length} image${state.images.length !== 1 ? 's' : ''}…`);
   try {
     const quiz = await callClaude();
     state.quizData = quiz;
@@ -476,11 +476,10 @@ async function generateQuiz() {
   }
 }
 
-// ── Claude API Call ────────────────────────
+// ── Claude API Call (2 steps) ──────────────
 async function callClaude() {
   const config = GRADE_CONFIG[state.settings.level];
   const levelLabel = `${config.label}, Grade ${state.settings.grade}`;
-
   const typeNames = {
     multiple_choice: 'Multiple Choice (4 options labeled A-D)',
     true_false: 'True / False',
@@ -488,29 +487,73 @@ async function callClaude() {
     short_answer: 'Short Answer / Essay'
   };
   const selectedTypes = state.settings.types.map(t => typeNames[t]).join(', ');
+  const idToken = await window.getIdToken();
 
-  const prompt = `You are an expert teacher creating quiz questions from provided textbook/learning material images.
+  // ── STEP 1: Extract content from images ──
+  const extractPrompt = `You are a teacher's assistant. Carefully read ALL the content in these ${state.images.length} image(s) of textbook/learning material pages.
+
+Extract and return a comprehensive summary including:
+1. The subject/topic name
+2. The language used (Bahasa Indonesia or English)
+3. ALL key concepts, facts, definitions, formulas, and information present
+4. Any important terms, names, dates, or numbers
+5. Any diagrams, charts, or visual content described in detail
+
+Be thorough — this summary will be used to generate quiz questions. Include everything important.`;
+
+  const extractParts = [{ type: 'text', text: extractPrompt }];
+  state.images.forEach(img => {
+    extractParts.push({
+      type: 'image',
+      source: { type: 'base64', media_type: img.mimeType, data: img.base64 }
+    });
+  });
+
+  const extractRes = await fetch('/api/extract', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 4000,
+      messages: [{ role: 'user', content: extractParts }]
+    })
+  });
+
+  if (!extractRes.ok) {
+    const err = await extractRes.json().catch(() => ({}));
+    throw new Error(err?.error?.message || err?.error || `Extract error ${extractRes.status}`);
+  }
+
+  const extractData = await extractRes.json();
+  const materialSummary = extractData.content.map(b => b.text || '').join('');
+
+  // ── STEP 2: Generate quiz from summary ───
+  showLoading('Step 2/2: Generating questions…', `Creating ${state.settings.numQuestions} questions from extracted content…`);
+
+  const quizPrompt = `You are an expert teacher creating quiz questions from the following learning material summary.
+
+MATERIAL SUMMARY:
+${materialSummary}
 
 STUDENT LEVEL: ${levelLabel}
 NUMBER OF QUESTIONS: ${state.settings.numQuestions}
 QUESTION TYPES TO USE: ${selectedTypes}
 
 INSTRUCTIONS:
-1. Carefully read ALL the text and content in the provided images.
-2. Generate exactly ${state.settings.numQuestions} questions based ONLY on the material shown.
-3. Distribute question types as evenly as possible across: ${selectedTypes}
-4. Match the language used in the material (Bahasa Indonesia or English).
-5. Adjust difficulty appropriately for: ${levelLabel}
-6. For multiple choice: exactly 4 options labeled A, B, C, D.
-7. For fill in blank: replace key terms with ___.
-8. For short answer: ask open-ended questions about main concepts.
+1. Generate exactly ${state.settings.numQuestions} questions based ONLY on the material above.
+2. Distribute question types as evenly as possible across: ${selectedTypes}
+3. Match the language used in the material (Bahasa Indonesia or English).
+4. Adjust difficulty appropriately for: ${levelLabel}
+5. For multiple choice: exactly 4 options labeled A, B, C, D.
+6. For fill in blank: replace key terms with ___.
+7. For short answer: ask open-ended questions about main concepts.
 
 DIAGRAM INSTRUCTIONS (very important):
 - Whenever a diagram, illustration, or visual would help clarify or enrich a question, you MUST include an SVG. This applies to ALL subjects, not just math. Examples:
-  * Science: draw a simple food chain, water cycle, plant cell, animal body part, or circuit
-  * Biology: draw a leaf, food web arrows, or heart diagram
-  * Geography: draw a simple map, compass rose, or landform cross-section
-  * History: draw a simple timeline with labeled events
+  * Science: food chain, water cycle, plant cell, animal body part, circuit
+  * Biology: leaf, food web arrows, heart diagram
+  * Geography: simple map, compass rose, landform cross-section
+  * History: simple timeline with labeled events
   * Math: shapes, graphs, number lines, measurements
   * Language: a simple scene to describe (e.g. a house, a person, objects)
 - Aim to include SVG diagrams in at least 30% of questions across any subject.
@@ -535,14 +578,6 @@ Respond ONLY with valid JSON, no markdown, no extra text:
     },
     {
       "number": 2,
-      "type": "multiple_choice",
-      "question": "What is the perimeter of the square below?",
-      "options": ["A. 16 cm", "B. 20 cm", "C. 24 cm", "D. 12 cm"],
-      "answer": "A. 16 cm",
-      "svg": "<svg width='200' height='150' viewBox='0 0 200 150' xmlns='http://www.w3.org/2000/svg'><rect x='50' y='25' width='100' height='100' stroke='#1a7a6e' stroke-width='2' fill='#fef3d0'/><text x='95' y='18' font-size='12' fill='#1a1208'>4 cm</text><text x='160' y='80' font-size='12' fill='#1a1208'>4 cm</text></svg>"
-    },
-    {
-      "number": 3,
       "type": "true_false",
       "question": "statement",
       "options": [],
@@ -551,7 +586,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
       "svg": null
     },
     {
-      "number": 4,
+      "number": 3,
       "type": "fill_blank",
       "question": "The ___ of a square is calculated by adding all four sides.",
       "options": [],
@@ -560,7 +595,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
       "svg": null
     },
     {
-      "number": 5,
+      "number": 4,
       "type": "short_answer",
       "question": "Explain...",
       "options": [],
@@ -571,39 +606,25 @@ Respond ONLY with valid JSON, no markdown, no extra text:
   ]
 }`;
 
-  const contentParts = [{ type: 'text', text: prompt }];
-  state.images.forEach(img => {
-    contentParts.push({
-      type: 'image',
-      source: { type: 'base64', media_type: img.mimeType, data: img.base64 }
-    });
-  });
-
-  loadingText.textContent = 'Generating questions…';
-
-  const idToken = await window.getIdToken();
-  const response = await fetch('/api/generate', {
+  const generateRes = await fetch('/api/generate', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-id-token': idToken || '',
-    },
+    headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
       model: 'claude-sonnet-4-5',
       max_tokens: 8000,
-      messages: [{ role: 'user', content: contentParts }]
+      messages: [{ role: 'user', content: quizPrompt }]
     })
   });
 
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    if (response.status === 403 && err?.error === 'no_credits') {
+  if (!generateRes.ok) {
+    const err = await generateRes.json().catch(() => ({}));
+    if (generateRes.status === 403 && err?.error === 'no_credits') {
       throw new Error('no_credits');
     }
-    throw new Error(err?.error?.message || err?.error || `API error ${response.status}`);
+    throw new Error(err?.error?.message || err?.error || `Generate error ${generateRes.status}`);
   }
 
-  const data = await response.json();
+  const data = await generateRes.json();
 
   // Update credit counter if server returned it
   if (typeof data._credits === 'number') {
