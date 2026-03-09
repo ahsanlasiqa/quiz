@@ -592,7 +592,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
       model: 'claude-sonnet-4-5',
-      max_tokens: 5000,
+      max_tokens: 8000,
       messages: [{ role: 'user', content: quizPrompt }]
     })
   });
@@ -615,8 +615,24 @@ Respond ONLY with valid JSON, no markdown, no extra text:
 
   const rawText = data.content.map(b => b.text || '').join('');
   const clean = rawText.replace(/```json|```/g, '').trim();
-  const parsed = JSON.parse(clean);
-  return parsed;
+  try {
+    return JSON.parse(clean);
+  } catch (e) {
+    // Try to recover truncated JSON by closing open structures
+    const truncated = clean.replace(/,\s*$/, '');
+    const recovered = truncated
+      .replace(/("(?:explanation|answer|question|svg)"\s*:\s*)"[^"]*$/, '$1""')
+      .replace(/,?\s*\{[^}]*$/, '')  // remove last incomplete question object
+      + (truncated.match(/\[/) && !truncated.match(/\]$/) ? ']}' : '');
+    try {
+      const parsed = JSON.parse(recovered);
+      if (parsed.questions && parsed.questions.length > 0) {
+        console.warn('JSON was truncated — recovered ' + parsed.questions.length + ' questions');
+        return parsed;
+      }
+    } catch (_) {}
+    throw new Error('Response was cut off — please try again with fewer images or a fresh upload.');
+  }
 }
 
 // ── Render Quiz ────────────────────────────
