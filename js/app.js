@@ -465,11 +465,18 @@ INSTRUCTIONS:
 8. For short answer: ask open-ended questions about main concepts.
 
 DIAGRAM INSTRUCTIONS (very important):
-- For any question involving shapes, geometry, measurement, graphs, diagrams, or visual concepts, you MUST include an SVG diagram.
-- The SVG should be simple, clean, and directly illustrate the question (e.g. a square with labeled sides for a perimeter question).
-- Use stroke="#1a7a6e" fill="none" or fill="#fef3d0" for shapes. Use font-size="12" for labels.
+- Whenever a diagram, illustration, or visual would help clarify or enrich a question, you MUST include an SVG. This applies to ALL subjects, not just math. Examples:
+  * Science: draw a simple food chain, water cycle, plant cell, animal body part, or circuit
+  * Biology: draw a leaf, food web arrows, or heart diagram
+  * Geography: draw a simple map, compass rose, or landform cross-section
+  * History: draw a simple timeline with labeled events
+  * Math: shapes, graphs, number lines, measurements
+  * Language: a simple scene to describe (e.g. a house, a person, objects)
+- Aim to include SVG diagrams in at least 30% of questions across any subject.
+- The SVG should be simple, clean, labeled, and directly relevant to the question.
+- Use stroke="#1a7a6e" fill="none" or fill="#fef3d0" for shapes. Use fill="#1a1208" font-size="11" for text labels.
 - Keep SVG width="200" height="150" viewBox="0 0 200 150".
-- If no diagram is needed, set "svg" to null.
+- Only set "svg" to null if no visual would add any value to the question.
 
 Respond ONLY with valid JSON, no markdown, no extra text:
 {
