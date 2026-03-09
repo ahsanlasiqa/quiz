@@ -3,6 +3,14 @@
    Fixes: 504 timeout, diagrams, PDF upload
    ============================================ */
 
+// ── Limits ─────────────────────────────────
+const LIMITS = {
+  maxImages: 10,
+  maxQuestions: 30,
+  warnImages: 8,
+  warnQuestions: 25,
+};
+
 // ── State ──────────────────────────────────
 const state = {
   images: [],
@@ -197,19 +205,32 @@ function renderGrades(level) {
 }
 
 // ── Number of Questions ────────────────────
+function updateQuestionsCounter(v) {
+  const counter = document.getElementById('questions-counter');
+  if (!counter) return;
+  if (v > LIMITS.maxQuestions) {
+    counter.textContent = `⚠️ ${v} questions may cause timeout — recommended max: ${LIMITS.maxQuestions}`;
+    counter.className = 'questions-counter warn';
+  } else {
+    counter.textContent = `${v} question${v !== 1 ? 's' : ''} · Recommended max: ${LIMITS.maxQuestions}`;
+    counter.className = 'questions-counter';
+  }
+}
+
 numMinus.addEventListener('click', () => {
   const v = parseInt(numQuestionsInput.value);
-  if (v > 1) numQuestionsInput.value = v - 1;
+  if (v > 1) { numQuestionsInput.value = v - 1; updateQuestionsCounter(v - 1); }
 });
 numPlus.addEventListener('click', () => {
   const v = parseInt(numQuestionsInput.value);
-  if (v < 50) numQuestionsInput.value = v + 1;
+  if (v < 50) { numQuestionsInput.value = v + 1; updateQuestionsCounter(v + 1); }
 });
 numQuestionsInput.addEventListener('change', () => {
   let v = parseInt(numQuestionsInput.value);
   if (isNaN(v) || v < 1) v = 1;
   if (v > 50) v = 50;
   numQuestionsInput.value = v;
+  updateQuestionsCounter(v);
 });
 
 // ── Upload Zone ────────────────────────────
@@ -360,7 +381,27 @@ function compressCanvas(canvas) {
 }
 
 // ── Previews ───────────────────────────────
+function updateImageCounter() {
+  const counter = document.getElementById('image-counter');
+  if (!counter) return;
+  const count = state.images.length;
+  if (count === 0) {
+    counter.textContent = '';
+    counter.className = 'image-counter';
+  } else if (count > LIMITS.maxImages) {
+    counter.textContent = `⚠️ ${count} images — recommended max is ${LIMITS.maxImages}. May cause timeout.`;
+    counter.className = 'image-counter warn';
+  } else if (count >= LIMITS.warnImages) {
+    counter.textContent = `${count} / ${LIMITS.maxImages} images · Getting close to the limit`;
+    counter.className = 'image-counter warn-soft';
+  } else {
+    counter.textContent = `${count} image${count !== 1 ? 's' : ''} uploaded · Recommended max: ${LIMITS.maxImages}`;
+    counter.className = 'image-counter';
+  }
+}
+
 function renderPreviews() {
+  updateImageCounter();
   imagePreviewGrid.innerHTML = '';
   state.images.forEach((img, i) => {
     const div = document.createElement('div');

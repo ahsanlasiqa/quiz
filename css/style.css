@@ -1307,3 +1307,20 @@ body {
   font-style: italic;
   margin-left: 4px;
 }
+
+/* ── Counters ── */
+.questions-counter, .image-counter {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  margin-top: 6px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.questions-counter.warn, .image-counter.warn {
+  color: var(--coral);
+  font-weight: 600;
+}
+.image-counter.warn-soft {
+  color: var(--amber);
+  font-weight: 600;
+}
