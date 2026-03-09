@@ -4,7 +4,7 @@ Turn textbook photos into ready-to-print quizzes using AI. Built for parents and
 
 ## Features
 
-- 📷 Upload unlimited textbook/worksheet photos per session
+- 📷 Upload 15 photos max per session
 - 🎒 Two difficulty modes: **Elementary** and **Junior High**
 - 🧠 Four question types: Multiple Choice, True/False, Fill in the Blank, Short Answer
 - 🌐 Auto-detects language from material (English or Bahasa Indonesia)
