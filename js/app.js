@@ -6,9 +6,9 @@
 // ── Limits ─────────────────────────────────
 const LIMITS = {
   maxImages: 10,
-  maxQuestions: 15,
+  maxQuestions: 20,
   warnImages: 8,
-  warnQuestions: 12,
+  warnQuestions: 17,
 };
 
 // ── State ──────────────────────────────────
