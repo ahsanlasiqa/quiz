@@ -13,7 +13,7 @@ const LIMITS = {
 
 // ── State ──────────────────────────────────
 const state = {
-  gambars: [],
+  images: [],
   quizData: null,
   settings: {
     level: 'elementary',
@@ -55,7 +55,7 @@ const GRADE_CONFIG = {
 
 const uploadZone        = document.getElementById('upload-zone');
 const fileInput         = document.getElementById('file-input');
-const gambarPreviewGrid  = document.getElementById('gambar-preview-grid');
+const imagePreviewGrid  = document.getElementById('image-preview-grid');
 const btnGenerate       = document.getElementById('btn-generate');
 const generateHint      = document.getElementById('generate-hint');
 const loadingOverlay    = document.getElementById('loading-overlay');
@@ -280,13 +280,13 @@ cameraInput.addEventListener('change', () => {
 
 async function handleFiles(files) {
   for (const file dari files) {
-    if (state.gambars.length >= LIMITS.maxImages) {
-      generateHint.textContent = `Maximum ${LIMITS.maxImages} gambars reached. Remove some before adding more.`;
+    if (state.images.length >= LIMITS.maxImages) {
+      generateHint.textContent = `Maksimum 15 gambar tercapai. Hapus beberapa sebelum menambah lagi.`;
       break;
     }
     if (file.type === 'application/pdf') {
       await handlePDF(file);
-    } else if (file.type.startsWith('gambar/')) {
+    } else if (file.type.startsWith('image/')) {
       await handleImage(file);
     }
   }
@@ -304,8 +304,8 @@ async function handlePDF(file) {
     const totalPages = pdf.numPages;
 
     for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-      if (state.gambars.length >= LIMITS.maxImages) {
-        pdfProgressText.textContent = `Berhenti di halaman ${pageNum - 1} — maksimum ${LIMITS.maxImages} gambars reached.`;
+      if (state.images.length >= LIMITS.maxImages) {
+        pdfProgressText.textContent = `Berhenti di halaman ${pageNum - 1} — maksimum ${LIMITS.maxImages} images reached.`;
         break;
       }
       pdfProgressText.textContent = `Mengonversi halaman ${pageNum} dari ${totalPages}…`;
@@ -325,11 +325,11 @@ async function handlePDF(file) {
       // Compress to JPEG like we do for gambars
       const dataUrl = compressCanvas(canvas);
       const base64 = dataUrl.split(',')[1];
-      state.gambars.push({
+      state.images.push({
         file: { name: `${file.name} p.${pageNum}` },
         dataUrl,
         base64,
-        mimeType: 'gambar/jpeg',
+        mimeType: 'image/jpeg',
         fromPDF: true,
         pdfName: file.name
       });
@@ -350,9 +350,9 @@ function handleImage(file) {
     reader.onload = e => {
       const img = new Image();
       img.onload = () => {
-        const dataUrl = compressCanvas(gambarToCanvas(img));
+        const dataUrl = compressCanvas(imageToCanvas(img));
         const base64 = dataUrl.split(',')[1];
-        state.gambars.push({ file, dataUrl, base64, mimeType: 'gambar/jpeg' });
+        state.images.push({ file, dataUrl, base64, mimeType: 'image/jpeg' });
         renderPreviews();
         resolve();
       };
@@ -362,7 +362,7 @@ function handleImage(file) {
   });
 }
 
-function gambarToCanvas(img) {
+function imageToCanvas(img) {
   const MAX = 1600;
   let { width, height } = img;
   if (width > MAX || height > MAX) {
@@ -391,28 +391,28 @@ function compressCanvas(canvas) {
 
 // ── Previews ───────────────────────────────
 function updateImageCounter() {
-  const counter = document.getElementById('gambar-counter');
+  const counter = document.getElementById('image-counter');
   if (!counter) return;
-  const count = state.gambars.length;
+  const count = state.images.length;
   if (count === 0) {
     counter.textContent = '';
-    counter.className = 'gambar-counter';
+    counter.className = 'image-counter';
   } else if (count >= LIMITS.maxImages) {
     counter.textContent = `${count} / ${LIMITS.maxImages} gambars · Maximum reached`;
-    counter.className = 'gambar-counter warn';
+    counter.className = 'image-counter warn';
   } else if (count >= LIMITS.warnImages) {
     counter.textContent = `${count} / ${LIMITS.maxImages} gambars · Getting close to the limit`;
-    counter.className = 'gambar-counter warn-soft';
+    counter.className = 'image-counter warn-soft';
   } else {
     counter.textContent = `${count} / ${LIMITS.maxImages} gambars`;
-    counter.className = 'gambar-counter';
+    counter.className = 'image-counter';
   }
 }
 
 function renderPreviews() {
   updateImageCounter();
-  gambarPreviewGrid.innerHTML = '';
-  state.gambars.forEach((img, i) => {
+  imagePreviewGrid.innerHTML = '';
+  state.images.forEach((img, i) => {
     const div = document.createElement('div');
     div.className = 'preview-item';
     const label = img.fromPDF
@@ -423,11 +423,11 @@ function renderPreviews() {
       <button class="preview-remove" data-idx="${i}" title="Remove">✕</button>
       ${label}
     `;
-    gambarPreviewGrid.appendChild(div);
+    imagePreviewGrid.appendChild(div);
   });
-  gambarPreviewGrid.querySelectorAll('.preview-remove').forEach(btn => {
+  imagePreviewGrid.querySelectorAll('.preview-remove').forEach(btn => {
     btn.addEventListener('click', () => {
-      state.gambars.splice(parseInt(btn.dataset.idx), 1);
+      state.images.splice(parseInt(btn.dataset.idx), 1);
       renderPreviews();
     });
   });
@@ -450,7 +450,7 @@ btnRegenerate.addEventListener('click', generateSoal);
 
 async function generateSoal() {
   collectSettings();
-  if (state.gambars.length === 0) {
+  if (state.images.length === 0) {
     generateHint.textContent = 'Upload minimal satu foto atau halaman PDF.';
     return;
   }
@@ -459,7 +459,7 @@ async function generateSoal() {
     return;
   }
   generateHint.textContent = '';
-  showLoading('Langkah 1/2: Membaca materi…', `Menganalisis ${state.gambars.length} gambar${state.gambars.length !== 1 ? 's' : ''}…`);
+  showLoading('Langkah 1/2: Membaca materi…', `Menganalisis ${state.images.length} gambar${state.images.length !== 1 ? 's' : ''}…`);
   try {
     const quiz = await callClaude();
     state.quizData = quiz;
@@ -499,8 +499,8 @@ async function callClaude() {
   // ── STEP 1: Extract content from gambars (batched) ──
   const BATCH_SIZE = 5;
   const batches = [];
-  for (let i = 0; i < state.gambars.length; i += BATCH_SIZE) {
-    batches.push(state.gambars.slice(i, i + BATCH_SIZE));
+  for (let i = 0; i < state.images.length; i += BATCH_SIZE) {
+    batches.push(state.images.slice(i, i + BATCH_SIZE));
   }
 
   const extractPromptText = (batchNum, total) =>
@@ -518,12 +518,12 @@ Be thorough but concise — max 800 words. This will be used to generate quiz qu
   for (let b = 0; b < batches.length; b++) {
     showLoading(
       `Step 1/2: Reading gambars… (batch ${b + 1}/${batches.length})`,
-      `Processing gambars ${b * BATCH_SIZE + 1}–${Math.min((b + 1) * BATCH_SIZE, state.gambars.length)} dari ${state.gambars.length}`
+      `Processing gambars ${b * BATCH_SIZE + 1}–${Math.min((b + 1) * BATCH_SIZE, state.images.length)} dari ${state.images.length}`
     );
 
     const parts = [{ type: 'text', text: extractPromptText(b + 1, batches.length) }];
     batches[b].forEach(img => {
-      parts.push({ type: 'gambar', source: { type: 'base64', media_type: img.mimeType, data: img.base64 } });
+      parts.push({ type: 'image', source: { type: 'base64', media_type: img.mimeType, data: img.base64 } });
     });
 
     const extractRes = await fetch('/api/extract', {
@@ -1007,9 +1007,9 @@ btnNew.addEventListener('click', () => {
   // Reset quiz output visibility for next generasi
   document.getElementById('quiz-output').classList.add('hidden');
   document.getElementById('quiz-meta-bar').classList.add('hidden');
-  state.gambars = [];
+  state.images = [];
   state.quizData = null;
-  gambarPreviewGrid.innerHTML = '';
+  imagePreviewGrid.innerHTML = '';
   quizOutput.innerHTML = '';
   stepResults.classList.add('hidden');
   generateHint.textContent = '';

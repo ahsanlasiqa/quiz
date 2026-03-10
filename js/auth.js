@@ -142,29 +142,36 @@ function startAuth() {
   });
 }
 
-if (window.firebaseReady) {
-  startAuth();
-} else {
-  window.addEventListener('firebase-ready', startAuth);
-
-  // Landing page CTA buttons all trigger the main Google login
-  function hookLandingBtn(id) {
+// Hook landing page buttons — runs immediately since DOM is ready
+function hookLandingButtons() {
+  ['btn-coba-gratis', 'btn-coba-free', 'btn-google-nav'].forEach(id => {
     const btn = document.getElementById(id);
     if (btn) btn.addEventListener('click', () => {
       document.getElementById('btn-google-login').click();
     });
-  }
-  ['btn-coba-gratis', 'btn-coba-free', 'btn-coba-pop', 'btn-coba-30', 'btn-google-nav'].forEach(hookLandingBtn);
+  });
 
-  // Pricing landing buttons — buy after login
   const btnPop = document.getElementById('btn-coba-pop');
-  const btn30  = document.getElementById('btn-coba-30');
   if (btnPop) btnPop.addEventListener('click', () => {
     sessionStorage.setItem('pendingPack', '60');
     document.getElementById('btn-google-login').click();
   });
+
+  const btn30 = document.getElementById('btn-coba-30');
   if (btn30) btn30.addEventListener('click', () => {
     sessionStorage.setItem('pendingPack', '30');
     document.getElementById('btn-google-login').click();
   });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', hookLandingButtons);
+} else {
+  hookLandingButtons();
+}
+
+if (window.firebaseReady) {
+  startAuth();
+} else {
+  window.addEventListener('firebase-ready', startAuth);
 }
