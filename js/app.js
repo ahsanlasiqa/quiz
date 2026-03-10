@@ -279,7 +279,7 @@ cameraInput.addEventListener('change', () => {
 });
 
 async function handleFiles(files) {
-  for (const file dari files) {
+  for (const file of files) {
     if (state.images.length >= LIMITS.maxImages) {
       generateHint.textContent = `Maksimum 15 gambar tercapai. Hapus beberapa sebelum menambah lagi.`;
       break;
@@ -504,7 +504,7 @@ async function callClaude() {
   }
 
   const extractPromptText = (batchNum, total) =>
-    `You are a teacher's assistant. Carefully read ALL the content in these gambars (batch ${batchNum} dari ${total}).
+    `You are a teacher's assistant. Carefully read ALL the content in these images (batch ${batchNum} dari ${total}).
 
 Extract a concise but complete summary including:
 1. Subject/topic name and language (Bahasa Indonesia or English)
@@ -517,8 +517,8 @@ Be thorough but concise — max 800 words. This will be used to generate quiz qu
   const summaries = [];
   for (let b = 0; b < batches.length; b++) {
     showLoading(
-      `Step 1/2: Reading gambars… (batch ${b + 1}/${batches.length})`,
-      `Processing gambars ${b * BATCH_SIZE + 1}–${Math.min((b + 1) * BATCH_SIZE, state.images.length)} dari ${state.images.length}`
+      `Step 1/2: Membaca materi… (batch ${b + 1}/${batches.length})`,
+      `Processing images ${b * BATCH_SIZE + 1}–${Math.min((b + 1) * BATCH_SIZE, state.images.length)} dari ${state.images.length}`
     );
 
     const parts = [{ type: 'text', text: extractPromptText(b + 1, batches.length) }];
@@ -548,7 +548,7 @@ Be thorough but concise — max 800 words. This will be used to generate quiz qu
   const materialSummary = summaries.join('\n\n---\n\n');
 
   // ── STEP 2: Generate quiz from summary ───
-  showLoading('Langkah 2/2: Membuat soal…', `Membuat ${state.settings.numQuestions} soal dari konten yang diekstrak…`);
+  showLoading('Langkah 2/2: Membuat soal…', `Membuat ${state.settings.numQuestions} questions from konten yang diekstrak…`);
 
   const quizPrompt = `You are an expert teacher creating quiz questions from the following learning material summary.
 
@@ -576,7 +576,7 @@ DIAGRAM INSTRUCTIONS (very important):
   * History: simple timeline with labeled events
   * Math: shapes, graphs, number lines, measurements
   * Language: a simple scene to describe (e.g. a house, a person, objects)
-- Aim to include SVG diagrams in at least 30% dari questions across any subject.
+- Aim to include SVG diagrams in at least 30% of questions across any subject.
 - The SVG should be simple, clean, labeled, and directly relevant to the question.
 - Use stroke="#1a7a6e" fill="none" or fill="#fef3d0" for shapes. Use fill="#1a1208" font-size="11" for text labels.
 - Keep SVG width="200" height="150" viewBox="0 0 200 150".
@@ -593,7 +593,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
       "question": "question text",
       "options": ["A. option1", "B. option2", "C. option3", "D. option4"],
       "answer": "A. option1",
-      "explanation": "Brief explanation dari why this answer is correct (1-2 sentences).",
+      "explanation": "Brief explanation of why this answer is correct (1-2 sentences).",
       "svg": null
     },
     {
@@ -608,7 +608,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
     {
       "number": 3,
       "type": "fill_blank",
-      "question": "The ___ dari a square is calculated by adding all four sides.",
+      "question": "The ___ of a square is calculated by adding all four sides.",
       "options": [],
       "answer": "perimeter",
       "explanation": "Brief explanation.",
@@ -670,7 +670,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
         return parsed;
       }
     } catch (_) {}
-    throw new Error('Response was cut off — please try again with fewer gambars or a fresh upload.');
+    throw new Error('Response was cut off — please try again with fewer images or a fresh upload.');
   }
 }
 
