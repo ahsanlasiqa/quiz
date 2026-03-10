@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QuizGen — Buat Soal Otomatis untuk Pelajar</title>
+  <title>QuizGen - Buat Latihan Soal UNLIMITED</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
@@ -32,18 +32,18 @@
       </div>
       <button class="btn-google btn-google-nav" id="btn-google-nav">
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="16" />
-        Masuk
+        Coba Gratis
       </button>
     </nav>
 
     <section class="landing-hero">
       <div class="landing-hero-inner">
-        <div class="landing-badge">✨ Didukung AI Claude oleh Anthropic</div>
-        <h1 class="landing-headline">Buat Soal Ujian<br/><em>dalam Hitungan Detik</em></h1>
+        <div class="landing-badge">✨ Didukung AI Mutakhir</div>
+        <h1 class="landing-headline">Buat Latihan Soal UNLIMITED<br/><em>dengan mudah dalam Hitungan Detik</em></h1>
         <p class="landing-subheadline">Foto halaman buku pelajaran, QuizGen langsung membuat soal pilihan ganda, benar/salah, isian, dan esai — siap cetak atau kerjakan online.</p>
         <div class="landing-cta-row">
           <button class="btn-coba" id="btn-coba-gratis">🚀 Coba Gratis Sekarang</button>
-          <p class="landing-cta-note">Gratis 3 kali generate · Tanpa kartu kredit</p>
+          <p class="landing-cta-note">Gratis 3 kali mencoba · Tanpa kartu kredit</p>
         </div>
         <div class="landing-features-row">
           <div class="landing-feat">📸 Upload Foto / PDF</div>
@@ -90,7 +90,7 @@
           <div class="ls-num">2</div>
           <div class="ls-icon">⚙️</div>
           <h3>AI Analisis</h3>
-          <p>Claude AI membaca seluruh materi dan membuat soal yang relevan dan bervariasi</p>
+          <p>AI membaca seluruh materi dan membuat soal yang relevan dan bervariasi</p>
         </div>
         <div class="landing-step-arrow">→</div>
         <div class="landing-step">
@@ -98,6 +98,45 @@
           <div class="ls-icon">🎉</div>
           <h3>Siap Digunakan</h3>
           <p>Unduh PDF siap cetak dengan kunci jawaban, atau kerjakan sebagai kuis interaktif</p>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="landing-pain">
+      <div class="landing-pain-inner">
+        <div class="pain-quote">
+          <div class="pain-quote-mark">"</div>
+          <p>Setiap malam anak minta dibuatkan soal latihan dari buku pelajaran mereka. Saya harus baca materinya dulu, baru tulis soal satu per satu — capek, dan makan waktu lama sekali."</p>
+          <div class="pain-quote-author">— Orang tua dengan 2 anak sekolah</div>
+        </div>
+        <div class="pain-cards">
+          <div class="pain-card">
+            <div class="pain-icon">😩</div>
+            <h3>Sebelum QuizGen</h3>
+            <ul>
+              <li>📖 Baca ulang materi buku dulu</li>
+              <li>✍️ Tulis soal satu per satu secara manual</li>
+              <li>🕐 Butuh 30–60 menit setiap malam</li>
+              <li>🖨️ Harus ke warnet untuk print atau ketik ulang di Word</li>
+              <li>😮‍💨 Habis tenaga sebelum sempat mendampingi anak belajar</li>
+            </ul>
+          </div>
+          <div class="pain-arrow-mid">→</div>
+          <div class="pain-card pain-card-after">
+            <div class="pain-icon">🎉</div>
+            <h3>Sesudah QuizGen</h3>
+            <ul>
+              <li>📸 Foto halaman buku — selesai</li>
+              <li>⚡ Soal langsung jadi dalam 30 detik</li>
+              <li>📄 PDF siap cetak, lengkap dengan kunci jawaban</li>
+              <li>🎮 Anak bisa langsung kerjakan secara interaktif</li>
+              <li>😊 Lebih banyak waktu untuk mendampingi, bukan membuat soal</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pain-cta">
+          <button class="btn-coba" id="btn-coba-pain">🚀 Coba Gratis — Tanpa Kartu Kredit</button>
         </div>
       </div>
     </section>
@@ -110,7 +149,7 @@
           <div class="pricing-price">Rp 0</div>
           <div class="pricing-desc">Untuk mencoba</div>
           <ul class="pricing-list">
-            <li>✅ 3 kali generate soal</li>
+            <li>✅ 3 kali</li>
             <li>✅ Semua jenis soal</li>
             <li>✅ Unduh PDF</li>
             <li>✅ Kuis interaktif</li>
@@ -120,21 +159,20 @@
         <div class="pricing-card pricing-card-pop">
           <div class="pricing-badge">Paling Hemat 🔥</div>
           <div class="pricing-price">Rp 49.900</div>
-          <div class="pricing-desc">60 kali generate</div>
+          <div class="pricing-desc">60 Credits</div>
           <ul class="pricing-list">
-            <li>✅ 60 kali generate soal</li>
+            <li>✅ 60 kali</li>
             <li>✅ Semua jenis soal</li>
             <li>✅ Unduh PDF</li>
             <li>✅ Kuis interaktif</li>
-            <li>✅ Tidak ada batas waktu</li>
           </ul>
           <button class="btn-coba btn-coba-sm" id="btn-coba-pop">Coba Gratis</button>
         </div>
         <div class="pricing-card">
           <div class="pricing-price">Rp 29.900</div>
-          <div class="pricing-desc">30 kali generate</div>
+          <div class="pricing-desc">30 Credits</div>
           <ul class="pricing-list">
-            <li>✅ 30 kali generate soal</li>
+            <li>✅ 30 kali</li>
             <li>✅ Semua jenis soal</li>
             <li>✅ Unduh PDF</li>
             <li>✅ Kuis interaktif</li>
@@ -154,7 +192,7 @@
         <p class="login-msg hidden" id="login-msg"></p>
         <button class="btn-google" id="btn-google-login">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" />
-          Masuk dengan Google
+          Coba Gratis
         </button>
         <p class="login-error hidden" id="login-error"></p>
       </div>
@@ -170,7 +208,7 @@
         <span class="logo-icon">✦</span>
         <span class="logo-text">QuizGen</span>
       </div>
-      <p class="logo-tagline">Ubah halaman buku menjadi soal siap cetak</p>
+      <p class="logo-tagline">Mau latihan soal setiap waktu sekarang lebih gampang</p>
       <div class="header-actions">
         <button class="btn-manage-sub hidden" id="btn-manage-sub" onclick="window.startCheckout()">⭐ Subscribe</button>
         <button class="btn-signout" id="btn-signout">Keluar</button>
@@ -281,7 +319,7 @@
           <p class="pdf-progress-text" id="pdf-progress-text">Mengonversi halaman PDF…</p>
         </div>
         <p class="image-counter" id="image-counter"></p>
-      <div class="image-preview-grid" id="image-preview-grid"></div>
+        <div class="image-preview-grid" id="image-preview-grid"></div>
       </section>
 
       <div class="generate-wrap">

@@ -1720,3 +1720,107 @@ body {
   .landing-footer-cta { padding: 48px 20px; }
   .banner-buy-btns { flex-direction: column; }
 }
+
+/* ══════════════════════════════════════════════
+   PAIN POINT SECTION
+   ══════════════════════════════════════════════ */
+.landing-pain {
+  background: linear-gradient(135deg, #1a2a2a 0%, #1a3a30 100%);
+  padding: 80px 32px;
+  color: white;
+}
+.landing-pain-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.pain-quote {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 56px;
+  position: relative;
+}
+.pain-quote-mark {
+  font-family: var(--font-display);
+  font-size: 6rem;
+  line-height: 0.5;
+  color: var(--teal);
+  opacity: 0.5;
+  margin-bottom: 16px;
+}
+.pain-quote p {
+  font-size: 1.2rem;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.9);
+  font-style: italic;
+  font-weight: 300;
+}
+.pain-quote-author {
+  margin-top: 16px;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.pain-cards {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+  margin-bottom: 48px;
+}
+.pain-card {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  padding: 28px 28px;
+}
+.pain-card-after {
+  background: rgba(26,122,110,0.2);
+  border-color: rgba(26,122,110,0.5);
+}
+.pain-icon { font-size: 2rem; margin-bottom: 12px; }
+.pain-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 16px;
+}
+.pain-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pain-card ul li {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.5;
+}
+.pain-card-after ul li { color: rgba(255,255,255,0.9); }
+.pain-arrow-mid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--teal);
+  padding: 0 20px;
+  flex-shrink: 0;
+}
+.pain-cta {
+  text-align: center;
+}
+.pain-cta .btn-coba {
+  background: linear-gradient(135deg, var(--teal), #2a9d8f);
+  font-size: 1.05rem;
+  padding: 18px 44px;
+}
+
+@media (max-width: 768px) {
+  .landing-pain { padding: 56px 20px; }
+  .pain-cards { flex-direction: column; gap: 16px; }
+  .pain-arrow-mid { transform: rotate(90deg); padding: 8px 0; }
+  .pain-quote p { font-size: 1rem; }
+}
