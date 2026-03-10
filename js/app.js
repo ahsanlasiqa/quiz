@@ -531,7 +531,7 @@ Be thorough but concise — max 800 words. This will be used to generate quiz qu
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 2000,
         messages: [{ role: 'user', content: parts }]
       })
@@ -631,7 +631,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-5',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 5000,
       messages: [{ role: 'user', content: quizPrompt }]
     })
