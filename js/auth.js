@@ -20,7 +20,7 @@ function startAuth() {
   const inviteCode = urlParams.get('invite') || '';
 
   if (inviteCode && loginMsg) {
-    loginMsg.textContent = "🎉 You've been invited! Sign in with Google to get access.";
+    loginMsg.textContent = "🎉 Anda telah diundang! Masuk dengan Google untuk mendapatkan akses.";
     loginMsg.classList.remove('hidden');
   }
 
@@ -44,7 +44,7 @@ function startAuth() {
 
   function resetLoginBtn() {
     btnLogin.disabled = false;
-    btnLogin.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" /> Sign in with Google';
+    btnLogin.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" /> Masuk dengan Google';
   }
 
   function setBtnLoading(text) {
@@ -67,7 +67,7 @@ function startAuth() {
         showApp(data);
       } else {
         await window.firebaseAuth.signOut();
-        showLogin(data.error || 'Access denied.');
+        showLogin(data.error || 'Akses ditolak.');
       }
     } catch (err) {
       console.error('checkAndShowApp error:', err);
@@ -146,4 +146,25 @@ if (window.firebaseReady) {
   startAuth();
 } else {
   window.addEventListener('firebase-ready', startAuth);
+
+  // Landing page CTA buttons all trigger the main Google login
+  function hookLandingBtn(id) {
+    const btn = document.getElementById(id);
+    if (btn) btn.addEventListener('click', () => {
+      document.getElementById('btn-google-login').click();
+    });
+  }
+  ['btn-coba-gratis', 'btn-coba-free', 'btn-coba-pop', 'btn-coba-30', 'btn-google-nav'].forEach(hookLandingBtn);
+
+  // Pricing landing buttons — buy after login
+  const btnPop = document.getElementById('btn-coba-pop');
+  const btn30  = document.getElementById('btn-coba-30');
+  if (btnPop) btnPop.addEventListener('click', () => {
+    sessionStorage.setItem('pendingPack', '60');
+    document.getElementById('btn-google-login').click();
+  });
+  if (btn30) btn30.addEventListener('click', () => {
+    sessionStorage.setItem('pendingPack', '30');
+    document.getElementById('btn-google-login').click();
+  });
 }

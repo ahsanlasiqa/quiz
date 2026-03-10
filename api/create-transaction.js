@@ -7,8 +7,10 @@ export const config = {
   api: { bodyParser: { sizeLimit: '1mb' }, maxDuration: 15 }
 };
 
-const PRICE_IDR = 47000;
-const CREDITS_PER_PACK = 60;
+const PACKS = {
+  30: { price: 29900, credits: 30, name: 'QuizGen 30 Soal' },
+  60: { price: 49900, credits: 60, name: 'QuizGen 60 Soal' },
+};
 
 function getAdminApp() {
   if (getApps().length > 0) return getApps()[0];
@@ -35,7 +37,9 @@ export default async function handler(req, res) {
     const name = decoded.name || email;
     if (!email) return res.status(401).json({ error: 'No email' });
 
-    const orderId = `quizgen-${email.replace(/[^a-z0-9]/g, '-')}-${Date.now()}`;
+    const packSize = parseInt(req.body?.pack) === 30 ? 30 : 60;
+    const pack = PACKS[packSize];
+    const orderId = `quizgen-${packSize}cr-${email.replace(/[^a-z0-9]/g, '-')}-${Date.now()}`;
 
     const snap = new midtransClient.Snap({
       isProduction: process.env.MIDTRANS_ENV === 'production',
@@ -45,13 +49,13 @@ export default async function handler(req, res) {
     const parameter = {
       transaction_details: {
         order_id: orderId,
-        gross_amount: PRICE_IDR,
+        gross_amount: pack.price,
       },
       item_details: [{
-        id: 'quizgen-credits-60',
-        price: PRICE_IDR,
+        id: `quizgen-credits-${packSize}`,
+        price: pack.price,
         quantity: 1,
-        name: `QuizGen 60 Generasi`,
+        name: pack.name,
         brand: 'QuizGen',
         category: 'Education',
       }],
@@ -72,8 +76,8 @@ export default async function handler(req, res) {
     // Save pending order
     await db.collection('orders').doc(orderId).set({
       orderId, email,
-      amount: PRICE_IDR,
-      credits: CREDITS_PER_PACK,
+      amount: pack.price,
+      credits: pack.credits,
       status: 'pending',
       createdAt: new Date().toISOString(),
     });

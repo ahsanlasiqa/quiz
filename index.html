@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QuizGen — Smart Quiz Maker for Kids</title>
+  <title>QuizGen — Buat Soal Otomatis untuk Pelajar</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
@@ -22,22 +22,143 @@
   <div class="bg-blob blob-2"></div>
   <div class="bg-blob blob-3"></div>
 
-  <!-- ── LOGIN SCREEN ── -->
+  <!-- ── LANDING + LOGIN SCREEN ── -->
   <div id="login-screen" class="login-screen hidden">
-    <div class="login-card">
-      <div class="login-logo">
-        <span class="logo-icon" style="font-size:2.5rem">✦</span>
-        <span class="logo-text" style="font-size:2.2rem">QuizGen</span>
+
+    <!-- NAVBAR -->
+    <nav class="landing-nav">
+      <div class="landing-nav-logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">QuizGen</span>
       </div>
-      <p class="login-tagline">Smart quiz maker for your kids</p>
-      <p class="login-desc">Sign in with your Google account to continue. Access is by invitation only.</p>
-      <p class="login-msg hidden" id="login-msg"></p>
-      <button class="btn-google" id="btn-google-login">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" />
-        Sign in with Google
+      <button class="btn-google btn-google-nav" id="btn-google-nav">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="16" />
+        Masuk
       </button>
-      <p class="login-error hidden" id="login-error"></p>
-    </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="landing-hero">
+      <div class="landing-hero-inner">
+        <div class="landing-badge">✨ Didukung AI Claude oleh Anthropic</div>
+        <h1 class="landing-headline">Buat Soal Ujian<br/><em>dalam Hitungan Detik</em></h1>
+        <p class="landing-subheadline">Foto halaman buku pelajaran, QuizGen langsung membuat soal pilihan ganda, benar/salah, isian, dan esai — siap cetak atau kerjakan online.</p>
+        <div class="landing-cta-row">
+          <button class="btn-coba" id="btn-coba-gratis">
+            🚀 Coba Gratis Sekarang
+          </button>
+          <p class="landing-cta-note">Gratis 3 kali generate · Tanpa kartu kredit</p>
+        </div>
+        <div class="landing-features-row">
+          <div class="landing-feat">📸 Upload Foto / PDF</div>
+          <div class="landing-feat">🤖 AI Buat Soal Otomatis</div>
+          <div class="landing-feat">📄 Unduh PDF Siap Cetak</div>
+          <div class="landing-feat">🎮 Mode Kuis Interaktif</div>
+        </div>
+      </div>
+      <div class="landing-hero-visual">
+        <div class="hero-card-stack">
+          <div class="hero-card hero-card-back">
+            <div class="hc-tag">Pilihan Ganda</div>
+            <div class="hc-line"></div><div class="hc-line hc-short"></div>
+            <div class="hc-opts"><span class="hc-opt hc-correct">A. Fotosintesis ✓</span><span class="hc-opt">B. Respirasi</span><span class="hc-opt">C. Transpirasi</span><span class="hc-opt">D. Evaporasi</span></div>
+          </div>
+          <div class="hero-card hero-card-front">
+            <div class="hc-tag hc-tag-tf">Benar / Salah</div>
+            <div class="hc-line"></div><div class="hc-line hc-short"></div>
+            <div class="hc-tf-row"><span class="hc-tf hc-tf-active">✓ Benar</span><span class="hc-tf">✗ Salah</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="landing-how">
+      <h2 class="landing-section-title">Cara Kerja QuizGen</h2>
+      <div class="landing-steps">
+        <div class="landing-step">
+          <div class="ls-num">1</div>
+          <div class="ls-icon">📸</div>
+          <h3>Foto Materi</h3>
+          <p>Upload foto atau PDF halaman buku pelajaran — bisa banyak halaman sekaligus</p>
+        </div>
+        <div class="landing-step-arrow">→</div>
+        <div class="landing-step">
+          <div class="ls-num">2</div>
+          <div class="ls-icon">⚙️</div>
+          <h3>AI Analisis</h3>
+          <p>Claude AI membaca seluruh materi dan membuat soal yang relevan dan bervariasi</p>
+        </div>
+        <div class="landing-step-arrow">→</div>
+        <div class="landing-step">
+          <div class="ls-num">3</div>
+          <div class="ls-icon">🎉</div>
+          <h3>Siap Digunakan</h3>
+          <p>Unduh PDF siap cetak dengan kunci jawaban, atau kerjakan langsung sebagai kuis online</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="landing-pricing">
+      <h2 class="landing-section-title">Harga Terjangkau</h2>
+      <div class="pricing-cards">
+        <div class="pricing-card">
+          <div class="pricing-badge-free">Gratis</div>
+          <div class="pricing-price">Rp 0</div>
+          <div class="pricing-desc">Untuk mencoba</div>
+          <ul class="pricing-list">
+            <li>✅ 3 kali generate soal</li>
+            <li>✅ Semua jenis soal</li>
+            <li>✅ Unduh PDF</li>
+            <li>✅ Mode kuis interaktif</li>
+          </ul>
+          <button class="btn-coba btn-coba-sm" id="btn-coba-free">Mulai Gratis</button>
+        </div>
+        <div class="pricing-card pricing-card-pop">
+          <div class="pricing-badge">Paling Hemat 🔥</div>
+          <div class="pricing-price">Rp 49.900</div>
+          <div class="pricing-desc">60 kali generate</div>
+          <ul class="pricing-list">
+            <li>✅ 60 kali generate soal</li>
+            <li>✅ Semua jenis soal</li>
+            <li>✅ Unduh PDF</li>
+            <li>✅ Mode kuis interaktif</li>
+            <li>✅ Tidak ada batas waktu</li>
+          </ul>
+          <button class="btn-coba btn-coba-sm" id="btn-coba-pop">Beli Sekarang</button>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-price">Rp 29.900</div>
+          <div class="pricing-desc">30 kali generate</div>
+          <ul class="pricing-list">
+            <li>✅ 30 kali generate soal</li>
+            <li>✅ Semua jenis soal</li>
+            <li>✅ Unduh PDF</li>
+            <li>✅ Mode kuis interaktif</li>
+          </ul>
+          <button class="btn-coba btn-coba-sm" id="btn-coba-30">Beli Sekarang</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER / LOGIN CARD -->
+    <section class="landing-footer-cta">
+      <div class="login-card" id="login-card">
+        <div class="login-logo">
+          <span class="logo-icon" style="font-size:2rem">✦</span>
+          <span class="logo-text" style="font-size:1.8rem">QuizGen</span>
+        </div>
+        <p class="login-tagline">Masuk untuk mulai membuat soal</p>
+        <p class="login-msg hidden" id="login-msg"></p>
+        <button class="btn-google" id="btn-google-login">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" />
+          Masuk dengan Google
+        </button>
+        <p class="login-error hidden" id="login-error"></p>
+      </div>
+    </section>
+
   </div>
 
   <!-- ── MAIN APP (hidden until logged in) ── -->
@@ -48,10 +169,10 @@
         <span class="logo-icon">✦</span>
         <span class="logo-text">QuizGen</span>
       </div>
-      <p class="logo-tagline">Turn textbook pages into ready-to-print quizzes</p>
+      <p class="logo-tagline">Ubah halaman buku menjadi soal siap cetak</p>
       <div class="header-actions">
-        <button class="btn-manage-sub hidden" id="btn-manage-sub" onclick="window.startCheckout()">⭐ Subscribe</button>
-        <button class="btn-signout" id="btn-signout">Sign out</button>
+        <button class="btn-manage-sub hidden" id="btn-manage-sub" onclick="window.startCheckout()">⭐ Langganan</button>
+        <button class="btn-signout" id="btn-signout">Keluar</button>
       </div>
     </header>
 
@@ -61,37 +182,37 @@
     <main class="app-container">
 
       <section class="card step-card" id="step-settings">
-        <div class="step-label">Step 1</div>
-        <h2 class="step-title">Quiz Settings</h2>
+        <div class="step-label">Langkah 1</div>
+        <h2 class="step-title">Pengaturan Soal</h2>
         <div class="settings-grid">
 
           <div class="setting-group full-width">
-            <label class="setting-label">School Level</label>
+            <label class="setting-label">Jenjang Sekolah</label>
             <div class="level-toggle-group" id="level-toggle">
               <button class="level-btn active" data-value="elementary">
                 <span class="level-emoji">🎒</span>
-                <span class="level-name">Elementary</span>
-                <span class="level-sub">Grade 1–6</span>
+                <span class="level-name">SD</span>
+                <span class="level-sub">Kelas 1–6</span>
               </button>
               <button class="level-btn" data-value="junior_high">
                 <span class="level-emoji">📚</span>
-                <span class="level-name">Junior High</span>
-                <span class="level-sub">Grade 7–9</span>
+                <span class="level-name">SMP</span>
+                <span class="level-sub">Kelas 7–9</span>
               </button>
               <button class="level-btn" data-value="high_school">
                 <span class="level-emoji">🎓</span>
-                <span class="level-name">High School</span>
-                <span class="level-sub">Grade 10–12</span>
+                <span class="level-name">SMA</span>
+                <span class="level-sub">Kelas 10–12</span>
               </button>
             </div>
             <div class="grade-selector" id="grade-selector">
-              <label class="setting-label">Grade</label>
+              <label class="setting-label">Kelas</label>
               <div class="grade-pills" id="grade-pills"></div>
             </div>
           </div>
 
           <div class="setting-group">
-            <label class="setting-label">Number of Questions</label>
+            <label class="setting-label">Jumlah Soal</label>
             <div class="number-input-wrap">
               <button class="num-btn" id="num-minus">−</button>
               <input type="number" id="num-questions" value="10" min="1" max="18" />
@@ -101,36 +222,36 @@
           </div>
 
           <div class="setting-group full-width">
-            <label class="setting-label">Question Types</label>
+            <label class="setting-label">Jenis Soal</label>
             <div class="checkbox-group">
               <label class="checkbox-item">
                 <input type="checkbox" name="qtype" value="multiple_choice" checked />
-                <span class="checkbox-box"></span><span>Multiple Choice</span>
+                <span class="checkbox-box"></span><span>Pilihan Ganda</span>
               </label>
               <label class="checkbox-item">
                 <input type="checkbox" name="qtype" value="true_false" checked />
-                <span class="checkbox-box"></span><span>True / False</span>
+                <span class="checkbox-box"></span><span>Benar / Salah</span>
               </label>
               <label class="checkbox-item">
                 <input type="checkbox" name="qtype" value="fill_blank" checked />
-                <span class="checkbox-box"></span><span>Fill in the Blank</span>
+                <span class="checkbox-box"></span><span>Isian</span>
               </label>
               <label class="checkbox-item">
                 <input type="checkbox" name="qtype" value="short_answer" checked />
-                <span class="checkbox-box"></span><span>Short Answer / Essay</span>
+                <span class="checkbox-box"></span><span>Uraian / Esai</span>
               </label>
             </div>
           </div>
 
           <div class="setting-group full-width">
-            <label class="setting-label">Student Info on PDF</label>
+            <label class="setting-label">Info Siswa pada PDF</label>
             <div class="two-col">
               <div class="input-field">
-                <label>Student Name (optional)</label>
-                <input type="text" id="student-name" placeholder="e.g. Andi" />
+                <label>Nama Siswa (opsional)</label>
+                <input type="text" id="student-name" placeholder="cth. Andi" />
               </div>
               <div class="input-field">
-                <label>Date (optional)</label>
+                <label>Tanggal (opsional)</label>
                 <input type="date" id="quiz-date" />
               </div>
             </div>
@@ -140,23 +261,23 @@
       </section>
 
       <section class="card step-card" id="step-upload">
-        <div class="step-label">Step 2</div>
-        <h2 class="step-title">Upload Learning Material</h2>
-        <p class="step-desc">Upload photos or PDF files of textbook pages. You can mix images and PDFs — all pages will be processed together.</p>
+        <div class="step-label">Langkah 2</div>
+        <h2 class="step-title">Upload Materi Pelajaran</h2>
+        <p class="step-desc">Upload foto atau file PDF halaman buku pelajaran. Bisa mix gambar dan PDF — semua halaman akan diproses bersama.</p>
         <div class="upload-zone" id="upload-zone">
           <div class="upload-icon">📎</div>
           <p class="upload-text">Drag & drop files here</p>
-          <p class="upload-hint">JPG, PNG, WEBP, PDF supported · Unlimited pages</p>
+          <p class="upload-hint">JPG, PNG, WEBP, PDF didukung · Maks. 15 gambar</p>
         </div>
         <input type="file" id="file-input" multiple accept="image/*,.pdf" style="display:none" />
         <input type="file" id="camera-input" multiple accept="image/*" capture="environment" style="display:none" />
         <div class="upload-btn-row">
-          <button class="upload-btn" id="btn-browse-files"><span>🗂</span> Browse Files</button>
-          <button class="upload-btn upload-btn-camera" id="btn-camera"><span>📷</span> Take Photo</button>
+          <button class="upload-btn" id="btn-browse-files"><span>🗂</span> Pilih File</button>
+          <button class="upload-btn upload-btn-camera" id="btn-camera"><span>📷</span> Foto Langsung</button>
         </div>
         <div class="pdf-progress hidden" id="pdf-progress">
           <div class="pdf-progress-bar"><div class="pdf-progress-fill" id="pdf-progress-fill"></div></div>
-          <p class="pdf-progress-text" id="pdf-progress-text">Converting PDF pages…</p>
+          <p class="pdf-progress-text" id="pdf-progress-text">Mengonversi halaman PDF…</p>
         </div>
         <p class="image-counter" id="image-counter"></p>
       <div class="image-preview-grid" id="image-preview-grid"></div>
@@ -165,27 +286,27 @@
       <div class="generate-wrap">
         <button class="btn-generate" id="btn-generate">
           <span class="btn-icon">⚡</span>
-          <span class="btn-text">Generate Quiz</span>
+          <span class="btn-text">Buat Soal</span>
         </button>
         <p class="generate-hint" id="generate-hint"></p>
       </div>
 
       <section class="card step-card hidden" id="step-results">
-        <div class="step-label">Step 3</div>
-        <h2 class="step-title">Your Quiz is Ready! 🎉</h2>
-        <p class="step-desc">Choose how you want to use this quiz:</p>
+        <div class="step-label">Langkah 3</div>
+        <h2 class="step-title">Soal Siap! 🎉</h2>
+        <p class="step-desc">Pilih cara menggunakan soal ini:</p>
 
         <!-- Action buttons shown first -->
         <div class="result-actions result-actions-top">
-          <button class="btn-pdf" id="btn-pdf"><span>⬇</span> Download PDF</button>
-          <button class="btn-interactive" id="btn-interactive"><span>▶</span> Start Interactive Quiz</button>
-          <button class="btn-new" id="btn-new"><span>＋</span> New Quiz</button>
+          <button class="btn-pdf" id="btn-pdf"><span>⬇</span> Unduh PDF</button>
+          <button class="btn-interactive" id="btn-interactive"><span>▶</span> Mulai Kuis Interaktif</button>
+          <button class="btn-new" id="btn-new"><span>＋</span> Soal Baru</button>
         </div>
 
         <!-- Quiz preview — hidden until PDF is chosen -->
         <div id="quiz-meta-bar" class="quiz-meta-bar hidden">
           <span id="quiz-meta-text"></span>
-          <button class="btn-regenerate" id="btn-regenerate">↺ Regenerate</button>
+          <button class="btn-regenerate" id="btn-regenerate">↺ Buat Ulang</button>
         </div>
         <div id="quiz-output" class="hidden"></div>
       </section>
@@ -193,8 +314,8 @@
       <div class="loading-overlay hidden" id="loading-overlay">
         <div class="loading-card">
           <div class="spinner"></div>
-          <p class="loading-text" id="loading-text">Reading your material…</p>
-          <p class="loading-sub" id="loading-sub">This may take a few seconds</p>
+          <p class="loading-text" id="loading-text">Membaca materi Anda…</p>
+          <p class="loading-sub" id="loading-sub">Mungkin butuh beberapa saat</p>
         </div>
       </div>
 
@@ -204,7 +325,7 @@
   <!-- Interactive Quiz Overlay -->
   <div class="interactive-overlay hidden" id="interactive-overlay">
     <div class="interactive-modal">
-      <button class="iq-close" id="iq-close">✕ Close</button>
+      <button class="iq-close" id="iq-close">✕ Tutup</button>
       <div class="interactive-container" id="interactive-container"></div>
     </div>
   </div>
