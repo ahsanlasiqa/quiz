@@ -126,14 +126,14 @@ window.renderCreditsBanner = function() {
   const credits = window._currentCredits;
 
   const statusText = credits > 0
-    ? `⚡ <strong>${credits} generasi</strong> tersisa`
-    : `🪫 Kredit Anda habis.`;
+    ? `⚡ <strong>${credits} credits</strong> tersisa`
+    : `🪫 Credits Anda habis.`;
   banner.className = credits > 0 ? 'subscription-banner trial' : 'subscription-banner expired';
   banner.innerHTML = `
     <span>${statusText}</span>
     <div class="banner-buy-btns">
-      <button class="btn-subscribe btn-subscribe-sm" onclick="window.startCheckout(30)">30 Soal — Rp 29.900</button>
-      <button class="btn-subscribe btn-subscribe-hot" onclick="window.startCheckout(60)">🔥 60 Soal — Rp 49.900</button>
+      <button class="btn-subscribe btn-subscribe-sm" onclick="window.startCheckout(30)">30 Credits — Rp 29.900</button>
+      <button class="btn-subscribe btn-subscribe-hot" onclick="window.startCheckout(60)">🔥 60 Credits — Rp 49.900</button>
     </div>
   `;
   banner.classList.remove('hidden');
