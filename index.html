@@ -14,7 +14,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <!-- Midtrans Snap -->
-  <script src="https://app.midtrans.com/snap/snap.js" data-client-key="REPLACE_WITH_MIDTRANS_CLIENT_KEY"></script>
+  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="REPLACE_WITH_MIDTRANS_CLIENT_KEY"></script>
 </head>
 <body>
 
@@ -254,7 +254,7 @@
             <label class="setting-label">Jumlah Soal</label>
             <div class="number-input-wrap">
               <button class="num-btn" id="num-minus">−</button>
-              <input type="number" id="num-questions" value="10" min="1" max="18" />
+              <input type="number" id="num-questions" value="10" min="1" max="15" />
               <button class="num-btn" id="num-plus">+</button>
             </div>
             <p class="questions-counter" id="questions-counter">10 / 18 questions</p>
@@ -306,7 +306,7 @@
         <div class="upload-zone" id="upload-zone">
           <div class="upload-icon">📎</div>
           <p class="upload-text">Seret & lepas file di sini</p>
-          <p class="upload-hint">JPG, PNG, WEBP, PDF didukung · Maks. 15 gambar</p>
+          <p class="upload-hint">JPG, PNG, WEBP, PDF didukung · Maks. 10 gambar</p>
         </div>
         <input type="file" id="file-input" multiple accept="image/*,.pdf" style="display:none" />
         <input type="file" id="camera-input" multiple accept="image/*" capture="environment" style="display:none" />

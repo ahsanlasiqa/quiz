@@ -5,10 +5,10 @@
 
 // ── Limits ─────────────────────────────────
 const LIMITS = {
-  maxImages: 15,
-  maxQuestions: 18,
-  warnImages: 12,
-  warnQuestions: 15,
+  maxImages: 10,
+  maxQuestions: 15,
+  warnImages: 8,
+  warnQuestions: 12,
 };
 
 // ── State ──────────────────────────────────
