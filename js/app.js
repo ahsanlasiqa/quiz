@@ -96,7 +96,7 @@ if (window.pdfjsLib) {
   const params = new URLSearchParams(window.location.search);
   if (params.get('payment') === 'finish') {
     window.history.replaceState({}, '', window.location.pathname);
-    setTimeout(() => generateHint.textContent = '🎉 Payment successful! Your generasis have been added.', 800);
+    setTimeout(() => generateHint.textContent = '🎉 Pembayaran berhasil! Kredit telah ditambahkan.', 800);
   } else if (params.get('payment') === 'pending') {
     window.history.replaceState({}, '', window.location.pathname);
     setTimeout(() => generateHint.textContent = '⏳ Pembayaran pending. Kredit aktif setelah dikonfirmasi.', 800);
@@ -117,21 +117,22 @@ window.renderCreditsBanner = function() {
   const banner = document.getElementById('subscription-banner');
   if (!banner) return;
 
+  // Invited (family) — no banner needed
   if (window._isInvited) {
     banner.classList.add('hidden');
     return;
   }
 
   const credits = window._currentCredits;
+
   const statusText = credits > 0
     ? `⚡ <strong>${credits} generasi</strong> tersisa`
     : `🪫 Kredit Anda habis.`;
-
   banner.className = credits > 0 ? 'subscription-banner trial' : 'subscription-banner expired';
   banner.innerHTML = `
     <span>${statusText}</span>
     <div class="banner-buy-btns">
-      <button class="btn-subscribe btn-subscribe-sm" onclick="window.startCheckout(30)">Beli 30 Soal — Rp 29.900</button>
+      <button class="btn-subscribe btn-subscribe-sm" onclick="window.startCheckout(30)">30 Soal — Rp 29.900</button>
       <button class="btn-subscribe btn-subscribe-hot" onclick="window.startCheckout(60)">🔥 60 Soal — Rp 49.900</button>
     </div>
   `;
@@ -156,10 +157,10 @@ window.startCheckout = async function(pack) {
       onSuccess: function(result) {
         window._currentCredits += (pack === 30 ? 30 : 60);
         window.renderCreditsBanner();
-        generateHint.textContent = '🎉 Pembayaran berhasil! Kredit telah ditambahkan.';
+        generateHint.textContent = '🎉 Pembayaran berhasil! Kredit ditambahkan.';
       },
       onPending: function(result) {
-        generateHint.textContent = '⏳ Pembayaran pending. Kredit akan aktif setelah dikonfirmasi.';
+        generateHint.textContent = '⏳ Pembayaran pending. Kredit aktif setelah dikonfirmasi.';
       },
       onError: function(result) {
         generateHint.textContent = '❌ Pembayaran gagal. Silakan coba lagi.';
@@ -202,18 +203,18 @@ function renderGrades(level) {
   gradeSelector.classList.add('visible');
 }
 
-// ── Number dari Questions ────────────────────
+// ── Number of Questions ────────────────────
 function updateQuestionsCounter(v) {
   const counter = document.getElementById('questions-counter');
   if (!counter) return;
   if (v >= LIMITS.maxQuestions) {
-    counter.textContent = `${v} / ${LIMITS.maxQuestions} soal · Maximum reached`;
+    counter.textContent = `${v} / ${LIMITS.maxQuestions} soal · Batas tercapai`;
     counter.className = 'questions-counter warn';
   } else if (v >= LIMITS.warnQuestions) {
-    counter.textContent = `${v} / ${LIMITS.maxQuestions} soal · Getting close to the limit`;
+    counter.textContent = `${v} / ${LIMITS.maxQuestions} soal · Mendekati batas`;
     counter.className = 'questions-counter warn-soft';
   } else {
-    counter.textContent = `${v} / ${LIMITS.maxQuestions} questions`;
+    counter.textContent = `${v} / ${LIMITS.maxQuestions} soal`;
     counter.className = 'questions-counter';
   }
 }
@@ -281,7 +282,7 @@ cameraInput.addEventListener('change', () => {
 async function handleFiles(files) {
   for (const file of files) {
     if (state.images.length >= LIMITS.maxImages) {
-      generateHint.textContent = `Maksimum 15 gambar tercapai. Hapus beberapa sebelum menambah lagi.`;
+      generateHint.textContent = `Maksimum ${LIMITS.maxImages} gambar tercapai. Hapus beberapa sebelum menambah lagi.`;
       break;
     }
     if (file.type === 'application/pdf') {
@@ -305,7 +306,7 @@ async function handlePDF(file) {
 
     for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
       if (state.images.length >= LIMITS.maxImages) {
-        pdfProgressText.textContent = `Berhenti di halaman ${pageNum - 1} — maksimum ${LIMITS.maxImages} images reached.`;
+        pdfProgressText.textContent = `Stopped at page ${pageNum - 1} — maksimum ${LIMITS.maxImages} gambar tercapai.`;
         break;
       }
       pdfProgressText.textContent = `Mengonversi halaman ${pageNum} dari ${totalPages}…`;
@@ -322,7 +323,7 @@ async function handlePDF(file) {
 
       await page.render({ canvasContext: ctx, viewport }).promise;
 
-      // Compress to JPEG like we do for gambars
+      // Compress to JPEG like we do for images
       const dataUrl = compressCanvas(canvas);
       const base64 = dataUrl.split(',')[1];
       state.images.push({
@@ -384,9 +385,9 @@ function compressCanvas(canvas) {
     c2.width = Math.round(canvas.width * ratio);
     c2.height = Math.round(canvas.height * ratio);
     c2.getContext('2d').drawImage(canvas, 0, 0, c2.width, c2.height);
-    return c2.toDataURL('gambar/jpeg', 0.82);
+    return c2.toDataURL('image/jpeg', 0.82);
   }
-  return canvas.toDataURL('gambar/jpeg', 0.82);
+  return canvas.toDataURL('image/jpeg', 0.82);
 }
 
 // ── Previews ───────────────────────────────
@@ -398,13 +399,13 @@ function updateImageCounter() {
     counter.textContent = '';
     counter.className = 'image-counter';
   } else if (count >= LIMITS.maxImages) {
-    counter.textContent = `${count} / ${LIMITS.maxImages} gambars · Maximum reached`;
+    counter.textContent = `${count} / ${LIMITS.maxImages} gambar · Batas tercapai`;
     counter.className = 'image-counter warn';
   } else if (count >= LIMITS.warnImages) {
-    counter.textContent = `${count} / ${LIMITS.maxImages} gambars · Getting close to the limit`;
+    counter.textContent = `${count} / ${LIMITS.maxImages} gambar · Mendekati batas`;
     counter.className = 'image-counter warn-soft';
   } else {
-    counter.textContent = `${count} / ${LIMITS.maxImages} gambars`;
+    counter.textContent = `${count} / ${LIMITS.maxImages} gambar`;
     counter.className = 'image-counter';
   }
 }
@@ -444,11 +445,11 @@ function collectSettings() {
   state.settings.date = quizDateInput.value;
 }
 
-// ── Generate Soal ──────────────────────────
-btnGenerate.addEventListener('click', generateSoal);
-btnRegenerate.addEventListener('click', generateSoal);
+// ── Generate Quiz ──────────────────────────
+btnGenerate.addEventListener('click', generateQuiz);
+btnRegenerate.addEventListener('click', generateQuiz);
 
-async function generateSoal() {
+async function generateQuiz() {
   collectSettings();
   if (state.images.length === 0) {
     generateHint.textContent = 'Upload minimal satu foto atau halaman PDF.';
@@ -459,11 +460,11 @@ async function generateSoal() {
     return;
   }
   generateHint.textContent = '';
-  showLoading('Langkah 1/2: Membaca materi…', `Menganalisis ${state.images.length} gambar${state.images.length !== 1 ? 's' : ''}…`);
+  showLoading('Langkah 1/2: Membaca materi…', `Menganalisis ${state.images.length} gambar…`);
   try {
     const quiz = await callClaude();
     state.quizData = quiz;
-    renderSoal(quiz);
+    renderQuiz(quiz);
     // Hide quiz content initially — show only action buttons
     document.getElementById('quiz-output').classList.add('hidden');
     document.getElementById('quiz-meta-bar').classList.add('hidden');
@@ -496,7 +497,7 @@ async function callClaude() {
   const selectedTypes = state.settings.types.map(t => typeNames[t]).join(', ');
   const idToken = await window.getIdToken();
 
-  // ── STEP 1: Extract content from gambars (batched) ──
+  // ── STEP 1: Extract content from images (batched) ──
   const BATCH_SIZE = 5;
   const batches = [];
   for (let i = 0; i < state.images.length; i += BATCH_SIZE) {
@@ -504,7 +505,7 @@ async function callClaude() {
   }
 
   const extractPromptText = (batchNum, total) =>
-    `You are a teacher's assistant. Carefully read ALL the content in these images (batch ${batchNum} dari ${total}).
+    `You are a teacher's assistant. Carefully read ALL the content in these images (batch ${batchNum} of ${total}).
 
 Extract a concise but complete summary including:
 1. Subject/topic name and language (Bahasa Indonesia or English)
@@ -517,8 +518,8 @@ Be thorough but concise — max 800 words. This will be used to generate quiz qu
   const summaries = [];
   for (let b = 0; b < batches.length; b++) {
     showLoading(
-      `Step 1/2: Membaca materi… (batch ${b + 1}/${batches.length})`,
-      `Processing images ${b * BATCH_SIZE + 1}–${Math.min((b + 1) * BATCH_SIZE, state.images.length)} dari ${state.images.length}`
+      `Step 1/2: Reading images… (batch ${b + 1}/${batches.length})`,
+      `Processing images ${b * BATCH_SIZE + 1}–${Math.min((b + 1) * BATCH_SIZE, state.images.length)} of ${state.images.length}`
     );
 
     const parts = [{ type: 'text', text: extractPromptText(b + 1, batches.length) }];
@@ -548,7 +549,7 @@ Be thorough but concise — max 800 words. This will be used to generate quiz qu
   const materialSummary = summaries.join('\n\n---\n\n');
 
   // ── STEP 2: Generate quiz from summary ───
-  showLoading('Langkah 2/2: Membuat soal…', `Membuat ${state.settings.numQuestions} questions from konten yang diekstrak…`);
+  showLoading('Langkah 2/2: Membuat soal…', `Membuat ${state.settings.numQuestions} soal dari konten yang diekstrak…`);
 
   const quizPrompt = `You are an expert teacher creating quiz questions from the following learning material summary.
 
@@ -647,7 +648,7 @@ Respond ONLY with valid JSON, no markdown, no extra text:
   const data = await generateRes.json();
 
   // Update credit counter if server returned it
-  if (typedari data._credits === 'number') {
+  if (typeof data._credits === 'number') {
     window._currentCredits = data._credits;
     window.renderCreditsBanner();
   }
@@ -670,15 +671,15 @@ Respond ONLY with valid JSON, no markdown, no extra text:
         return parsed;
       }
     } catch (_) {}
-    throw new Error('Response was cut off — please try again with fewer images or a fresh upload.');
+    throw new Error('Respons terpotong — coba lagi dengan lebih sedikit gambar.');
   }
 }
 
-// ── Render Soal ────────────────────────────
-function renderSoal(quiz) {
+// ── Render Quiz ────────────────────────────
+function renderQuiz(quiz) {
   const config = GRADE_CONFIG[state.settings.level];
   const gradeLabel = `${config.emoji} ${config.label} · Grade ${state.settings.grade}`;
-  quizMetaText.textContent = `${quiz.subject || 'Soal'} · ${gradeLabel} · ${quiz.questions.length} soal · ${quiz.language || ''}`;
+  quizMetaText.textContent = `${quiz.subject || 'Quiz'} · ${gradeLabel} · ${quiz.questions.length} questions · ${quiz.language || ''}`;
 
   let html = '';
   quiz.questions.forEach((q, i) => {
@@ -739,10 +740,10 @@ btnPdf.addEventListener('click', () => {
   generatePDF(state.quizData);
 });
 
-// ── Interactive Soal ────────────────────────
+// ── Interactive Quiz ────────────────────────
 btnInteractive.addEventListener('click', () => {
   if (!state.quizData) return;
-  startInteractiveSoal(state.quizData);
+  startInteractiveQuiz(state.quizData);
 });
 
 function generatePDF(quiz) {
@@ -774,8 +775,8 @@ function generatePDF(quiz) {
     doc.setFillColor(253, 248, 240);
     doc.rect(0, 0, pageW, 12, 'F');
     setFont(7, 'bold', colors.muted);
-    doc.text('SoalGen', margin, 8);
-    doc.text(`${quiz.subject || 'Soal'} · ${quiz.language || ''}`, pageW - margin, 8, { align: 'right' });
+    doc.text('QuizGen', margin, 8);
+    doc.text(`${quiz.subject || 'Quiz'} · ${quiz.language || ''}`, pageW - margin, 8, { align: 'right' });
     doc.setDrawColor(...colors.lineBg);
     doc.setLineWidth(0.4);
     doc.line(margin, 10, pageW - margin, 10);
@@ -789,7 +790,7 @@ function generatePDF(quiz) {
 
   y = 26;
   setFont(20, 'bold', colors.ink);
-  doc.text(quiz.subject || 'Soal', margin, y);
+  doc.text(quiz.subject || 'Quiz', margin, y);
   y += 8;
 
   const config = GRADE_CONFIG[state.settings.level];
@@ -840,13 +841,13 @@ function generatePDF(quiz) {
     doc.text(qLines, margin, y);
     y += qLines.length * 5 + 3;
 
-    // Embed SVG diagram as rendered gambar in PDF
+    // Embed SVG diagram as rendered image in PDF
     if (q.svg) {
       try {
-        const svgBlob = new Blob([q.svg], { type: 'gambar/svg+xml' });
+        const svgBlob = new Blob([q.svg], { type: 'image/svg+xml' });
         const url = URL.createObjectURL(svgBlob);
-        // Render SVG to canvas synchronously via a pre-drawn gambar
-        // We'll add a placeholder note since async isn't ideal in sync PDF generasi
+        // Render SVG to canvas synchronously via a pre-drawn image
+        // We'll add a placeholder note since async isn't ideal in sync PDF generation
         // Instead, draw a simple inline representation using jsPDF shapes
         drawSVGShapesPDF(doc, q.svg, margin, y, contentW, colors);
         y += 46;
@@ -893,11 +894,11 @@ function generatePDF(quiz) {
   setFont(13, 'bold', [255, 255, 255]);
   doc.text('Answer Key', margin, 12);
   setFont(8, 'normal', [180, 170, 160]);
-  doc.text(`${quiz.subject || 'Soal'} - for teacher use only`, pageW - margin, 12, { align: 'right' });
+  doc.text(`${quiz.subject || 'Quiz'} - for teacher use only`, pageW - margin, 12, { align: 'right' });
 
   y = 26;
   setFont(9, 'normal', colors.muted);
-  doc.text(`Generated by SoalGen  -  ${new Date().toLocaleDateString()}`, margin, y);
+  doc.text(`Generated by QuizGen  -  ${new Date().toLocaleDateString()}`, margin, y);
   y += 8;
   doc.setDrawColor(...colors.lineBg); doc.setLineWidth(0.5);
   doc.line(margin, y, pageW - margin, y);
@@ -937,7 +938,7 @@ function drawSVGShapesPDF(doc, svgStr, x, y, maxW, colors) {
   // Parse and draw basic SVG shapes
   try {
     const parser = new DOMParser();
-    const svgDoc = parser.parseFromString(svgStr, 'gambar/svg+xml');
+    const svgDoc = parser.parseFromString(svgStr, 'image/svg+xml');
     const svgEl = svgDoc.querySelector('svg');
     if (!svgEl) return;
 
@@ -1002,9 +1003,9 @@ function drawSVGShapesPDF(doc, svgStr, x, y, maxW, colors) {
   } catch(e) { /* silently skip */ }
 }
 
-// ── New Soal ───────────────────────────────
+// ── New Quiz ───────────────────────────────
 btnNew.addEventListener('click', () => {
-  // Reset quiz output visibility for next generasi
+  // Reset quiz output visibility for next generation
   document.getElementById('quiz-output').classList.add('hidden');
   document.getElementById('quiz-meta-bar').classList.add('hidden');
   state.images = [];
@@ -1016,7 +1017,7 @@ btnNew.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// ── Memuat Helpers ────────────────────────
+// ── Loading Helpers ────────────────────────
 function showLoading(msg = 'Generating…', sub = 'This may take a few seconds') {
   loadingText.textContent = msg;
   loadingSub.textContent = sub;
@@ -1032,7 +1033,7 @@ function hideLoading() {
 //  INTERACTIVE QUIZ MODE
 // ══════════════════════════════════════════════
 
-function startInteractiveSoal(quiz) {
+function startInteractiveQuiz(quiz) {
   const overlay = document.getElementById('interactive-overlay');
   const container = document.getElementById('interactive-container');
   overlay.classList.remove('hidden');
@@ -1041,8 +1042,8 @@ function startInteractiveSoal(quiz) {
   // Render all questions interactively
   let html = `
     <div class="iq-header">
-      <div class="iq-title">📝 ${quiz.subject || 'Interactive Soal'}</div>
-      <div class="iq-meta">${quiz.questions.length} soal · Jawab semua lalu kumpulkan</div>
+      <div class="iq-title">📝 ${quiz.subject || 'Interactive Quiz'}</div>
+      <div class="iq-meta">${quiz.questions.length} questions · Answer all then submit</div>
     </div>
     <div class="iq-questions">`;
 
@@ -1060,11 +1061,11 @@ function startInteractiveSoal(quiz) {
 
   // Submit handler
   document.getElementById('iq-submit').addEventListener('click', () => {
-    submitInteractiveSoal(quiz);
+    submitInteractiveQuiz(quiz);
   });
 
   // Close button
-  document.getElementById('iq-close').addEventListener('click', closeInteractiveSoal);
+  document.getElementById('iq-close').addEventListener('click', closeInteractiveQuiz);
 }
 
 function renderInteractiveQuestion(q, i) {
@@ -1103,7 +1104,7 @@ function renderInteractiveQuestion(q, i) {
     const blankCount = (q.question.match(/___/g) || []).length;
     const hint = blankCount > 1
       ? `Type ${blankCount} answers separated by commas (e.g. answer1, answer2)`
-      : 'Tulis jawabanmu';
+      : 'Type your answer';
     inputHtml = `<p class="iq-fill-label">Jawaban kamu: <span class="iq-format-hint">${hint}</span></p>
       <input type="text" class="iq-text-input" data-qi="${i}" placeholder="${hint}…" />`;
     return `
@@ -1118,8 +1119,8 @@ function renderInteractiveQuestion(q, i) {
       </div>`;
   } else {
     // Short answer / essay
-    inputHtml = `<p class="iq-fill-label">Jawaban kamu: <span class="iq-format-hint">Tulis 2–4 kalimat</span></p>
-      <textarea class="iq-textarea" data-qi="${i}" placeholder="Tulis jawaban di sini…" rows="3"></textarea>`;
+    inputHtml = `<p class="iq-fill-label">Jawaban kamu: <span class="iq-format-hint">Write 2–4 sentences</span></p>
+      <textarea class="iq-textarea" data-qi="${i}" placeholder="Write your answer here…" rows="3"></textarea>`;
   }
 
   return `
@@ -1134,7 +1135,7 @@ function renderInteractiveQuestion(q, i) {
     </div>`;
 }
 
-function submitInteractiveSoal(quiz) {
+function submitInteractiveQuiz(quiz) {
   const hint = document.getElementById('iq-submit-hint');
   const container = document.getElementById('interactive-container');
 
@@ -1157,11 +1158,11 @@ function submitInteractiveSoal(quiz) {
 
   // Warn if unanswered (but allow submit anyway)
   if (unanswered.length > 0) {
-    hint.textContent = `⚠️ ${unanswered.length} question(s) belum dijawab (Q${unanswered.join(', Q')}). Kumpulkan tetap?`;
+    hint.textContent = `⚠️ ${unanswered.length} soal belum dijawab (Q${unanswered.join(', Q')}). Kumpulkan tetap?`;
     hint.style.color = 'var(--amber)';
     // Change button to confirm
     const btn = document.getElementById('iq-submit');
-    btn.textContent = 'Ya, Kumpulkan Sekarang ⚡';
+    btn.textContent = 'Ya, Kumpulkan Tetap ⚡';
     btn.onclick = () => showInteractiveResults(quiz, answers);
     return;
   }
@@ -1257,7 +1258,7 @@ function showInteractiveResults(quiz, answers) {
 
   const pct = Math.round((score / quiz.questions.length) * 100);
   const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '👍' : pct >= 40 ? '📚' : '💪';
-  const msg = pct >= 80 ? 'Luar biasa!' : pct >= 60 ? 'Bagus!' : pct >= 40 ? 'Terus belajar!' : 'Don\'t give up!';
+  const msg = pct >= 80 ? 'Luar biasa!' : pct >= 60 ? 'Bagus!' : pct >= 40 ? 'Terus belajar!' : 'Jangan menyerah!';
 
   container.innerHTML = `
     <div class="iq-score-banner">
@@ -1267,11 +1268,11 @@ function showInteractiveResults(quiz, answers) {
     </div>
     <div class="iq-results-list">${resultsHtml}</div>
     <div class="iq-done-wrap">
-      <button class="iq-btn-done" onclick="closeInteractiveSoal()">✓ Selesai</button>
+      <button class="iq-btn-done" onclick="closeInteractiveQuiz()">✓ Selesai</button>
     </div>`;
 }
 
-function closeInteractiveSoal() {
+function closeInteractiveQuiz() {
   document.getElementById('interactive-overlay').classList.add('hidden');
   document.body.style.overflow = '';
 }

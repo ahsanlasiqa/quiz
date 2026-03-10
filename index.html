@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -25,7 +25,6 @@
   <!-- ── LANDING + LOGIN SCREEN ── -->
   <div id="login-screen" class="login-screen hidden">
 
-    <!-- NAVBAR -->
     <nav class="landing-nav">
       <div class="landing-nav-logo">
         <span class="logo-icon">✦</span>
@@ -37,23 +36,20 @@
       </button>
     </nav>
 
-    <!-- HERO -->
     <section class="landing-hero">
       <div class="landing-hero-inner">
         <div class="landing-badge">✨ Didukung AI Claude oleh Anthropic</div>
         <h1 class="landing-headline">Buat Soal Ujian<br/><em>dalam Hitungan Detik</em></h1>
         <p class="landing-subheadline">Foto halaman buku pelajaran, QuizGen langsung membuat soal pilihan ganda, benar/salah, isian, dan esai — siap cetak atau kerjakan online.</p>
         <div class="landing-cta-row">
-          <button class="btn-coba" id="btn-coba-gratis">
-            🚀 Coba Gratis Sekarang
-          </button>
+          <button class="btn-coba" id="btn-coba-gratis">🚀 Coba Gratis Sekarang</button>
           <p class="landing-cta-note">Gratis 3 kali generate · Tanpa kartu kredit</p>
         </div>
         <div class="landing-features-row">
           <div class="landing-feat">📸 Upload Foto / PDF</div>
           <div class="landing-feat">🤖 AI Buat Soal Otomatis</div>
-          <div class="landing-feat">📄 Unduh PDF Siap Cetak</div>
-          <div class="landing-feat">🎮 Mode Kuis Interaktif</div>
+          <div class="landing-feat">📄 PDF Siap Cetak</div>
+          <div class="landing-feat">🎮 Kuis Interaktif</div>
         </div>
       </div>
       <div class="landing-hero-visual">
@@ -61,18 +57,25 @@
           <div class="hero-card hero-card-back">
             <div class="hc-tag">Pilihan Ganda</div>
             <div class="hc-line"></div><div class="hc-line hc-short"></div>
-            <div class="hc-opts"><span class="hc-opt hc-correct">A. Fotosintesis ✓</span><span class="hc-opt">B. Respirasi</span><span class="hc-opt">C. Transpirasi</span><span class="hc-opt">D. Evaporasi</span></div>
+            <div class="hc-opts">
+              <span class="hc-opt hc-correct">A. Fotosintesis ✓</span>
+              <span class="hc-opt">B. Respirasi</span>
+              <span class="hc-opt">C. Transpirasi</span>
+              <span class="hc-opt">D. Evaporasi</span>
+            </div>
           </div>
           <div class="hero-card hero-card-front">
             <div class="hc-tag hc-tag-tf">Benar / Salah</div>
             <div class="hc-line"></div><div class="hc-line hc-short"></div>
-            <div class="hc-tf-row"><span class="hc-tf hc-tf-active">✓ Benar</span><span class="hc-tf">✗ Salah</span></div>
+            <div class="hc-tf-row">
+              <span class="hc-tf hc-tf-active">✓ Benar</span>
+              <span class="hc-tf">✗ Salah</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- HOW IT WORKS -->
     <section class="landing-how">
       <h2 class="landing-section-title">Cara Kerja QuizGen</h2>
       <div class="landing-steps">
@@ -80,7 +83,7 @@
           <div class="ls-num">1</div>
           <div class="ls-icon">📸</div>
           <h3>Foto Materi</h3>
-          <p>Upload foto atau PDF halaman buku pelajaran — bisa banyak halaman sekaligus</p>
+          <p>Upload foto atau PDF halaman buku — bisa banyak halaman sekaligus</p>
         </div>
         <div class="landing-step-arrow">→</div>
         <div class="landing-step">
@@ -94,12 +97,11 @@
           <div class="ls-num">3</div>
           <div class="ls-icon">🎉</div>
           <h3>Siap Digunakan</h3>
-          <p>Unduh PDF siap cetak dengan kunci jawaban, atau kerjakan langsung sebagai kuis online</p>
+          <p>Unduh PDF siap cetak dengan kunci jawaban, atau kerjakan sebagai kuis interaktif</p>
         </div>
       </div>
     </section>
 
-    <!-- PRICING -->
     <section class="landing-pricing">
       <h2 class="landing-section-title">Harga Terjangkau</h2>
       <div class="pricing-cards">
@@ -111,9 +113,9 @@
             <li>✅ 3 kali generate soal</li>
             <li>✅ Semua jenis soal</li>
             <li>✅ Unduh PDF</li>
-            <li>✅ Mode kuis interaktif</li>
+            <li>✅ Kuis interaktif</li>
           </ul>
-          <button class="btn-coba btn-coba-sm" id="btn-coba-free">Mulai Gratis</button>
+          <button class="btn-coba btn-coba-sm" id="btn-coba-free">Coba Gratis</button>
         </div>
         <div class="pricing-card pricing-card-pop">
           <div class="pricing-badge">Paling Hemat 🔥</div>
@@ -123,7 +125,7 @@
             <li>✅ 60 kali generate soal</li>
             <li>✅ Semua jenis soal</li>
             <li>✅ Unduh PDF</li>
-            <li>✅ Mode kuis interaktif</li>
+            <li>✅ Kuis interaktif</li>
             <li>✅ Tidak ada batas waktu</li>
           </ul>
           <button class="btn-coba btn-coba-sm" id="btn-coba-pop">Coba Gratis</button>
@@ -135,14 +137,13 @@
             <li>✅ 30 kali generate soal</li>
             <li>✅ Semua jenis soal</li>
             <li>✅ Unduh PDF</li>
-            <li>✅ Mode kuis interaktif</li>
+            <li>✅ Kuis interaktif</li>
           </ul>
           <button class="btn-coba btn-coba-sm" id="btn-coba-30">Coba Gratis</button>
         </div>
       </div>
     </section>
 
-    <!-- FOOTER / LOGIN CARD -->
     <section class="landing-footer-cta">
       <div class="login-card" id="login-card">
         <div class="login-logo">
@@ -171,7 +172,7 @@
       </div>
       <p class="logo-tagline">Ubah halaman buku menjadi soal siap cetak</p>
       <div class="header-actions">
-        <button class="btn-manage-sub hidden" id="btn-manage-sub" onclick="window.startCheckout()">⭐ Langganan</button>
+        <button class="btn-manage-sub hidden" id="btn-manage-sub" onclick="window.startCheckout()">⭐ Subscribe</button>
         <button class="btn-signout" id="btn-signout">Keluar</button>
       </div>
     </header>
@@ -263,10 +264,10 @@
       <section class="card step-card" id="step-upload">
         <div class="step-label">Langkah 2</div>
         <h2 class="step-title">Upload Materi Pelajaran</h2>
-        <p class="step-desc">Upload foto atau file PDF halaman buku pelajaran. Bisa mix gambar dan PDF — semua halaman akan diproses bersama.</p>
+        <p class="step-desc">Upload foto atau file PDF halaman buku pelajaran. Bisa campur gambar dan PDF — semua halaman diproses bersama.</p>
         <div class="upload-zone" id="upload-zone">
           <div class="upload-icon">📎</div>
-          <p class="upload-text">Drag & drop files here</p>
+          <p class="upload-text">Seret & lepas file di sini</p>
           <p class="upload-hint">JPG, PNG, WEBP, PDF didukung · Maks. 15 gambar</p>
         </div>
         <input type="file" id="file-input" multiple accept="image/*,.pdf" style="display:none" />
@@ -293,7 +294,7 @@
 
       <section class="card step-card hidden" id="step-results">
         <div class="step-label">Langkah 3</div>
-        <h2 class="step-title">Soal Siap! 🎉</h2>
+        <h2 class="step-title">Soal Siap Dibuat! 🎉</h2>
         <p class="step-desc">Pilih cara menggunakan soal ini:</p>
 
         <!-- Action buttons shown first -->

@@ -1,6 +1,7 @@
 {
   "functions": {
     "api/generate.js":              { "maxDuration": 60 },
+    "api/extract.js":               { "maxDuration": 60 },
     "api/check-auth.js":            { "maxDuration": 15 },
     "api/create-transaction.js":    { "maxDuration": 15 },
     "api/midtrans-webhook.js":      { "maxDuration": 15 },

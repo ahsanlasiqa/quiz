@@ -20,7 +20,7 @@ function startAuth() {
   const inviteCode = urlParams.get('invite') || '';
 
   if (inviteCode && loginMsg) {
-    loginMsg.textContent = "🎉 Anda telah diundang! Masuk dengan Google untuk mendapatkan akses.";
+    loginMsg.textContent = "🎉 Anda diundang! Masuk dengan Google untuk mendapatkan akses.";
     loginMsg.classList.remove('hidden');
   }
 
@@ -67,7 +67,7 @@ function startAuth() {
         showApp(data);
       } else {
         await window.firebaseAuth.signOut();
-        showLogin(data.error || 'Akses ditolak.');
+        showLogin(data.error || 'Access denied.');
       }
     } catch (err) {
       console.error('checkAndShowApp error:', err);
@@ -142,28 +142,25 @@ function startAuth() {
   });
 }
 
-// Hook landing page buttons — runs immediately since DOM is ready
+// Hook landing page buttons after DOM is ready
 function hookLandingButtons() {
-  ['btn-coba-gratis', 'btn-coba-free', 'btn-google-nav'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) btn.addEventListener('click', () => {
+  ['btn-coba-gratis', 'btn-coba-free', 'btn-google-nav'].forEach(function(id) {
+    var btn = document.getElementById(id);
+    if (btn) btn.addEventListener('click', function() {
       document.getElementById('btn-google-login').click();
     });
   });
-
-  const btnPop = document.getElementById('btn-coba-pop');
-  if (btnPop) btnPop.addEventListener('click', () => {
+  var btnPop = document.getElementById('btn-coba-pop');
+  if (btnPop) btnPop.addEventListener('click', function() {
     sessionStorage.setItem('pendingPack', '60');
     document.getElementById('btn-google-login').click();
   });
-
-  const btn30 = document.getElementById('btn-coba-30');
-  if (btn30) btn30.addEventListener('click', () => {
+  var btn30 = document.getElementById('btn-coba-30');
+  if (btn30) btn30.addEventListener('click', function() {
     sessionStorage.setItem('pendingPack', '30');
     document.getElementById('btn-google-login').click();
   });
 }
-
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', hookLandingButtons);
 } else {
