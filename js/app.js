@@ -516,15 +516,11 @@ async function callClaude() {
   }
 
   const extractPromptText = (batchNum, total) =>
-    `You are a teacher's assistant. Carefully read ALL the content in these images (batch ${batchNum} of ${total}).
-
-Extract a concise but complete summary including:
-1. Subject/topic name and language (Bahasa Indonesia or English)
-2. ALL key concepts, facts, definitions, formulas
-3. Important terms, names, dates, numbers
-4. Any diagrams or visual content described briefly
-
-Be thorough but concise — max 800 words. This will be used to generate quiz questions.`;
+    `Extract key content from these images (batch ${batchNum}/${total}) for quiz generation:
+- Subject, topic, language (Bahasa Indonesia or English)
+- Key concepts, facts, definitions, formulas, terms, dates, numbers
+- Brief description of any diagrams/visuals
+Max 500 words. Be concise.`;
 
   const summaries = [];
   for (let b = 0; b < batches.length; b++) {
@@ -543,7 +539,7 @@ Be thorough but concise — max 800 words. This will be used to generate quiz qu
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 2000,
+        max_tokens: 800,
         messages: [{ role: 'user', content: parts }]
       })
     });
@@ -580,70 +576,19 @@ INSTRUCTIONS:
 6. For fill in blank: replace key terms with ___.
 7. For short answer: ask open-ended questions about main concepts.
 
-DIAGRAM INSTRUCTIONS (very important):
-- Whenever a diagram, illustration, or visual would help clarify or enrich a question, you MUST include an SVG. This applies to ALL subjects, not just math. Examples:
-  * Science: food chain, water cycle, plant cell, animal body part, circuit
-  * Biology: leaf, food web arrows, heart diagram
-  * Geography: simple map, compass rose, landform cross-section
-  * History: simple timeline with labeled events
-  * Math: shapes, graphs, number lines, measurements
-  * Language: a simple scene to describe (e.g. a house, a person, objects)
-- Aim to include SVG diagrams in at least 30% of questions across any subject.
-- The SVG should be simple, clean, labeled, and directly relevant to the question.
-- Use stroke="#1a7a6e" fill="none" or fill="#fef3d0" for shapes. Use fill="#1a1208" font-size="11" for text labels.
-- Keep SVG width="200" height="150" viewBox="0 0 200 150".
-- Only set "svg" to null if no visual would add any value to the question.
+DIAGRAM INSTRUCTIONS:
+- Include SVG only when a visual clearly helps (math, science diagrams). Set svg to null otherwise.
+- Simple SVG: width="200" height="150" viewBox="0 0 200 150", stroke="#1a7a6e", fill="#fef3d0", labels fill="#1a1208" font-size="11".
 
-Respond ONLY with valid JSON, no markdown, no extra text:
-{
-  "subject": "detected subject name",
-  "language": "detected language",
-  "questions": [
-    {
-      "number": 1,
-      "type": "multiple_choice",
-      "question": "question text",
-      "options": ["A. option1", "B. option2", "C. option3", "D. option4"],
-      "answer": "A. option1",
-      "explanation": "Brief explanation of why this answer is correct (1-2 sentences).",
-      "svg": null
-    },
-    {
-      "number": 2,
-      "type": "true_false",
-      "question": "statement",
-      "options": [],
-      "answer": "True",
-      "explanation": "Brief explanation.",
-      "svg": null
-    },
-    {
-      "number": 3,
-      "type": "fill_blank",
-      "question": "The ___ of a square is calculated by adding all four sides.",
-      "options": [],
-      "answer": "perimeter",
-      "explanation": "Brief explanation.",
-      "svg": null
-    },
-    {
-      "number": 4,
-      "type": "short_answer",
-      "question": "Explain...",
-      "options": [],
-      "answer": "Model answer: ...",
-      "explanation": "Key points to look for in the answer.",
-      "svg": null
-    }
-  ]
-}`;
+Respond ONLY with valid JSON, no markdown:
+{"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null}]}`;
 
   const generateRes = await fetch('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 5000,
+      max_tokens: 3500,
       messages: [{ role: 'user', content: quizPrompt }]
     })
   });
