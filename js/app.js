@@ -577,15 +577,15 @@ INSTRUCTIONS:
 6. For fill in blank: replace key terms with ___.
 7. For short answer: ask open-ended questions about main concepts.
 
-IMAGE REFERENCE INSTRUCTIONS:
-- Each question can reference one of the uploaded images as visual context.
-- Set "imageRef" to the 0-based index of the most relevant image (0 = first image, 1 = second, etc.).
-- Set "imageRef" to null if no image is particularly relevant to the question.
-- Try to spread imageRef across different questions — don't always use image 0.
-- Still include SVG diagrams for 2 questions where a diagram (shape, cycle, circuit) adds extra clarity beyond the photo.
+IMAGE CROP INSTRUCTIONS:
+- For 2-3 questions, reference a specific region of one of the uploaded images.
+- Set "imageCrop" to: {"img": 0, "x": 0.1, "y": 0.2, "w": 0.8, "h": 0.3} where img=image index (0-based), x/y/w/h are fractions (0.0-1.0) of the image dimensions.
+- Choose the region that contains the diagram, illustration, label, or text most relevant to that question.
+- Set "imageCrop" to null for questions where no image region adds value.
+- Still set svg to null for all questions (we use real images instead).
 
 Respond ONLY with valid JSON, no markdown:
-{"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageRef":0},{"number":2,"type":"true_false","question":"...","options":[],"answer":"True","explanation":"...","svg":null,"imageRef":null}]}`;
+{"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":{"img":0,"x":0.0,"y":0.1,"w":1.0,"h":0.4}},{"number":2,"type":"true_false","question":"...","options":[],"answer":"True","explanation":"...","svg":null,"imageCrop":null}]}`;
 
   const generateRes = await fetch('/api/generate', {
     method: 'POST',
@@ -608,11 +608,12 @@ Respond ONLY with valid JSON, no markdown:
   const data = await generateRes.json();
 
   // Update credit counter if server returned it
-  // Sanitize svg fields — ensure only valid SVG strings pass through
+  // Sanitize svg and imageCrop fields
   if (data.questions) {
     data.questions = data.questions.map(q => ({
       ...q,
-      svg: (q.svg && typeof q.svg === 'string' && q.svg.trim().startsWith('<')) ? q.svg : null
+      svg: (q.svg && typeof q.svg === 'string' && q.svg.trim().startsWith('<')) ? q.svg : null,
+      imageCrop: (q.imageCrop && typeof q.imageCrop === 'object' && typeof q.imageCrop.img === 'number') ? q.imageCrop : null
     }));
   }
   if (typeof data._credits === 'number') {
@@ -1026,6 +1027,20 @@ function startInteractiveQuiz(quiz) {
 
   container.innerHTML = html;
 
+  // Async-load all cropped image placeholders
+  quiz.questions.forEach((q, i) => {
+    if (q.imageCrop && typeof q.imageCrop === 'object' && typeof q.imageCrop.img === 'number') {
+      const el = document.getElementById('crop-' + i);
+      if (el) {
+        cropImageFromState(q.imageCrop, function(dataUrl) {
+          el.innerHTML = dataUrl
+            ? '<img src="' + dataUrl + '" alt="Referensi materi" />'
+            : '';
+        });
+      }
+    }
+  });
+
   // Submit handler
   document.getElementById('iq-submit').addEventListener('click', () => {
     submitInteractiveQuiz(quiz);
@@ -1033,6 +1048,39 @@ function startInteractiveQuiz(quiz) {
 
   // Close button
   document.getElementById('iq-close').addEventListener('click', closeInteractiveQuiz);
+}
+
+// ── Crop image using Canvas API ───────────────
+function cropImageFromState(imageCrop, callback) {
+  try {
+    const { img, x, y, w, h } = imageCrop;
+    const src = state.images[img]?.dataUrl;
+    if (!src) { callback(null); return; }
+
+    const image = new Image();
+    image.onload = function() {
+      try {
+        const canvas = document.createElement('canvas');
+        const displayW = 360;
+        const displayH = Math.round(displayW * (h / w));
+        canvas.width = displayW;
+        canvas.height = Math.max(displayH, 20);
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(image,
+          x * image.naturalWidth,
+          y * image.naturalHeight,
+          w * image.naturalWidth,
+          h * image.naturalHeight,
+          0, 0, displayW, Math.max(displayH, 20)
+        );
+        callback(canvas.toDataURL('image/jpeg', 0.85));
+      } catch(e) { callback(null); }
+    };
+    image.onerror = () => callback(null);
+    image.src = src;
+  } catch(e) {
+    callback(null);
+  }
 }
 
 function renderInteractiveQuestion(q, i) {
@@ -1045,11 +1093,13 @@ function renderInteractiveQuestion(q, i) {
   const typeLabel = typeLabelMap[q.type] || q.type;
   const svgStr = (q.svg && typeof q.svg === 'string' && q.svg.trim().startsWith('<')) ? q.svg : '';
   const svgBlock = svgStr ? `<div class="q-diagram">${svgStr}</div>` : '';
-  // Show uploaded image thumbnail if imageRef is set
-  const imgRef = (typeof q.imageRef === 'number' && state.images[q.imageRef]) ? q.imageRef : null;
-  const imgBlock = imgRef !== null
-    ? `<div class="q-img-ref"><img src="${state.images[imgRef].dataUrl}" alt="Materi referensi" /></div>`
-    : '';
+  // Show cropped image region if imageCrop is set — async via placeholder
+  let imgBlock = '';
+  const hasCrop = q.imageCrop && typeof q.imageCrop === 'object' && typeof q.imageCrop.img === 'number';
+  const cropId = hasCrop ? `crop-${i}-${Date.now()}` : null;
+  if (hasCrop) {
+    imgBlock = `<div class="q-img-ref" id="crop-${i}"><div class="q-img-loading">📸 Memuat gambar…</div></div>`;
+  }
 
   let inputHtml = '';
 
@@ -1221,7 +1271,7 @@ function showInteractiveResults(quiz, answers) {
           <span class="iq-result-verdict">${correct ? 'Benar!' : 'Salah'}</span>
         </div>
         <p class="iq-result-question">${q.question}</p>
-        ${(typeof q.imageRef === 'number' && state.images[q.imageRef]) ? `<div class="q-img-ref"><img src="${state.images[q.imageRef].dataUrl}" alt="Materi referensi" /></div>` : ''}
+        ${(q.imageCrop && typeof q.imageCrop === 'object' && typeof q.imageCrop.img === 'number') ? `<div class="q-img-ref" id="result-crop-${i}"><div class="q-img-loading">📸 Memuat gambar…</div></div>` : ''}
         ${(q.svg && typeof q.svg === 'string' && q.svg.trim().startsWith('<')) ? `<div class="q-diagram">${q.svg}</div>` : ''}
         ${optionsReview}
         <div class="iq-result-answers">
@@ -1246,6 +1296,18 @@ function showInteractiveResults(quiz, answers) {
     <div class="iq-done-wrap">
       <button class="iq-btn-done" onclick="closeInteractiveQuiz()">✓ Selesai</button>
     </div>`;
+
+  // Async load crops in results
+  quiz.questions.forEach((q, i) => {
+    if (q.imageCrop && typeof q.imageCrop === 'object' && typeof q.imageCrop.img === 'number') {
+      const el = document.getElementById('result-crop-' + i);
+      if (el) {
+        cropImageFromState(q.imageCrop, function(dataUrl) {
+          el.innerHTML = dataUrl ? '<img src="' + dataUrl + '" alt="Referensi materi" />' : '';
+        });
+      }
+    }
+  });
 }
 
 function closeInteractiveQuiz() {
