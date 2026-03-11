@@ -459,6 +459,17 @@ async function generateQuiz() {
     generateHint.textContent = 'Pilih minimal satu jenis soal.';
     return;
   }
+
+  // ── Credit check BEFORE sending anything to Claude ──
+  const credits = window._currentCredits ?? 0;
+  const isInvited = window._isInvited ?? false;
+  if (!isInvited && credits <= 0) {
+    generateHint.textContent = '';
+    window.renderCreditsBanner();
+    window.startCheckout();
+    return;
+  }
+
   generateHint.textContent = '';
   showLoading('Langkah 1/2: Membaca materi…', `Menganalisis ${state.images.length} gambar…`);
   try {
