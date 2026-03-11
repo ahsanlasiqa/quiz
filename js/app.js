@@ -578,8 +578,10 @@ INSTRUCTIONS:
 7. For short answer: ask open-ended questions about main concepts.
 
 DIAGRAM INSTRUCTIONS:
-- Include SVG only when a visual clearly helps (math, science diagrams). Set svg to null otherwise.
-- Simple SVG: width="200" height="150" viewBox="0 0 200 150", stroke="#1a7a6e", fill="#fef3d0", labels fill="#1a1208" font-size="11".
+- For Math, Science, Biology, Geography, Physics, Chemistry: include 1-2 SVG diagrams total across all questions where a visual genuinely helps (shapes, cycles, circuits, maps, body parts). 
+- For History, Language, Social studies: set svg to null for all questions.
+- SVG must be simple: width="200" height="150" viewBox="0 0 200 150", stroke="#1a7a6e", fill="#fef3d0", labels fill="#1a1208" font-size="11".
+- Maximum 2 SVGs per quiz to control output size.
 
 Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null}]}`;
