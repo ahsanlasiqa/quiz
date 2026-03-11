@@ -607,6 +607,13 @@ Respond ONLY with valid JSON, no markdown:
   const data = await generateRes.json();
 
   // Update credit counter if server returned it
+  // Sanitize svg fields — ensure only valid SVG strings pass through
+  if (data.questions) {
+    data.questions = data.questions.map(q => ({
+      ...q,
+      svg: (q.svg && typeof q.svg === 'string' && q.svg.trim().startsWith('<')) ? q.svg : null
+    }));
+  }
   if (typeof data._credits === 'number') {
     window._currentCredits = data._credits;
     window.renderCreditsBanner();
@@ -1035,7 +1042,8 @@ function renderInteractiveQuestion(q, i) {
     short_answer: 'Short Answer'
   };
   const typeLabel = typeLabelMap[q.type] || q.type;
-  const svgBlock = q.svg ? `<div class="q-diagram">${q.svg}</div>` : '';
+  const svgStr = (q.svg && typeof q.svg === 'string' && q.svg.trim().startsWith('<')) ? q.svg : '';
+  const svgBlock = svgStr ? `<div class="q-diagram">${svgStr}</div>` : '';
 
   let inputHtml = '';
 
@@ -1205,7 +1213,7 @@ function showInteractiveResults(quiz, answers) {
           <span class="iq-result-verdict">${correct ? 'Benar!' : 'Salah'}</span>
         </div>
         <p class="iq-result-question">${q.question}</p>
-        ${q.svg ? `<div class="q-diagram">${q.svg}</div>` : ''}
+        ${(q.svg && typeof q.svg === 'string' && q.svg.trim().startsWith('<')) ? `<div class="q-diagram">${q.svg}</div>` : ''}
         ${optionsReview}
         <div class="iq-result-answers">
           ${!correct ? `<div class="iq-your-answer">Jawaban kamu: <strong>${userAnswerDisplay}</strong></div>` : ''}
