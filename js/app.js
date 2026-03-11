@@ -2,7 +2,7 @@
    QUIZGEN — APP LOGIC v6
    Fixes: 504 timeout, diagrams, PDF upload
    ============================================ */
-//
+
 // ── Limits ─────────────────────────────────
 const LIMITS = {
   maxImages: 10,
@@ -577,21 +577,22 @@ INSTRUCTIONS:
 6. For fill in blank: replace key terms with ___.
 7. For short answer: ask open-ended questions about main concepts.
 
-DIAGRAM INSTRUCTIONS:
-- For Math, Science, Biology, Geography, Physics, Chemistry: include 1-2 SVG diagrams total across all questions where a visual genuinely helps (shapes, cycles, circuits, maps, body parts). 
-- For History, Language, Social studies: set svg to null for all questions.
-- SVG must be simple: width="200" height="150" viewBox="0 0 200 150", stroke="#1a7a6e", fill="#fef3d0", labels fill="#1a1208" font-size="11".
-- Maximum 2 SVGs per quiz to control output size.
+DIAGRAM INSTRUCTIONS (IMPORTANT — you MUST follow this):
+- You MUST include exactly 2 SVG diagrams in the quiz, placed on 2 different questions.
+- Choose questions where a visual adds clarity: shapes, body parts, cycles, circuits, maps, timelines, graphs, food chains, etc.
+- SVG format (required): <svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150">...</svg>
+- Use stroke="#1a7a6e" fill="#fef3d0" for shapes. Text labels: fill="#1a1208" font-size="11" font-family="sans-serif".
+- Keep SVG simple and clean. Set svg to null for all other questions.
 
 Respond ONLY with valid JSON, no markdown:
-{"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null}]}`;
+{"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"150\" viewBox=\"0 0 200 150\">...</svg>"},{"number":2,"type":"true_false","question":"...","options":[],"answer":"True","explanation":"...","svg":null}]}`;
 
   const generateRes = await fetch('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 3500,
+      max_tokens: 4000,
       messages: [{ role: 'user', content: quizPrompt }]
     })
   });
