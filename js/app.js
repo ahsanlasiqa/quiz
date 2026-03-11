@@ -517,9 +517,10 @@ async function callClaude() {
 
   const extractPromptText = (batchNum, total) =>
     `Extract key content from these images (batch ${batchNum}/${total}) for quiz generation:
-- Subject, topic, language (Bahasa Indonesia or English)
+- Subject, topic
 - Key concepts, facts, definitions, formulas, terms, dates, numbers
 - Brief description of any diagrams/visuals
+- Detected language of the material
 Max 500 words. Be concise.`;
 
   const summaries = [];
@@ -570,7 +571,7 @@ QUESTION TYPES TO USE: ${selectedTypes}
 INSTRUCTIONS:
 1. Generate exactly ${state.settings.numQuestions} questions based ONLY on the material above.
 2. Distribute question types as evenly as possible across: ${selectedTypes}
-3. Match the language used in the material (Bahasa Indonesia or English).
+3. Match the language of the material exactly — if material is in Bahasa Indonesia use Bahasa Indonesia, if English use English, if other language use that language.
 4. Adjust difficulty appropriately for: ${levelLabel}
 5. For multiple choice: exactly 4 options labeled A, B, C, D.
 6. For fill in blank: replace key terms with ___.
