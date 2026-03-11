@@ -577,12 +577,13 @@ INSTRUCTIONS:
 6. For fill in blank: replace key terms with ___.
 7. For short answer: ask open-ended questions about main concepts.
 
-IMAGE CROP INSTRUCTIONS:
-- For 2-3 questions, reference a specific region of one of the uploaded images.
-- Set "imageCrop" to: {"img": 0, "x": 0.1, "y": 0.2, "w": 0.8, "h": 0.3} where img=image index (0-based), x/y/w/h are fractions (0.0-1.0) of the image dimensions.
-- Choose the region that contains the diagram, illustration, label, or text most relevant to that question.
-- Set "imageCrop" to null for questions where no image region adds value.
-- Still set svg to null for all questions (we use real images instead).
+IMAGE CROP INSTRUCTIONS (IMPORTANT — do this for EVERY question):
+- For EVERY question, set "imageCrop" to show the region of the uploaded image most relevant to that question.
+- "imageCrop": {"img": 0, "x": 0.0, "y": 0.2, "w": 1.0, "h": 0.3} where img=image index (0-based), x/y/w/h are fractions (0.0–1.0).
+- Choose the region containing the text, diagram, table, or illustration the question is based on.
+- Spread across different images (img: 0, 1, 2…) and different regions (different y values).
+- Only set "imageCrop" to null if there are truly no uploaded images.
+- Set svg to null for all questions — we use real image crops instead.
 
 Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":{"img":0,"x":0.0,"y":0.1,"w":1.0,"h":0.4}},{"number":2,"type":"true_false","question":"...","options":[],"answer":"True","explanation":"...","svg":null,"imageCrop":null}]}`;
@@ -592,7 +593,7 @@ Respond ONLY with valid JSON, no markdown:
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 4000,
+      max_tokens: 4500,
       messages: [{ role: 'user', content: quizPrompt }]
     })
   });
