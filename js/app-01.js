@@ -2,7 +2,7 @@
    QUIZGEN — APP LOGIC v6
    Fixes: 504 timeout, diagrams, PDF upload
    ============================================ */
-//
+
 // ── Limits ─────────────────────────────────
 const LIMITS = {
   maxImages: 10,
