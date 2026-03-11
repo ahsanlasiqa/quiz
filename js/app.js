@@ -582,7 +582,7 @@ DIAGRAM INSTRUCTIONS (IMPORTANT — you MUST follow this):
 - Choose questions where a visual adds clarity: shapes, body parts, cycles, circuits, maps, timelines, graphs, food chains, etc.
 - SVG format (required): <svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150">...</svg>
 - Use stroke="#1a7a6e" fill="#fef3d0" for shapes. Text labels: fill="#1a1208" font-size="11" font-family="sans-serif".
-- Keep SVG simple and clean. Set svg to null for all other questions.
+- Provide SVG by cropping from learning material but keep SVG simple and clean. Set svg to null for all other questions.
 
 Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"150\" viewBox=\"0 0 200 150\">...</svg>"},{"number":2,"type":"true_false","question":"...","options":[],"answer":"True","explanation":"...","svg":null}]}`;
