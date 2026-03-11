@@ -1824,3 +1824,20 @@ body {
   .pain-arrow-mid { transform: rotate(90deg); padding: 8px 0; }
   .pain-quote p { font-size: 1rem; }
 }
+
+/* ── Question Image Reference ─────────────────── */
+.q-img-ref {
+  margin: 10px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--teal-pale);
+  display: inline-block;
+  max-width: 100%;
+}
+.q-img-ref img {
+  display: block;
+  max-width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  background: #fafaf8;
+}

@@ -577,15 +577,15 @@ INSTRUCTIONS:
 6. For fill in blank: replace key terms with ___.
 7. For short answer: ask open-ended questions about main concepts.
 
-DIAGRAM INSTRUCTIONS (IMPORTANT — you MUST follow this):
-- You MUST include exactly 2 SVG diagrams in the quiz, placed on 2 different questions.
-- Choose questions where a visual adds clarity: shapes, body parts, cycles, circuits, maps, timelines, graphs, food chains, etc.
-- SVG format (required): <svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150">...</svg>
-- Use stroke="#1a7a6e" fill="#fef3d0" for shapes. Text labels: fill="#1a1208" font-size="11" font-family="sans-serif".
-- Provide SVG by cropping from learning material but keep SVG simple and clean. Set svg to null for all other questions.
+IMAGE REFERENCE INSTRUCTIONS:
+- Each question can reference one of the uploaded images as visual context.
+- Set "imageRef" to the 0-based index of the most relevant image (0 = first image, 1 = second, etc.).
+- Set "imageRef" to null if no image is particularly relevant to the question.
+- Try to spread imageRef across different questions — don't always use image 0.
+- Still include SVG diagrams for 2 questions where a diagram (shape, cycle, circuit) adds extra clarity beyond the photo.
 
 Respond ONLY with valid JSON, no markdown:
-{"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"150\" viewBox=\"0 0 200 150\">...</svg>"},{"number":2,"type":"true_false","question":"...","options":[],"answer":"True","explanation":"...","svg":null}]}`;
+{"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageRef":0},{"number":2,"type":"true_false","question":"...","options":[],"answer":"True","explanation":"...","svg":null,"imageRef":null}]}`;
 
   const generateRes = await fetch('/api/generate', {
     method: 'POST',
@@ -1045,6 +1045,11 @@ function renderInteractiveQuestion(q, i) {
   const typeLabel = typeLabelMap[q.type] || q.type;
   const svgStr = (q.svg && typeof q.svg === 'string' && q.svg.trim().startsWith('<')) ? q.svg : '';
   const svgBlock = svgStr ? `<div class="q-diagram">${svgStr}</div>` : '';
+  // Show uploaded image thumbnail if imageRef is set
+  const imgRef = (typeof q.imageRef === 'number' && state.images[q.imageRef]) ? q.imageRef : null;
+  const imgBlock = imgRef !== null
+    ? `<div class="q-img-ref"><img src="${state.images[imgRef].dataUrl}" alt="Materi referensi" /></div>`
+    : '';
 
   let inputHtml = '';
 
@@ -1082,6 +1087,7 @@ function renderInteractiveQuestion(q, i) {
           <span class="q-type-badge">${typeLabel}</span>
         </div>
         <p class="q-text">${rendered}</p>
+        ${imgBlock}
         ${svgBlock}
         ${inputHtml}
       </div>`;
@@ -1098,6 +1104,7 @@ function renderInteractiveQuestion(q, i) {
         <span class="q-type-badge">${typeLabel}</span>
       </div>
       <p class="q-text">${q.type !== 'fill_blank' ? q.question : ''}</p>
+      ${imgBlock}
       ${svgBlock}
       ${inputHtml}
     </div>`;
@@ -1214,6 +1221,7 @@ function showInteractiveResults(quiz, answers) {
           <span class="iq-result-verdict">${correct ? 'Benar!' : 'Salah'}</span>
         </div>
         <p class="iq-result-question">${q.question}</p>
+        ${(typeof q.imageRef === 'number' && state.images[q.imageRef]) ? `<div class="q-img-ref"><img src="${state.images[q.imageRef].dataUrl}" alt="Materi referensi" /></div>` : ''}
         ${(q.svg && typeof q.svg === 'string' && q.svg.trim().startsWith('<')) ? `<div class="q-diagram">${q.svg}</div>` : ''}
         ${optionsReview}
         <div class="iq-result-answers">
