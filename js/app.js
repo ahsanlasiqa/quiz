@@ -529,7 +529,7 @@ async function generateQuiz() {
 
 // ── Claude API Call (2 steps) ──────────────
 async function callClaude() {
-  const config = GRADE_CONFIG[state.settings.level];
+  const config = GRADE_CONFIG[state.settings.level] || GRADE_CONFIG['junior_high'];
   const levelLabel = `${config.label}, Grade ${state.settings.grade}`;
   const typeNames = {
     multiple_choice: 'Multiple Choice (4 options labeled A-D)',
@@ -684,9 +684,11 @@ Respond ONLY with valid JSON, no markdown:
 
 // ── Render Quiz ────────────────────────────
 function renderQuiz(quiz) {
-  const config = GRADE_CONFIG[state.settings.level];
-  const gradeLabel = `${config.emoji} ${config.label} · Grade ${state.settings.grade}`;
-  quizMetaText.textContent = `${quiz.subject || 'Quiz'} · ${gradeLabel} · ${quiz.questions.length} questions · ${quiz.language || ''}`;
+  const config = GRADE_CONFIG[state.settings.level] || GRADE_CONFIG['junior_high'];
+  const gradeLabel = state.mode === 'topic'
+    ? `📚 ${state.topic.jenjang} · ${state.topic.mapel}`
+    : `${config.emoji} ${config.label} · Grade ${state.settings.grade}`;
+  quizMetaText.textContent = `${quiz.subject || 'Quiz'} · ${gradeLabel} · ${quiz.questions?.length || 0} soal`;
 
   let html = '';
   quiz.questions.forEach((q, i) => {
@@ -800,10 +802,12 @@ function generatePDF(quiz) {
   doc.text(quiz.subject || 'Quiz', margin, y);
   y += 8;
 
-  const config = GRADE_CONFIG[state.settings.level];
-  const gradeLabel = `${config.label} · Grade ${state.settings.grade}`;
+  const config = GRADE_CONFIG[state.settings.level] || GRADE_CONFIG['junior_high'];
+  const gradeLabel = state.mode === 'topic'
+    ? `${state.topic.jenjang} · ${state.topic.mapel}`
+    : `${config.label} · Grade ${state.settings.grade}`;
   setFont(10, 'normal', colors.muted);
-  doc.text(`${gradeLabel} · ${quiz.questions.length} Questions · ${quiz.language || ''}`, margin, y);
+  doc.text(`${gradeLabel} · ${quiz.questions?.length || 0} Questions · ${quiz.language || ''}`, margin, y);
   y += 10;
 
   // Student info box
