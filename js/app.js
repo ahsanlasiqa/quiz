@@ -604,6 +604,8 @@ INSTRUCTIONS:
 1. Generate exactly ${state.settings.numQuestions} questions based ONLY on the material above.
 2. Distribute question types as evenly as possible across: ${selectedTypes}
 3. Detect the language from the BODY TEXT of the material (not the title). Use that language for all questions and answers. If body text is Bahasa Indonesia, use Bahasa Indonesia. If English, use English.
+   - For true_false in Bahasa Indonesia: answer must be exactly "Benar" or "Salah"
+   - For true_false in English: answer must be exactly "True" or "False"
 4. Adjust difficulty appropriately for: ${levelLabel}
 5. For multiple choice: exactly 4 options labeled A, B, C, D.
 6. For fill in blank: replace key terms with ___.
@@ -624,7 +626,7 @@ IMAGE CROP INSTRUCTIONS (IMPORTANT — do this for EVERY question):
 - Set svg to null for all questions — we use real image crops instead.
 
 Respond ONLY with valid JSON, no markdown:
-{"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":{"img":0,"x":0.0,"y":0.1,"w":1.0,"h":0.4}},{"number":2,"type":"true_false","question":"...","options":[],"answer":"True","explanation":"...","svg":null,"imageCrop":null}]}`;
+{"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":{"img":0,"x":0.0,"y":0.1,"w":1.0,"h":0.4}},{"number":2,"type":"true_false","question":"...","options":[],"answer":"Benar","explanation":"...","svg":null,"imageCrop":null}]}`;
 
   const generateRes = await fetch('/api/generate', {
     method: 'POST',
@@ -713,7 +715,9 @@ function renderQuiz(quiz) {
       const optHtml = q.options.map(o => `<li>${o}</li>`).join('');
       body = `<p class="q-text">${q.question}</p>${svgBlock}<ul class="q-options">${optHtml}</ul>`;
     } else if (q.type === 'true_false') {
-      body = `<p class="q-text">${q.question}</p>${svgBlock}<ul class="q-options"><li>A. True</li><li>B. False</li></ul>`;
+      const tfA = (q.answer || '').toLowerCase();
+      const tfOpts = (tfA === 'benar' || tfA === 'salah') ? ['Benar', 'Salah'] : ['True', 'False'];
+      body = `<p class="q-text">${q.question}</p>${svgBlock}<ul class="q-options"><li>A. ${tfOpts[0]}</li><li>B. ${tfOpts[1]}</li></ul>`;
     } else if (q.type === 'fill_blank') {
       const rendered = q.question.replace(/___/g, '<span class="q-blank-line"></span>');
       body = `<p class="q-text">${rendered}</p>${svgBlock}`;
@@ -1474,6 +1478,7 @@ INSTRUCTIONS:
 1. Generate exactly ${numQuestions} questions strictly about the topic "${topik}" for ${mapel}, ${jenjang}.
 2. Follow the Indonesian ${jenjang.includes('Merdeka') ? 'Kurikulum Merdeka' : 'K13 Revisi'} curriculum standard.
 3. Use Bahasa Indonesia for all questions and answers.
+   - For true_false questions: answer must be exactly "Benar" or "Salah" (never "True" or "False")
 4. Distribute types evenly across: ${selectedTypes}
 5. For multiple choice: exactly 4 options labeled A, B, C, D.
 6. For fill in blank: replace key terms with ___.
