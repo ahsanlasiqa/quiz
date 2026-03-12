@@ -1918,3 +1918,13 @@ body {
   font-size: 0.85rem;
   color: var(--ink-light);
 }
+
+/* ── Landing Copyright Footer ─────────────────── */
+.landing-copyright {
+  text-align: center;
+  padding: 20px 16px;
+  font-size: 0.82rem;
+  color: var(--ink-light);
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
