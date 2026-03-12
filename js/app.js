@@ -438,13 +438,29 @@ function renderPreviews() {
 
 // ── Collect Settings ───────────────────────
 function collectSettings() {
-  state.settings.level = levelToggle.querySelector('.level-btn.active').dataset.value;
-  const activePill = gradePills.querySelector('.grade-pill.active');
-  state.settings.grade = activePill ? parseInt(activePill.dataset.value) : GRADE_CONFIG[state.settings.level].grades[0].value;
-  state.settings.numQuestions = parseInt(numQuestionsInput.value) || 10;
-  state.settings.types = Array.from(document.querySelectorAll('input[name="qtype"]:checked')).map(c => c.value);
-  state.settings.studentName = studentNameInput.value.trim();
-  state.settings.date = quizDateInput.value;
+  try {
+    const activeLevel = levelToggle?.querySelector('.level-btn.active');
+    if (activeLevel) state.settings.level = activeLevel.dataset.value;
+  } catch(e) {}
+  try {
+    const activePill = gradePills?.querySelector('.grade-pill.active');
+    if (activePill) state.settings.grade = parseInt(activePill.dataset.value);
+  } catch(e) {}
+  try {
+    state.settings.numQuestions = parseInt(numQuestionsInput?.value) || 10;
+  } catch(e) {}
+  try {
+    const checked = document.querySelectorAll('input[name="qtype"]:checked');
+    const types = Array.from(checked).map(c => c.value);
+    // Fallback to all types if none checked (e.g. DOM not ready)
+    state.settings.types = types.length > 0 ? types : ['multiple_choice', 'true_false', 'fill_blank', 'short_answer'];
+  } catch(e) {
+    state.settings.types = ['multiple_choice', 'true_false', 'fill_blank', 'short_answer'];
+  }
+  try {
+    state.settings.studentName = studentNameInput?.value.trim() || '';
+    state.settings.date = quizDateInput?.value || '';
+  } catch(e) {}
 }
 
 // ── Generate Quiz ──────────────────────────
