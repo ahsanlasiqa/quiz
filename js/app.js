@@ -1418,11 +1418,28 @@ function onMapelChange() {
 // ── Topic Mode: Generate from Claude's knowledge ───────────────
 async function callClaudeTopic() {
   const { jenjang, mapel, topik } = state.topic;
-  const { numQuestions, types, level } = state.settings;
-  const levelLabel = level === 'sd' ? 'SD' : level === 'smp' ? 'SMP' : 'SMA';
-  const selectedTypes = types.join(', ');
 
-  const idToken = await firebase.auth().currentUser?.getIdToken(true);
+  // Safe-read settings with fallbacks
+  const numQuestions = state.settings?.numQuestions || 10;
+  const types = state.settings?.types?.length > 0
+    ? state.settings.types
+    : ['multiple_choice', 'true_false', 'fill_blank', 'short_answer'];
+  const level = state.settings?.level || 'junior_high';
+  const levelLabel = level === 'elementary' ? 'SD'
+    : level === 'junior_high' ? 'SMP'
+    : level === 'high_school' ? 'SMA'
+    : level === 'sd' ? 'SD'
+    : level === 'smp' ? 'SMP' : 'SMA';
+
+  const typeNames = {
+    multiple_choice: 'Pilihan Ganda',
+    true_false: 'Benar / Salah',
+    fill_blank: 'Isian Singkat',
+    short_answer: 'Uraian'
+  };
+  const selectedTypes = types.map(t => typeNames[t] || t).join(', ');
+
+  const idToken = await window.getIdToken?.() || await firebase.auth().currentUser?.getIdToken(true);
 
   const prompt = `You are an expert Indonesian curriculum teacher. Generate a quiz based on the following:
 
