@@ -265,11 +265,16 @@
       status.style.display = 'none';
 
       try {
-        // Send via Formspree — ganti YOUR_FORM_ID dengan ID dari formspree.io
-        const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        // Send via Web3Forms — ganti YOUR_ACCESS_KEY dengan key dari web3forms.com
+        const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ name, email, _subject: `[DrillSoal] ${topic}`, message, topic })
+          body: JSON.stringify({
+            access_key: 'YOUR_ACCESS_KEY',
+            subject: `[DrillSoal] ${topic} — dari ${name}`,
+            from_name: 'DrillSoal Contact Form',
+            name, email, topic, message
+          })
         });
 
         if (res.ok) {
