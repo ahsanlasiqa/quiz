@@ -548,12 +548,15 @@ async function callClaude() {
   }
 
   const extractPromptText = (batchNum, total) =>
-    `Extract key content from these images (batch ${batchNum}/${total}) for quiz generation:
-- Subject, topic
-- Key concepts, facts, definitions, formulas, terms, dates, numbers
-- Brief description of any diagrams/visuals
-- Detected language of the material
-Max 500 words. Be concise.`;
+    `Extract key content from these images (batch ${batchNum}/${total}) for quiz generation.
+For each image in this batch, output:
+1. Key concepts, facts, definitions, formulas, terms
+2. VISUALS: List every photo, diagram, illustration, or figure visible. For each, describe:
+   - What it shows (e.g. "football being kicked", "Maglev train", "circuit diagram")
+   - Its vertical position as a fraction: top=0.0, middle=0.5, bottom=1.0 (e.g. y_start: 0.3, y_end: 0.6)
+   - Its horizontal position: left=0.0, right=1.0 (e.g. x_start: 0.0, x_end: 0.5)
+3. Detected language
+Format: plain text. Max 600 words. Be precise about visual positions.`;
 
   const summaries = [];
   for (let b = 0; b < batches.length; b++) {
@@ -618,10 +621,11 @@ INSTRUCTIONS:
    - Is detailed enough that a student can understand without re-reading the material
 
 IMAGE CROP INSTRUCTIONS:
-- Choose the 3 questions where a specific image region is MOST directly relevant (e.g. a diagram, table, formula, or illustration that the question explicitly refers to).
-- For those 3 questions only, set "imageCrop": {"img": 0, "x": 0.0, "y": 0.2, "w": 1.0, "h": 0.3} where img=image index (0-based), x/y/w/h are fractions (0.0–1.0).
-- The crop region must tightly contain the specific visual element the question is about — not the whole page.
-- Set "imageCrop" to null for all other questions. Only include a crop if it genuinely helps the student understand the question.
+- The extracted material above contains VISUALS with their positions (y_start, y_end, x_start, x_end).
+- For up to 3 questions, attach the most relevant visual using "imageCrop".
+- Match the question topic to the visual description (e.g. question about football → visual showing "football being kicked").
+- Use the exact position values from the extracted text: {"img": <image_index>, "x": x_start, "y": y_start, "w": x_end-x_start, "h": y_end-y_start}
+- Only set imageCrop if there is a clearly matching visual. Set to null for all other questions.
 - Set svg to null for all questions.
 
 Respond ONLY with valid JSON, no markdown:
