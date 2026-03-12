@@ -882,7 +882,9 @@ function generatePDF(quiz) {
       y += 2;
     } else if (q.type === 'true_false') {
       setFont(9.5, 'normal', [60, 50, 38]);
-      doc.text('A. True          B. False', margin + 6, y);
+      const tfAns = (q.answer || '').toLowerCase();
+      const tfLabel = (tfAns === 'benar' || tfAns === 'salah') ? 'A. Benar          B. Salah' : 'A. True          B. False';
+      doc.text(tfLabel, margin + 6, y);
       y += 7;
     } else if (q.type === 'short_answer') {
       checkPageBreak(22);
@@ -1160,12 +1162,18 @@ function renderInteractiveQuestion(q, i) {
       '</div>';
   } else if (q.type === 'true_false') {
     inputHtml = '<div class="iq-options">' +
-      ['True', 'False'].map(opt => `
-        <label class="iq-option" data-qi="${i}">
-          <input type="radio" name="q${i}" value="${opt}" />
-          <span class="iq-option-box"></span>
-          <span class="iq-option-text">${opt}</span>
-        </label>`).join('') +
+      (() => {
+        // Detect language of answer to show matching labels
+        const ans = (q.answer || '').toLowerCase();
+        const useID = ans === 'benar' || ans === 'salah';
+        const opts = useID ? ['Benar', 'Salah'] : ['True', 'False'];
+        return opts.map(opt => `
+          <label class="iq-option" data-qi="${i}">
+            <input type="radio" name="q${i}" value="${opt}" />
+            <span class="iq-option-box"></span>
+            <span class="iq-option-text">${opt}</span>
+          </label>`).join('');
+      })() +
       '</div>';
   } else if (q.type === 'fill_blank') {
     const rendered = q.question.replace(/___/g, '<span class="q-blank-line"></span>');
@@ -1265,9 +1273,14 @@ function isCorrect(q, userAnswer) {
   }
 
   if (q.type === 'true_false') {
-    const cFirst = correct.charAt(0);
-    const uFirst = user.charAt(0);
-    return cFirst === uFirst; // t/f match
+    // Normalize both EN and ID: true/benar → true, false/salah → false
+    const normTF = s => {
+      const v = s.trim().toLowerCase();
+      if (v === 'true' || v === 'benar' || v === 'ya' || v === 'b' || v === 't') return 'true';
+      if (v === 'false' || v === 'salah' || v === 'tidak' || v === 's' || v === 'f') return 'false';
+      return v.charAt(0); // fallback to first char
+    };
+    return normTF(q.answer || '') === normTF(userAnswer || '');
   }
 
   // Fill blank & short answer — normalize then compare
