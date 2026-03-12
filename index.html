@@ -32,18 +32,18 @@
       </div>
       <button class="btn-google btn-google-nav" id="btn-google-nav">
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="16" />
-        Masuk
+        Coba Gratis
       </button>
     </nav>
 
     <section class="landing-hero">
       <div class="landing-hero-inner">
         <div class="landing-badge">✨ Didukung AI Mutakhir</div>
-        <h1 class="landing-headline">Buat Drill Soal<br/><em>Gampang Banget</em></h1>
+        <h1 class="landing-headline">Buat Latihan Soal UNLIMITED<br/><em>dengan mudah dalam Hitungan Detik</em></h1>
         <p class="landing-subheadline">Foto halaman buku pelajaran, DrillSoal langsung membuat soal pilihan ganda, benar/salah, isian, dan esai — siap cetak atau kerjakan online.</p>
         <div class="landing-cta-row">
           <button class="btn-coba" id="btn-coba-gratis">🚀 Coba Gratis Sekarang</button>
-          <p class="landing-cta-note">Gratis 3 kali mencoba. Tanpa syarat.</p>
+          <p class="landing-cta-note">Gratis 3 kali mencoba · Tanpa kartu kredit</p>
         </div>
         <div class="landing-features-row">
           <div class="landing-feat">📸 Upload Foto / PDF</div>
@@ -136,7 +136,7 @@
           </div>
         </div>
         <div class="pain-cta">
-          <button class="btn-coba" id="btn-coba-pain">🚀 Coba Gratis - Tanpa Syarat</button>
+          <button class="btn-coba" id="btn-coba-pain">🚀 Coba Gratis — Tanpa Kartu Kredit</button>
         </div>
       </div>
     </section>
@@ -186,7 +186,7 @@
       <div class="login-card" id="login-card">
         <div class="login-logo">
           <span class="logo-icon" style="font-size:2rem">✦</span>
-          <span class="logo-text" style="font-size:1.8rem">DrillSoal</span>
+          <span class="logo-text" style="font-size:1.8rem">QuizGen</span>
         </div>
         <p class="login-tagline">Masuk untuk mulai membuat soal</p>
         <p class="login-msg hidden" id="login-msg"></p>
@@ -301,25 +301,60 @@
 
       <section class="card step-card" id="step-upload">
         <div class="step-label">Langkah 2</div>
-        <h2 class="step-title">Upload Materi Pelajaran</h2>
-        <p class="step-desc">Upload foto atau file PDF halaman buku pelajaran. Bisa campur gambar dan PDF — semua halaman diproses bersama.</p>
-        <div class="upload-zone" id="upload-zone">
-          <div class="upload-icon">📎</div>
-          <p class="upload-text">Seret & lepas file di sini</p>
-          <p class="upload-hint">JPG, PNG, WEBP, PDF didukung · Maks. 10 gambar</p>
+        <h2 class="step-title">Sumber Materi</h2>
+        <p class="step-desc">Pilih cara memasukkan materi — upload foto buku atau langsung pilih topik dari kurikulum.</p>
+
+        <!-- Mode switcher -->
+        <div class="mode-tabs">
+          <button class="mode-tab active" id="tab-upload" onclick="switchMode('upload')">📎 Upload Materi</button>
+          <button class="mode-tab" id="tab-topic" onclick="switchMode('topic')">📚 Pilih Topik</button>
         </div>
-        <input type="file" id="file-input" multiple accept="image/*,.pdf" style="display:none" />
-        <input type="file" id="camera-input" multiple accept="image/*" capture="environment" style="display:none" />
-        <div class="upload-btn-row">
-          <button class="upload-btn" id="btn-browse-files"><span>🗂</span> Pilih File</button>
-          <button class="upload-btn upload-btn-camera" id="btn-camera"><span>📷</span> Foto Langsung</button>
+
+        <!-- MODE: Upload -->
+        <div id="mode-upload">
+          <div class="upload-zone" id="upload-zone">
+            <div class="upload-icon">📎</div>
+            <p class="upload-text">Seret & lepas file di sini</p>
+            <p class="upload-hint">JPG, PNG, WEBP, PDF didukung · Maks. 10 gambar</p>
+          </div>
+          <input type="file" id="file-input" multiple accept="image/*,.pdf" style="display:none" />
+          <input type="file" id="camera-input" multiple accept="image/*" capture="environment" style="display:none" />
+          <div class="upload-btn-row">
+            <button class="upload-btn" id="btn-browse-files"><span>🗂</span> Pilih File</button>
+            <button class="upload-btn upload-btn-camera" id="btn-camera"><span>📷</span> Foto Langsung</button>
+          </div>
+          <div class="pdf-progress hidden" id="pdf-progress">
+            <div class="pdf-progress-bar"><div class="pdf-progress-fill" id="pdf-progress-fill"></div></div>
+            <p class="pdf-progress-text" id="pdf-progress-text">Mengonversi halaman PDF…</p>
+          </div>
+          <p class="image-counter" id="image-counter"></p>
+          <div class="image-preview-grid" id="image-preview-grid"></div>
         </div>
-        <div class="pdf-progress hidden" id="pdf-progress">
-          <div class="pdf-progress-bar"><div class="pdf-progress-fill" id="pdf-progress-fill"></div></div>
-          <p class="pdf-progress-text" id="pdf-progress-text">Mengonversi halaman PDF…</p>
+
+        <!-- MODE: Pilih Topik -->
+        <div id="mode-topic" class="hidden">
+          <div class="topic-selectors">
+            <div class="topic-field">
+              <label class="topic-label">Kelas</label>
+              <select class="topic-select" id="sel-jenjang" onchange="onJenjangChange()">
+                <option value="">— Pilih Kelas —</option>
+              </select>
+            </div>
+            <div class="topic-field">
+              <label class="topic-label">Mata Pelajaran</label>
+              <select class="topic-select" id="sel-mapel" onchange="onMapelChange()" disabled>
+                <option value="">— Pilih Mapel —</option>
+              </select>
+            </div>
+            <div class="topic-field">
+              <label class="topic-label">Topik / Bab</label>
+              <select class="topic-select" id="sel-topik" disabled>
+                <option value="">— Pilih Topik —</option>
+              </select>
+            </div>
+          </div>
+          <p class="topic-hint" id="topic-hint"></p>
         </div>
-        <p class="image-counter" id="image-counter"></p>
-        <div class="image-preview-grid" id="image-preview-grid"></div>
       </section>
 
       <div class="generate-wrap">
@@ -372,6 +407,7 @@
   <!-- Load in order: Firebase config → Auth logic → App -->
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/curriculum.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

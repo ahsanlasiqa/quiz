@@ -13,6 +13,8 @@ const LIMITS = {
 
 // ── State ──────────────────────────────────
 const state = {
+  mode: 'upload',   // 'upload' | 'topic'
+  topic: { jenjang: '', mapel: '', topik: '' },
   images: [],
   quizData: null,
   settings: {
@@ -451,9 +453,19 @@ btnRegenerate.addEventListener('click', generateQuiz);
 
 async function generateQuiz() {
   collectSettings();
-  if (state.images.length === 0) {
-    generateHint.textContent = 'Upload minimal satu foto atau halaman PDF.';
-    return;
+
+  // Validate based on mode
+  if (state.mode === 'topic') {
+    const { jenjang, mapel, topik } = state.topic;
+    if (!jenjang || !mapel || !topik) {
+      generateHint.textContent = 'Pilih kelas, mata pelajaran, dan topik terlebih dahulu.';
+      return;
+    }
+  } else {
+    if (state.images.length === 0) {
+      generateHint.textContent = 'Upload minimal satu foto atau halaman PDF.';
+      return;
+    }
   }
   if (state.settings.types.length === 0) {
     generateHint.textContent = 'Pilih minimal satu jenis soal.';
@@ -471,9 +483,13 @@ async function generateQuiz() {
   }
 
   generateHint.textContent = '';
-  showLoading('Langkah 1/2: Membaca materi…', `Menganalisis ${state.images.length} gambar…`);
+  if (state.mode === 'topic') {
+    showLoading('Membuat soal…', `${state.topic.mapel} — ${state.topic.topik}`);
+  } else {
+    showLoading('Langkah 1/2: Membaca materi…', `Menganalisis ${state.images.length} gambar…`);
+  }
   try {
-    const quiz = await callClaude();
+    const quiz = state.mode === 'topic' ? await callClaudeTopic() : await callClaude();
     state.quizData = quiz;
     renderQuiz(quiz);
     // Hide quiz content initially — show only action buttons
@@ -576,6 +592,12 @@ INSTRUCTIONS:
 5. For multiple choice: exactly 4 options labeled A, B, C, D.
 6. For fill in blank: replace key terms with ___.
 7. For short answer: ask open-ended questions about main concepts.
+8. EXPLANATION (very important): Write a comprehensive 2-4 sentence explanation for every question that:
+   - Directly references the specific content, concept, or fact from the uploaded material
+   - Explains WHY the answer is correct with reasoning or context from the material
+   - For wrong answers in multiple choice, briefly clarifies why they are incorrect
+   - Uses the same language as the question
+   - Is detailed enough that a student can understand without re-reading the material
 
 IMAGE CROP INSTRUCTIONS (IMPORTANT — do this for EVERY question):
 - For EVERY question, set "imageCrop" to show the region of the uploaded image most relevant to that question.
@@ -1314,4 +1336,130 @@ function showInteractiveResults(quiz, answers) {
 function closeInteractiveQuiz() {
   document.getElementById('interactive-overlay').classList.add('hidden');
   document.body.style.overflow = '';
+}
+
+// ── Mode Switcher ──────────────────────────────────────────────
+function switchMode(mode) {
+  state.mode = mode;
+  document.getElementById('mode-upload').classList.toggle('hidden', mode !== 'upload');
+  document.getElementById('mode-topic').classList.toggle('hidden', mode !== 'topic');
+  document.getElementById('tab-upload').classList.toggle('active', mode === 'upload');
+  document.getElementById('tab-topic').classList.toggle('active', mode === 'topic');
+  generateHint.textContent = '';
+}
+
+// ── Curriculum Selectors ───────────────────────────────────────
+(function initCurriculumSelectors() {
+  const selJenjang = document.getElementById('sel-jenjang');
+  if (!selJenjang) return;
+  getCurriculumJenjang().forEach(j => {
+    const opt = document.createElement('option');
+    opt.value = j; opt.textContent = j;
+    selJenjang.appendChild(opt);
+  });
+})();
+
+function onJenjangChange() {
+  const jenjang = document.getElementById('sel-jenjang').value;
+  state.topic.jenjang = jenjang;
+  state.topic.mapel = '';
+  state.topic.topik = '';
+
+  const selMapel = document.getElementById('sel-mapel');
+  const selTopik = document.getElementById('sel-topik');
+  selMapel.innerHTML = '<option value="">— Pilih Mapel —</option>';
+  selTopik.innerHTML = '<option value="">— Pilih Topik —</option>';
+  selTopik.disabled = true;
+
+  if (!jenjang) { selMapel.disabled = true; return; }
+  getMapelForJenjang(jenjang).forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m; opt.textContent = m;
+    selMapel.appendChild(opt);
+  });
+  selMapel.disabled = false;
+}
+
+function onMapelChange() {
+  const jenjang = document.getElementById('sel-jenjang').value;
+  const mapel   = document.getElementById('sel-mapel').value;
+  state.topic.mapel = mapel;
+  state.topic.topik = '';
+
+  const selTopik = document.getElementById('sel-topik');
+  selTopik.innerHTML = '<option value="">— Pilih Topik —</option>';
+
+  if (!mapel) { selTopik.disabled = true; return; }
+  getTopikForMapel(jenjang, mapel).forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t; opt.textContent = t;
+    selTopik.appendChild(opt);
+  });
+  selTopik.disabled = false;
+  selTopik.onchange = () => { state.topic.topik = selTopik.value; };
+}
+
+// ── Topic Mode: Generate from Claude's knowledge ───────────────
+async function callClaudeTopic() {
+  const { jenjang, mapel, topik } = state.topic;
+  const { numQuestions, types, level } = state.settings;
+  const levelLabel = level === 'sd' ? 'SD' : level === 'smp' ? 'SMP' : 'SMA';
+  const selectedTypes = types.join(', ');
+
+  const idToken = await firebase.auth().currentUser?.getIdToken(true);
+
+  const prompt = `You are an expert Indonesian curriculum teacher. Generate a quiz based on the following:
+
+KELAS: ${jenjang}
+MATA PELAJARAN: ${mapel}
+TOPIK / BAB: ${topik}
+JUMLAH SOAL: ${numQuestions}
+TIPE SOAL: ${selectedTypes}
+TINGKAT: ${levelLabel}
+
+INSTRUCTIONS:
+1. Generate exactly ${numQuestions} questions strictly about the topic "${topik}" for ${mapel}, ${jenjang}.
+2. Follow the Indonesian ${jenjang.includes('Merdeka') ? 'Kurikulum Merdeka' : 'K13 Revisi'} curriculum standard.
+3. Use Bahasa Indonesia for all questions and answers.
+4. Distribute types evenly across: ${selectedTypes}
+5. For multiple choice: exactly 4 options labeled A, B, C, D.
+6. For fill in blank: replace key terms with ___.
+7. For short answer: open-ended questions about main concepts.
+8. EXPLANATION: Write a comprehensive 2–4 sentence explanation per question that:
+   - References the specific concept from the topic
+   - Explains WHY the answer is correct with reasoning
+   - Clarifies why other options are wrong (for multiple choice)
+   - Helps the student understand the material deeply
+9. Adjust difficulty for ${levelLabel} students studying ${topik}.
+
+Set "imageCrop" to null for all questions (no uploaded images in this mode).
+Set "svg" to null for all questions.
+
+Respond ONLY with valid JSON, no markdown:
+{"subject":"${mapel} — ${topik}","language":"id","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":null}]}`;
+
+  const res = await fetch('/api/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 4500,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `Generate gagal (${res.status})`);
+  }
+
+  const data = await res.json();
+  if (data.questions) {
+    data.questions = data.questions.map(q => ({ ...q, svg: null, imageCrop: null }));
+  }
+  if (typeof data._credits === 'number') {
+    window._currentCredits = data._credits;
+    window.renderCreditsBanner?.();
+  }
+  return data;
 }
