@@ -548,17 +548,32 @@ async function callClaude() {
   }
 
   const extractPromptText = (batchNum, total) =>
-    `Extract key content from these images (batch ${batchNum}/${total}) for quiz generation.
-For each image in this batch, output:
-1. Key concepts, facts, definitions, formulas, terms
-2. VISUALS: List every photo, diagram, illustration, or figure visible. For each, describe:
-   - What it shows (e.g. "football being kicked", "Maglev train", "circuit diagram")
-   - Its vertical position as a fraction: top=0.0, middle=0.5, bottom=1.0 (e.g. y_start: 0.3, y_end: 0.6)
-   - Its horizontal position: left=0.0, right=1.0 (e.g. x_start: 0.0, x_end: 0.5)
-3. Detected language
-Format: plain text. Max 600 words. Be precise about visual positions.`;
+    `Analyze these ${total > 1 ? `images (batch ${batchNum}/${total})` : 'images'} and output a JSON object per image.
+
+For each image (index starting at 0 within this batch), output:
+{
+  "imageIndex": 0,
+  "language": "id",
+  "concepts": "key facts, terms, formulas from this page (max 200 words)",
+  "visuals": [
+    {
+      "figureId": "Gambar 2.7",
+      "description": "boy pushing container, arrows showing force directions",
+      "x": 0.0, "y": 0.35, "w": 1.0, "h": 0.45
+    }
+  ]
+}
+
+Rules:
+- figureId: use the figure label if visible (e.g. "Gambar 2.7", "Figure 3"), else describe briefly
+- x,y,w,h: fractions of image dimensions where the visual element is located (0.0–1.0). Be precise.
+- Include ALL visible figures, photos, diagrams, illustrations, tables
+- Output only valid JSON array, no markdown`;
 
   const summaries = [];
+  const visualMap = []; // [{imageIndex (global), figureId, description, x, y, w, h}]
+  let globalImageOffset = 0;
+
   for (let b = 0; b < batches.length; b++) {
     showLoading(
       `Step 1/2: Reading images… (batch ${b + 1}/${batches.length})`,
@@ -575,7 +590,7 @@ Format: plain text. Max 600 words. Be precise about visual positions.`;
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 800,
+        max_tokens: 1200,
         messages: [{ role: 'user', content: parts }]
       })
     });
@@ -586,10 +601,42 @@ Format: plain text. Max 600 words. Be precise about visual positions.`;
     }
 
     const extractData = await extractRes.json();
-    summaries.push(extractData.content.map(b => b.text || '').join(''));
+    const rawText = extractData.content.map(b => b.text || '').join('');
+
+    // Try to parse structured JSON from extract
+    try {
+      const clean = rawText.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+      const arr = Array.isArray(parsed) ? parsed : [parsed];
+      arr.forEach(imgData => {
+        const globalIdx = globalImageOffset + (imgData.imageIndex || 0);
+        summaries.push(`[Image ${globalIdx}] ${imgData.concepts || ''}`);
+        (imgData.visuals || []).forEach(v => {
+          visualMap.push({
+            img: globalIdx,
+            figureId: v.figureId || '',
+            description: v.description || '',
+            x: v.x ?? 0, y: v.y ?? 0,
+            w: v.w ?? 1, h: v.h ?? 0.5
+          });
+        });
+      });
+    } catch(e) {
+      // Fallback: treat as plain text
+      summaries.push(rawText);
+    }
+    globalImageOffset += batches[b].length;
   }
 
-  const materialSummary = summaries.join('\n\n---\n\n');
+  // Build visual map string for generate prompt
+  const visualMapText = visualMap.length > 0
+    ? '\nVISUAL MAP (use these for imageCrop):\n' +
+      visualMap.map((v, i) =>
+        `  [${i}] img:${v.img} figureId:"${v.figureId}" desc:"${v.description}" x:${v.x} y:${v.y} w:${v.w} h:${v.h}`
+      ).join('\n')
+    : '';
+
+  const materialSummary = summaries.join('\n\n') + visualMapText;
 
   // ── STEP 2: Generate quiz from summary ───
   showLoading('Langkah 2/2: Membuat soal…', `Membuat ${state.settings.numQuestions} soal dari konten yang diekstrak…`);
@@ -621,11 +668,12 @@ INSTRUCTIONS:
    - Is detailed enough that a student can understand without re-reading the material
 
 IMAGE CROP INSTRUCTIONS:
-- The extracted material above contains VISUALS with their positions (y_start, y_end, x_start, x_end).
-- For up to 3 questions, attach the most relevant visual using "imageCrop".
-- Match the question topic to the visual description (e.g. question about football → visual showing "football being kicked").
-- Use the exact position values from the extracted text: {"img": <image_index>, "x": x_start, "y": y_start, "w": x_end-x_start, "h": y_end-y_start}
-- Only set imageCrop if there is a clearly matching visual. Set to null for all other questions.
+- The VISUAL MAP above lists all figures detected in the uploaded images with their exact positions.
+- For up to 3 questions, set "imageCrop" by matching the question to the most relevant figure in the VISUAL MAP.
+- Match by figureId (e.g. question mentions "Gambar 2.7" → use the entry with figureId "Gambar 2.7") OR by description keyword match.
+- Copy x, y, w, h values exactly from the matching VISUAL MAP entry. Use the img index as-is.
+- Format: {"img": <img>, "x": <x>, "y": <y>, "w": <w>, "h": <h>}
+- Set imageCrop to null if no matching visual exists in the VISUAL MAP.
 - Set svg to null for all questions.
 
 Respond ONLY with valid JSON, no markdown:
