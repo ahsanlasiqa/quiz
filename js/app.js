@@ -617,13 +617,12 @@ INSTRUCTIONS:
    - Uses the same language as the question
    - Is detailed enough that a student can understand without re-reading the material
 
-IMAGE CROP INSTRUCTIONS (IMPORTANT — do this for EVERY question):
-- For EVERY question, set "imageCrop" to show the region of the uploaded image most relevant to that question.
-- "imageCrop": {"img": 0, "x": 0.0, "y": 0.2, "w": 1.0, "h": 0.3} where img=image index (0-based), x/y/w/h are fractions (0.0–1.0).
-- Choose the region containing the text, diagram, table, or illustration the question is based on.
-- Spread across different images (img: 0, 1, 2…) and different regions (different y values).
-- Only set "imageCrop" to null if there are truly no uploaded images.
-- Set svg to null for all questions — we use real image crops instead.
+IMAGE CROP INSTRUCTIONS:
+- Choose the 3 questions where a specific image region is MOST directly relevant (e.g. a diagram, table, formula, or illustration that the question explicitly refers to).
+- For those 3 questions only, set "imageCrop": {"img": 0, "x": 0.0, "y": 0.2, "w": 1.0, "h": 0.3} where img=image index (0-based), x/y/w/h are fractions (0.0–1.0).
+- The crop region must tightly contain the specific visual element the question is about — not the whole page.
+- Set "imageCrop" to null for all other questions. Only include a crop if it genuinely helps the student understand the question.
+- Set svg to null for all questions.
 
 Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":{"img":0,"x":0.0,"y":0.1,"w":1.0,"h":0.4}},{"number":2,"type":"true_false","question":"...","options":[],"answer":"Benar","explanation":"...","svg":null,"imageCrop":null}]}`;
