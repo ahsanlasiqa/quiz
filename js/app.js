@@ -679,12 +679,13 @@ IMAGE CROP INSTRUCTIONS:
 Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":{"img":0,"x":0.0,"y":0.1,"w":1.0,"h":0.4}},{"number":2,"type":"true_false","question":"...","options":[],"answer":"Benar","explanation":"...","svg":null,"imageCrop":null}]}`;
 
+  const dynamicTokensUpload = Math.min(8000, Math.max(3000, state.settings.numQuestions * 320));
   const generateRes = await fetch('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 4500,
+      max_tokens: dynamicTokensUpload,
       messages: [{ role: 'user', content: quizPrompt }]
     })
   });
@@ -1534,11 +1535,9 @@ INSTRUCTIONS:
 5. For multiple choice: exactly 4 options labeled A, B, C, D.
 6. For fill in blank: replace key terms with ___.
 7. For short answer: open-ended questions about main concepts.
-8. EXPLANATION: Write a comprehensive 2–4 sentence explanation per question that:
-   - References the specific concept from the topic
-   - Explains WHY the answer is correct with reasoning
-   - Clarifies why other options are wrong (for multiple choice)
-   - Helps the student understand the material deeply
+8. EXPLANATION: Write a concise 1–2 sentence explanation per question (keep it short to fit all ${numQuestions} questions).
+   - State WHY the answer is correct with key reasoning
+   - For multiple choice: mention why the correct option is right
 9. Adjust difficulty for ${levelLabel} students studying ${topik}.
 
 Set "imageCrop" to null for all questions (no uploaded images in this mode).
@@ -1547,12 +1546,15 @@ Set "svg" to null for all questions.
 Respond ONLY with valid JSON, no markdown:
 {"subject":"${mapel} — ${topik}","language":"id","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":null}]}`;
 
+  // Dynamic max_tokens: ~300 tokens per question, min 3000, max 8000
+  const dynamicTokens = Math.min(8000, Math.max(3000, numQuestions * 320));
+
   const res = await fetch('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 4500,
+      max_tokens: dynamicTokens,
       messages: [{ role: 'user', content: prompt }]
     })
   });
