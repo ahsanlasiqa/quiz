@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hubungi Kami — DrillSoal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:       #1a7a6e;
+      --teal-light: #e8f5f3;
+      --amber:      #e8a020;
+      --ink:        #1a1208;
+      --ink-light:  #6b5f4e;
+      --cream:      #fdf8f0;
+      --cream-dark: #f5efe3;
+      --border:     #e8ddd0;
+      --radius:     12px;
+      --font-head:  'DM Serif Display', serif;
+      --font-body:  'Sora', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .logo-icon { color: var(--amber); font-size: 1.2rem; }
+    .logo-text { font-family: var(--font-head); font-size: 1.3rem; color: var(--ink); }
+    .nav-back {
+      font-size: 0.88rem; color: var(--teal); text-decoration: none;
+      font-weight: 600; display: flex; align-items: center; gap: 4px;
+    }
+    .nav-back:hover { text-decoration: underline; }
+
+    /* ── Page layout ── */
+    .page-wrap {
+      max-width: 620px;
+      margin: 48px auto;
+      padding: 0 20px 80px;
+    }
+
+    .page-title {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .page-subtitle {
+      font-size: 0.95rem;
+      color: var(--ink-light);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    /* ── Form card ── */
+    .contact-card {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 32px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .form-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--ink);
+      background: white;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--teal);
+    }
+    .form-textarea {
+      resize: vertical;
+      min-height: 130px;
+      line-height: 1.6;
+    }
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      cursor: pointer;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--teal);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 8px;
+    }
+    .btn-submit:hover { background: #155f55; }
+    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* ── Status messages ── */
+    .form-status {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      display: none;
+    }
+    .form-status.success {
+      background: #e8f5f3;
+      border: 1px solid #a7d7d1;
+      color: #0f5c52;
+      display: block;
+    }
+    .form-status.error {
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+      display: block;
+    }
+
+    /* ── Info box ── */
+    .contact-info {
+      margin-top: 28px;
+      padding: 20px;
+      background: var(--cream-dark);
+      border-radius: var(--radius);
+      font-size: 0.88rem;
+      color: var(--ink-light);
+      line-height: 1.7;
+    }
+    .contact-info strong { color: var(--ink); }
+
+    /* ── Footer ── */
+    .page-footer {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 0.82rem;
+      color: var(--ink-light);
+    }
+    .page-footer a { color: var(--teal); text-decoration: none; }
+    .page-footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">DrillSoal</span>
+    </a>
+    <a href="/" class="nav-back">← Kembali ke Beranda</a>
+  </nav>
+
+  <div class="page-wrap">
+    <h1 class="page-title">Hubungi Kami</h1>
+    <p class="page-subtitle">Ada pertanyaan, masukan, atau menemukan masalah? Kami senang mendengar dari kamu. Kirim pesan di bawah ini dan kami akan membalas dalam 1–2 hari kerja.</p>
+
+    <div class="contact-card">
+      <form id="contact-form">
+
+        <div class="form-field">
+          <label class="form-label" for="field-name">Nama</label>
+          <input class="form-input" type="text" id="field-name" placeholder="Nama lengkap kamu" required />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="field-email">Email</label>
+          <input class="form-input" type="email" id="field-email" placeholder="email@contoh.com" required />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="field-topic">Topik</label>
+          <select class="form-select" id="field-topic" required>
+            <option value="">— Pilih topik —</option>
+            <option value="Pertanyaan umum">Pertanyaan umum</option>
+            <option value="Masalah teknis / bug">Masalah teknis / bug</option>
+            <option value="Pembayaran & kredit">Pembayaran & kredit</option>
+            <option value="Saran & masukan">Saran & masukan</option>
+            <option value="Kerjasama & partnership">Kerjasama & partnership</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="field-message">Pesan</label>
+          <textarea class="form-textarea" id="field-message" placeholder="Tuliskan pesanmu di sini…" required></textarea>
+        </div>
+
+        <button class="btn-submit" type="submit" id="btn-submit">✉️ Kirim Pesan</button>
+
+        <div class="form-status" id="form-status"></div>
+      </form>
+
+      <div class="contact-info">
+        <strong>📬 Email langsung:</strong> hello@drillsoal.com<br/>
+        <strong>⏱ Waktu respons:</strong> 1–2 hari kerja<br/>
+        <strong>🕐 Jam operasional:</strong> Senin–Jumat, 09.00–17.00 WIB
+      </div>
+    </div>
+
+    <div class="page-footer">
+      © 2026 DrillSoal &nbsp;·&nbsp; <a href="/">Beranda</a>
+    </div>
+  </div>
+
+  <script>
+    const form    = document.getElementById('contact-form');
+    const btnSend = document.getElementById('btn-submit');
+    const status  = document.getElementById('form-status');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const name    = document.getElementById('field-name').value.trim();
+      const email   = document.getElementById('field-email').value.trim();
+      const topic   = document.getElementById('field-topic').value;
+      const message = document.getElementById('field-message').value.trim();
+
+      if (!name || !email || !topic || !message) return;
+
+      btnSend.disabled = true;
+      btnSend.textContent = 'Mengirim…';
+      status.className = 'form-status';
+      status.style.display = 'none';
+
+      try {
+        // Send via Formspree — ganti YOUR_FORM_ID dengan ID dari formspree.io
+        const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ name, email, _subject: `[DrillSoal] ${topic}`, message, topic })
+        });
+
+        if (res.ok) {
+          status.className = 'form-status success';
+          status.textContent = '✅ Pesan berhasil dikirim! Kami akan membalas ke email kamu dalam 1–2 hari kerja.';
+          form.reset();
+        } else {
+          throw new Error('Gagal mengirim');
+        }
+      } catch(err) {
+        status.className = 'form-status error';
+        status.textContent = '❌ Gagal mengirim pesan. Silakan coba lagi atau email langsung ke hello@drillsoal.com';
+      } finally {
+        btnSend.disabled = false;
+        btnSend.textContent = '✉️ Kirim Pesan';
+      }
+    });
+  </script>
+
+</body>
+</html>

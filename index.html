@@ -182,6 +182,70 @@
       </div>
     </section>
 
+    <!-- ── FAQ ── -->
+    <section class="landing-faq">
+      <h2 class="landing-section-title">Pertanyaan Umum</h2>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Apakah DrillSoal gratis? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">Ya! Kamu bisa mencoba DrillSoal secara gratis sebanyak 3 kali tanpa perlu kartu kredit. Setelah itu, kamu bisa membeli paket kredit mulai dari Rp 29.900 untuk 30 kali generate soal.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Format file apa saja yang didukung? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">DrillSoal mendukung foto (JPG, PNG, WEBP) dan file PDF. Kamu bisa upload hingga 10 gambar atau halaman PDF sekaligus dalam satu sesi generate.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Mata pelajaran apa saja yang didukung? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">Semua mata pelajaran! DrillSoal bisa membuat soal dari materi apapun yang kamu upload — Matematika, IPA, IPS, Bahasa Indonesia, Bahasa Inggris, Sejarah, Fisika, Kimia, Biologi, dan lainnya. Tersedia juga mode Pilih Topik dengan database kurikulum SD, SMP, dan SMA (K13 & Kurikulum Merdeka).</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Berapa lama proses generate soal? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">Umumnya 10–30 detik tergantung jumlah gambar dan soal yang diminta. Semakin banyak gambar yang diupload, semakin lama proses membaca materinya.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Jenis soal apa yang bisa dibuat? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">DrillSoal bisa membuat 4 jenis soal: Pilihan Ganda (4 opsi A–D), Benar/Salah, Isian Singkat (fill in the blank), dan Uraian (essay). Kamu bisa pilih kombinasi jenis soal yang diinginkan sebelum generate.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Apakah kredit yang dibeli bisa kedaluwarsa? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">Tidak. Kredit yang sudah dibeli tidak akan kedaluwarsa dan bisa digunakan kapan saja.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Bagaimana cara menggunakan hasil soal? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">Setelah soal dibuat, kamu bisa: (1) Unduh sebagai PDF siap cetak untuk dibagikan ke siswa, atau (2) Kerjakan langsung secara interaktif di browser dengan sistem penilaian otomatis.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Apakah data materi yang saya upload disimpan? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">Tidak. Gambar dan materi yang kamu upload hanya diproses sementara untuk membuat soal dan tidak disimpan di server kami setelah proses selesai.</div>
+        </div>
+
+      </div>
+    </section>
+
     <section class="landing-footer-cta">
       <div class="login-card" id="login-card">
         <div class="login-logo">
@@ -200,6 +264,8 @@
 
     <footer class="landing-copyright">
       © 2026 DrillSoal. All rights reserved.
+      &nbsp;·&nbsp;
+      <a href="/contact.html" class="footer-link">Hubungi Kami</a>
     </footer>
 
   </div>
@@ -409,6 +475,22 @@
   </div>
 
   <!-- Load in order: Firebase config → Auth logic → App -->
+  <script>
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const isOpen = btn.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-q.open').forEach(b => {
+        b.classList.remove('open');
+        b.nextElementSibling.classList.remove('open');
+      });
+      // Open this one if it was closed
+      if (!isOpen) {
+        btn.classList.add('open');
+        answer.classList.add('open');
+      }
+    }
+  </script>
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/curriculum.js"></script>

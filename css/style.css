@@ -1928,3 +1928,59 @@ body {
   border-top: 1px solid var(--border);
   margin-top: 8px;
 }
+
+/* ── FAQ Section ─────────────────────────────── */
+.landing-faq {
+  padding: 64px 20px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+.faq-item {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.faq-q {
+  width: 100%;
+  padding: 18px 20px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.15s;
+}
+.faq-q:hover { background: var(--cream); }
+.faq-q.open { color: var(--teal); }
+.faq-arrow { font-size: 1rem; color: var(--ink-light); transition: transform 0.25s; flex-shrink: 0; }
+.faq-q.open .faq-arrow { transform: rotate(180deg); color: var(--teal); }
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  font-size: 0.92rem;
+  color: var(--ink-light);
+  line-height: 1.7;
+  padding: 0 20px;
+}
+.faq-a.open {
+  max-height: 200px;
+  padding: 0 20px 18px;
+}
+
+/* ── Footer link ─────────────────────────────── */
+.footer-link {
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 500;
+}
+.footer-link:hover { text-decoration: underline; }
