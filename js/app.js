@@ -691,6 +691,9 @@ function renderQuiz(quiz) {
   quizMetaText.textContent = `${quiz.subject || 'Quiz'} · ${gradeLabel} · ${quiz.questions?.length || 0} soal`;
 
   let html = '';
+  if (!quiz.questions || !Array.isArray(quiz.questions)) {
+    throw new Error('Data soal tidak valid.');
+  }
   quiz.questions.forEach((q, i) => {
     const typeLabelMap = {
       multiple_choice: 'Multiple Choice',
@@ -1490,12 +1493,48 @@ Respond ONLY with valid JSON, no markdown:
     throw new Error(err.error || `Generate gagal (${res.status})`);
   }
 
-  const data = await res.json();
-  if (data.questions) {
-    data.questions = data.questions.map(q => ({ ...q, svg: null, imageCrop: null }));
+  const raw = await res.json();
+
+  // Robust parsing — same as callClaude
+  let data = raw;
+  if (!data.questions) {
+    // Try to extract JSON from text content blocks
+    const textContent = (raw.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    if (textContent) {
+      try {
+        const clean = textContent.replace(/```json|```/g, '').trim();
+        const parsed = JSON.parse(clean);
+        if (parsed.questions) data = parsed;
+      } catch(e) {
+        // Try partial recovery
+        try {
+          const match = textContent.match(/\{[\s\S]*"questions"\s*:\s*\[[\s\S]*/);
+          if (match) {
+            let attempt = match[0];
+            // Close unclosed JSON
+            const opens = (attempt.match(/\[/g)||[]).length - (attempt.match(/\]/g)||[]).length;
+            const openB = (attempt.match(/\{/g)||[]).length - (attempt.match(/\}/g)||[]).length;
+            attempt += ']'.repeat(Math.max(0,opens)) + '}'.repeat(Math.max(0,openB));
+            const recovered = JSON.parse(attempt);
+            if (recovered.questions?.length > 0) data = recovered;
+          }
+        } catch(e2) {}
+      }
+    }
   }
+
+  if (!data.questions || !Array.isArray(data.questions)) {
+    throw new Error('Format soal tidak valid. Coba lagi.');
+  }
+
+  data.questions = data.questions.map(q => ({ ...q, svg: null, imageCrop: null }));
+
   if (typeof data._credits === 'number') {
     window._currentCredits = data._credits;
+    window.renderCreditsBanner?.();
+  }
+  if (typeof raw._credits === 'number') {
+    window._currentCredits = raw._credits;
     window.renderCreditsBanner?.();
   }
   return data;
