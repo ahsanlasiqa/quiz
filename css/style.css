@@ -1984,3 +1984,19 @@ body {
   font-weight: 500;
 }
 .footer-link:hover { text-decoration: underline; }
+
+/* ── App Footer ──────────────────────────────── */
+.app-footer {
+  text-align: center;
+  padding: 24px 16px 32px;
+  font-size: 0.82rem;
+  color: var(--ink-light);
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+.app-footer-link {
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 500;
+}
+.app-footer-link:hover { text-decoration: underline; }
