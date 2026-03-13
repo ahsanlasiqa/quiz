@@ -56,7 +56,7 @@ export default async function handler(req, res) {
         price: pack.price,
         quantity: 1,
         name: pack.name,
-        brand: 'QuizGen',
+        brand: 'DrillSoal',
         category: 'Education',
       }],
       customer_details: {
