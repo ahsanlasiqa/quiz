@@ -5,7 +5,7 @@ window.quizgenAccess = null;
 
 window.getIdToken = async function() {
   if (!window.quizgenUser) return null;
-  return await window.quizgenUser.getIdToken();
+  return await window.quizgenUser.getIdToken(true); // true = force refresh if expired
 };
 
 function startAuth() {
@@ -40,6 +40,15 @@ function startAuth() {
     loginScreen.classList.add('hidden');
     appScreen.classList.remove('hidden');
     if (window.updateSubscriptionUI) window.updateSubscriptionUI(accessData);
+
+    // Auto-trigger checkout if user came from a paid pricing button
+    var pendingPack = sessionStorage.getItem('pendingPack');
+    if (pendingPack) {
+      sessionStorage.removeItem('pendingPack');
+      setTimeout(function() {
+        if (window.startCheckout) window.startCheckout(parseInt(pendingPack));
+      }, 600); // small delay so app renders first
+    }
   }
 
   function resetLoginBtn() {
