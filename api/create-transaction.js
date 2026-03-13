@@ -8,8 +8,8 @@ export const config = {
 };
 
 const PACKS = {
-  30: { price: 29900, credits: 30, name: 'QuizGen 30 Soal' },
-  60: { price: 49900, credits: 60, name: 'QuizGen 60 Soal' },
+  30: { price: 29900, credits: 30, name: 'DrillSoal 30 Soal' },
+  60: { price: 49900, credits: 60, name: 'DrillSoal 60 Soal' },
 };
 
 function getAdminApp() {
