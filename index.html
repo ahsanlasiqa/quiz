@@ -14,7 +14,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <!-- Midtrans Snap -->
-  <script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-SlhoAop1NZxXT_c6"></script>
+  <script src="https://app.midtrans.com/snap/snap.js" data-client-key="REPLACE_WITH_PRODUCTION_CLIENT_KEY"></script>
 </head>
 <body>
 
@@ -23,6 +23,14 @@
   <div class="bg-blob blob-3"></div>
 
   <!-- ── LANDING + LOGIN SCREEN ── -->
+  <!-- Login progress overlay -->
+  <div id="login-overlay" class="login-overlay hidden">
+    <div class="login-overlay-box">
+      <div class="login-overlay-spinner"></div>
+      <p class="login-overlay-text" id="login-overlay-text">Membuka Google…</p>
+    </div>
+  </div>
+
   <div id="login-screen" class="login-screen hidden">
 
     <nav class="landing-nav">

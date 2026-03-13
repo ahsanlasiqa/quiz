@@ -25,6 +25,7 @@ function startAuth() {
   }
 
   function showLogin(errorMsg) {
+    hideOverlay();
     loginScreen.classList.remove('hidden');
     appScreen.classList.add('hidden');
     loginError.classList.add('hidden');
@@ -36,6 +37,7 @@ function startAuth() {
   }
 
   function showApp(accessData) {
+    hideOverlay();
     window.quizgenAccess = accessData;
     loginScreen.classList.add('hidden');
     appScreen.classList.remove('hidden');
@@ -59,6 +61,17 @@ function startAuth() {
   function setBtnLoading(text) {
     btnLogin.disabled = true;
     btnLogin.innerHTML = '<span class="btn-spinner"></span> ' + text;
+  }
+
+  function showOverlay(text) {
+    var el = document.getElementById('login-overlay');
+    var txt = document.getElementById('login-overlay-text');
+    if (el) el.classList.remove('hidden');
+    if (txt) txt.textContent = text || 'Memproses…';
+  }
+  function hideOverlay() {
+    var el = document.getElementById('login-overlay');
+    if (el) el.classList.add('hidden');
   }
 
   async function checkAndShowApp(user) {
@@ -93,6 +106,7 @@ function startAuth() {
     console.log('onAuthStateChanged:', user ? user.email : 'null');
     if (user && !window.quizgenAuthed) {
       setBtnLoading('Verifying…');
+      showOverlay('Memverifikasi akun…');
       checkAndShowApp(user);
     } else if (!user && !window.quizgenAuthed) {
       showLogin();
@@ -106,15 +120,18 @@ function startAuth() {
 
     window.firebaseAuth.signInWithPopup(window.googleProvider)
       .then(function(result) {
-        // onAuthStateChanged will handle the rest
+        // onAuthStateChanged will handle the rest — show overlay now
+        showOverlay('Masuk dengan Google…');
         console.log('Popup success:', result.user.email);
       })
       .catch(function(err) {
         console.error('Popup failed:', err.code, err.message);
+        hideOverlay();
         if (err.code === 'auth/popup-blocked' ||
             err.code === 'auth/operation-not-supported-in-this-environment') {
           // Fall back to redirect
           setBtnLoading('Redirecting…');
+          showOverlay('Mengalihkan ke Google…');
           window.firebaseAuth.signInWithRedirect(window.googleProvider);
         } else if (err.code === 'auth/popup-closed-by-user' ||
                    err.code === 'auth/cancelled-popup-request') {

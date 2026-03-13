@@ -2000,3 +2000,43 @@ body {
   font-weight: 500;
 }
 .app-footer-link:hover { text-decoration: underline; }
+
+/* ── Login Progress Overlay ──────────────────── */
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(253, 248, 240, 0.92);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-overlay.hidden { display: none; }
+
+.login-overlay-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.login-overlay-spinner {
+  width: 52px;
+  height: 52px;
+  border: 4px solid var(--border);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: overlaySpinAnim 0.8s linear infinite;
+}
+@keyframes overlaySpinAnim {
+  to { transform: rotate(360deg); }
+}
+
+.login-overlay-text {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.01em;
+}
