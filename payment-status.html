@@ -199,9 +199,35 @@
 
   // ── Resume pending payment ─────────────────────────────
   async function resumePayment(orderId) {
-    // Re-create transaction token via create-transaction with existing orderId
-    // Simpler: just re-open snap with stored token if available, else inform user
-    alert('Untuk melanjutkan pembayaran, silakan beli ulang dari halaman utama. Order ID lama: ' + orderId);
+    const btn = document.querySelector(`[data-order-id="${orderId}"]`);
+    if (btn) { btn.disabled = true; btn.textContent = 'Memuat…'; }
+
+    try {
+      const user = firebase.auth().currentUser;
+      if (!user) throw new Error('Silakan login ulang.');
+
+      const idToken = await user.getIdToken(true);
+      const res = await fetch('/api/resume-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-id-token': idToken },
+        body: JSON.stringify({ orderId })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Gagal memuat pembayaran');
+
+      // Open Midtrans Snap with stored token
+      window.snap.pay(data.token, {
+        onSuccess: function() { setTimeout(() => location.reload(), 1500); },
+        onPending: function() { setTimeout(() => location.reload(), 1500); },
+        onError:   function() { if (btn) { btn.disabled = false; btn.textContent = 'Lanjutkan Pembayaran'; } },
+        onClose:   function() { if (btn) { btn.disabled = false; btn.textContent = 'Lanjutkan Pembayaran'; } },
+      });
+
+    } catch(err) {
+      if (btn) { btn.disabled = false; btn.textContent = 'Lanjutkan Pembayaran'; }
+      alert('❌ ' + err.message);
+    }
   }
 
   // ── Load & render orders ───────────────────────────────
@@ -247,7 +273,7 @@
         html += '<div class="orders-list">';
         for (const o of orders) {
           const resumeBtn = o.status === 'pending'
-            ? `<br/><button class="btn-resume" onclick="resumePayment('${o.orderId}')">Lanjutkan Pembayaran</button>`
+            ? `<br/><button class="btn-resume" data-order-id="${o.orderId}" onclick="resumePayment('${o.orderId}')">Lanjutkan Pembayaran</button>`
             : '';
           html += `
             <div class="order-card">

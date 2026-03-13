@@ -73,12 +73,13 @@ export default async function handler(req, res) {
 
     const transaction = await snap.createTransaction(parameter);
 
-    // Save pending order
+    // Save pending order including snapToken for resume
     await db.collection('orders').doc(orderId).set({
       orderId, email,
       amount: pack.price,
       credits: pack.credits,
       status: 'pending',
+      snapToken: transaction.token,
       createdAt: new Date().toISOString(),
     });
 
