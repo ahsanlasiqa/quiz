@@ -32,21 +32,22 @@ export default async function handler(req, res) {
 
     const snapshot = await db.collection('orders')
       .where('email', '==', email)
-      .orderBy('createdAt', 'desc')
       .limit(20)
       .get();
 
-    const orders = snapshot.docs.map(doc => {
-      const d = doc.data();
-      return {
-        orderId: d.orderId,
-        amount: d.amount,
-        credits: d.credits,
-        status: d.status,
-        createdAt: d.createdAt,
-        paidAt: d.paidAt || null,
-      };
-    });
+    const orders = snapshot.docs
+      .map(doc => {
+        const d = doc.data();
+        return {
+          orderId: d.orderId,
+          amount: d.amount,
+          credits: d.credits,
+          status: d.status,
+          createdAt: d.createdAt,
+          paidAt: d.paidAt || null,
+        };
+      })
+      .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
 
     return res.status(200).json({ orders });
   } catch (err) {
