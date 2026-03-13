@@ -8,8 +8,8 @@ export const config = {
 };
 
 const PACKS = {
-  30: { price: 29900, credits: 30, name: 'DrillSoal 30 Credits' },
-  60: { price: 49900, credits: 60, name: 'DrillSoal 60 Credits' },
+  30: { price: 29900, credits: 30, name: 'QuizGen 30 Soal' },
+  60: { price: 49900, credits: 60, name: 'QuizGen 60 Soal' },
 };
 
 function getAdminApp() {
@@ -38,6 +38,7 @@ export default async function handler(req, res) {
     if (!email) return res.status(401).json({ error: 'No email' });
 
     const packSize = parseInt(req.body?.pack) === 30 ? 30 : 60;
+    console.log('create-transaction: pack received:', req.body?.pack, '→ packSize:', packSize, 'email:', email);
     const pack = PACKS[packSize];
     const orderId = `quizgen-${packSize}cr-${email.replace(/[^a-z0-9]/g, '-')}-${Date.now()}`;
 
@@ -56,7 +57,7 @@ export default async function handler(req, res) {
         price: pack.price,
         quantity: 1,
         name: pack.name,
-        brand: 'DrillSoal',
+        brand: 'QuizGen',
         category: 'Education',
       }],
       customer_details: {
@@ -72,6 +73,7 @@ export default async function handler(req, res) {
     };
 
     const transaction = await snap.createTransaction(parameter);
+    console.log('Midtrans transaction created:', orderId, 'pack:', packSize, 'token:', transaction.token?.substring(0,10));
 
     // Save pending order including snapToken for resume
     await db.collection('orders').doc(orderId).set({
@@ -82,6 +84,7 @@ export default async function handler(req, res) {
       snapToken: transaction.token,
       createdAt: new Date().toISOString(),
     });
+    console.log('Order saved to Firestore:', orderId);
 
     return res.status(200).json({ token: transaction.token, orderId });
 
