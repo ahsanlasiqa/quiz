@@ -35,6 +35,9 @@ export default async function handler(req, res) {
       .limit(20)
       .get();
 
+    console.log(`my-orders: found ${snapshot.docs.length} orders for ${email}`);
+    snapshot.docs.forEach(doc => console.log(' -', doc.id, doc.data().email, doc.data().status, doc.data().credits));
+
     const orders = snapshot.docs
       .map(doc => {
         const d = doc.data();
@@ -49,7 +52,7 @@ export default async function handler(req, res) {
       })
       .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
 
-    return res.status(200).json({ orders });
+    return res.status(200).json({ orders, debug_email: email, debug_count: snapshot.docs.length });
   } catch (err) {
     console.error('my-orders error:', err);
     return res.status(500).json({ error: err.message });
