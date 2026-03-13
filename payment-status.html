@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Status Pembayaran — DrillSoal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #1a7a6e; --teal-light: #e8f5f3;
+      --amber: #e8a020; --ink: #1a1208; --ink-light: #6b5f4e;
+      --cream: #fdf8f0; --cream-dark: #f5efe3; --border: #e8ddd0;
+      --radius: 12px; --font-head: 'DM Serif Display', serif; --font-body: 'Sora', sans-serif;
+    }
+    body { font-family: var(--font-body); background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px; background: white; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .logo-icon { color: var(--amber); font-size: 1.2rem; }
+    .logo-text { font-family: var(--font-head); font-size: 1.3rem; color: var(--ink); }
+    .nav-back { font-size: 0.88rem; color: var(--teal); text-decoration: none; font-weight: 600; }
+    .nav-back:hover { text-decoration: underline; }
+
+    .page-wrap { max-width: 680px; margin: 40px auto; padding: 0 20px 80px; }
+    .page-title { font-family: var(--font-head); font-size: 1.9rem; margin-bottom: 6px; }
+    .page-sub { font-size: 0.92rem; color: var(--ink-light); margin-bottom: 32px; line-height: 1.6; }
+
+    /* Auth gate */
+    .auth-gate {
+      background: white; border: 1px solid var(--border); border-radius: 16px;
+      padding: 40px 32px; text-align: center;
+    }
+    .auth-gate p { color: var(--ink-light); margin-bottom: 20px; font-size: 0.95rem; }
+    .btn-google {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 24px; background: white; border: 1.5px solid var(--border);
+      border-radius: var(--radius); font-family: var(--font-body); font-size: 0.95rem;
+      font-weight: 600; cursor: pointer; color: var(--ink); transition: border-color 0.2s;
+    }
+    .btn-google:hover { border-color: var(--teal); }
+
+    /* Loading */
+    .loading-wrap { text-align: center; padding: 60px 20px; }
+    .spinner-ring {
+      width: 40px; height: 40px; border: 3px solid var(--border);
+      border-top-color: var(--teal); border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-wrap p { color: var(--ink-light); font-size: 0.9rem; }
+
+    /* Empty */
+    .empty-wrap { text-align: center; padding: 60px 20px; color: var(--ink-light); }
+    .empty-wrap .empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .empty-wrap p { font-size: 0.92rem; line-height: 1.6; }
+
+    /* Orders list */
+    .orders-list { display: flex; flex-direction: column; gap: 12px; }
+    .order-card {
+      background: white; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 22px; display: flex; align-items: center; gap: 16px;
+    }
+    .order-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .order-info { flex: 1; min-width: 0; }
+    .order-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+    .order-meta { font-size: 0.82rem; color: var(--ink-light); }
+    .order-id { font-size: 0.75rem; color: var(--ink-light); margin-top: 4px; font-family: monospace; word-break: break-all; }
+
+    .status-badge {
+      flex-shrink: 0; padding: 5px 12px; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .status-paid    { background: #e8f5f3; color: #0f5c52; }
+    .status-pending { background: #fff8e6; color: #92600a; }
+    .status-failed  { background: #fef2f2; color: #991b1b; }
+    .status-unknown { background: #f3f4f6; color: #6b7280; }
+
+    /* Resume payment button */
+    .btn-resume {
+      display: inline-block; margin-top: 10px; padding: 7px 14px;
+      background: var(--teal); color: white; border: none; border-radius: 8px;
+      font-family: var(--font-body); font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-resume:hover { background: #155f55; }
+
+    /* Refresh */
+    .refresh-wrap { text-align: center; margin-bottom: 20px; }
+    .btn-refresh {
+      background: none; border: 1px solid var(--border); border-radius: 8px;
+      padding: 8px 16px; font-family: var(--font-body); font-size: 0.85rem;
+      color: var(--teal); font-weight: 600; cursor: pointer; transition: border-color 0.2s;
+    }
+    .btn-refresh:hover { border-color: var(--teal); }
+
+    /* Credits banner */
+    .credits-banner {
+      background: var(--teal-light); border: 1px solid #a7d7d1;
+      border-radius: var(--radius); padding: 14px 18px;
+      font-size: 0.9rem; color: #0f5c52; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .page-footer { text-align: center; margin-top: 48px; font-size: 0.82rem; color: var(--ink-light); }
+    .page-footer a { color: var(--teal); text-decoration: none; }
+    .page-footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">
+    <span class="logo-icon">✦</span>
+    <span class="logo-text">DrillSoal</span>
+  </a>
+  <a href="/" class="nav-back">← Kembali</a>
+</nav>
+
+<div class="page-wrap">
+  <h1 class="page-title">Status Pembayaran</h1>
+  <p class="page-sub">Cek status transaksi pembelian kredit kamu. Jika pembayaran sudah selesai tapi kredit belum masuk, tunggu beberapa menit lalu refresh halaman ini.</p>
+
+  <div id="main-content">
+    <!-- Auth gate shown by default -->
+    <div class="auth-gate" id="auth-gate">
+      <p>Masuk terlebih dahulu untuk melihat riwayat pembayaran kamu.</p>
+      <button class="btn-google" id="btn-login">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" />
+        Masuk dengan Google
+      </button>
+      <p id="login-error" style="color:#991b1b;font-size:0.85rem;margin-top:12px;display:none;"></p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    © 2026 DrillSoal &nbsp;·&nbsp; <a href="/">Beranda</a> &nbsp;·&nbsp; <a href="/contact.html">Hubungi Kami</a>
+  </div>
+</div>
+
+<!-- Midtrans Snap -->
+<script src="https://app.midtrans.com/snap/snap.js" data-client-key="REPLACE_WITH_PRODUCTION_CLIENT_KEY"></script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+(async function() {
+  // ── Firebase init ──────────────────────────────────────
+  let firebaseConfig;
+  try {
+    const r = await fetch('/api/firebase-client-config');
+    firebaseConfig = await r.json();
+  } catch(e) {
+    document.getElementById('main-content').innerHTML = '<p style="color:#991b1b;text-align:center;padding:40px">Gagal memuat konfigurasi. Coba refresh halaman.</p>';
+    return;
+  }
+
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  // ── DOM refs ───────────────────────────────────────────
+  const mainContent = document.getElementById('main-content');
+  const authGate    = document.getElementById('auth-gate');
+  const btnLogin    = document.getElementById('btn-login');
+  const loginError  = document.getElementById('login-error');
+
+  // ── Helpers ────────────────────────────────────────────
+  function formatDate(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  }
+
+  function formatRupiah(n) {
+    return 'Rp ' + Number(n).toLocaleString('id-ID');
+  }
+
+  function statusBadge(status) {
+    const map = {
+      paid:    { cls: 'status-paid',    label: '✅ Berhasil' },
+      pending: { cls: 'status-pending', label: '⏳ Menunggu' },
+      failed:  { cls: 'status-failed',  label: '❌ Gagal' },
+    };
+    const s = map[status] || { cls: 'status-unknown', label: '❓ ' + status };
+    return `<span class="status-badge ${s.cls}">${s.label}</span>`;
+  }
+
+  function statusIcon(status) {
+    return status === 'paid' ? '💳' : status === 'pending' ? '🕐' : '❌';
+  }
+
+  // ── Resume pending payment ─────────────────────────────
+  async function resumePayment(orderId) {
+    // Re-create transaction token via create-transaction with existing orderId
+    // Simpler: just re-open snap with stored token if available, else inform user
+    alert('Untuk melanjutkan pembayaran, silakan beli ulang dari halaman utama. Order ID lama: ' + orderId);
+  }
+
+  // ── Load & render orders ───────────────────────────────
+  async function loadOrders(user) {
+    mainContent.innerHTML = `
+      <div class="loading-wrap">
+        <div class="spinner-ring"></div>
+        <p>Memuat riwayat transaksi…</p>
+      </div>`;
+
+    try {
+      const idToken = await user.getIdToken(true);
+
+      // Also get current credits
+      const [ordersRes, statusRes] = await Promise.all([
+        fetch('/api/my-orders', { headers: { 'x-id-token': idToken } }),
+        fetch('/api/get-status', { headers: { 'x-id-token': idToken } })
+      ]);
+
+      const ordersData = await ordersRes.json();
+      const statusData = statusRes.ok ? await statusRes.json() : null;
+
+      const orders = ordersData.orders || [];
+      const credits = statusData?.credits ?? null;
+
+      let html = '';
+
+      // Credits banner
+      if (credits !== null) {
+        html += `<div class="credits-banner">💰 Kredit tersisa kamu saat ini: <strong>${credits} kredit</strong></div>`;
+      }
+
+      // Refresh button
+      html += `<div class="refresh-wrap"><button class="btn-refresh" onclick="location.reload()">🔄 Refresh Status</button></div>`;
+
+      if (orders.length === 0) {
+        html += `
+          <div class="empty-wrap">
+            <div class="empty-icon">🧾</div>
+            <p>Belum ada riwayat transaksi.<br/>Beli kredit pertamamu dari <a href="/" style="color:var(--teal)">halaman utama</a>.</p>
+          </div>`;
+      } else {
+        html += '<div class="orders-list">';
+        for (const o of orders) {
+          const resumeBtn = o.status === 'pending'
+            ? `<br/><button class="btn-resume" onclick="resumePayment('${o.orderId}')">Lanjutkan Pembayaran</button>`
+            : '';
+          html += `
+            <div class="order-card">
+              <div class="order-icon">${statusIcon(o.status)}</div>
+              <div class="order-info">
+                <div class="order-title">${o.credits} Kredit — ${formatRupiah(o.amount)}</div>
+                <div class="order-meta">
+                  ${o.status === 'paid' && o.paidAt
+                    ? '✅ Dibayar: ' + formatDate(o.paidAt)
+                    : '📅 Dibuat: ' + formatDate(o.createdAt)}
+                </div>
+                <div class="order-id">${o.orderId}</div>
+                ${resumeBtn}
+              </div>
+              ${statusBadge(o.status)}
+            </div>`;
+        }
+        html += '</div>';
+      }
+
+      mainContent.innerHTML = html;
+
+    } catch(err) {
+      mainContent.innerHTML = `<p style="color:#991b1b;text-align:center;padding:40px">Gagal memuat data: ${err.message}</p>`;
+    }
+  }
+
+  // ── Auth state ─────────────────────────────────────────
+  auth.onAuthStateChanged(function(user) {
+    if (user) {
+      loadOrders(user);
+    } else {
+      mainContent.innerHTML = `
+        <div class="auth-gate" id="auth-gate">
+          <p>Masuk terlebih dahulu untuk melihat riwayat pembayaran kamu.</p>
+          <button class="btn-google" id="btn-login-2">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" />
+            Masuk dengan Google
+          </button>
+          <p id="login-error-2" style="color:#991b1b;font-size:0.85rem;margin-top:12px;display:none;"></p>
+        </div>`;
+      document.getElementById('btn-login-2')?.addEventListener('click', doLogin);
+    }
+  });
+
+  async function doLogin() {
+    try {
+      await auth.signInWithPopup(provider);
+    } catch(err) {
+      const el = document.getElementById('login-error-2') || loginError;
+      if (el) { el.textContent = 'Login gagal: ' + err.message; el.style.display = 'block'; }
+    }
+  }
+
+  btnLogin?.addEventListener('click', doLogin);
+
+  // expose for inline onclick
+  window.resumePayment = resumePayment;
+})();
+</script>
+
+</body>
+</html>

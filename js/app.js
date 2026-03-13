@@ -133,6 +133,7 @@ window.renderCreditsBanner = function() {
   banner.className = credits > 0 ? 'subscription-banner trial' : 'subscription-banner expired';
   banner.innerHTML = `
     <span>${statusText}</span>
+    <a href="/payment-status.html" class="banner-status-link">Cek status pembayaran →</a>
     <div class="banner-buy-btns">
       <button class="btn-subscribe btn-subscribe-sm" onclick="window.startCheckout(30)">30 Credits — Rp 29.900</button>
       <button class="btn-subscribe btn-subscribe-hot" onclick="window.startCheckout(60)">🔥 60 Credits — Rp 49.900</button>

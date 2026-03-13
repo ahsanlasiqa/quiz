@@ -1,15 +1,42 @@
 {
   "functions": {
-    "api/generate.js":              { "maxDuration": 60 },
-    "api/extract.js":               { "maxDuration": 60 },
-    "api/check-auth.js":            { "maxDuration": 15 },
-    "api/create-transaction.js":    { "maxDuration": 15 },
-    "api/midtrans-webhook.js":      { "maxDuration": 15 },
-    "api/get-status.js":            { "maxDuration": 15 },
-    "api/firebase-client-config.js":{ "maxDuration": 5  }
+    "api/generate.js": {
+      "maxDuration": 60
+    },
+    "api/extract.js": {
+      "maxDuration": 60
+    },
+    "api/check-auth.js": {
+      "maxDuration": 15
+    },
+    "api/create-transaction.js": {
+      "maxDuration": 15
+    },
+    "api/midtrans-webhook.js": {
+      "maxDuration": 15
+    },
+    "api/get-status.js": {
+      "maxDuration": 15
+    },
+    "api/firebase-client-config.js": {
+      "maxDuration": 5
+    },
+    "api/my-orders.js": {
+      "maxDuration": 15
+    }
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)",     "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*)\\.html",
+      "destination": "/$1.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
