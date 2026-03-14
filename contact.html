@@ -233,14 +233,18 @@
       </form>
 
       <div class="contact-info">
-        <strong>📬 Email langsung:</strong> hello@drillsoal.com<br/>
+        <strong>📬 Email langsung:</strong> drillsoal@outlook.com<br/>
         <strong>⏱ Waktu respons:</strong> 1–2 hari kerja<br/>
-        <strong>🕐 Jam operasional:</strong> Senin–Jumat, 09.00–17.00 WIB
+        <strong>🕐 Jam operasional:</strong> Senin–Jumat, 09.00–17.00 WIB<br/>
+        <strong>📸 Instagram:</strong> <a href="https://www.instagram.com/drillsoal" target="_blank" style="color:var(--teal)">@drillsoal</a><br/>
+        <strong>🎵 TikTok:</strong> <a href="https://www.tiktok.com/@drillsoal" target="_blank" style="color:var(--teal)">@drillsoal</a>
       </div>
     </div>
 
     <div class="page-footer">
-      © 2026 DrillSoal &nbsp;·&nbsp; <a href="/">Beranda</a>
+      © 2026 DrillSoal &nbsp;·&nbsp; <a href="/">Beranda</a> &nbsp;·&nbsp; <a href="/terms.html">Syarat &amp; Ketentuan</a>
+    &nbsp;·&nbsp; <a href="https://www.instagram.com/drillsoal" target="_blank">Instagram</a>
+    &nbsp;·&nbsp; <a href="https://www.tiktok.com/@drillsoal" target="_blank">TikTok</a>
     </div>
   </div>
 
@@ -270,7 +274,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify({
-            access_key: '8ceba44a-721b-4015-8034-0292bb1553ba',
+            access_key: 'YOUR_ACCESS_KEY',
             subject: `[DrillSoal] ${topic} — dari ${name}`,
             from_name: 'DrillSoal Contact Form',
             name, email, topic, message
@@ -286,7 +290,7 @@
         }
       } catch(err) {
         status.className = 'form-status error';
-        status.textContent = '❌ Gagal mengirim pesan. Silakan coba lagi atau email langsung ke hello@drillsoal.com';
+        status.textContent = '❌ Gagal mengirim pesan. Silakan coba lagi atau email langsung ke drillsoal@outlook.com';
       } finally {
         btnSend.disabled = false;
         btnSend.textContent = '✉️ Kirim Pesan';

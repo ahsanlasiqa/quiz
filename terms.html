@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syarat & Ketentuan — DrillSoal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:       #1a7a6e;
+      --teal-light: #e8f5f3;
+      --amber:      #e8a020;
+      --ink:        #1a1208;
+      --ink-light:  #6b5f4e;
+      --cream:      #fdf8f0;
+      --cream-dark: #f5efe3;
+      --border:     #e8ddd0;
+      --radius:     12px;
+      --font-head:  'DM Serif Display', serif;
+      --font-body:  'Sora', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px; background: white;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .logo-icon { color: var(--amber); font-size: 1.2rem; }
+    .logo-text { font-family: var(--font-head); font-size: 1.3rem; color: var(--ink); }
+    .nav-back { font-size: 0.88rem; color: var(--teal); text-decoration: none; font-weight: 600; }
+    .nav-back:hover { text-decoration: underline; }
+
+    .page-wrap {
+      max-width: 760px;
+      margin: 48px auto;
+      padding: 0 24px 80px;
+    }
+
+    .page-header { margin-bottom: 40px; }
+    .page-title {
+      font-family: var(--font-head);
+      font-size: 2.2rem;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .page-meta {
+      font-size: 0.85rem;
+      color: var(--ink-light);
+    }
+
+    /* Content card */
+    .terms-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 44px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    }
+
+    .terms-section { margin-bottom: 36px; }
+    .terms-section:last-child { margin-bottom: 0; }
+
+    .section-number {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-family: var(--font-head);
+      font-size: 1.25rem;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .section-body {
+      font-size: 0.92rem;
+      color: var(--ink-light);
+      line-height: 1.8;
+    }
+    .section-body p { margin-bottom: 10px; }
+    .section-body p:last-child { margin-bottom: 0; }
+    .section-body ul {
+      padding-left: 20px;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .section-body ul li { line-height: 1.7; }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 32px 0;
+    }
+
+    /* Highlight box */
+    .highlight-box {
+      background: var(--teal-light);
+      border-left: 3px solid var(--teal);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin-top: 14px;
+      font-size: 0.88rem;
+      color: #0f5c52;
+      line-height: 1.7;
+    }
+
+    .page-footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.82rem;
+      color: var(--ink-light);
+    }
+    .page-footer a { color: var(--teal); text-decoration: none; }
+    .page-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .terms-card { padding: 28px 20px; }
+      .page-title { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">
+    <span class="logo-icon">✦</span>
+    <span class="logo-text">DrillSoal</span>
+  </a>
+  <a href="/" class="nav-back">← Kembali ke Beranda</a>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1 class="page-title">Syarat &amp; Ketentuan</h1>
+    <p class="page-meta">Terakhir diperbarui: 13 Maret 2026</p>
+  </div>
+
+  <div class="terms-card">
+
+    <div class="terms-section">
+      <div class="section-number">Pendahuluan</div>
+      <div class="section-body">
+        <p>Selamat datang di DrillSoal. Dengan mengakses dan menggunakan layanan DrillSoal, kamu menyetujui untuk terikat oleh syarat dan ketentuan yang tercantum di halaman ini. Harap baca dengan saksama sebelum menggunakan layanan kami.</p>
+        <p>DrillSoal adalah platform berbasis kecerdasan buatan (AI) yang membantu guru dan siswa membuat soal latihan secara otomatis dari materi buku teks atau topik kurikulum.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 1</div>
+      <div class="section-title">Definisi</div>
+      <div class="section-body">
+        <ul>
+          <li><strong>Layanan</strong> merujuk pada platform DrillSoal yang dapat diakses melalui drillsoal.com.</li>
+          <li><strong>Pengguna</strong> adalah setiap individu yang mendaftar dan menggunakan layanan DrillSoal.</li>
+          <li><strong>Kredit</strong> adalah satuan yang digunakan untuk mengakses fitur generate soal pada platform DrillSoal.</li>
+          <li><strong>Konten</strong> adalah semua materi, gambar, PDF, dan data lain yang diunggah oleh Pengguna ke platform.</li>
+          <li><strong>Soal yang Dihasilkan</strong> adalah output berupa soal latihan yang dibuat oleh sistem AI DrillSoal.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 2</div>
+      <div class="section-title">Akun dan Pendaftaran</div>
+      <div class="section-body">
+        <p>Untuk menggunakan DrillSoal, kamu perlu masuk menggunakan akun Google. Dengan mendaftar, kamu menyatakan bahwa:</p>
+        <ul>
+          <li>Informasi yang kamu berikan adalah akurat dan terkini.</li>
+          <li>Kamu bertanggung jawab atas keamanan dan kerahasiaan akun kamu.</li>
+          <li>Kamu berusia minimal 13 tahun, atau mendapat persetujuan orang tua/wali jika di bawah usia tersebut.</li>
+          <li>Satu akun hanya boleh digunakan oleh satu individu.</li>
+        </ul>
+        <p>DrillSoal berhak menangguhkan atau menghapus akun yang melanggar ketentuan ini tanpa pemberitahuan sebelumnya.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 3</div>
+      <div class="section-title">Kredit dan Pembayaran</div>
+      <div class="section-body">
+        <p>DrillSoal menggunakan sistem kredit untuk mengakses fitur generate soal:</p>
+        <ul>
+          <li>Setiap akun baru mendapatkan <strong>3 kredit gratis</strong> tanpa perlu kartu kredit.</li>
+          <li>Kredit tambahan dapat dibeli melalui paket yang tersedia di halaman utama.</li>
+          <li>Satu kali generate soal menggunakan <strong>1 kredit</strong>.</li>
+          <li>Kredit yang telah dibeli <strong>tidak memiliki masa kedaluwarsa</strong>.</li>
+          <li>Kredit tidak dapat dipindahtangankan ke akun lain.</li>
+        </ul>
+        <div class="highlight-box">
+          💡 Pembayaran diproses melalui Midtrans, penyedia pembayaran yang telah terdaftar dan diawasi oleh Bank Indonesia. DrillSoal tidak menyimpan data kartu kredit atau rekening bank kamu.
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 4</div>
+      <div class="section-title">Kebijakan Pengembalian Dana</div>
+      <div class="section-body">
+        <p>Kami berkomitmen untuk memberikan layanan terbaik. Terkait pengembalian dana:</p>
+        <ul>
+          <li>Kredit yang <strong>belum digunakan</strong> dapat dimintakan pengembalian dana dalam <strong>7 hari</strong> setelah pembelian.</li>
+          <li>Kredit yang <strong>sudah digunakan</strong> tidak dapat dikembalikan.</li>
+          <li>Jika terjadi gangguan teknis dari pihak kami yang mengakibatkan kredit terpotong tanpa hasil, kredit akan dikembalikan setelah verifikasi.</li>
+          <li>Permintaan pengembalian dana diajukan melalui halaman <a href="/contact.html" style="color:var(--teal)">Hubungi Kami</a>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 5</div>
+      <div class="section-title">Penggunaan yang Diizinkan</div>
+      <div class="section-body">
+        <p>Kamu boleh menggunakan DrillSoal untuk:</p>
+        <ul>
+          <li>Membuat soal latihan untuk keperluan pribadi, pendidikan, atau mengajar.</li>
+          <li>Mengunduh dan mencetak soal yang dihasilkan untuk dibagikan kepada siswa.</li>
+          <li>Menggunakan soal yang dihasilkan sebagai bahan ajar di sekolah atau lembaga pendidikan.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 6</div>
+      <div class="section-title">Penggunaan yang Dilarang</div>
+      <div class="section-body">
+        <p>Pengguna dilarang menggunakan DrillSoal untuk:</p>
+        <ul>
+          <li>Mengunggah konten yang mengandung unsur SARA, pornografi, kekerasan, atau melanggar hukum.</li>
+          <li>Menjual kembali soal yang dihasilkan sebagai produk komersial tanpa izin tertulis dari DrillSoal.</li>
+          <li>Melakukan reverse engineering, scraping, atau mengakses API secara tidak sah.</li>
+          <li>Menggunakan layanan untuk tujuan yang merugikan pihak lain.</li>
+          <li>Berbagi akun atau kredensial login kepada pihak lain.</li>
+          <li>Menggunakan bot atau otomatisasi untuk mengakses layanan secara massal.</li>
+        </ul>
+        <p>Pelanggaran terhadap ketentuan ini dapat mengakibatkan penangguhan akun permanen tanpa pengembalian kredit.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 7</div>
+      <div class="section-title">Hak Kekayaan Intelektual</div>
+      <div class="section-body">
+        <p>Terkait kepemilikan konten dan hasil:</p>
+        <ul>
+          <li>Materi yang kamu unggah tetap menjadi milik kamu atau pemilik aslinya.</li>
+          <li>Soal yang dihasilkan oleh AI DrillSoal dapat kamu gunakan bebas untuk keperluan pendidikan.</li>
+          <li>DrillSoal tidak mengklaim kepemilikan atas soal yang dihasilkan dari materi kamu.</li>
+          <li>Merek, logo, dan nama DrillSoal adalah milik eksklusif kami dan tidak boleh digunakan tanpa izin.</li>
+        </ul>
+        <p>Kamu bertanggung jawab memastikan bahwa materi yang diunggah tidak melanggar hak cipta pihak ketiga.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 8</div>
+      <div class="section-title">Privasi dan Data</div>
+      <div class="section-body">
+        <p>Kami menghormati privasi kamu:</p>
+        <ul>
+          <li>Gambar dan materi yang diunggah hanya diproses sementara untuk membuat soal dan <strong>tidak disimpan</strong> di server kami setelah proses selesai.</li>
+          <li>Data akun (nama, email) disimpan untuk keperluan autentikasi dan manajemen kredit.</li>
+          <li>Riwayat transaksi disimpan untuk keperluan verifikasi pembayaran.</li>
+          <li>Kami tidak menjual data pribadi kamu kepada pihak ketiga.</li>
+          <li>Data diproses menggunakan layanan pihak ketiga yang terpercaya: Google Firebase, Anthropic AI, dan Midtrans.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 9</div>
+      <div class="section-title">Batasan Tanggung Jawab</div>
+      <div class="section-body">
+        <p>DrillSoal menyediakan layanan "sebagaimana adanya" (as-is). Kami tidak menjamin:</p>
+        <ul>
+          <li>Akurasi 100% dari soal yang dihasilkan oleh AI — selalu lakukan pengecekan sebelum digunakan.</li>
+          <li>Ketersediaan layanan tanpa gangguan — kami berupaya menjaga uptime setinggi mungkin.</li>
+          <li>Kesesuaian soal dengan kurikulum spesifik sekolah tertentu.</li>
+        </ul>
+        <p>DrillSoal tidak bertanggung jawab atas kerugian tidak langsung yang timbul dari penggunaan atau ketidakmampuan menggunakan layanan.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 10</div>
+      <div class="section-title">Perubahan Layanan dan Ketentuan</div>
+      <div class="section-body">
+        <p>DrillSoal berhak untuk:</p>
+        <ul>
+          <li>Mengubah, menambah, atau menghapus fitur layanan kapan saja.</li>
+          <li>Memperbarui syarat dan ketentuan ini — perubahan akan diinformasikan melalui email atau notifikasi di platform.</li>
+          <li>Menyesuaikan harga paket kredit dengan pemberitahuan sebelumnya.</li>
+        </ul>
+        <p>Penggunaan layanan setelah perubahan berlaku dianggap sebagai persetujuan terhadap ketentuan baru.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 11</div>
+      <div class="section-title">Hukum yang Berlaku</div>
+      <div class="section-body">
+        <p>Syarat dan ketentuan ini diatur oleh hukum Republik Indonesia. Setiap sengketa yang timbul akan diselesaikan secara musyawarah. Apabila tidak tercapai kesepakatan, penyelesaian dilakukan melalui pengadilan yang berwenang di Indonesia.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="terms-section">
+      <div class="section-number">Pasal 12</div>
+      <div class="section-title">Hubungi Kami</div>
+      <div class="section-body">
+        <p>Jika kamu memiliki pertanyaan mengenai syarat dan ketentuan ini, silakan hubungi kami melalui:</p>
+        <ul>
+          <li>Email: <a href="mailto:drillsoal@outlook.com" style="color:var(--teal)">drillsoal@outlook.com</a></li>
+          <li>Formulir kontak: <a href="/contact.html" style="color:var(--teal)">drillsoal.com/contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- end terms-card -->
+
+  <div class="page-footer">
+    © 2026 DrillSoal &nbsp;·&nbsp;
+    <a href="/">Beranda</a> &nbsp;·&nbsp;
+    <a href="/contact.html">Hubungi Kami</a> &nbsp;·&nbsp;
+    <a href="https://www.instagram.com/drillsoal" target="_blank">Instagram</a> &nbsp;·&nbsp;
+    <a href="https://www.tiktok.com/@drillsoal" target="_blank">TikTok</a>
+  </div>
+
+</div>
+
+</body>
+</html>
