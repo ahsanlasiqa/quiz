@@ -2050,3 +2050,304 @@ body {
   opacity: 0.85;
 }
 .banner-status-link:hover { opacity: 1; text-decoration: underline; }
+
+/* ══════════════════════════════════════════════════════════════
+   BANTAI SOAL — Feature styles
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── App Mode Tabs (Drill Soal / Bantai Soal) ─────────────────── */
+.app-mode-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  background: rgba(26, 18, 8, 0.05);
+  padding: 6px;
+  border-radius: 18px;
+}
+.app-mode-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 13px;
+  background: transparent;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.22s;
+  text-align: center;
+}
+.app-mode-tab:hover {
+  background: rgba(255,255,255,0.6);
+}
+.app-mode-tab.active {
+  background: white;
+  box-shadow: 0 2px 12px rgba(26, 18, 8, 0.12);
+}
+.app-mode-tab-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.app-mode-tab-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.app-mode-tab-sub {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+.app-mode-tab.active .app-mode-tab-label {
+  color: var(--teal);
+}
+.app-mode-tab:not(.active) .app-mode-tab-label {
+  color: var(--ink-muted);
+}
+
+/* ── Bantai step label color ─────────────────────────────────── */
+.bantai-label {
+  color: var(--coral) !important;
+  background: var(--coral-pale) !important;
+}
+
+/* ── Bantai Upload Zone (reuses .upload-zone but custom accent) ─ */
+.bantai-upload-zone {
+  border-color: var(--coral) !important;
+  background: linear-gradient(135deg, #fff8f6, #fce8e2) !important;
+}
+.bantai-upload-zone:hover, .bantai-upload-zone.dragover {
+  border-color: #c04424 !important;
+  background: #fce8e2 !important;
+  transform: scale(1.01);
+}
+
+/* ── Bantai Image Preview ────────────────────────────────────── */
+.bantai-preview-wrap {
+  margin-top: 20px;
+  animation: fadeInUp 0.3s ease;
+}
+.bantai-preview-inner {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--coral);
+}
+.bantai-preview-inner img {
+  display: block;
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  background: #fafaf8;
+}
+.bantai-remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(26, 18, 8, 0.75);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.bantai-remove-btn:hover {
+  background: var(--coral);
+}
+
+/* ── Bantai Generate Button (coral theme) ───────────────────── */
+.btn-bantai-generate {
+  background: linear-gradient(135deg, var(--coral), #c04424) !important;
+  box-shadow: 0 8px 32px rgba(224, 92, 58, 0.35) !important;
+}
+.btn-bantai-generate:hover {
+  background: linear-gradient(135deg, #c04424, #a03520) !important;
+  box-shadow: 0 12px 40px rgba(224, 92, 58, 0.45) !important;
+}
+
+/* ── Bantai Result Content ───────────────────────────────────── */
+#bantai-result-content {
+  margin-top: 8px;
+}
+
+/* Soal image in result */
+.bantai-soal-img-wrap {
+  margin-bottom: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--coral);
+  box-shadow: var(--shadow);
+}
+.bantai-soal-img-wrap img {
+  display: block;
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  background: #fafaf8;
+}
+
+/* Answer box */
+.bantai-answer-box {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border: 2px solid #86efac;
+  border-radius: 16px;
+  padding: 22px 26px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.bantai-answer-box::before {
+  content: '✅ Jawaban';
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #15803d;
+  margin-bottom: 10px;
+}
+.bantai-answer-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #15803d;
+  line-height: 1.4;
+}
+
+/* Step-by-step explanation */
+.bantai-steps-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+  margin-bottom: 14px;
+  margin-top: 4px;
+}
+.bantai-step-item {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 18px;
+  align-items: flex-start;
+  animation: fadeInUp 0.3s ease both;
+}
+.bantai-step-num {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--coral);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+.bantai-step-body {
+  flex: 1;
+}
+.bantai-step-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--coral);
+  margin-bottom: 4px;
+}
+.bantai-step-content {
+  font-size: 0.95rem;
+  color: var(--ink);
+  line-height: 1.7;
+}
+.bantai-step-content strong {
+  color: var(--teal);
+}
+
+/* Key concept box */
+.bantai-concept-box {
+  background: var(--amber-pale);
+  border: 1.5px solid var(--amber);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 20px;
+}
+.bantai-concept-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--amber);
+  margin-bottom: 10px;
+}
+.bantai-concept-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.bantai-concept-list li {
+  font-size: 0.9rem;
+  color: var(--ink-light);
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.5;
+}
+.bantai-concept-list li::before {
+  content: '💡';
+  position: absolute;
+  left: 0;
+  font-size: 0.8rem;
+}
+
+/* Tips & Tricks box */
+.bantai-tips-box {
+  background: var(--teal-pale);
+  border: 1.5px solid var(--teal-light);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 20px;
+}
+.bantai-tips-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--teal);
+  margin-bottom: 10px;
+}
+.bantai-tips-text {
+  font-size: 0.9rem;
+  color: var(--ink-light);
+  line-height: 1.7;
+}
+
+/* Result actions */
+.bantai-result-actions {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .app-mode-tabs { gap: 6px; padding: 5px; }
+  .app-mode-tab { padding: 12px 10px; }
+  .app-mode-tab-sub { display: none; }
+  .bantai-answer-text { font-size: 1.1rem; }
+  .bantai-step-item { gap: 12px; }
+}

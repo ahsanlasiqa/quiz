@@ -304,6 +304,23 @@
 
     <main class="app-container">
 
+      <!-- ── Main Mode Tabs ── -->
+      <div class="app-mode-tabs" id="app-mode-tabs">
+        <button class="app-mode-tab active" id="tab-drill" onclick="switchAppMode('drill')">
+          <span class="app-mode-tab-icon">⚡</span>
+          <span class="app-mode-tab-label">Drill Soal</span>
+          <span class="app-mode-tab-sub">Buat soal dari materi</span>
+        </button>
+        <button class="app-mode-tab" id="tab-bantai" onclick="switchAppMode('bantai')">
+          <span class="app-mode-tab-icon">🔥</span>
+          <span class="app-mode-tab-label">Bantai Soal</span>
+          <span class="app-mode-tab-sub">Selesaikan soalmu sekarang</span>
+        </button>
+      </div>
+
+      <!-- ══ DRILL SOAL SECTION ══ -->
+      <div id="drill-soal-section">
+
       <section class="card step-card" id="step-settings">
         <div class="step-label">Langkah 1</div>
         <h2 class="step-title">Pengaturan Soal</h2>
@@ -468,6 +485,63 @@
         </div>
         <div id="quiz-output" class="hidden"></div>
       </section>
+
+      </div><!-- /drill-soal-section -->
+
+      <!-- ══ BANTAI SOAL SECTION ══ -->
+      <div id="bantai-soal-section" class="hidden">
+
+        <section class="card step-card" id="step-bantai-upload">
+          <div class="step-label bantai-label">Bantai Soal</div>
+          <h2 class="step-title">Upload Fotomu Soalnya 💪</h2>
+          <p class="step-desc">Upload foto satu soal yang ingin diselesaikan — AI akan mengerjakan dan menjelaskannya secara sangat detail.</p>
+
+          <div class="upload-zone bantai-upload-zone" id="bantai-upload-zone">
+            <div class="upload-icon">📸</div>
+            <p class="upload-text">Seret & lepas foto soal di sini</p>
+            <p class="upload-hint">JPG, PNG, WEBP · Hanya 1 foto</p>
+          </div>
+          <input type="file" id="bantai-file-input" accept="image/*,.pdf" style="display:none" />
+          <input type="file" id="bantai-camera-input" accept="image/*" capture="environment" style="display:none" />
+          <div class="upload-btn-row">
+            <button class="upload-btn" id="bantai-btn-browse"><span>🗂</span> Pilih File</button>
+            <button class="upload-btn upload-btn-camera" id="bantai-btn-camera"><span>📷</span> Foto Langsung</button>
+          </div>
+
+          <div id="bantai-preview-wrap" class="bantai-preview-wrap hidden">
+            <div class="bantai-preview-inner">
+              <img id="bantai-preview-img" src="" alt="Preview soal" />
+              <button class="bantai-remove-btn" id="bantai-remove-btn">✕ Hapus</button>
+            </div>
+          </div>
+        </section>
+
+        <div class="generate-wrap">
+          <button class="btn-generate btn-bantai-generate" id="btn-bantai">
+            <span class="btn-icon">🔥</span>
+            <span class="btn-text">Bantai Soal Ini!</span>
+          </button>
+          <p class="generate-hint" id="bantai-hint"></p>
+        </div>
+
+        <section class="card step-card hidden" id="step-bantai-result">
+          <div class="step-label bantai-label">Hasil Pembahasan</div>
+          <h2 class="step-title">Soal Berhasil Dibantai! 🎉</h2>
+          <div id="bantai-result-content"></div>
+          <div class="bantai-result-actions">
+            <button class="btn-new" id="bantai-btn-new"><span>＋</span> Bantai Soal Lain</button>
+          </div>
+        </section>
+
+        <div class="loading-overlay hidden" id="bantai-loading-overlay">
+          <div class="loading-card">
+            <div class="spinner"></div>
+            <p class="loading-text" id="bantai-loading-text">Membaca soalmu…</p>
+            <p class="loading-sub">Sedang dianalisis oleh AI…</p>
+          </div>
+        </div>
+
+      </div><!-- /bantai-soal-section -->
 
       <div class="loading-overlay hidden" id="loading-overlay">
         <div class="loading-card">

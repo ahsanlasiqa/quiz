@@ -1611,3 +1611,339 @@ Respond ONLY with valid JSON, no markdown:
   }
   return data;
 }
+
+// ══════════════════════════════════════════════════════════════
+//  APP MODE SWITCHER (Drill Soal / Bantai Soal)
+// ══════════════════════════════════════════════════════════════
+
+window.switchAppMode = function(mode) {
+  const drillSection  = document.getElementById('drill-soal-section');
+  const bantaiSection = document.getElementById('bantai-soal-section');
+  const tabDrill  = document.getElementById('tab-drill');
+  const tabBantai = document.getElementById('tab-bantai');
+
+  if (mode === 'bantai') {
+    drillSection.classList.add('hidden');
+    bantaiSection.classList.remove('hidden');
+    tabDrill.classList.remove('active');
+    tabBantai.classList.add('active');
+  } else {
+    bantaiSection.classList.add('hidden');
+    drillSection.classList.remove('hidden');
+    tabBantai.classList.remove('active');
+    tabDrill.classList.add('active');
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// ══════════════════════════════════════════════════════════════
+//  BANTAI SOAL — Logic
+// ══════════════════════════════════════════════════════════════
+
+const bantaiState = {
+  image: null   // { dataUrl, base64, mimeType }
+};
+
+// ── DOM refs ──────────────────────────────────────────────────
+const bantaiUploadZone   = document.getElementById('bantai-upload-zone');
+const bantaiFileInput    = document.getElementById('bantai-file-input');
+const bantaiCameraInput  = document.getElementById('bantai-camera-input');
+const bantaiPreviewWrap  = document.getElementById('bantai-preview-wrap');
+const bantaiPreviewImg   = document.getElementById('bantai-preview-img');
+const bantaiRemoveBtn    = document.getElementById('bantai-remove-btn');
+const btnBantai          = document.getElementById('btn-bantai');
+const bantaiHint         = document.getElementById('bantai-hint');
+const stepBantaiResult   = document.getElementById('step-bantai-result');
+const bantaiResultContent= document.getElementById('bantai-result-content');
+const bantaiLoadingOverlay = document.getElementById('bantai-loading-overlay');
+const bantaiLoadingText  = document.getElementById('bantai-loading-text');
+
+// ── Upload zone events ────────────────────────────────────────
+bantaiUploadZone.addEventListener('dragover', e => {
+  e.preventDefault();
+  bantaiUploadZone.classList.add('dragover');
+});
+bantaiUploadZone.addEventListener('dragleave', () => bantaiUploadZone.classList.remove('dragover'));
+bantaiUploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  bantaiUploadZone.classList.remove('dragover');
+  const files = Array.from(e.dataTransfer.files);
+  if (files.length) handleBantaiFile(files[0]);
+});
+bantaiUploadZone.addEventListener('click', () => bantaiFileInput.click());
+
+document.getElementById('bantai-btn-browse').addEventListener('click', e => {
+  e.stopPropagation();
+  bantaiFileInput.click();
+});
+document.getElementById('bantai-btn-camera').addEventListener('click', e => {
+  e.stopPropagation();
+  bantaiCameraInput.click();
+});
+
+bantaiFileInput.addEventListener('change', () => {
+  if (bantaiFileInput.files[0]) {
+    handleBantaiFile(bantaiFileInput.files[0]);
+    bantaiFileInput.value = '';
+  }
+});
+bantaiCameraInput.addEventListener('change', () => {
+  if (bantaiCameraInput.files[0]) {
+    handleBantaiFile(bantaiCameraInput.files[0]);
+    bantaiCameraInput.value = '';
+  }
+});
+
+bantaiRemoveBtn.addEventListener('click', () => {
+  bantaiState.image = null;
+  bantaiPreviewImg.src = '';
+  bantaiPreviewWrap.classList.add('hidden');
+  bantaiHint.textContent = '';
+  stepBantaiResult.classList.add('hidden');
+});
+
+// ── Handle file ───────────────────────────────────────────────
+function handleBantaiFile(file) {
+  if (!file.type.startsWith('image/')) {
+    bantaiHint.textContent = 'Hanya file gambar (JPG, PNG, WEBP) yang didukung.';
+    return;
+  }
+  bantaiHint.textContent = '';
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const dataUrl = compressCanvas(imageToCanvas(img));
+      const base64 = dataUrl.split(',')[1];
+      bantaiState.image = { dataUrl, base64, mimeType: 'image/jpeg' };
+      bantaiPreviewImg.src = dataUrl;
+      bantaiPreviewWrap.classList.remove('hidden');
+      // Hide any previous result
+      stepBantaiResult.classList.add('hidden');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── Solve button ──────────────────────────────────────────────
+btnBantai.addEventListener('click', solveBantaiSoal);
+
+async function solveBantaiSoal() {
+  if (!bantaiState.image) {
+    bantaiHint.textContent = 'Upload foto soal terlebih dahulu.';
+    return;
+  }
+
+  // Credit check
+  const credits = window._currentCredits ?? 0;
+  const isInvited = window._isInvited ?? false;
+  if (!isInvited && credits <= 0) {
+    bantaiHint.textContent = '';
+    window.renderCreditsBanner?.();
+    window.startCheckout?.();
+    return;
+  }
+
+  bantaiHint.textContent = '';
+  showBantaiLoading('Membaca soalmu…');
+
+  try {
+    const idToken = await window.getIdToken();
+
+    const prompt = `Kamu adalah guru ahli yang sangat sabar dan berpengalaman. Seorang siswa mengirimkan foto sebuah soal dan membutuhkan bantuan penuh untuk menyelesaikannya.
+
+Tugasmu: selesaikan soal ini dengan cara yang SANGAT DETAIL, langkah demi langkah, sehingga siswa benar-benar paham — bukan hanya tahu jawabannya, tapi mengerti kenapa dan bagaimana.
+
+INSTRUKSI FORMAT RESPONS:
+Jawab HANYA dalam JSON valid (tanpa markdown), dengan struktur berikut:
+
+{
+  "question_text": "Teks soal yang kamu baca dari gambar (tulis ulang dengan lengkap)",
+  "subject": "Mata pelajaran soal ini (misal: Matematika, IPA, Bahasa Indonesia, dll)",
+  "difficulty": "Mudah / Sedang / Sulit",
+  "answer": "Jawaban akhir yang singkat dan jelas",
+  "steps": [
+    {
+      "label": "Judul singkat langkah ini (maks 5 kata)",
+      "content": "Penjelasan detail langkah ini. Gunakan kalimat lengkap, jelaskan MENGAPA langkah ini dilakukan, tulis rumus atau konsep yang dipakai, dan tunjukkan perhitungan/logika secara eksplisit."
+    }
+  ],
+  "key_concepts": [
+    "Konsep kunci #1 yang dipakai untuk menyelesaikan soal ini (kalimat singkat)",
+    "Konsep kunci #2",
+    "dst (minimal 2, maksimal 5)"
+  ],
+  "tips": "Tips atau trik khusus agar siswa mudah mengingat cara menyelesaikan soal tipe seperti ini di masa mendatang. Tulis 2-4 kalimat yang praktis dan mudah diingat.",
+  "language": "id"
+}
+
+ATURAN PENTING:
+- Gunakan bahasa yang SAMA dengan soal (Indonesia atau Inggris).
+- Jumlah steps minimal 3, idealnya 4-6 langkah yang logis dan mengalir.
+- Setiap step harus cukup detail: jangan hanya "substitusi nilai" tapi jelaskan nilai apa, dari mana, dan hasilnya berapa.
+- Jika ada pilihan ganda, jelaskan mengapa pilihan benar itu benar DAN mengapa pilihan lain salah.
+- Untuk soal hitungan: tunjukkan semua angka dan operasi matematika secara eksplisit.
+- Untuk soal konsep/teori: hubungkan dengan contoh nyata atau analogi yang mudah dipahami siswa.
+- key_concepts harus berisi nama konsep/rumus/teori yang relevan, bukan cuma kata benda.
+- Output harus berupa JSON yang valid dan lengkap, tanpa karakter tambahan di luar JSON.`;
+
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 3000,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: bantaiState.image.mimeType, data: bantaiState.image.base64 } },
+            { type: 'text', text: prompt }
+          ]
+        }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      if (res.status === 403 && err?.error === 'no_credits') {
+        window.renderCreditsBanner?.();
+        window.startCheckout?.();
+        return;
+      }
+      throw new Error(err?.error?.message || err?.error || `Error ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    // Update credit counter
+    if (typeof data._credits === 'number') {
+      window._currentCredits = data._credits;
+      window.renderCreditsBanner?.();
+    }
+
+    // Parse response
+    const rawText = (data.content || []).map(b => b.text || '').join('');
+    const clean = rawText.replace(/```json|```/g, '').trim();
+    let result;
+    try {
+      result = JSON.parse(clean);
+    } catch(e) {
+      throw new Error('Format respons tidak valid. Coba lagi.');
+    }
+
+    renderBantaiResult(result);
+
+  } catch(err) {
+    console.error('Bantai error:', err);
+    bantaiHint.textContent = 'Error: ' + (err.message || 'Gagal menyelesaikan soal. Coba lagi.');
+  } finally {
+    hideBantaiLoading();
+  }
+}
+
+// ── Render result ─────────────────────────────────────────────
+function renderBantaiResult(result) {
+  let html = '';
+
+  // Show the question image
+  if (bantaiState.image) {
+    html += `
+      <div class="bantai-soal-img-wrap">
+        <img src="${bantaiState.image.dataUrl}" alt="Soal" />
+      </div>`;
+  }
+
+  // Meta info (subject + difficulty)
+  if (result.subject || result.difficulty) {
+    html += `<p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:18px;">
+      ${result.subject ? `📚 <strong>${result.subject}</strong>` : ''}
+      ${result.subject && result.difficulty ? ' · ' : ''}
+      ${result.difficulty ? `🎯 Tingkat: <strong>${result.difficulty}</strong>` : ''}
+    </p>`;
+  }
+
+  // Answer box
+  html += `
+    <div class="bantai-answer-box">
+      <div class="bantai-answer-text">${escapeHtml(result.answer || '—')}</div>
+    </div>`;
+
+  // Step-by-step pembahasan
+  if (result.steps && result.steps.length > 0) {
+    html += `<p class="bantai-steps-title">📖 Pembahasan Langkah demi Langkah</p>`;
+    result.steps.forEach((step, i) => {
+      html += `
+        <div class="bantai-step-item" style="animation-delay:${i * 0.07}s">
+          <div class="bantai-step-num">${i + 1}</div>
+          <div class="bantai-step-body">
+            <div class="bantai-step-label">${escapeHtml(step.label || `Langkah ${i+1}`)}</div>
+            <div class="bantai-step-content">${formatBantaiContent(step.content || '')}</div>
+          </div>
+        </div>`;
+    });
+  }
+
+  // Key concepts
+  if (result.key_concepts && result.key_concepts.length > 0) {
+    html += `
+      <div class="bantai-concept-box">
+        <div class="bantai-concept-title">💡 Konsep Kunci</div>
+        <ul class="bantai-concept-list">
+          ${result.key_concepts.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
+        </ul>
+      </div>`;
+  }
+
+  // Tips
+  if (result.tips) {
+    html += `
+      <div class="bantai-tips-box">
+        <div class="bantai-tips-title">🚀 Tips & Trik</div>
+        <div class="bantai-tips-text">${formatBantaiContent(result.tips)}</div>
+      </div>`;
+  }
+
+  bantaiResultContent.innerHTML = html;
+  stepBantaiResult.classList.remove('hidden');
+  stepBantaiResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Helper: escape HTML ───────────────────────────────────────
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ── Helper: format content (bold **text**, newlines) ──────────
+function formatBantaiContent(text) {
+  return escapeHtml(text)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+// ── Reset Bantai ──────────────────────────────────────────────
+document.getElementById('bantai-btn-new').addEventListener('click', () => {
+  bantaiState.image = null;
+  bantaiPreviewImg.src = '';
+  bantaiPreviewWrap.classList.add('hidden');
+  bantaiResultContent.innerHTML = '';
+  stepBantaiResult.classList.add('hidden');
+  bantaiHint.textContent = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ── Loading helpers ───────────────────────────────────────────
+function showBantaiLoading(msg) {
+  bantaiLoadingText.textContent = msg || 'Menganalisis soal…';
+  bantaiLoadingOverlay.classList.remove('hidden');
+  btnBantai.disabled = true;
+}
+function hideBantaiLoading() {
+  bantaiLoadingOverlay.classList.add('hidden');
+  btnBantai.disabled = false;
+}
