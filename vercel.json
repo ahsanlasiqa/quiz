@@ -26,6 +26,12 @@
     },
     "api/resume-order.js": {
       "maxDuration": 15
+    },
+    "api/tka-submit.js": {
+      "maxDuration": 15
+    },
+    "api/tka-leaderboard.js": {
+      "maxDuration": 10
     }
   },
   "rewrites": [
