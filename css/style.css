@@ -3023,3 +3023,244 @@ body {
   .tka-dot { width: 8px; height: 8px; }
   .tka-lb-table th, .tka-lb-row td { padding: 10px 10px; font-size: 0.82rem; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   TKA 2026 PROMO BANNER (landing page)
+══════════════════════════════════════════════════════════════ */
+.tka-promo-banner {
+  margin: 0 0 56px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0d2e2a 0%, #1a7a6e 55%, #0d3b35 100%);
+  position: relative;
+  box-shadow: 0 8px 40px rgba(26,122,110,0.35);
+}
+.tka-promo-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M0 0h40v40H0zm40 40h40v40H40z'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.tka-promo-inner {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 48px 52px;
+  position: relative;
+  z-index: 1;
+}
+.tka-promo-left { flex: 1; min-width: 0; }
+
+.tka-promo-badge {
+  display: inline-block;
+  background: #e8a020;
+  color: #1a1208;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.tka-promo-title {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  color: white;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.tka-promo-title strong { color: #f0c040; }
+.tka-promo-sub {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.65;
+  margin-bottom: 24px;
+  max-width: 460px;
+}
+
+.tka-promo-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.tka-promo-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tka-ps-num {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #f0c040;
+  line-height: 1;
+}
+.tka-ps-label {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tka-promo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0c040;
+  color: #1a1208;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 800;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+  box-shadow: 0 4px 18px rgba(240,192,64,0.4);
+}
+.tka-promo-btn:hover {
+  background: #ffd84d;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(240,192,64,0.55);
+}
+
+/* Right: mock quiz card */
+.tka-promo-right {
+  flex-shrink: 0;
+  width: 300px;
+  position: relative;
+}
+.tka-promo-glow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle, rgba(240,192,64,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.tka-promo-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+}
+.tka-pc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.tka-pc-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #f0c040;
+  background: rgba(240,192,64,0.15);
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+.tka-pc-timer {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f0c040;
+  font-variant-numeric: tabular-nums;
+}
+.tka-pc-mapel {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 10px;
+}
+.tka-pc-q {
+  font-size: 0.88rem;
+  color: white;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.tka-pc-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.tka-pc-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 8px 12px;
+  transition: background 0.15s;
+}
+.tka-pc-opt span {
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  font-weight: 700;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+.tka-pc-opt.tka-pc-selected {
+  background: rgba(26,122,110,0.5);
+  border-color: #1a7a6e;
+  color: white;
+}
+.tka-pc-opt.tka-pc-selected span {
+  background: #1a7a6e;
+  color: white;
+}
+
+@media (max-width: 900px) {
+  .tka-promo-right { display: none; }
+  .tka-promo-inner { padding: 36px 28px; }
+  .tka-promo-title { font-size: 1.9rem; }
+}
+@media (max-width: 560px) {
+  .tka-promo-inner { padding: 28px 20px; }
+  .tka-promo-title { font-size: 1.6rem; }
+  .tka-promo-stats { gap: 16px; }
+  .tka-promo-btn { width: 100%; justify-content: center; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   USER INFO (app header)
+══════════════════════════════════════════════════════════════ */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.user-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--teal);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid rgba(26,122,110,0.25);
+}
+.user-avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.user-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 480px) {
+  .user-name { display: none; }
+}

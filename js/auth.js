@@ -43,13 +43,43 @@ function startAuth() {
     appScreen.classList.remove('hidden');
     if (window.updateSubscriptionUI) window.updateSubscriptionUI(accessData);
 
+    // Tampilkan nama & avatar user
+    const user = window.quizgenUser;
+    if (user) {
+      const nameEl   = document.getElementById('user-name');
+      const avatarEl = document.getElementById('user-avatar');
+      if (nameEl) {
+        // Ambil first name saja supaya ringkas
+        const firstName = (user.displayName || user.email || '').split(' ')[0];
+        nameEl.textContent = firstName;
+      }
+      if (avatarEl) {
+        if (user.photoURL) {
+          avatarEl.innerHTML = `<img src="${user.photoURL}" alt="avatar" referrerpolicy="no-referrer"/>`;
+        } else {
+          // Fallback: inisial
+          const initial = (user.displayName || user.email || '?')[0].toUpperCase();
+          avatarEl.textContent = initial;
+        }
+      }
+    }
+
     // Auto-trigger checkout if user came from a paid pricing button
     var pendingPack = sessionStorage.getItem('pendingPack');
     if (pendingPack) {
       sessionStorage.removeItem('pendingPack');
       setTimeout(function() {
         if (window.startCheckout) window.startCheckout(parseInt(pendingPack));
-      }, 600); // small delay so app renders first
+      }, 600);
+    }
+
+    // Auto-switch tab if user came from a promo button
+    var pendingTab = sessionStorage.getItem('pendingTab');
+    if (pendingTab) {
+      sessionStorage.removeItem('pendingTab');
+      setTimeout(function() {
+        if (window.switchAppMode) window.switchAppMode(pendingTab);
+      }, 400);
     }
   }
 
@@ -175,6 +205,11 @@ function hookLandingButtons() {
     if (btn) btn.addEventListener('click', function() {
       document.getElementById('btn-google-login').click();
     });
+  });
+  var btnTkaPromo = document.getElementById('btn-tka-promo');
+  if (btnTkaPromo) btnTkaPromo.addEventListener('click', function() {
+    sessionStorage.setItem('pendingTab', 'tka');
+    document.getElementById('btn-google-login').click();
   });
   var btnPop = document.getElementById('btn-coba-pop');
   if (btnPop) btnPop.addEventListener('click', function() {
