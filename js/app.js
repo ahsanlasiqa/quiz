@@ -1617,21 +1617,25 @@ Respond ONLY with valid JSON, no markdown:
 // ══════════════════════════════════════════════════════════════
 
 window.switchAppMode = function(mode) {
-  const drillSection  = document.getElementById('drill-soal-section');
-  const bantaiSection = document.getElementById('bantai-soal-section');
-  const tabDrill  = document.getElementById('tab-drill');
-  const tabBantai = document.getElementById('tab-bantai');
+  const sections = {
+    drill:  document.getElementById('drill-soal-section'),
+    bantai: document.getElementById('bantai-soal-section'),
+    tka:    document.getElementById('tka-soal-section'),
+  };
+  const tabs = {
+    drill:  document.getElementById('tab-drill'),
+    bantai: document.getElementById('tab-bantai'),
+    tka:    document.getElementById('tab-tka'),
+  };
 
-  if (mode === 'bantai') {
-    drillSection.classList.add('hidden');
-    bantaiSection.classList.remove('hidden');
-    tabDrill.classList.remove('active');
-    tabBantai.classList.add('active');
-  } else {
-    bantaiSection.classList.add('hidden');
-    drillSection.classList.remove('hidden');
-    tabBantai.classList.remove('active');
-    tabDrill.classList.add('active');
+  Object.keys(sections).forEach(k => {
+    sections[k]?.classList.toggle('hidden', k !== mode);
+    tabs[k]?.classList.toggle('active', k === mode);
+  });
+
+  // Init TKA when switching to it
+  if (mode === 'tka' && window.TKA) {
+    window.TKA.init();
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
