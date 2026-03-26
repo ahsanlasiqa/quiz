@@ -72,33 +72,68 @@ window.TKA = (function() {
         </div>
         <p class="tka-choose-label">Pilih Jenjangmu</p>
         <div class="tka-jenjang-grid">
-          <button class="tka-jenjang-btn" onclick="window.TKA.selectJenjang('SD')">
+          <button class="tka-jenjang-btn" id="tka-btn-SD" onclick="window.TKA.previewJenjang('SD')">
             <span class="tka-j-icon">🎒</span>
             <span class="tka-j-name">SD / MI</span>
             <span class="tka-j-info">30 soal Matematika<br/>30 soal Bahasa Indonesia</span>
             <span class="tka-j-time">⏱ 60 menit</span>
           </button>
-          <button class="tka-jenjang-btn" onclick="window.TKA.selectJenjang('SMP')">
+          <button class="tka-jenjang-btn" id="tka-btn-SMP" onclick="window.TKA.previewJenjang('SMP')">
             <span class="tka-j-icon">📚</span>
             <span class="tka-j-name">SMP / MTs</span>
             <span class="tka-j-info">30 soal Matematika<br/>30 soal Bahasa Indonesia</span>
             <span class="tka-j-time">⏱ 60 menit</span>
           </button>
-          <button class="tka-jenjang-btn" onclick="window.TKA.selectJenjang('SMA')">
+          <button class="tka-jenjang-btn" id="tka-btn-SMA" onclick="window.TKA.previewJenjang('SMA')">
             <span class="tka-j-icon">🎓</span>
             <span class="tka-j-name">SMA / MA / SMK</span>
             <span class="tka-j-info">50 soal Matematika<br/>50 soal Bahasa Indonesia<br/>50 soal Bahasa Inggris</span>
             <span class="tka-j-time">⏱ 90 menit</span>
           </button>
         </div>
-        <p class="tka-credit-note">⚡ Menggunakan 1 kredit · Hasil tersimpan di papan peringkat</p>
+
+        <!-- Confirm panel — tersembunyi sampai jenjang dipilih -->
+        <div class="tka-confirm-panel" id="tka-confirm-panel" style="display:none">
+          <div class="tka-confirm-info" id="tka-confirm-info"></div>
+          <button class="tka-btn-start" onclick="window.TKA.startJenjang()">
+            Mulai Tes ▶
+          </button>
+        </div>
+
+        <p class="tka-credit-note">⚡ Menggunakan 1 kredit ·
+          <button class="tka-lb-link" onclick="window.TKA.showLeaderboardPublic()">Lihat papan peringkat</button>
+        </p>
       </div>`;
+  }
+
+  // Highlight pilihan + tampilkan tombol Mulai, belum start timer
+  function previewJenjang(jenjang) {
+    ['SD','SMP','SMA'].forEach(j => {
+      const btn = document.getElementById('tka-btn-' + j);
+      if (btn) btn.classList.toggle('selected', j === jenjang);
+    });
+
+    const cfg = CONFIG[jenjang];
+    const mapelList = cfg.mapel.map(mp => cfg.jumlah + ' soal ' + MAPEL_LABEL[mp]).join(' · ');
+    document.getElementById('tka-confirm-info').innerHTML =
+      `<span class="tka-confirm-jenjang">${cfg.label}</span>` +
+      `<span class="tka-confirm-detail">${mapelList} · ⏱ ${cfg.durasi} menit</span>`;
+    document.getElementById('tka-confirm-panel').style.display = 'flex';
+    state.jenjang = jenjang;
+  }
+
+  // Leaderboard dari halaman pilih jenjang (tanpa state.jenjang dari hasil tes)
+  async function showLeaderboardPublic() {
+    const jenjang = state.jenjang || 'SMA';
+    await showLeaderboard(jenjang);
   }
 
   // ══════════════════════════════════════════════════════════
   //  PHASE 2: QUIZ
   // ══════════════════════════════════════════════════════════
-  function selectJenjang(jenjang) {
+  function startJenjang() {
+    const jenjang = state.jenjang;
+    if (!jenjang) return;
     // Credit check
     const credits = window._currentCredits ?? 0;
     const isInvited = window._isInvited ?? false;
@@ -439,24 +474,25 @@ window.TKA = (function() {
   // ══════════════════════════════════════════════════════════
   //  LEADERBOARD
   // ══════════════════════════════════════════════════════════
-  async function showLeaderboard() {
+  async function showLeaderboard(jenjangOverride) {
+    const jenjang = jenjangOverride || state.jenjang;
     const container = document.getElementById('tka-container');
     container.innerHTML = `<div class="tka-loading-wrap"><div class="spinner"></div><p>Memuat papan peringkat…</p></div>`;
 
     try {
       const idToken = await window.getIdToken();
-      const res = await fetch(`/api/tka-leaderboard?jenjang=${state.jenjang}`, {
+      const res = await fetch(`/api/tka-leaderboard?jenjang=${jenjang}`, {
         headers: { 'x-id-token': idToken || '' }
       });
       const data = await res.json();
-      renderLeaderboard(data.entries || []);
+      renderLeaderboard(data.entries || [], jenjang);
     } catch(e) {
       container.innerHTML = `<div class="tka-error">Gagal memuat papan peringkat. <button class="btn-new" onclick="window.TKA.init()">Kembali</button></div>`;
     }
   }
 
-  function renderLeaderboard(entries) {
-    const cfg = CONFIG[state.jenjang];
+  function renderLeaderboard(entries, jenjangOverride) {
+    const cfg = CONFIG[jenjangOverride || state.jenjang];
     const myEmail = window.quizgenUser?.email || '';
 
     const rows = entries.slice(0, 50).map((e, i) => {
@@ -550,7 +586,10 @@ window.TKA = (function() {
   // ── Public API ───────────────────────────────────────────────
   return {
     init,
-    selectJenjang,
+    selectJenjang: startJenjang,
+    previewJenjang,
+    startJenjang,
+    showLeaderboardPublic,
     navigate,
     jumpTo,
     jumpToMapel,

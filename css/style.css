@@ -2467,6 +2467,84 @@ body {
   margin-top: 4px;
 }
 
+/* Jenjang terpilih */
+.tka-jenjang-btn.selected {
+  border-color: var(--teal);
+  background: var(--teal-pale);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.tka-jenjang-btn.selected .tka-j-name {
+  color: var(--teal);
+}
+
+/* Confirm panel */
+.tka-confirm-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--warm-white);
+  border: 2px solid var(--teal);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  animation: slideUp 0.2s ease;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.tka-confirm-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tka-confirm-jenjang {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.tka-confirm-detail {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+.tka-btn-start {
+  flex-shrink: 0;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: background 0.18s, transform 0.18s;
+}
+.tka-btn-start:hover {
+  background: #145f55;
+  transform: translateY(-1px);
+}
+@media (max-width: 480px) {
+  .tka-confirm-panel { flex-direction: column; align-items: stretch; }
+  .tka-btn-start { text-align: center; }
+}
+
+/* Link papan peringkat di credit note */
+.tka-lb-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  color: var(--teal);
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.tka-lb-link:hover { color: var(--ink); }
+
 /* ── Quiz Shell ───────────────────────────────────────────────── */
 .tka-quiz-shell { display: flex; flex-direction: column; gap: 16px; }
 
