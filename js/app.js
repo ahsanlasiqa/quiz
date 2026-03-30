@@ -555,6 +555,8 @@ For each image (index starting at 0 within this batch), output:
 {
   "imageIndex": 0,
   "language": "id",
+  "is_question_sheet": false,
+  "existing_questions": [],
   "concepts": "key facts, terms, formulas from this page (max 200 words)",
   "visuals": [
     {
@@ -566,6 +568,8 @@ For each image (index starting at 0 within this batch), output:
 }
 
 Rules:
+- is_question_sheet: set to TRUE if the image primarily contains exam/exercise questions (numbered questions, answer choices, fill-in-the-blank, essay prompts). Set FALSE if it is learning material, textbook content, notes, or explanatory text.
+- existing_questions: if is_question_sheet is TRUE, extract each question you see as a brief string (e.g. ["2x + 3 = 7, find x", "What is photosynthesis?"]). Max 20 items. Empty array if is_question_sheet is FALSE.
 - figureId: use the figure label if visible (e.g. "Gambar 2.7", "Figure 3"), else describe briefly
 - x,y,w,h: fractions of image dimensions where the visual element is located (0.0–1.0). Be precise.
 - Include ALL visible figures, photos, diagrams, illustrations, tables
@@ -574,6 +578,9 @@ Rules:
   const summaries = [];
   const visualMap = []; // [{imageIndex (global), figureId, description, x, y, w, h}]
   let globalImageOffset = 0;
+  let questionSheetCount = 0;
+  let materialCount = 0;
+  const existingQuestions = [];
 
   for (let b = 0; b < batches.length; b++) {
     showLoading(
@@ -612,6 +619,13 @@ Rules:
       arr.forEach(imgData => {
         const globalIdx = globalImageOffset + (imgData.imageIndex || 0);
         summaries.push(`[Image ${globalIdx}] ${imgData.concepts || ''}`);
+        // Track question sheet detection
+        if (imgData.is_question_sheet) {
+          questionSheetCount++;
+          (imgData.existing_questions || []).forEach(q => existingQuestions.push(q));
+        } else {
+          materialCount++;
+        }
         (imgData.visuals || []).forEach(v => {
           visualMap.push({
             img: globalIdx,
@@ -640,9 +654,53 @@ Rules:
   const materialSummary = summaries.join('\n\n') + visualMapText;
 
   // ── STEP 2: Generate quiz from summary ───
-  showLoading('Langkah 2/2: Membuat soal…', `Membuat ${state.settings.numQuestions} soal dari konten yang diekstrak…`);
+  // Decide mode: variasi soal (jika mayoritas foto berisi soal) atau buat soal baru (jika materi)
+  const totalImages = state.images.length;
+  const isQuestionMode = questionSheetCount > materialCount;
 
-  const quizPrompt = `You are an expert teacher creating quiz questions from the following learning material summary.
+  let step2Label, quizPrompt;
+
+  if (isQuestionMode) {
+    step2Label = `Membuat variasi soal… (${questionSheetCount} dari ${totalImages} foto terdeteksi sebagai lembar soal)`;
+    showLoading('Langkah 2/2: Membuat variasi soal…', step2Label);
+
+    const existingQList = existingQuestions.length > 0
+      ? '\n\nSOAL ASLI YANG TERDETEKSI:\n' + existingQuestions.map((q, i) => `${i+1}. ${q}`).join('\n')
+      : '';
+
+    quizPrompt = `You are an expert teacher. The student has uploaded images of an exam or exercise sheet containing questions. Your task is NOT to create new questions about the topic — instead, create VARIATIONS of the existing questions with changed values, names, or contexts, keeping the same concepts and difficulty.
+
+EXTRACTED CONTENT FROM QUESTION SHEET:
+${materialSummary}${existingQList}
+
+STUDENT LEVEL: ${levelLabel}
+NUMBER OF VARIATION QUESTIONS: ${state.settings.numQuestions}
+QUESTION TYPES TO USE: ${selectedTypes}
+
+INSTRUCTIONS FOR VARIATION MODE:
+1. Generate exactly ${state.settings.numQuestions} variation questions.
+2. Each variation must test the SAME concept/skill as the original questions but with DIFFERENT values, numbers, names, or contexts. Examples:
+   - Math: same equation type but different numbers (e.g. "2x+3=7" → "3x+5=14")
+   - Word problems: same structure but different names, objects, or quantities
+   - Science: same concept but different examples or scenarios
+   - Language: same grammar structure but different sentences
+3. Do NOT copy the original questions. Do NOT simply restate them.
+4. Distribute question types as evenly as possible: ${selectedTypes}
+5. Use the SAME LANGUAGE as the original questions (Bahasa Indonesia or English).
+   - For true_false in Bahasa Indonesia: answer must be exactly "Benar" or "Salah"
+   - For true_false in English: answer must be exactly "True" or "False"
+6. Adjust difficulty appropriately for: ${levelLabel}
+7. For multiple choice: exactly 4 options labeled A, B, C, D.
+8. EXPLANATION: Write 2-4 sentences explaining the solution method, referencing the concept being tested.
+9. Set imageCrop to null and svg to null for all questions.
+
+Respond ONLY with valid JSON, no markdown:
+{"subject":"...","language":"...","mode":"variation","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":null}]}`;
+
+  } else {
+    showLoading('Langkah 2/2: Membuat soal…', `Membuat ${state.settings.numQuestions} soal dari konten yang diekstrak…`);
+
+    quizPrompt = `You are an expert teacher creating quiz questions from the following learning material summary.
 
 MATERIAL SUMMARY:
 ${materialSummary}
@@ -679,6 +737,7 @@ IMAGE CROP INSTRUCTIONS:
 
 Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":{"img":0,"x":0.0,"y":0.1,"w":1.0,"h":0.4}},{"number":2,"type":"true_false","question":"...","options":[],"answer":"Benar","explanation":"...","svg":null,"imageCrop":null}]}`;
+  }
 
   const dynamicTokensUpload = Math.min(8000, Math.max(3000, state.settings.numQuestions * 320));
   const generateRes = await fetch('/api/generate', {
@@ -743,7 +802,8 @@ function renderQuiz(quiz) {
   const gradeLabel = state.mode === 'topic'
     ? `📚 ${state.topic.jenjang} · ${state.topic.mapel}`
     : `${config.emoji} ${config.label} · Grade ${state.settings.grade}`;
-  quizMetaText.textContent = `${quiz.subject || 'Quiz'} · ${gradeLabel} · ${quiz.questions?.length || 0} soal`;
+  const variationLabel = quiz.mode === 'variation' ? ' · 🔀 Variasi Soal' : '';
+  quizMetaText.textContent = `${quiz.subject || 'Quiz'} · ${gradeLabel} · ${quiz.questions?.length || 0} soal${variationLabel}`;
 
   let html = '';
   if (!quiz.questions || !Array.isArray(quiz.questions)) {
@@ -1756,41 +1816,46 @@ async function solveBantaiSoal() {
   try {
     const idToken = await window.getIdToken();
 
-    const prompt = `Kamu adalah guru ahli yang sangat sabar dan berpengalaman. Seorang siswa mengirimkan foto sebuah soal dan membutuhkan bantuan penuh untuk menyelesaikannya.
+    const prompt = `Kamu adalah guru ahli yang sangat sabar dan berpengalaman. Seorang siswa mengirimkan foto yang mungkin berisi SATU atau BEBERAPA soal sekaligus.
 
-Tugasmu: selesaikan soal ini dengan cara yang SANGAT DETAIL, langkah demi langkah, sehingga siswa benar-benar paham — bukan hanya tahu jawabannya, tapi mengerti kenapa dan bagaimana.
+Tugasmu:
+1. Identifikasi dan baca SEMUA soal yang ada di foto ini — bisa 1 soal, bisa 5 soal, bisa lebih.
+2. Selesaikan SETIAP soal secara SANGAT DETAIL, langkah demi langkah.
 
 INSTRUKSI FORMAT RESPONS:
-Jawab HANYA dalam JSON valid (tanpa markdown), dengan struktur berikut:
+Jawab HANYA dalam JSON valid (tanpa markdown), dengan struktur berikut (SELALU berupa array, bahkan jika hanya 1 soal):
 
-{
-  "question_text": "Teks soal yang kamu baca dari gambar (tulis ulang dengan lengkap)",
-  "subject": "Mata pelajaran soal ini (misal: Matematika, IPA, Bahasa Indonesia, dll)",
-  "difficulty": "Mudah / Sedang / Sulit",
-  "answer": "Jawaban akhir yang singkat dan jelas",
-  "steps": [
-    {
-      "label": "Judul singkat langkah ini (maks 5 kata)",
-      "content": "Penjelasan detail langkah ini. Gunakan kalimat lengkap, jelaskan MENGAPA langkah ini dilakukan, tulis rumus atau konsep yang dipakai, dan tunjukkan perhitungan/logika secara eksplisit."
-    }
-  ],
-  "key_concepts": [
-    "Konsep kunci #1 yang dipakai untuk menyelesaikan soal ini (kalimat singkat)",
-    "Konsep kunci #2",
-    "dst (minimal 2, maksimal 5)"
-  ],
-  "tips": "Tips atau trik khusus agar siswa mudah mengingat cara menyelesaikan soal tipe seperti ini di masa mendatang. Tulis 2-4 kalimat yang praktis dan mudah diingat.",
-  "language": "id"
-}
+[
+  {
+    "question_number": 1,
+    "question_text": "Teks soal nomor ini (tulis ulang dengan lengkap, termasuk nomor aslinya jika ada)",
+    "subject": "Mata pelajaran soal ini (misal: Matematika, IPA, Bahasa Indonesia, dll)",
+    "difficulty": "Mudah / Sedang / Sulit",
+    "answer": "Jawaban akhir yang singkat dan jelas",
+    "steps": [
+      {
+        "label": "Judul singkat langkah ini (maks 5 kata)",
+        "content": "Penjelasan detail langkah ini. Gunakan kalimat lengkap, jelaskan MENGAPA langkah ini dilakukan, tulis rumus atau konsep yang dipakai, dan tunjukkan perhitungan/logika secara eksplisit."
+      }
+    ],
+    "key_concepts": [
+      "Konsep kunci #1 (kalimat singkat)",
+      "Konsep kunci #2"
+    ],
+    "tips": "Tips atau trik untuk soal tipe ini. 2-3 kalimat praktis.",
+    "language": "id"
+  }
+]
 
 ATURAN PENTING:
+- Output SELALU berupa JSON array (dalam tanda [ ]), bahkan jika hanya ada 1 soal.
+- Identifikasi semua soal yang ada, jangan lewatkan satu pun.
 - Gunakan bahasa yang SAMA dengan soal (Indonesia atau Inggris).
 - Jumlah steps minimal 3, idealnya 4-6 langkah yang logis dan mengalir.
 - Setiap step harus cukup detail: jangan hanya "substitusi nilai" tapi jelaskan nilai apa, dari mana, dan hasilnya berapa.
 - Jika ada pilihan ganda, jelaskan mengapa pilihan benar itu benar DAN mengapa pilihan lain salah.
 - Untuk soal hitungan: tunjukkan semua angka dan operasi matematika secara eksplisit.
-- Untuk soal konsep/teori: hubungkan dengan contoh nyata atau analogi yang mudah dipahami siswa.
-- key_concepts harus berisi nama konsep/rumus/teori yang relevan, bukan cuma kata benda.
+- key_concepts harus berisi nama konsep/rumus/teori yang relevan.
 - Output harus berupa JSON yang valid dan lengkap, tanpa karakter tambahan di luar JSON.`;
 
     const res = await fetch('/api/generate', {
@@ -1798,7 +1863,7 @@ ATURAN PENTING:
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 3000,
+        max_tokens: 6000,
         messages: [{
           role: 'user',
           content: [
@@ -1832,7 +1897,9 @@ ATURAN PENTING:
     const clean = rawText.replace(/```json|```/g, '').trim();
     let result;
     try {
-      result = JSON.parse(clean);
+      const parsed = JSON.parse(clean);
+      // Normalise: always an array
+      result = Array.isArray(parsed) ? parsed : [parsed];
     } catch(e) {
       throw new Error('Format respons tidak valid. Coba lagi.');
     }
@@ -1848,7 +1915,9 @@ ATURAN PENTING:
 }
 
 // ── Render result ─────────────────────────────────────────────
-function renderBantaiResult(result) {
+function renderBantaiResult(results) {
+  // results is always an array
+  const total = results.length;
   let html = '';
 
   // Show the question image
@@ -1859,60 +1928,99 @@ function renderBantaiResult(result) {
       </div>`;
   }
 
-  // Meta info (subject + difficulty)
-  if (result.subject || result.difficulty) {
-    html += `<p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:18px;">
-      ${result.subject ? `📚 <strong>${result.subject}</strong>` : ''}
-      ${result.subject && result.difficulty ? ' · ' : ''}
-      ${result.difficulty ? `🎯 Tingkat: <strong>${result.difficulty}</strong>` : ''}
-    </p>`;
-  }
-
-  // Answer box
-  html += `
-    <div class="bantai-answer-box">
-      <div class="bantai-answer-text">${escapeHtml(result.answer || '—')}</div>
+  // Summary header if multiple questions
+  if (total > 1) {
+    html += `<div class="bantai-multi-header">
+      <span class="bantai-multi-count">🔍 ${total} soal ditemukan di foto ini</span>
+      <div class="bantai-q-tabs" id="bantai-q-tabs">
+        ${results.map((r, i) => `
+          <button class="bantai-q-tab${i === 0 ? ' active' : ''}" onclick="window.switchBantaiTab(${i})">
+            Soal ${r.question_number || (i + 1)}
+          </button>`).join('')}
+      </div>
     </div>`;
+  }
 
-  // Step-by-step pembahasan
-  if (result.steps && result.steps.length > 0) {
-    html += `<p class="bantai-steps-title">📖 Pembahasan Langkah demi Langkah</p>`;
-    result.steps.forEach((step, i) => {
+  // Render each question in a panel
+  results.forEach((result, i) => {
+    const isHidden = total > 1 && i !== 0;
+    html += `<div class="bantai-q-panel${isHidden ? ' hidden' : ''}" id="bantai-panel-${i}">`;
+
+    // Question text
+    if (result.question_text) {
+      html += `<div class="bantai-q-text-box">
+        <div class="bantai-q-text-label">📝 Soal</div>
+        <div class="bantai-q-text">${escapeHtml(result.question_text)}</div>
+      </div>`;
+    }
+
+    // Meta info (subject + difficulty)
+    if (result.subject || result.difficulty) {
+      html += `<p class="bantai-meta">
+        ${result.subject ? `📚 <strong>${result.subject}</strong>` : ''}
+        ${result.subject && result.difficulty ? ' · ' : ''}
+        ${result.difficulty ? `🎯 <strong>${result.difficulty}</strong>` : ''}
+      </p>`;
+    }
+
+    // Answer box
+    html += `
+      <div class="bantai-answer-box">
+        <div class="bantai-answer-text">${escapeHtml(result.answer || '—')}</div>
+      </div>`;
+
+    // Step-by-step pembahasan
+    if (result.steps && result.steps.length > 0) {
+      html += `<p class="bantai-steps-title">📖 Pembahasan Langkah demi Langkah</p>`;
+      result.steps.forEach((step, si) => {
+        html += `
+          <div class="bantai-step-item" style="animation-delay:${si * 0.07}s">
+            <div class="bantai-step-num">${si + 1}</div>
+            <div class="bantai-step-body">
+              <div class="bantai-step-label">${escapeHtml(step.label || `Langkah ${si+1}`)}</div>
+              <div class="bantai-step-content">${formatBantaiContent(step.content || '')}</div>
+            </div>
+          </div>`;
+      });
+    }
+
+    // Key concepts
+    if (result.key_concepts && result.key_concepts.length > 0) {
       html += `
-        <div class="bantai-step-item" style="animation-delay:${i * 0.07}s">
-          <div class="bantai-step-num">${i + 1}</div>
-          <div class="bantai-step-body">
-            <div class="bantai-step-label">${escapeHtml(step.label || `Langkah ${i+1}`)}</div>
-            <div class="bantai-step-content">${formatBantaiContent(step.content || '')}</div>
-          </div>
+        <div class="bantai-concept-box">
+          <div class="bantai-concept-title">💡 Konsep Kunci</div>
+          <ul class="bantai-concept-list">
+            ${result.key_concepts.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
+          </ul>
         </div>`;
-    });
-  }
+    }
 
-  // Key concepts
-  if (result.key_concepts && result.key_concepts.length > 0) {
-    html += `
-      <div class="bantai-concept-box">
-        <div class="bantai-concept-title">💡 Konsep Kunci</div>
-        <ul class="bantai-concept-list">
-          ${result.key_concepts.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
-        </ul>
-      </div>`;
-  }
+    // Tips
+    if (result.tips) {
+      html += `
+        <div class="bantai-tips-box">
+          <div class="bantai-tips-title">🚀 Tips & Trik</div>
+          <div class="bantai-tips-text">${formatBantaiContent(result.tips)}</div>
+        </div>`;
+    }
 
-  // Tips
-  if (result.tips) {
-    html += `
-      <div class="bantai-tips-box">
-        <div class="bantai-tips-title">🚀 Tips & Trik</div>
-        <div class="bantai-tips-text">${formatBantaiContent(result.tips)}</div>
-      </div>`;
-  }
+    html += `</div>`; // close bantai-q-panel
+  });
 
   bantaiResultContent.innerHTML = html;
   stepBantaiResult.classList.remove('hidden');
   stepBantaiResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+// ── Tab switcher for multi-question bantai ────────────────────
+window.switchBantaiTab = function(idx) {
+  document.querySelectorAll('.bantai-q-tab').forEach((btn, i) => {
+    btn.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.bantai-q-panel').forEach((panel, i) => {
+    panel.classList.toggle('hidden', i !== idx);
+  });
+};
 
 // ── Helper: escape HTML ───────────────────────────────────────
 function escapeHtml(str) {

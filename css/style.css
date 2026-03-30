@@ -3264,3 +3264,94 @@ body {
 @media (max-width: 480px) {
   .user-name { display: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   BANTAI SOAL — Multi-question tabs
+══════════════════════════════════════════════════════════════ */
+.bantai-multi-header {
+  margin-bottom: 20px;
+}
+.bantai-multi-count {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--teal);
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+.bantai-q-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bantai-q-tab {
+  background: var(--warm-white);
+  border: 2px solid rgba(26,18,8,0.1);
+  border-radius: 10px;
+  padding: 7px 16px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.bantai-q-tab.active {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: white;
+}
+.bantai-q-tab:hover:not(.active) {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.bantai-q-panel { }
+.bantai-q-panel.hidden { display: none; }
+
+/* Question text box */
+.bantai-q-text-box {
+  background: var(--warm-white);
+  border: 1.5px solid rgba(26,18,8,0.08);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.bantai-q-text-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+  margin-bottom: 8px;
+}
+.bantai-q-text {
+  font-size: 0.95rem;
+  color: var(--ink);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* Meta line */
+.bantai-meta {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  margin-bottom: 18px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DRILL SOAL — Variation mode indicator
+══════════════════════════════════════════════════════════════ */
+.variation-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(26,122,110,0.1);
+  color: var(--teal);
+  border: 1px solid rgba(26,122,110,0.25);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
