@@ -3355,3 +3355,65 @@ body {
   font-weight: 700;
   letter-spacing: 0.06em;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   BANTAI SOAL — Pick step (pilih soal)
+══════════════════════════════════════════════════════════════ */
+.bantai-pick-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--warm-white);
+  border: 2px solid rgba(26,18,8,0.08);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s;
+  user-select: none;
+}
+.bantai-pick-item:has(.bantai-pick-cb:checked) {
+  border-color: var(--teal);
+  background: var(--teal-pale, rgba(26,122,110,0.06));
+}
+.bantai-pick-item.bantai-pick-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.bantai-pick-cb {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--teal);
+  cursor: pointer;
+}
+.bantai-pick-body {
+  flex: 1;
+  min-width: 0;
+}
+.bantai-pick-num {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 8px;
+}
+.bantai-pick-subject {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  background: rgba(26,18,8,0.06);
+  border-radius: 8px;
+  padding: 1px 8px;
+}
+.bantai-pick-text {
+  font-size: 0.88rem;
+  color: var(--ink);
+  line-height: 1.5;
+  margin-top: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bantai-pick-actions { margin-top: 4px; }

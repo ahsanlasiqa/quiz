@@ -1706,7 +1706,8 @@ window.switchAppMode = function(mode) {
 // ══════════════════════════════════════════════════════════════
 
 const bantaiState = {
-  image: null   // { dataUrl, base64, mimeType }
+  image: null,          // { dataUrl, base64, mimeType }
+  detectedQuestions: [] // [{number, text, subject}] dari step identifikasi
 };
 
 // ── DOM refs ──────────────────────────────────────────────────
@@ -1718,6 +1719,9 @@ const bantaiPreviewImg   = document.getElementById('bantai-preview-img');
 const bantaiRemoveBtn    = document.getElementById('bantai-remove-btn');
 const btnBantai          = document.getElementById('btn-bantai');
 const bantaiHint         = document.getElementById('bantai-hint');
+const stepBantaiPick     = document.getElementById('step-bantai-pick');
+const bantaiPickList     = document.getElementById('bantai-pick-list');
+const bantaiPickHint     = document.getElementById('bantai-pick-hint');
 const stepBantaiResult   = document.getElementById('step-bantai-result');
 const bantaiResultContent= document.getElementById('bantai-result-content');
 const bantaiLoadingOverlay = document.getElementById('bantai-loading-overlay');
@@ -1761,9 +1765,11 @@ bantaiCameraInput.addEventListener('change', () => {
 
 bantaiRemoveBtn.addEventListener('click', () => {
   bantaiState.image = null;
+  bantaiState.detectedQuestions = [];
   bantaiPreviewImg.src = '';
   bantaiPreviewWrap.classList.add('hidden');
   bantaiHint.textContent = '';
+  stepBantaiPick.classList.add('hidden');
   stepBantaiResult.classList.add('hidden');
 });
 
@@ -1783,7 +1789,9 @@ function handleBantaiFile(file) {
       bantaiState.image = { dataUrl, base64, mimeType: 'image/jpeg' };
       bantaiPreviewImg.src = dataUrl;
       bantaiPreviewWrap.classList.remove('hidden');
-      // Hide any previous result
+      // Reset previous steps
+      bantaiState.detectedQuestions = [];
+      stepBantaiPick.classList.add('hidden');
       stepBantaiResult.classList.add('hidden');
     };
     img.src = e.target.result;
@@ -1791,84 +1799,230 @@ function handleBantaiFile(file) {
   reader.readAsDataURL(file);
 }
 
-// ── Solve button ──────────────────────────────────────────────
-btnBantai.addEventListener('click', solveBantaiSoal);
+// ── STEP 1: Tombol "Identifikasi Soal" ───────────────────────
+btnBantai.addEventListener('click', identifyBantaiSoal);
 
-async function solveBantaiSoal() {
+async function identifyBantaiSoal() {
   if (!bantaiState.image) {
     bantaiHint.textContent = 'Upload foto soal terlebih dahulu.';
     return;
   }
+  bantaiHint.textContent = '';
+  showBantaiLoading('Membaca soal di foto…');
 
-  // Credit check
+  try {
+    const idToken = await window.getIdToken();
+
+    const identifyPrompt = `Kamu adalah asisten yang bertugas mengidentifikasi soal-soal ujian/latihan dari foto.
+
+Lihat foto ini dan identifikasi SEMUA soal yang ada. Untuk setiap soal, tulis:
+- Nomor soal (sesuai yang tertera di foto, atau urutan jika tidak ada nomor)
+- Teks soal secara ringkas (maks 120 karakter — cukup untuk user mengenali soalnya)
+- Mata pelajaran (Matematika, IPA, Bahasa Indonesia, Bahasa Inggris, dll)
+
+Jawab HANYA dalam JSON valid (tanpa markdown):
+[
+  {"number": 1, "text": "Ringkasan teks soal nomor 1...", "subject": "Matematika"},
+  {"number": 2, "text": "Ringkasan teks soal nomor 2...", "subject": "IPA"}
+]
+
+ATURAN:
+- Identifikasi semua soal, jangan lewatkan satu pun.
+- "text" harus cukup deskriptif agar user bisa mengenali soalnya (bisa potong jika terlalu panjang).
+- Jika hanya ada 1 soal, tetap keluarkan array dengan 1 elemen.
+- Output hanya JSON array, tanpa teks lain.`;
+
+    const res = await fetch('/api/extract', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 800,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: bantaiState.image.mimeType, data: bantaiState.image.base64 } },
+            { type: 'text', text: identifyPrompt }
+          ]
+        }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err?.error?.message || err?.error || `Error ${res.status}`);
+    }
+
+    const data = await res.json();
+    const rawText = (data.content || []).map(b => b.text || '').join('');
+    const clean = rawText.replace(/```json|```/g, '').trim();
+
+    let detected;
+    try {
+      const parsed = JSON.parse(clean);
+      detected = Array.isArray(parsed) ? parsed : [parsed];
+    } catch(e) {
+      throw new Error('Tidak bisa membaca soal dari foto. Pastikan foto jelas dan berisi soal.');
+    }
+
+    bantaiState.detectedQuestions = detected;
+    renderBantaiPick(detected);
+
+  } catch(err) {
+    console.error('Identify error:', err);
+    bantaiHint.textContent = 'Error: ' + (err.message || 'Gagal membaca foto. Coba lagi.');
+  } finally {
+    hideBantaiLoading();
+  }
+}
+
+// ── Render daftar soal untuk dipilih ─────────────────────────
+function renderBantaiPick(questions) {
+  const MAX_PICK = 3;
+
+  let html = '';
+  questions.forEach((q, i) => {
+    html += `
+      <label class="bantai-pick-item" id="bantai-pick-wrap-${i}">
+        <input type="checkbox" class="bantai-pick-cb" value="${i}"
+          onchange="window.updateBantaiPickCount()"
+          ${questions.length === 1 ? 'checked' : ''} />
+        <div class="bantai-pick-body">
+          <span class="bantai-pick-num">Soal ${q.number}</span>
+          <span class="bantai-pick-subject">${escapeHtml(q.subject || '')}</span>
+          <p class="bantai-pick-text">${escapeHtml(q.text || '')}</p>
+        </div>
+      </label>`;
+  });
+
+  bantaiPickList.innerHTML = html;
+
+  const desc = questions.length === 1
+    ? '1 soal ditemukan. Langsung klik Bantai!'
+    : `${questions.length} soal ditemukan. Pilih maks. ${MAX_PICK} soal yang ingin dibantai.`;
+  document.getElementById('bantai-pick-desc').textContent = desc;
+
+  stepBantaiPick.classList.remove('hidden');
+  stepBantaiPick.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Auto-check jika hanya 1 soal, langsung lanjut
+  if (questions.length === 1) {
+    const cb = bantaiPickList.querySelector('.bantai-pick-cb');
+    if (cb) cb.checked = true;
+  }
+}
+
+// ── Update count & disable kalau sudah 3 ─────────────────────
+window.updateBantaiPickCount = function() {
+  const MAX_PICK = 3;
+  const cbs = [...bantaiPickList.querySelectorAll('.bantai-pick-cb')];
+  const checked = cbs.filter(cb => cb.checked);
+  const count = checked.length;
+
+  // Disable unchecked kalau sudah capai limit
+  cbs.forEach(cb => {
+    if (!cb.checked) {
+      cb.disabled = count >= MAX_PICK;
+      cb.closest('label').classList.toggle('bantai-pick-disabled', count >= MAX_PICK);
+    } else {
+      cb.disabled = false;
+      cb.closest('label').classList.remove('bantai-pick-disabled');
+    }
+  });
+
+  const hint = document.getElementById('bantai-pick-hint');
+  if (count === 0) {
+    hint.textContent = 'Pilih minimal 1 soal.';
+  } else if (count >= MAX_PICK) {
+    hint.textContent = `Maksimal ${MAX_PICK} soal sudah dipilih.`;
+  } else {
+    hint.textContent = '';
+  }
+};
+
+// ── STEP 2: Bantai soal yang dipilih ─────────────────────────
+document.getElementById('btn-bantai-solve').addEventListener('click', solveBantaiSoal);
+
+async function solveBantaiSoal() {
+  const cbs = [...bantaiPickList.querySelectorAll('.bantai-pick-cb:checked')];
+  if (cbs.length === 0) {
+    document.getElementById('bantai-pick-hint').textContent = 'Pilih minimal 1 soal.';
+    return;
+  }
+
+  // Credit check — 1 kredit per sesi bantai (bukan per soal)
   const credits = window._currentCredits ?? 0;
   const isInvited = window._isInvited ?? false;
   if (!isInvited && credits <= 0) {
-    bantaiHint.textContent = '';
     window.renderCreditsBanner?.();
     window.startCheckout?.();
     return;
   }
 
-  bantaiHint.textContent = '';
-  showBantaiLoading('Membaca soalmu…');
+  const selectedIndices = cbs.map(cb => parseInt(cb.value));
+  const selectedQs = selectedIndices.map(i => bantaiState.detectedQuestions[i]);
+
+  document.getElementById('bantai-pick-hint').textContent = '';
+  showBantaiLoading(`Membantai ${selectedQs.length} soal…`);
 
   try {
     const idToken = await window.getIdToken();
 
-    const prompt = `Kamu adalah guru ahli yang sangat sabar dan berpengalaman. Seorang siswa mengirimkan foto yang mungkin berisi SATU atau BEBERAPA soal sekaligus.
+    // Bangun daftar soal terpilih untuk disertakan di prompt
+    const qList = selectedQs.map((q, i) =>
+      `Soal ${q.number}: "${q.text}"`
+    ).join('
+');
 
-Tugasmu:
-1. Identifikasi dan baca SEMUA soal yang ada di foto ini — bisa 1 soal, bisa 5 soal, bisa lebih.
-2. Selesaikan SETIAP soal secara SANGAT DETAIL, langkah demi langkah.
+    const solvePrompt = `Kamu adalah guru ahli yang sangat sabar. Seorang siswa meminta pembahasan untuk soal-soal berikut dari foto yang dilampirkan.
 
-INSTRUKSI FORMAT RESPONS:
-Jawab HANYA dalam JSON valid (tanpa markdown), dengan struktur berikut (SELALU berupa array, bahkan jika hanya 1 soal):
+SOAL YANG PERLU DIBANTAI (${selectedQs.length} soal):
+${qList}
 
+Selesaikan HANYA soal-soal di atas. Untuk setiap soal, buat pembahasan yang SANGAT DETAIL dan langkah demi langkah.
+
+Jawab HANYA dalam JSON valid (tanpa markdown), berupa array:
 [
   {
     "question_number": 1,
-    "question_text": "Teks soal nomor ini (tulis ulang dengan lengkap, termasuk nomor aslinya jika ada)",
-    "subject": "Mata pelajaran soal ini (misal: Matematika, IPA, Bahasa Indonesia, dll)",
+    "question_text": "Teks lengkap soal ini (salin dari foto secara lengkap)",
+    "subject": "Mata pelajaran",
     "difficulty": "Mudah / Sedang / Sulit",
-    "answer": "Jawaban akhir yang singkat dan jelas",
+    "answer": "Jawaban akhir singkat dan jelas",
     "steps": [
       {
-        "label": "Judul singkat langkah ini (maks 5 kata)",
-        "content": "Penjelasan detail langkah ini. Gunakan kalimat lengkap, jelaskan MENGAPA langkah ini dilakukan, tulis rumus atau konsep yang dipakai, dan tunjukkan perhitungan/logika secara eksplisit."
+        "label": "Judul langkah (maks 5 kata)",
+        "content": "Penjelasan detail: jelaskan MENGAPA, tulis rumus/konsep, tunjukkan perhitungan eksplisit."
       }
     ],
-    "key_concepts": [
-      "Konsep kunci #1 (kalimat singkat)",
-      "Konsep kunci #2"
-    ],
-    "tips": "Tips atau trik untuk soal tipe ini. 2-3 kalimat praktis.",
+    "key_concepts": ["Konsep kunci 1", "Konsep kunci 2"],
+    "tips": "2-3 tips praktis untuk soal tipe ini.",
     "language": "id"
   }
 ]
 
-ATURAN PENTING:
-- Output SELALU berupa JSON array (dalam tanda [ ]), bahkan jika hanya ada 1 soal.
-- Identifikasi semua soal yang ada, jangan lewatkan satu pun.
-- Gunakan bahasa yang SAMA dengan soal (Indonesia atau Inggris).
-- Jumlah steps minimal 3, idealnya 4-6 langkah yang logis dan mengalir.
-- Setiap step harus cukup detail: jangan hanya "substitusi nilai" tapi jelaskan nilai apa, dari mana, dan hasilnya berapa.
-- Jika ada pilihan ganda, jelaskan mengapa pilihan benar itu benar DAN mengapa pilihan lain salah.
-- Untuk soal hitungan: tunjukkan semua angka dan operasi matematika secara eksplisit.
-- key_concepts harus berisi nama konsep/rumus/teori yang relevan.
-- Output harus berupa JSON yang valid dan lengkap, tanpa karakter tambahan di luar JSON.`;
+ATURAN:
+- Selesaikan tepat ${selectedQs.length} soal sesuai daftar di atas.
+- Gunakan bahasa yang sama dengan soal (Indonesia atau Inggris).
+- Steps: minimal 3, idealnya 4-5. Setiap step harus detail dan jelas.
+- Jika pilihan ganda: jelaskan mengapa jawaban benar dan mengapa yang lain salah.
+- Untuk hitungan: tunjukkan semua angka dan operasi secara eksplisit.
+- Output hanya JSON array, tanpa teks tambahan.`;
+
+    // Token: ~1400 per soal + buffer, maks 4500
+    const maxTok = Math.min(4500, selectedQs.length * 1400 + 400);
 
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 6000,
+        max_tokens: maxTok,
         messages: [{
           role: 'user',
           content: [
             { type: 'image', source: { type: 'base64', media_type: bantaiState.image.mimeType, data: bantaiState.image.base64 } },
-            { type: 'text', text: prompt }
+            { type: 'text', text: solvePrompt }
           ]
         }]
       })
@@ -1885,20 +2039,16 @@ ATURAN PENTING:
     }
 
     const data = await res.json();
-
-    // Update credit counter
     if (typeof data._credits === 'number') {
       window._currentCredits = data._credits;
       window.renderCreditsBanner?.();
     }
 
-    // Parse response
     const rawText = (data.content || []).map(b => b.text || '').join('');
     const clean = rawText.replace(/```json|```/g, '').trim();
     let result;
     try {
       const parsed = JSON.parse(clean);
-      // Normalise: always an array
       result = Array.isArray(parsed) ? parsed : [parsed];
     } catch(e) {
       throw new Error('Format respons tidak valid. Coba lagi.');
@@ -1908,7 +2058,7 @@ ATURAN PENTING:
 
   } catch(err) {
     console.error('Bantai error:', err);
-    bantaiHint.textContent = 'Error: ' + (err.message || 'Gagal menyelesaikan soal. Coba lagi.');
+    document.getElementById('bantai-pick-hint').textContent = 'Error: ' + (err.message || 'Gagal. Coba lagi.');
   } finally {
     hideBantaiLoading();
   }
@@ -2041,9 +2191,12 @@ function formatBantaiContent(text) {
 // ── Reset Bantai ──────────────────────────────────────────────
 document.getElementById('bantai-btn-new').addEventListener('click', () => {
   bantaiState.image = null;
+  bantaiState.detectedQuestions = [];
   bantaiPreviewImg.src = '';
   bantaiPreviewWrap.classList.add('hidden');
   bantaiResultContent.innerHTML = '';
+  bantaiPickList.innerHTML = '';
+  stepBantaiPick.classList.add('hidden');
   stepBantaiResult.classList.add('hidden');
   bantaiHint.textContent = '';
   window.scrollTo({ top: 0, behavior: 'smooth' });
