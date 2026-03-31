@@ -2032,12 +2032,18 @@ async function solveBantaiSoal() {
       'Soal ' + q.number + ': "' + q.text + '"'
     ).join('\n');
 
-    const solvePrompt = `Kamu adalah guru ahli yang sangat sabar. Seorang siswa meminta pembahasan untuk soal-soal berikut dari foto yang dilampirkan.
+    const solvePrompt = `Kamu adalah guru matematika dan sains yang sangat teliti dan tidak pernah menebak jawaban. Seorang siswa meminta pembahasan untuk soal-soal berikut dari foto yang dilampirkan.
 
 SOAL YANG PERLU DIBANTAI (${selectedQs.length} soal):
 ${qList}
 
-Selesaikan HANYA soal-soal di atas. Untuk setiap soal, buat pembahasan yang SANGAT DETAIL dan langkah demi langkah.
+PERINGATAN KERAS — BACA SEBELUM MENGERJAKAN:
+1. JANGAN pernah menebak jawaban dari pilihan yang tersedia (A/B/C/D/E). Pilihan jawaban sering dibuat untuk menjebak.
+2. WAJIB hitung/kerjakan dari awal menggunakan rumus dan logika yang benar.
+3. Tentukan jawaban dari HASIL PERHITUNGAN, bukan dari pilihan yang terlihat "masuk akal".
+4. Setelah mendapat jawaban, barulah cocokkan dengan pilihan yang ada.
+5. Untuk soal matematika: HARUS tulis setiap langkah aritmetika secara eksplisit — jangan lewati satu langkah pun.
+6. Untuk soal dengan SISTEM PERTIDAKSAMAAN atau IRISAN HIMPUNAN: gambarkan garis bilangan, tentukan irisan dengan benar.
 
 Jawab HANYA dalam JSON valid (tanpa markdown), berupa array:
 [
@@ -2046,11 +2052,11 @@ Jawab HANYA dalam JSON valid (tanpa markdown), berupa array:
     "question_text": "Teks lengkap soal ini (salin dari foto secara lengkap)",
     "subject": "Mata pelajaran",
     "difficulty": "Mudah / Sedang / Sulit",
-    "answer": "Jawaban akhir singkat dan jelas",
+    "answer": "Jawaban akhir: tulis opsi HURUF + nilainya, misal: C. a < -2",
     "steps": [
       {
         "label": "Judul langkah (maks 5 kata)",
-        "content": "Penjelasan detail: jelaskan MENGAPA, tulis rumus/konsep, tunjukkan perhitungan eksplisit."
+        "content": "Penjelasan detail: tulis rumus, substitusi angka, dan hasil perhitungan secara eksplisit step by step. Jangan hanya menulis hasil akhir."
       }
     ],
     "key_concepts": ["Konsep kunci 1", "Konsep kunci 2"],
@@ -2059,12 +2065,12 @@ Jawab HANYA dalam JSON valid (tanpa markdown), berupa array:
   }
 ]
 
-ATURAN:
+ATURAN OUTPUT:
 - Selesaikan tepat ${selectedQs.length} soal sesuai daftar di atas.
 - Gunakan bahasa yang sama dengan soal (Indonesia atau Inggris).
-- Steps: minimal 3, idealnya 4-5. Setiap step harus detail dan jelas.
-- Jika pilihan ganda: jelaskan mengapa jawaban benar dan mengapa yang lain salah.
-- Untuk hitungan: tunjukkan semua angka dan operasi secara eksplisit.
+- Steps: minimal 4, idealnya 5-6 langkah yang mengalir logis.
+- Untuk pilihan ganda: di step terakhir, verifikasi jawaban dengan mencocokkan hasil perhitungan ke pilihan yang ada, dan jelaskan mengapa pilihan lain SALAH.
+- Untuk soal hitungan: tunjukkan SEMUA angka dan operasi — tidak boleh ada lompatan langkah.
 - Output hanya JSON array, tanpa teks tambahan.`;
 
     // Token: ~1400 per soal + buffer, maks 4500
