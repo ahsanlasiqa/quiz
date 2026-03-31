@@ -1970,9 +1970,8 @@ async function solveBantaiSoal() {
 
     // Bangun daftar soal terpilih untuk disertakan di prompt
     const qList = selectedQs.map((q, i) =>
-      `Soal ${q.number}: "${q.text}"`
-    ).join('
-');
+      'Soal ' + q.number + ': "' + q.text + '"'
+    ).join('\n');
 
     const solvePrompt = `Kamu adalah guru ahli yang sangat sabar. Seorang siswa meminta pembahasan untuk soal-soal berikut dari foto yang dilampirkan.
 
