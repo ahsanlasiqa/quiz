@@ -1774,12 +1774,20 @@ bantaiRemoveBtn.addEventListener('click', () => {
 });
 
 // ── Handle file ───────────────────────────────────────────────
-function handleBantaiFile(file) {
-  if (!file.type.startsWith('image/')) {
-    bantaiHint.textContent = 'Hanya file gambar (JPG, PNG, WEBP) yang didukung.';
+async function handleBantaiFile(file) {
+  bantaiHint.textContent = '';
+
+  if (file.type === 'application/pdf') {
+    await handleBantaiPDF(file);
     return;
   }
-  bantaiHint.textContent = '';
+
+  if (!file.type.startsWith('image/')) {
+    bantaiHint.textContent = 'Hanya file gambar (JPG, PNG, WEBP) atau PDF yang didukung.';
+    return;
+  }
+
+  // Handle image
   const reader = new FileReader();
   reader.onload = e => {
     const img = new Image();
@@ -1797,6 +1805,57 @@ function handleBantaiFile(file) {
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
+}
+
+// ── PDF → 1 halaman pertama saja (untuk bantai soal) ──────────
+async function handleBantaiPDF(file) {
+  if (!window.pdfjsLib) {
+    bantaiHint.textContent = 'PDF.js belum siap. Coba refresh halaman.';
+    return;
+  }
+
+  bantaiHint.textContent = 'Memuat PDF…';
+  btnBantai.disabled = true;
+
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+    if (pdf.numPages > 1) {
+      bantaiHint.textContent = `PDF memiliki ${pdf.numPages} halaman — hanya halaman pertama yang digunakan.`;
+    } else {
+      bantaiHint.textContent = '';
+    }
+
+    const page = await pdf.getPage(1);
+    const scale = 1.5;
+    const viewport = page.getViewport({ scale });
+
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+
+    const dataUrl = compressCanvas(canvas);
+    const base64 = dataUrl.split(',')[1];
+
+    bantaiState.image = { dataUrl, base64, mimeType: 'image/jpeg', fromPDF: true, pdfName: file.name };
+    bantaiPreviewImg.src = dataUrl;
+    bantaiPreviewWrap.classList.remove('hidden');
+
+    // Reset previous steps
+    bantaiState.detectedQuestions = [];
+    stepBantaiPick.classList.add('hidden');
+    stepBantaiResult.classList.add('hidden');
+
+    if (pdf.numPages === 1) bantaiHint.textContent = '';
+
+  } catch (err) {
+    console.error('Bantai PDF error:', err);
+    bantaiHint.textContent = 'Gagal membaca PDF: ' + err.message;
+  } finally {
+    btnBantai.disabled = false;
+  }
 }
 
 // ── STEP 1: Tombol "Identifikasi Soal" ───────────────────────
