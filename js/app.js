@@ -966,8 +966,16 @@ INSTRUCTIONS FOR VARIATION MODE:
    - For true_false in English: answer must be exactly "True" or "False"
 6. Adjust difficulty appropriately for: ${levelLabel}
 7. For multiple choice: exactly 4 options labeled A, B, C, D.
-8. EXPLANATION: Write 2-4 sentences explaining the solution method.
+8. EXPLANATION: Write 2-4 sentences explaining the solution method. Start by stating the correct answer value, then explain how to get there.
 9. Set imageCrop to null and svg to null for all questions.
+
+CRITICAL — ANSWER VERIFICATION (wajib sebelum output):
+For EVERY multiple choice question, before writing the JSON:
+1. Solve the question yourself from scratch using the correct method.
+2. Confirm which option (A/B/C/D) matches your calculated answer.
+3. If your answer does not match any option, fix either the question or the options so the correct answer is included.
+4. NEVER set "answer" to an option that is mathematically or factually wrong.
+5. For math/algebra: show your working mentally — if the result is a constant (no variable), make sure the correct option is a constant, not an expression with a variable.
 
 Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","mode":"variation","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":null}]}`;
@@ -1036,7 +1044,15 @@ INSTRUCTIONS:
 5. For multiple choice: exactly 4 options labeled A, B, C, D.
 6. For fill in blank: replace key terms with ___.
 7. For short answer: ask open-ended questions about main concepts.
-8. EXPLANATION: Write a comprehensive 2-4 sentence explanation for every question.
+8. EXPLANATION: Write a comprehensive 2-4 sentence explanation for every question. Begin by stating the correct answer explicitly, then explain the reasoning step by step.
+
+CRITICAL — ANSWER VERIFICATION (wajib sebelum output):
+For EVERY multiple choice question, before writing the JSON:
+1. Solve the question yourself from scratch using the correct method.
+2. Confirm which option (A/B/C/D) matches your calculated answer.
+3. If your answer does not match any option, fix either the question or the options so the correct answer is included.
+4. NEVER set "answer" to an option that is mathematically or factually wrong.
+5. For math/algebra: show your working mentally — if the result is a constant (no variable), make sure the correct option is a constant, not an expression with a variable.
 
 IMAGE CROP INSTRUCTIONS:
 - The VISUAL MAP above lists all figures detected in the uploaded images with their exact positions.
@@ -1902,9 +1918,17 @@ INSTRUCTIONS:
 6. For fill in blank: replace key terms with ___.
 7. For short answer: open-ended questions about main concepts.
 8. EXPLANATION: Write a concise 1–2 sentence explanation per question (keep it short to fit all ${numQuestions} questions).
-   - State WHY the answer is correct with key reasoning
-   - For multiple choice: mention why the correct option is right
+   - State the correct answer value first, then explain why.
+   - For multiple choice: confirm your calculated answer matches the correct option.
 9. Adjust difficulty for ${levelLabel} students studying ${topik}.
+
+CRITICAL — ANSWER VERIFICATION (wajib sebelum output):
+For EVERY multiple choice question, before writing the JSON:
+1. Solve the question yourself from scratch using the correct method.
+2. Confirm which option (A/B/C/D) matches your calculated answer.
+3. If your answer does not match any option, fix either the question or the options so the correct answer is included.
+4. NEVER set "answer" to an option that is mathematically or factually wrong.
+5. For math/algebra: show your working mentally — if the result is a constant (no variable), make sure the correct option is a constant, not an expression with a variable.
 
 Set "imageCrop" to null for all questions (no uploaded images in this mode).
 Set "svg" to null for all questions.
