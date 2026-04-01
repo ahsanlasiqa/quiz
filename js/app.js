@@ -544,6 +544,9 @@ function handleGenerateError(err) {
     generateHint.textContent = '';
     window.renderCreditsBanner();
     window.startCheckout();
+  } else if (err.status === 529 || err.status === 503 ||
+             (err.message && err.message.includes('kelebihan beban'))) {
+    generateHint.textContent = '⚠️ API Anthropic sedang sibuk. Tunggu 30 detik lalu coba lagi.';
   } else {
     generateHint.textContent = 'Error: ' + (err.message || 'Gagal membuat soal.');
   }
@@ -623,7 +626,7 @@ Rules:
       parts.push({ type: 'image', source: { type: 'base64', media_type: img.mimeType, data: img.base64 } });
     });
 
-    const extractRes = await fetch('/api/extract', {
+    const extractRes = await fetchWithRetry('/api/extract', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
       body: JSON.stringify({
@@ -873,7 +876,7 @@ ATURAN: Steps minimal 4. Untuk pilihan ganda: verifikasi dan jelaskan mengapa pi
       source: { type: 'base64', media_type: img.mimeType, data: img.base64 }
     }));
 
-    const res = await fetch('/api/generate', {
+    const res = await fetchWithRetry('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
       body: JSON.stringify({
@@ -962,7 +965,7 @@ Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","mode":"variation","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":null}]}`;
 
   const dynamicTokens = Math.min(8000, Math.max(3000, state.settings.numQuestions * 320));
-  const generateRes = await fetch('/api/generate', {
+  const generateRes = await fetchWithRetry('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
@@ -1040,7 +1043,7 @@ Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":{"img":0,"x":0.0,"y":0.1,"w":1.0,"h":0.4}}]}`;
 
   const dynamicTokens = Math.min(8000, Math.max(3000, state.settings.numQuestions * 320));
-  const generateRes = await fetch('/api/generate', {
+  const generateRes = await fetchWithRetry('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
@@ -1895,7 +1898,7 @@ Respond ONLY with valid JSON, no markdown:
   // Dynamic max_tokens: ~300 tokens per question, min 3000, max 8000
   const dynamicTokens = Math.min(8000, Math.max(3000, numQuestions * 320));
 
-  const res = await fetch('/api/generate', {
+  const res = await fetchWithRetry('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
@@ -1960,6 +1963,32 @@ Respond ONLY with valid JSON, no markdown:
 // ══════════════════════════════════════════════════════════════
 //  APP MODE SWITCHER (Drill Soal / Bantai Soal)
 // ══════════════════════════════════════════════════════════════
+
+// ── Fetch with retry for 529 Overloaded ──────────────────────
+async function fetchWithRetry(url, options, maxRetries = 2) {
+  let lastErr;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    if (attempt > 0) {
+      const delay = attempt * 4000; // 4s, 8s
+      showLoading(
+        'API sedang sibuk — mencoba lagi…',
+        'Percobaan ' + (attempt + 1) + ' dari ' + (maxRetries + 1) + ' dalam ' + (delay/1000) + ' detik…'
+      );
+      await new Promise(r => setTimeout(r, delay));
+    }
+    const res = await fetch(url, options);
+    if (res.status !== 529 && res.status !== 503) return res;
+    // 529/503 = overloaded, retry
+    const errData = await res.json().catch(() => ({}));
+    lastErr = new Error(
+      'API Anthropic sedang kelebihan beban. Coba lagi dalam beberapa saat.' +
+      (errData?.error?.message ? ' (' + errData.error.message + ')' : '')
+    );
+    lastErr.status = res.status;
+    console.warn('Attempt ' + (attempt + 1) + ' got ' + res.status + ', retrying…');
+  }
+  throw lastErr;
+}
 
 window.switchAppMode = function(mode) {
   const sections = {
@@ -2176,7 +2205,7 @@ ATURAN:
 - Jika hanya ada 1 soal, tetap keluarkan array dengan 1 elemen.
 - Output hanya JSON array, tanpa teks lain.`;
 
-    const res = await fetch('/api/extract', {
+    const res = await fetchWithRetry('/api/extract', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
       body: JSON.stringify({
@@ -2361,7 +2390,7 @@ ATURAN OUTPUT:
     // Token: ~1400 per soal + buffer, maks 4500
     const maxTok = Math.min(4500, selectedQs.length * 1400 + 400);
 
-    const res = await fetch('/api/generate', {
+    const res = await fetchWithRetry('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
       body: JSON.stringify({
@@ -2407,7 +2436,10 @@ ATURAN OUTPUT:
 
   } catch(err) {
     console.error('Bantai error:', err);
-    document.getElementById('bantai-pick-hint').textContent = 'Error: ' + (err.message || 'Gagal. Coba lagi.');
+    const msg = (err.status === 529 || err.status === 503 || (err.message && err.message.includes('kelebihan beban')))
+      ? '⚠️ API Anthropic sedang sibuk. Tunggu 30 detik lalu coba lagi.'
+      : 'Error: ' + (err.message || 'Gagal. Coba lagi.');
+    document.getElementById('bantai-pick-hint').textContent = msg;
   } finally {
     hideBantaiLoading();
   }
