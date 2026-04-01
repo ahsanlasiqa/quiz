@@ -1,0 +1,55 @@
+<svg viewBox="0 0 320 260" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <style>
+      .sq { fill:#f0f8ff; stroke:#1a7a6e; stroke-width:1.8; }
+      .lbl { font-size:13px; font-weight:bold; fill:#333; }
+      .num { font-size:14px; font-weight:bold; fill:#1a7a6e; }
+    </style>
+  </defs>
+
+  <!-- === Rangkaian 1 (valid jaring kubus — cross shape) === -->
+  <!-- Label -->
+  <text x="12" y="22" class="num">1</text>
+  <!-- Cross: center(55,65), size 28px each square -->
+  <!-- row: top(55,9), mid-left(27,37), mid-center(55,37), mid-right(83,37), bottom(55,65), bottom2(55,93) -->
+  <rect x="41"  y="9"  width="28" height="28" class="sq"/>
+  <rect x="13"  y="37" width="28" height="28" class="sq"/>
+  <rect x="41"  y="37" width="28" height="28" class="sq"/>
+  <rect x="69"  y="37" width="28" height="28" class="sq"/>
+  <rect x="41"  y="65" width="28" height="28" class="sq"/>
+  <rect x="41"  y="93" width="28" height="28" class="sq"/>
+
+  <!-- === Rangkaian 2 (NOT valid — L shape long) === -->
+  <text x="168" y="22" class="num">2</text>
+  <!-- L-shape: 4 in a row + 2 hanging -->
+  <rect x="168" y="9"  width="28" height="28" class="sq"/>
+  <rect x="196" y="9"  width="28" height="28" class="sq"/>
+  <rect x="224" y="9"  width="28" height="28" class="sq"/>
+  <rect x="252" y="9"  width="28" height="28" class="sq"/>
+  <rect x="168" y="37" width="28" height="28" class="sq"/>
+  <rect x="168" y="65" width="28" height="28" class="sq"/>
+
+  <!-- === Rangkaian 3 (NOT valid — T shape) === -->
+  <text x="12" y="148" class="num">3</text>
+  <!-- T shape -->
+  <rect x="12"  y="155" width="28" height="28" class="sq"/>
+  <rect x="40"  y="155" width="28" height="28" class="sq"/>
+  <rect x="68"  y="155" width="28" height="28" class="sq"/>
+  <rect x="96"  y="155" width="28" height="28" class="sq"/>
+  <rect x="40"  y="183" width="28" height="28" class="sq"/>
+  <rect x="40"  y="211" width="28" height="28" class="sq"/>
+
+  <!-- === Rangkaian 4 (valid jaring kubus — staircase/S shape) === -->
+  <text x="168" y="148" class="num">4</text>
+  <!-- Staircase: valid net -->
+  <rect x="168" y="155" width="28" height="28" class="sq"/>
+  <rect x="196" y="155" width="28" height="28" class="sq"/>
+  <rect x="196" y="183" width="28" height="28" class="sq"/>
+  <rect x="224" y="183" width="28" height="28" class="sq"/>
+  <rect x="224" y="211" width="28" height="28" class="sq"/>
+  <rect x="252" y="211" width="28" height="28" class="sq"/>
+
+  <!-- Divider lines -->
+  <line x1="155" y1="0" x2="155" y2="260" stroke="#ddd" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="0"   y1="135" x2="320" y2="135" stroke="#ddd" stroke-width="1" stroke-dasharray="4,4"/>
+</svg>

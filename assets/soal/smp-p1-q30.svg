@@ -1,0 +1,41 @@
+<svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Circle center O(130,130) radius 100 -->
+  <circle cx="130" cy="130" r="100" fill="#f0f8ff" stroke="#1a7a6e" stroke-width="2.2"/>
+
+  <!-- Points on circle:
+       A = bottom-left: angle 220° → (130+100cos220, 130+100sin220) = (130-76.6, 130+64.3) = (53,194)
+       B = bottom-right: angle 320° → (130+100cos320, 130+100sin320) = (130+76.6, 130-64.3) = (207,66) 
+       C = top-right: angle 10° → (130+100cos10, 130-100sin10) = (228,147) 
+       Use simpler positions matching the photo: A bottom-left, B bottom, C upper-right -->
+  <!-- A(55,190) B(205,185) C(215,75) O(130,130) -->
+
+  <!-- Radii OA, OB -->
+  <line x1="130" y1="130" x2="55"  y2="190" stroke="#1a7a6e" stroke-width="1.8"/>
+  <line x1="130" y1="130" x2="205" y2="185" stroke="#1a7a6e" stroke-width="1.8"/>
+
+  <!-- Chord CB, CA (inscribed angle at C) -->
+  <line x1="215" y1="75" x2="55"  y2="190" stroke="#888" stroke-width="1.5"/>
+  <line x1="215" y1="75" x2="205" y2="185" stroke="#888" stroke-width="1.5"/>
+
+  <!-- Angle arc at O (central angle AOB) -->
+  <path d="M 105,148 A 30,30 0 0,1 155,162" fill="none" stroke="#e8a020" stroke-width="2"/>
+
+  <!-- Angle arc at C (inscribed angle ACB = 10°) -->
+  <path d="M 202,90  A 22,22 0 0,1 210,105" fill="none" stroke="#e05c3a" stroke-width="2"/>
+
+  <!-- Points -->
+  <circle cx="130" cy="130" r="4" fill="#1a7a6e"/>
+  <circle cx="55"  cy="190" r="4" fill="#333"/>
+  <circle cx="205" cy="185" r="4" fill="#333"/>
+  <circle cx="215" cy="75"  r="4" fill="#333"/>
+
+  <!-- Labels -->
+  <text x="118" y="122" font-size="13" font-weight="bold" fill="#1a7a6e">O</text>
+  <text x="38"  y="202" font-size="13" font-weight="bold" fill="#333">A</text>
+  <text x="208" y="200" font-size="13" font-weight="bold" fill="#333">B</text>
+  <text x="218" y="72"  font-size="13" font-weight="bold" fill="#333">C</text>
+
+  <!-- Angle labels -->
+  <text x="120" y="168" font-size="11" fill="#e8a020">∠AOB</text>
+  <text x="196" y="102" font-size="11" fill="#e05c3a">10°</text>
+</svg>

@@ -1,0 +1,45 @@
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Parallelogram/trapesium ABCD: A bottom-left, B bottom-right, C top-right, D top-left -->
+  <!-- A(30,160) B(180,160) C(210,40) D(90,40) — jajargenjang miring -->
+  <!-- ukuran: AB=9cm (alas bawah), CD=5cm (atas), AD=15cm (miring kiri) -->
+  <!-- Tinggi dari B ke AB = garis tegak B ke garis AB -->
+  <!-- B(180,160), buat garis tegak ke atas: titik tegak lurus = (180,40) lalu ke C -->
+
+  <!-- Shape: A(30,160) B(165,160) D(90,40) C(150,40) -->
+  <!-- Sesuai foto: jajargenjang dengan B bawah kanan, garis tegak dari C/D ke AB -->
+  <!-- A(25,155) B(175,155) C(205,35) D(85,35) -->
+  <polygon points="25,155 175,155 205,35 85,35" fill="#f0f8ff" stroke="#1a7a6e" stroke-width="2"/>
+
+  <!-- Garis tegak dari B ke atas (ke titik antara A-B setinggi D/C) -->
+  <!-- foot of perpendicular from B to DC extended: tegak lurus dari D ke AB -->
+  <!-- Titik E = foot from D(85,35) to AB: x=85,y=155 -->
+  <!-- Titik F = foot from C(205,35) to AB: x=205,y=155 - tapi di luar segmen -->
+  <!-- Sesuai gambar: E(85,155) di antara A dan B, garis DE tegak lurus -->
+  <line x1="85" y1="35" x2="85" y2="155" stroke="#888" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <rect x="85" y="145" width="9" height="9" fill="none" stroke="#888" stroke-width="1.5"/>
+
+  <!-- Diagonal BD -->
+  <line x1="175" y1="155" x2="85" y2="35" stroke="#e05c3a" stroke-width="2" stroke-dasharray="6,3"/>
+
+  <!-- Labels corners -->
+  <text x="10"  y="168" font-size="13" fill="#333" font-weight="bold">A</text>
+  <text x="178" y="168" font-size="13" fill="#333" font-weight="bold">B</text>
+  <text x="208" y="32"  font-size="13" fill="#333" font-weight="bold">C</text>
+  <text x="72"  y="28"  font-size="13" fill="#333" font-weight="bold">D</text>
+
+  <!-- Dimension labels -->
+  <!-- AB = 9 cm -->
+  <text x="92"  y="175" font-size="12" fill="#1a7a6e">9 cm</text>
+  <!-- CD = 5 cm -->
+  <text x="118" y="26"  font-size="12" fill="#1a7a6e">5 cm</text>
+  <!-- AD = 15 cm -->
+  <text x="30"  y="98"  font-size="12" fill="#1a7a6e" transform="rotate(-50,48,98)">15 cm</text>
+  <!-- Height label -->
+  <text x="60"  y="98"  font-size="11" fill="#888">4 cm</text>
+
+  <!-- BD label -->
+  <text x="138" y="90"  font-size="12" fill="#e05c3a" font-style="italic">BD = ?</text>
+
+  <!-- Right angle at E -->
+  <text x="90" y="148" font-size="8" fill="#888">⌐</text>
+</svg>

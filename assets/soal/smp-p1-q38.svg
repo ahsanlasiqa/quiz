@@ -1,0 +1,67 @@
+<svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Pie chart: center(120,120) radius 90 -->
+  <!-- Segments: Bela diri 12%, Robotik 15%, PMR 13%, MIPA 10%, Voli 30%, Senam 20% -->
+  <!-- Angles (cumulative degrees from top/12 o'clock, clockwise): -->
+  <!-- Start at -90° (top) -->
+  <!-- Senam 20% = 72° : from -90 to -18 -->
+  <!-- Bela diri 12% = 43.2° : from -18 to 25.2 -->
+  <!-- Robotik 15% = 54° : from 25.2 to 79.2 -->
+  <!-- PMR 13% = 46.8° : from 79.2 to 126 -->
+  <!-- MIPA 10% = 36° : from 126 to 162 -->
+  <!-- Voli 30% = 108° : from 162 to 270 = -90 -->
+
+  <defs>
+    <style>
+      .pct { font-size:11px; fill:white; font-weight:bold; text-anchor:middle; }
+      .lbl { font-size:11px; fill:#333; }
+    </style>
+  </defs>
+
+  <!-- Helper: cx=120, cy=115, r=90 -->
+  <!-- Senam 20% (teal): -90° to -18° -->
+  <path d="M120,115 L120,25 A90,90 0 0,1 205.6,89.4 Z" fill="#1a7a6e"/>
+  <!-- Bela diri 12% (orange): -18° to 25.2° -->
+  <path d="M120,115 L205.6,89.4 A90,90 0 0,1 200.9,153.0 Z" fill="#e8a020"/>
+  <!-- Robotik 15% (blue): 25.2° to 79.2° -->
+  <path d="M120,115 L200.9,153.0 A90,90 0 0,1 151.2,202.5 Z" fill="#3498db"/>
+  <!-- PMR 13% (red): 79.2° to 126° -->
+  <path d="M120,115 L151.2,202.5 A90,90 0 0,1 67.3,187.3 Z" fill="#e74c3c"/>
+  <!-- MIPA 10% (purple): 126° to 162° -->
+  <path d="M120,115 L67.3,187.3 A90,90 0 0,1 34.5,143.1 Z" fill="#9b59b6"/>
+  <!-- Voli 30% (green): 162° to 270° (-90°) -->
+  <path d="M120,115 L34.5,143.1 A90,90 0 1,1 120,25 Z" fill="#27ae60"/>
+
+  <!-- Thin border on pie -->
+  <circle cx="120" cy="115" r="90" fill="none" stroke="white" stroke-width="1"/>
+
+  <!-- Percentage labels inside slices (approximate midpoint angles) -->
+  <!-- Senam: mid=-54° → (120+65cos(-54°), 115+65sin(-54°)) = (158,62) -->
+  <text x="156" y="65"  class="pct">20%</text>
+  <!-- Bela diri: mid=3.6° → (120+65cos(3.6°), 115+65sin(3.6°)) = (185,119) -->
+  <text x="182" y="120" class="pct">12%</text>
+  <!-- Robotik: mid=52.2° → (120+65cos(52.2°), 115+65sin(52.2°)) = (160,166) -->
+  <text x="158" y="172" class="pct">15%</text>
+  <!-- PMR: mid=102.6° → (120+65cos(102.6°), 115+65sin(102.6°)) = (106,178) -->
+  <text x="84"  y="178" class="pct">13%</text>
+  <!-- MIPA: mid=144° → (120+65cos(144°), 115+65sin(144°)) = (67,153) -->
+  <text x="46"  y="155" class="pct">10%</text>
+  <!-- Voli: mid=216° → (120+65cos(216°), 115+65sin(216°)) = (67,77) -->
+  <text x="66"  y="82"  class="pct">30%</text>
+
+  <!-- Legend -->
+  <rect x="225" y="30"  width="12" height="12" fill="#1a7a6e" rx="2"/>
+  <text x="242" y="41"  class="lbl">Senam</text>
+  <rect x="225" y="50"  width="12" height="12" fill="#e8a020" rx="2"/>
+  <text x="242" y="61"  class="lbl">Bela diri</text>
+  <rect x="225" y="70"  width="12" height="12" fill="#3498db" rx="2"/>
+  <text x="242" y="81"  class="lbl">Robotik</text>
+  <rect x="225" y="90"  width="12" height="12" fill="#e74c3c" rx="2"/>
+  <text x="242" y="101" class="lbl">PMR</text>
+  <rect x="225" y="110" width="12" height="12" fill="#9b59b6" rx="2"/>
+  <text x="242" y="121" class="lbl">MIPA</text>
+  <rect x="225" y="130" width="12" height="12" fill="#27ae60" rx="2"/>
+  <text x="242" y="141" class="lbl">Voli</text>
+
+  <!-- Title -->
+  <text x="120" y="220" font-size="11" fill="#555" text-anchor="middle">200 siswa</text>
+</svg>

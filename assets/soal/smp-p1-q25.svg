@@ -1,0 +1,42 @@
+<svg viewBox="0 0 280 210" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Denah: segitiga di kiri + persegi di kanan -->
+  <!-- persegi: (110,50)-(230,50)-(230,170)-(110,170) = 120×120px ~ 12m side -->
+  <!-- segitiga: puncak (50,50), base kiri(110,50)-(110,170) -->
+  <!-- sesuai foto: segitiga kecil di kiri atas + persegi besar -->
+  <!-- Ukuran aktual: alas segitiga = 24m horizontal, sisi miring 13m, persegi 12m -->
+
+  <!-- Persegi -->
+  <rect x="110" y="50" width="120" height="120" fill="#e8f5e9" stroke="#1a7a6e" stroke-width="2.2"/>
+  <!-- Simbol siku -->
+  <rect x="110" y="160" width="10" height="10" fill="none" stroke="#1a7a6e" stroke-width="1.5"/>
+
+  <!-- Segitiga kiri: A(30,170) B(110,50) C(110,170) — siku di C -->
+  <polygon points="30,170 110,50 110,170" fill="#c8e6c9" stroke="#1a7a6e" stroke-width="2.2"/>
+  <!-- Simbol siku di C(110,170) -->
+  <rect x="100" y="160" width="10" height="10" fill="none" stroke="#1a7a6e" stroke-width="1.5"/>
+
+  <!-- Tanda sama panjang di sisi miring segitiga -->
+  <!-- midpoint of AB: ((30+110)/2,(170+50)/2) = (70,110) -->
+  <line x1="65" y1="106" x2="75" y2="114" stroke="#1a7a6e" stroke-width="2"/>
+  <line x1="70" y1="101" x2="70" y2="119" stroke="#1a7a6e" stroke-width="2"/>
+
+  <!-- Dimension: 24m across top (A to right top = persegi top) -->
+  <!-- top: from (30,50) area — actually the 24m is the full horizontal top -->
+  <line x1="30"  y1="40" x2="230" y2="40" stroke="#888" stroke-width="1" marker-end="url(#da)" marker-start="url(#da2)"/>
+  <text x="115" y="35" font-size="12" fill="#555" text-anchor="middle">24 m</text>
+
+  <!-- 13m sisi miring segitiga label -->
+  <text x="52"  y="108" font-size="12" fill="#333" transform="rotate(-55,60,110)">13 m</text>
+
+  <!-- Right angle label in persegi -->
+  <text x="210" y="165" font-size="18" fill="#888">⌐</text>
+
+  <defs>
+    <marker id="da"  markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#888"/></marker>
+    <marker id="da2" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto"><path d="M8,0 L8,6 L0,3 z" fill="#888"/></marker>
+  </defs>
+
+  <!-- Label kebun -->
+  <text x="170" y="115" font-size="13" fill="#1a7a6e" text-anchor="middle">Kebun</text>
+  <text x="170" y="130" font-size="11" fill="#888"  text-anchor="middle">Pak Amin</text>
+</svg>

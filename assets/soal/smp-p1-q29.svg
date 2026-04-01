@@ -1,0 +1,35 @@
+<svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Segitiga ABC: C puncak, A bawah-kiri, B bawah-kanan -->
+  <!-- C(140,25) A(30,170) B(250,170) -->
+  <!-- E = kaki garis tinggi dari C ke AB (siku-siku) -->
+  <!-- E tepat di antara A dan B, di sini E(140,170) — tegak lurus dari C -->
+
+  <!-- Segitiga ABC -->
+  <polygon points="140,25 30,170 250,170"
+           fill="#f0f8ff" stroke="#1a7a6e" stroke-width="2.2"/>
+
+  <!-- Tanda sama panjang pada sisi AE dan EB (E adalah titik tengah) -->
+  <!-- E(140,170) -->
+  <!-- Tick AE midpoint (85,170) -->
+  <line x1="82" y1="163" x2="82" y2="177" stroke="#1a7a6e" stroke-width="2"/>
+  <line x1="88" y1="163" x2="88" y2="177" stroke="#1a7a6e" stroke-width="2"/>
+  <!-- Tick EB midpoint (195,170) -->
+  <line x1="192" y1="163" x2="192" y2="177" stroke="#1a7a6e" stroke-width="2"/>
+  <line x1="198" y1="163" x2="198" y2="177" stroke="#1a7a6e" stroke-width="2"/>
+
+  <!-- Garis CE (garis tinggi) -->
+  <line x1="140" y1="25" x2="140" y2="170"
+        stroke="#e05c3a" stroke-width="2" stroke-dasharray="6,3"/>
+
+  <!-- Simbol siku di E -->
+  <rect x="140" y="160" width="10" height="10" fill="none" stroke="#e05c3a" stroke-width="1.8"/>
+
+  <!-- Labels -->
+  <text x="133" y="18"  font-size="14" font-weight="bold" fill="#333">C</text>
+  <text x="16"  y="183" font-size="14" font-weight="bold" fill="#333">A</text>
+  <text x="252" y="183" font-size="14" font-weight="bold" fill="#333">B</text>
+  <text x="144" y="185" font-size="13" font-weight="bold" fill="#e05c3a">E</text>
+
+  <!-- CE label -->
+  <text x="148" y="100" font-size="12" fill="#e05c3a" font-style="italic">CE</text>
+</svg>

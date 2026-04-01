@@ -1,0 +1,47 @@
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Trapesium ABCD (besar): A(20,165) B(250,165) C(220,55) D(90,55) -->
+  <!-- Trapesium CDEF (kecil): C(220,55) D(90,55) E(140,55+55=110) F(190,110) -->
+  <!-- Sesuai foto: trapesium besar di luar, kecil di dalam/tumpang -->
+
+  <!-- Trapesium besar ABCD -->
+  <polygon points="20,165 250,165 220,55 90,55"
+           fill="#f0f8ff" stroke="#1a7a6e" stroke-width="2.2"/>
+
+  <!-- Trapesium kecil CDEF di dalam, berbagi sisi DC -->
+  <!-- E dan F di bawah DC -->
+  <!-- E(120,115) F(190,115) — sisi EF sejajar DC -->
+  <polygon points="90,55 220,55 190,115 120,115"
+           fill="#e8f5e9" stroke="#e05c3a" stroke-width="2"/>
+
+  <!-- Labels corners besar -->
+  <text x="8"   y="178" font-size="13" font-weight="bold" fill="#333">A</text>
+  <text x="252" y="178" font-size="13" font-weight="bold" fill="#333">B</text>
+  <text x="222" y="48"  font-size="13" font-weight="bold" fill="#333">C</text>
+  <text x="75"  y="48"  font-size="13" font-weight="bold" fill="#333">D</text>
+
+  <!-- Labels corners kecil -->
+  <text x="108" y="128" font-size="13" font-weight="bold" fill="#e05c3a">E</text>
+  <text x="192" y="128" font-size="13" font-weight="bold" fill="#e05c3a">F</text>
+
+  <!-- Dimension DC = 8 cm (top of trapezoids) -->
+  <text x="142" y="48"  font-size="12" fill="#1a7a6e" text-anchor="middle">8 cm</text>
+  <!-- Arrow DC -->
+  <line x1="98" y1="43" x2="212" y2="43" stroke="#1a7a6e" stroke-width="1"
+        marker-end="url(#a1)" marker-start="url(#a2)"/>
+
+  <!-- Dimension EF = 4 cm -->
+  <text x="155" y="132" font-size="12" fill="#e05c3a" text-anchor="middle">4 cm</text>
+  <!-- Arrow EF -->
+  <line x1="126" y1="126" x2="184" y2="126" stroke="#e05c3a" stroke-width="1"
+        marker-end="url(#a3)" marker-start="url(#a4)"/>
+
+  <!-- AB = ? label -->
+  <text x="130" y="182" font-size="12" fill="#555" text-anchor="middle">AB = ?</text>
+
+  <defs>
+    <marker id="a1" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a7a6e"/></marker>
+    <marker id="a2" markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#1a7a6e"/></marker>
+    <marker id="a3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#e05c3a"/></marker>
+    <marker id="a4" markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#e05c3a"/></marker>
+  </defs>
+</svg>
