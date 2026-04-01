@@ -3834,7 +3834,7 @@ body {
   background: var(--warm-white);
   border: 2px solid rgba(26,18,8,0.08);
   border-radius: 20px;
-  padding: 20px;
+  padding: 40px;
   cursor: pointer;
   font-family: var(--font-body);
   transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
