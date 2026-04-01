@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DrillSoal - Buat Drill Soal, Gampang Banget</title>
+  <title>DrillSoal — Kuasai Setiap Ujian, Sekolah hingga CPNS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
@@ -14,7 +14,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <!-- Midtrans Snap -->
-  <script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-SlhoAop1NZxXT_c6"></script>
+  <script src="https://app.midtrans.com/snap/snap.js" data-client-key="REPLACE_WITH_PRODUCTION_CLIENT_KEY"></script>
 </head>
 <body>
 
@@ -47,17 +47,17 @@
     <section class="landing-hero">
       <div class="landing-hero-inner">
         <div class="landing-badge">✨ Didukung AI Mutakhir</div>
-        <h1 class="landing-headline">Buat Drill Soal<br/><em>Gampang Banget</em></h1>
-        <p class="landing-subheadline">Foto halaman buku pelajaran, DrillSoal langsung membuat soal pilihan ganda, benar/salah, isian, dan esai — siap cetak atau kerjakan online.</p>
+        <h1 class="landing-headline">Kuasai Setiap Ujian —<br/><em>Sekolah hingga CPNS</em></h1>
+        <p class="landing-subheadline">Upload materi atau soal latihan, DrillSoal langsung buat soal baru, bantai pembahasan, dan simulasi ujian — untuk pelajar SD–SMA, mahasiswa, hingga peserta CPNS.</p>
         <div class="landing-cta-row">
           <button class="btn-coba" id="btn-coba-gratis">🚀 Coba Gratis Sekarang</button>
           <p class="landing-cta-note">Gratis 3 kali mencoba · Tanpa syarat</p>
         </div>
         <div class="landing-features-row">
           <div class="landing-feat">📸 Upload Foto / PDF</div>
-          <div class="landing-feat">🤖 AI Buat Soal Otomatis</div>
+          <div class="landing-feat">🤖 AI Buat &amp; Bantai Soal</div>
+          <div class="landing-feat">🏆 Simulasi TKA &amp; CPNS</div>
           <div class="landing-feat">📄 PDF Siap Cetak</div>
-          <div class="landing-feat">🎮 Kuis Interaktif</div>
         </div>
       </div>
       <div class="landing-hero-visual">
@@ -120,6 +120,45 @@
       </div>
     </section>
 
+
+    <!-- ── CPNS PROMO BANNER ── -->
+    <section class="cpns-promo-banner">
+      <div class="cpns-promo-inner">
+        <div class="cpns-promo-left">
+          <div class="cpns-promo-badge">🆕 COMING SOON</div>
+          <h2 class="cpns-promo-title">Drill Soal<br/><strong>Persiapan CPNS</strong></h2>
+          <p class="cpns-promo-sub">Latihan SKD dan SKB dari materi yang kamu punya. Upload soal-soal latihan lama, AI buat variasi baru — TWK, TIU, TKP, dan SKB sesuai formasi.</p>
+          <div class="cpns-promo-chips">
+            <span class="cpns-chip">📜 TWK</span>
+            <span class="cpns-chip">🧮 TIU</span>
+            <span class="cpns-chip">🧠 TKP</span>
+            <span class="cpns-chip">📚 SKB</span>
+          </div>
+          <div class="cpns-promo-note">
+            Sudah bisa upload soal CPNS dan langsung dibantai AI — <strong>sekarang juga.</strong><br/>
+            Bank soal simulasi SKD sedang disiapkan. Daftarkan dirimu untuk dapat akses awal.
+          </div>
+          <button class="cpns-promo-btn" id="btn-coba-gratis-cpns">Coba Sekarang — Gratis →</button>
+        </div>
+        <div class="cpns-promo-right" aria-hidden="true">
+          <div class="cpns-mock-card">
+            <div class="cpns-mock-header">
+              <span class="cpns-mock-badge">📋 Simulasi SKD</span>
+              <span class="cpns-mock-timer">89:42</span>
+            </div>
+            <div class="cpns-mock-sub">🧮 TIU · Soal 23 / 35</div>
+            <div class="cpns-mock-q">Jika A lebih tua dari B, dan C lebih muda dari A tetapi lebih tua dari B, urutan dari termuda adalah …</div>
+            <div class="cpns-mock-opts">
+              <div class="cpns-mock-opt cpns-mock-sel"><span>A</span> B, C, A</div>
+              <div class="cpns-mock-opt"><span>B</span> C, B, A</div>
+              <div class="cpns-mock-opt"><span>C</span> A, B, C</div>
+              <div class="cpns-mock-opt"><span>D</span> B, A, C</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="landing-how">
       <h2 class="landing-section-title">Cara Kerja DrillSoal</h2>
       <div class="landing-steps">
@@ -149,21 +188,32 @@
 
     <section class="landing-pain">
       <div class="landing-pain-inner">
-        <div class="pain-quote">
-          <div class="pain-quote-mark">"</div>
-          <p>Setiap malam anak minta dibuatkan soal latihan dari buku pelajaran mereka. Saya harus baca materinya dulu, baru tulis soal satu per satu — capek, dan makan waktu lama sekali."</p>
-          <div class="pain-quote-author">— Orang tua dengan 2 anak sekolah</div>
+        <div class="pain-quotes-wrap">
+          <div class="pain-quote pain-quote-active" id="pq-0">
+            <div class="pain-quote-mark">"</div>
+            <p>Setiap malam anak minta dibuatkan soal latihan dari buku pelajaran mereka. Saya harus baca materinya dulu, baru tulis soal satu per satu — capek sekali."</p>
+            <div class="pain-quote-author">— Orang tua dengan 2 anak sekolah</div>
+          </div>
+          <div class="pain-quote" id="pq-1">
+            <div class="pain-quote-mark">"</div>
+            <p>Beli buku kumpulan soal CPNS mahal, tapi soalnya itu-itu saja dan sudah hafal. Yang saya butuhkan adalah variasi soal baru dari materi yang sama — dan itu susah banget dicari."</p>
+            <div class="pain-quote-author">— Peserta CPNS, sudah 2x gagal di TWK</div>
+          </div>
+          <div class="pain-quote-dots">
+            <button class="pq-dot pq-dot-active" onclick="switchQuote(0)"></button>
+            <button class="pq-dot" onclick="switchQuote(1)"></button>
+          </div>
         </div>
         <div class="pain-cards">
           <div class="pain-card">
             <div class="pain-icon">😩</div>
             <h3>Sebelum DrillSoal</h3>
             <ul>
-              <li>📖 Baca ulang materi buku dulu</li>
-              <li>✍️ Tulis soal satu per satu secara manual</li>
-              <li>🕐 Butuh 30–60 menit setiap malam</li>
-              <li>🖨️ Harus ke warnet untuk print atau ketik ulang di Word</li>
-              <li>😮‍💨 Habis tenaga sebelum sempat mendampingi anak belajar</li>
+              <li>📖 Baca ulang materi buku / modul CPNS dulu</li>
+              <li>✍️ Tulis atau cari soal baru satu per satu secara manual</li>
+              <li>🕐 Butuh 30–60 menit setiap sesi belajar</li>
+              <li>😩 Soal buku latihan habis, variasi baru susah dicari</li>
+              <li>😮‍💨 Capek mencari soal, bukan berlatih menjawab</li>
             </ul>
           </div>
           <div class="pain-arrow-mid">→</div>
@@ -171,11 +221,11 @@
             <div class="pain-icon">🎉</div>
             <h3>Sesudah DrillSoal</h3>
             <ul>
-              <li>📸 Foto halaman buku — selesai</li>
-              <li>⚡ Soal langsung jadi dalam 30 detik</li>
+              <li>📸 Foto materi atau soal lama — selesai</li>
+              <li>⚡ Variasi soal baru jadi dalam 30 detik</li>
+              <li>🔥 Soal langsung dibantai AI dengan pembahasan detail</li>
               <li>📄 PDF siap cetak, lengkap dengan kunci jawaban</li>
-              <li>🎮 Anak bisa langsung kerjakan secara interaktif</li>
-              <li>😊 Lebih banyak waktu untuk mendampingi, bukan membuat soal</li>
+              <li>😊 Lebih banyak waktu untuk berlatih, bukan mencari soal</li>
             </ul>
           </div>
         </div>
@@ -247,9 +297,16 @@
 
         <div class="faq-item">
           <button class="faq-q" onclick="toggleFaq(this)">
-            Mata pelajaran apa saja yang didukung? <span class="faq-arrow">▾</span>
+            Mata pelajaran dan ujian apa saja yang didukung? <span class="faq-arrow">▾</span>
           </button>
-          <div class="faq-a">Semua mata pelajaran! DrillSoal bisa membuat soal dari materi apapun yang kamu upload — Matematika, IPA, IPS, Bahasa Indonesia, Bahasa Inggris, Sejarah, Fisika, Kimia, Biologi, dan lainnya. Tersedia juga mode Pilih Topik dengan database kurikulum SD, SMP, dan SMA (K13 & Kurikulum Merdeka).</div>
+          <div class="faq-a">Semua mata pelajaran dan jenis ujian! DrillSoal bisa membuat soal dari materi apapun — Matematika, IPA, IPS, Bahasa Indonesia, Bahasa Inggris, Sejarah, Fisika, Kimia, Biologi, dan lainnya. Untuk persiapan CPNS, kamu bisa upload modul SKD (TWK, TIU, TKP) atau SKB sesuai formasimu. Tersedia juga simulasi TKA 2026 untuk SD, SMP, dan SMA.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Apakah DrillSoal bisa dipakai untuk persiapan CPNS? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">Ya! Kamu bisa upload modul atau kumpulan soal CPNS (TWK, TIU, TKP, SKB), lalu DrillSoal akan membuat variasi soal baru dengan konsep yang sama — sehingga kamu tidak bosan mengulang soal yang itu-itu saja. Fitur Bantai Soal juga sangat berguna untuk memahami pembahasan soal CPNS yang sulit secara langkah demi langkah.</div>
         </div>
 
         <div class="faq-item">
@@ -703,6 +760,22 @@
         answer.classList.add('open');
       }
     }
+  </script>
+  <script>
+    function switchQuote(idx) {
+      document.querySelectorAll('.pain-quotes-wrap .pain-quote').forEach((el, i) => {
+        el.classList.toggle('pain-quote-active', i === idx);
+      });
+      document.querySelectorAll('.pq-dot').forEach((el, i) => {
+        el.classList.toggle('pq-dot-active', i === idx);
+      });
+    }
+    // Auto-rotate quotes every 5s
+    let _pqIdx = 0;
+    setInterval(function() {
+      const quotes = document.querySelectorAll('.pain-quotes-wrap .pain-quote');
+      if (quotes.length > 1) { _pqIdx = (_pqIdx + 1) % quotes.length; switchQuote(_pqIdx); }
+    }, 5000);
   </script>
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js"></script>

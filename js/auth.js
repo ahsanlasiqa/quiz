@@ -200,7 +200,7 @@ function startAuth() {
 
 // Hook landing page buttons after DOM is ready
 function hookLandingButtons() {
-  ['btn-coba-gratis', 'btn-coba-free', 'btn-google-nav', 'btn-coba-pain'].forEach(function(id) {
+  ['btn-coba-gratis', 'btn-coba-free', 'btn-google-nav', 'btn-coba-pain', 'btn-coba-gratis-cpns'].forEach(function(id) {
     var btn = document.getElementById(id);
     if (btn) btn.addEventListener('click', function() {
       document.getElementById('btn-google-login').click();
