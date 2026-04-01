@@ -703,7 +703,15 @@ Rules:
   }
 
   // ── Materi biasa: langsung ke Step 2 generate ───
-  await generateFromExtracted();
+  showLoading('Langkah 2/2: Membuat soal…', 'Membuat ' + state.settings.numQuestions + ' soal dari konten yang diekstrak…');
+  try {
+    const quiz = await generateFromExtracted();
+    finishGenerate(quiz);
+  } catch(err) {
+    handleGenerateError(err);
+  } finally {
+    hideLoading();
+  }
 }
 
 // ── Tampilkan detection card ───────────────────────────────────
@@ -1009,8 +1017,6 @@ async function generateFromExtracted() {
   const selectedTypes = state.settings.types.map(t => typeNames[t]).join(', ');
   const idToken = await window.getIdToken();
 
-  showLoading('Langkah 2/2: Membuat soal…', 'Membuat ' + state.settings.numQuestions + ' soal dari konten yang diekstrak…');
-
   const quizPrompt = `You are an expert teacher creating quiz questions from the following learning material summary.
 
 MATERIAL SUMMARY:
@@ -1075,9 +1081,7 @@ Respond ONLY with valid JSON, no markdown:
   const rawText = data.content.map(b => b.text || '').join('');
   const clean = rawText.replace(/```json|```/g, '').trim();
   try {
-    const parsed = JSON.parse(clean);
-    finishGenerate(parsed);
-    return parsed;
+    return JSON.parse(clean);
   } catch(e) {
     throw new Error('Respons terpotong — coba lagi dengan lebih sedikit gambar.');
   }
