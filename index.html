@@ -14,7 +14,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <!-- Midtrans Snap -->
-  <script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-SlhoAop1NZxXT_c6"></script>
+  <script src="https://app.midtrans.com/snap/snap.js" data-client-key="REPLACE_WITH_PRODUCTION_CLIENT_KEY"></script>
 </head>
 <body>
 
@@ -510,6 +510,52 @@
         </button>
         <p class="generate-hint" id="generate-hint"></p>
       </div>
+
+      <!-- ── Detection card: muncul kalau foto terdeteksi berisi soal ── -->
+      <section class="card step-card hidden" id="step-detect">
+        <div class="step-label detect-label">⚠️ Terdeteksi Kumpulan Soal</div>
+        <h2 class="step-title">Foto ini berisi soal, bukan materi</h2>
+        <p class="step-desc" id="detect-desc">AI mendeteksi foto yang diupload berisi kumpulan soal. Pilih apa yang ingin kamu lakukan:</p>
+
+        <div class="detect-options">
+          <button class="detect-opt-btn" id="detect-btn-variasi">
+            <span class="detect-opt-icon">🔀</span>
+            <div class="detect-opt-body">
+              <div class="detect-opt-title">Buat Variasi Soal</div>
+              <div class="detect-opt-desc">Soal baru dengan konsep sama, angka &amp; konteks berbeda</div>
+            </div>
+          </button>
+          <button class="detect-opt-btn" id="detect-btn-bantai">
+            <span class="detect-opt-icon">🔥</span>
+            <div class="detect-opt-body">
+              <div class="detect-opt-title">Bantai Soal Ini</div>
+              <div class="detect-opt-desc">Pilih soal yang mau dibahas — AI selesaikan langkah demi langkah</div>
+            </div>
+          </button>
+          <button class="detect-opt-btn detect-opt-secondary" id="detect-btn-ignore">
+            <span class="detect-opt-icon">⚡</span>
+            <div class="detect-opt-body">
+              <div class="detect-opt-title">Buat Soal dari Konten Ini</div>
+              <div class="detect-opt-desc">Lanjutkan seperti biasa — generate soal dari isi foto</div>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- ── Bantai inline: daftar soal terdeteksi untuk dipilih ── -->
+      <section class="card step-card hidden" id="step-detect-bantai">
+        <div class="step-label detect-label">Pilih Soal</div>
+        <h2 class="step-title">Pilih Soal yang Mau Dibantai 🎯</h2>
+        <p class="step-desc" id="detect-bantai-desc">Centang soal yang ingin diselesaikan — maksimal 3 soal.</p>
+        <div id="detect-bantai-list"></div>
+        <div class="bantai-pick-actions">
+          <button class="btn-generate btn-bantai-generate" id="detect-btn-bantai-solve" style="margin-top:16px">
+            <span class="btn-icon">🔥</span>
+            <span class="btn-text">Bantai Soal Terpilih!</span>
+          </button>
+          <p class="generate-hint" id="detect-bantai-hint"></p>
+        </div>
+      </section>
 
       <section class="card step-card hidden" id="step-results">
         <div class="step-label">Langkah 3</div>

@@ -3417,3 +3417,70 @@ body {
   text-overflow: ellipsis;
 }
 .bantai-pick-actions { margin-top: 4px; }
+
+/* ══════════════════════════════════════════════════════════════
+   DRILL — Detection card (soal vs materi)
+══════════════════════════════════════════════════════════════ */
+.detect-label {
+  background: rgba(232,160,32,0.12);
+  color: var(--amber, #e8a020);
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.detect-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.detect-opt-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  background: var(--warm-white);
+  border: 2px solid rgba(26,18,8,0.09);
+  border-radius: 16px;
+  padding: 16px 20px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  transition: border-color 0.18s, box-shadow 0.18s, transform 0.15s;
+}
+.detect-opt-btn:hover {
+  border-color: var(--teal);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.detect-opt-btn:nth-child(1) { border-left: 4px solid var(--teal); }
+.detect-opt-btn:nth-child(2) { border-left: 4px solid #e05c3a; }
+.detect-opt-btn.detect-opt-secondary {
+  border-left: 4px solid rgba(26,18,8,0.15);
+  opacity: 0.8;
+}
+.detect-opt-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  width: 40px;
+  text-align: center;
+}
+.detect-opt-body { flex: 1; min-width: 0; }
+.detect-opt-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.detect-opt-desc {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  line-height: 1.4;
+}

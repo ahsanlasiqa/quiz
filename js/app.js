@@ -500,36 +500,66 @@ async function generateQuiz() {
   }
 
   generateHint.textContent = '';
+
+  // Reset detection state
+  document.getElementById('step-detect').classList.add('hidden');
+  document.getElementById('step-detect-bantai').classList.add('hidden');
+
   if (state.mode === 'topic') {
-    showLoading('Membuat soal…', `${state.topic.mapel} — ${state.topic.topik}`);
-  } else {
-    showLoading('Langkah 1/2: Membaca materi…', `Menganalisis ${state.images.length} gambar…`);
-  }
-  try {
-    const quiz = state.mode === 'topic' ? await callClaudeTopic() : await callClaude();
-    state.quizData = quiz;
-    renderQuiz(quiz);
-    // Hide quiz content initially — show only action buttons
-    document.getElementById('quiz-output').classList.add('hidden');
-    document.getElementById('quiz-meta-bar').classList.add('hidden');
-    stepResults.classList.remove('hidden');
-    stepResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } catch (err) {
-    console.error(err);
-    if (err.message === 'no_credits' || (err.message && err.message.includes('no_credits'))) {
-      generateHint.textContent = '';
-      window.renderCreditsBanner();
-      window.startCheckout();
-    } else {
-      generateHint.textContent = 'Error: ' + (err.message || 'Gagal membuat soal.');
+    // Topic mode: langsung generate tanpa deteksi
+    showLoading('Membuat soal…', state.topic.mapel + ' — ' + state.topic.topik);
+    try {
+      const quiz = await callClaudeTopic();
+      finishGenerate(quiz);
+    } catch (err) {
+      handleGenerateError(err);
+    } finally {
+      hideLoading();
     }
-  } finally {
+    return;
+  }
+
+  // Upload mode: Step 1 extract + deteksi dulu
+  showLoading('Langkah 1/2: Membaca materi…', 'Menganalisis ' + state.images.length + ' gambar…');
+  try {
+    await extractAndDetect();
+  } catch (err) {
+    handleGenerateError(err);
     hideLoading();
   }
 }
 
-// ── Claude API Call (2 steps) ──────────────
-async function callClaude() {
+function finishGenerate(quiz) {
+  state.quizData = quiz;
+  renderQuiz(quiz);
+  document.getElementById('quiz-output').classList.add('hidden');
+  document.getElementById('quiz-meta-bar').classList.add('hidden');
+  stepResults.classList.remove('hidden');
+  stepResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function handleGenerateError(err) {
+  console.error(err);
+  if (err.message === 'no_credits' || (err.message && err.message.includes('no_credits'))) {
+    generateHint.textContent = '';
+    window.renderCreditsBanner();
+    window.startCheckout();
+  } else {
+    generateHint.textContent = 'Error: ' + (err.message || 'Gagal membuat soal.');
+  }
+}
+
+// ── State untuk deteksi soal di drill ──────────────────────────
+const drillDetectState = {
+  materialSummary: '',
+  visualMapText: '',
+  isQuestionMode: false,
+  detectedQuestions: [],   // [{number, text, subject}]
+  existingQuestions: [],
+};
+
+// ── Step 1 extract + deteksi ───────────────────────────────────
+async function extractAndDetect() {
   const config = GRADE_CONFIG[state.settings.level] || GRADE_CONFIG['junior_high'];
   const levelLabel = `${config.label}, Grade ${state.settings.grade}`;
   const typeNames = {
@@ -653,22 +683,260 @@ Rules:
 
   const materialSummary = summaries.join('\n\n') + visualMapText;
 
-  // ── STEP 2: Generate quiz from summary ───
-  // Decide mode: variasi soal (jika mayoritas foto berisi soal) atau buat soal baru (jika materi)
+  // ── Simpan hasil extract ke drillDetectState ───
   const totalImages = state.images.length;
   const isQuestionMode = questionSheetCount > materialCount;
 
-  let step2Label, quizPrompt;
+  drillDetectState.materialSummary = materialSummary;
+  drillDetectState.visualMapText = visualMapText;
+  drillDetectState.isQuestionMode = isQuestionMode;
+  drillDetectState.existingQuestions = existingQuestions;
 
+  // ── Kalau terdeteksi soal: tampilkan detection card, bukan langsung generate ───
   if (isQuestionMode) {
-    step2Label = `Membuat variasi soal… (${questionSheetCount} dari ${totalImages} foto terdeteksi sebagai lembar soal)`;
-    showLoading('Langkah 2/2: Membuat variasi soal…', step2Label);
+    hideLoading();
+    showDetectCard(questionSheetCount, totalImages, existingQuestions);
+    return;
+  }
 
-    const existingQList = existingQuestions.length > 0
-      ? '\n\nSOAL ASLI YANG TERDETEKSI:\n' + existingQuestions.map((q, i) => `${i+1}. ${q}`).join('\n')
-      : '';
+  // ── Materi biasa: langsung ke Step 2 generate ───
+  await generateFromExtracted();
+}
 
-    quizPrompt = `You are an expert teacher. The student has uploaded images of an exam or exercise sheet containing questions. Your task is NOT to create new questions about the topic — instead, create VARIATIONS of the existing questions with changed values, names, or contexts, keeping the same concepts and difficulty.
+// ── Tampilkan detection card ───────────────────────────────────
+function showDetectCard(questionSheetCount, totalImages, existingQuestions) {
+  const desc = questionSheetCount === totalImages
+    ? `AI mendeteksi ${totalImages} foto berisi kumpulan soal. Pilih apa yang ingin kamu lakukan:`
+    : `AI mendeteksi ${questionSheetCount} dari ${totalImages} foto berisi kumpulan soal. Pilih apa yang ingin kamu lakukan:`;
+  document.getElementById('detect-desc').textContent = desc;
+  document.getElementById('step-detect').classList.remove('hidden');
+  document.getElementById('step-detect').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('step-detect-bantai').classList.add('hidden');
+}
+
+// ── Handler tombol Variasi Soal ────────────────────────────────
+document.getElementById('detect-btn-variasi').addEventListener('click', async () => {
+  document.getElementById('step-detect').classList.add('hidden');
+  document.getElementById('step-detect-bantai').classList.add('hidden');
+  // Force variation mode then generate
+  drillDetectState.isQuestionMode = true;
+  showLoading('Membuat variasi soal…', 'Menghasilkan soal dengan konsep serupa…');
+  try {
+    const quiz = await generateVariasiSoal();
+    finishGenerate(quiz);
+  } catch(err) {
+    handleGenerateError(err);
+  } finally {
+    hideLoading();
+  }
+});
+
+// ── Handler tombol Bantai dari Drill ──────────────────────────
+document.getElementById('detect-btn-bantai').addEventListener('click', () => {
+  document.getElementById('step-detect').classList.add('hidden');
+  // Ambil daftar soal dari drillDetectState.existingQuestions
+  const qs = drillDetectState.existingQuestions.map((text, i) => ({
+    number: i + 1,
+    text,
+    subject: ''
+  }));
+  if (qs.length === 0) {
+    // Kalau tidak ada soal terdetail, fallback ke bantai manual
+    document.getElementById('detect-bantai-desc').textContent =
+      'Tidak ada soal spesifik terdeteksi. Gunakan fitur Bantai Soal di tab terpisah.';
+    document.getElementById('step-detect-bantai').classList.remove('hidden');
+    document.getElementById('detect-bantai-list').innerHTML =
+      '<p style="color:var(--ink-muted);font-size:0.9rem;padding:16px 0">Pindah ke tab <strong>Bantai Soal</strong> dan upload foto yang sama untuk pembahasan detail.</p>';
+    return;
+  }
+  renderDetectBantaiPick(qs);
+});
+
+// ── Handler tombol Ignore (generate biasa) ─────────────────────
+document.getElementById('detect-btn-ignore').addEventListener('click', async () => {
+  document.getElementById('step-detect').classList.add('hidden');
+  document.getElementById('step-detect-bantai').classList.add('hidden');
+  // Force material mode
+  drillDetectState.isQuestionMode = false;
+  showLoading('Langkah 2/2: Membuat soal…', 'Membuat soal dari konten yang diekstrak…');
+  try {
+    const quiz = await generateFromExtracted();
+    finishGenerate(quiz);
+  } catch(err) {
+    handleGenerateError(err);
+  } finally {
+    hideLoading();
+  }
+});
+
+// ── Render daftar soal untuk bantai inline ─────────────────────
+function renderDetectBantaiPick(questions) {
+  const MAX_PICK = 3;
+  let html = '';
+  questions.forEach((q, i) => {
+    html += `
+      <label class="bantai-pick-item" id="detect-pick-wrap-${i}">
+        <input type="checkbox" class="detect-pick-cb" value="${i}"
+          onchange="window.updateDetectPickCount()"
+          ${questions.length === 1 ? 'checked' : ''} />
+        <div class="bantai-pick-body">
+          <span class="bantai-pick-num">Soal ${q.number}</span>
+          ${q.subject ? '<span class="bantai-pick-subject">' + escapeHtml(q.subject) + '</span>' : ''}
+          <p class="bantai-pick-text">${escapeHtml(q.text)}</p>
+        </div>
+      </label>`;
+  });
+  document.getElementById('detect-bantai-list').innerHTML = html;
+  document.getElementById('detect-bantai-desc').textContent =
+    questions.length === 1
+      ? '1 soal ditemukan. Langsung klik Bantai!'
+      : questions.length + ' soal ditemukan. Pilih maks. ' + MAX_PICK + ' soal yang ingin dibantai.';
+  document.getElementById('step-detect-bantai').classList.remove('hidden');
+  document.getElementById('step-detect-bantai').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+window.updateDetectPickCount = function() {
+  const MAX_PICK = 3;
+  const cbs = [...document.querySelectorAll('.detect-pick-cb')];
+  const count = cbs.filter(cb => cb.checked).length;
+  cbs.forEach(cb => {
+    if (!cb.checked) {
+      cb.disabled = count >= MAX_PICK;
+      cb.closest('label').classList.toggle('bantai-pick-disabled', count >= MAX_PICK);
+    } else {
+      cb.disabled = false;
+      cb.closest('label').classList.remove('bantai-pick-disabled');
+    }
+  });
+  const hint = document.getElementById('detect-bantai-hint');
+  hint.textContent = count >= MAX_PICK ? 'Maksimal ' + MAX_PICK + ' soal sudah dipilih.' : '';
+};
+
+// ── Bantai soal yang dipilih dari drill detect ─────────────────
+document.getElementById('detect-btn-bantai-solve').addEventListener('click', async () => {
+  const cbs = [...document.querySelectorAll('.detect-pick-cb:checked')];
+  if (cbs.length === 0) {
+    document.getElementById('detect-bantai-hint').textContent = 'Pilih minimal 1 soal.';
+    return;
+  }
+
+  const credits = window._currentCredits ?? 0;
+  const isInvited = window._isInvited ?? false;
+  if (!isInvited && credits <= 0) {
+    window.renderCreditsBanner?.();
+    window.startCheckout?.();
+    return;
+  }
+
+  const allQs = drillDetectState.existingQuestions.map((text, i) => ({ number: i+1, text, subject: '' }));
+  const selectedQs = cbs.map(cb => allQs[parseInt(cb.value)]);
+
+  document.getElementById('detect-bantai-hint').textContent = '';
+  showLoading('Membantai ' + selectedQs.length + ' soal…', 'AI sedang mengerjakan pembahasan…');
+
+  try {
+    const idToken = await window.getIdToken();
+    const qListText = selectedQs.map(q => 'Soal ' + q.number + ': "' + q.text + '"').join('\n');
+
+    const solvePrompt = `Kamu adalah guru ahli yang sangat teliti. Seorang siswa meminta pembahasan untuk soal-soal berikut yang diambil dari lembar soal yang dilampirkan.
+
+SOAL YANG PERLU DIBANTAI (${selectedQs.length} soal):
+${qListText}
+
+PERINGATAN KERAS:
+1. JANGAN menebak jawaban dari pilihan yang tersedia. Hitung dari awal menggunakan rumus dan logika yang benar.
+2. WAJIB tulis setiap langkah perhitungan secara eksplisit — tidak boleh ada lompatan langkah.
+3. Untuk soal dengan sistem pertidaksamaan atau irisan himpunan: tentukan irisan dengan benar.
+
+Jawab HANYA dalam JSON valid (tanpa markdown), berupa array:
+[
+  {
+    "question_number": 1,
+    "question_text": "Teks lengkap soal (salin dari foto secara lengkap)",
+    "subject": "Mata pelajaran",
+    "difficulty": "Mudah / Sedang / Sulit",
+    "answer": "Jawaban akhir: tulis opsi HURUF + nilainya jika ada pilihan",
+    "steps": [{"label": "Judul langkah", "content": "Penjelasan detail dengan perhitungan eksplisit"}],
+    "key_concepts": ["Konsep kunci 1", "Konsep kunci 2"],
+    "tips": "2-3 tips praktis.",
+    "language": "id"
+  }
+]
+
+ATURAN: Steps minimal 4. Untuk pilihan ganda: verifikasi dan jelaskan mengapa pilihan lain salah. Output hanya JSON array.`;
+
+    const maxTok = Math.min(4500, selectedQs.length * 1400 + 400);
+
+    // Gunakan gambar dari state.images (foto yang diupload user)
+    const imgParts = state.images.slice(0, 3).map(img => ({
+      type: 'image',
+      source: { type: 'base64', media_type: img.mimeType, data: img.base64 }
+    }));
+
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: maxTok,
+        messages: [{ role: 'user', content: [...imgParts, { type: 'text', text: solvePrompt }] }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      if (res.status === 403 && err?.error === 'no_credits') { window.renderCreditsBanner?.(); window.startCheckout?.(); return; }
+      throw new Error(err?.error?.message || err?.error || 'Error ' + res.status);
+    }
+
+    const data = await res.json();
+    if (typeof data._credits === 'number') { window._currentCredits = data._credits; window.renderCreditsBanner?.(); }
+
+    const rawText = (data.content || []).map(b => b.text || '').join('');
+    const clean = rawText.replace(/\`\`\`json|\`\`\`/g, '').trim();
+    let result;
+    try { const p = JSON.parse(clean); result = Array.isArray(p) ? p : [p]; }
+    catch(e) { throw new Error('Format respons tidak valid. Coba lagi.'); }
+
+    // Tampilkan hasil di bantai soal section
+    document.getElementById('step-detect-bantai').classList.add('hidden');
+
+    // Switch ke tab bantai dan render hasilnya
+    window.switchAppMode('bantai');
+    bantaiState.image = state.images[0] || null;
+    if (bantaiState.image && bantaiPreviewImg) {
+      bantaiPreviewImg.src = bantaiState.image.dataUrl;
+      bantaiPreviewWrap.classList.remove('hidden');
+    }
+    renderBantaiResult(result);
+
+  } catch(err) {
+    console.error('Detect bantai error:', err);
+    document.getElementById('detect-bantai-hint').textContent = 'Error: ' + (err.message || 'Gagal. Coba lagi.');
+  } finally {
+    hideLoading();
+  }
+});
+
+// ── Generate variasi soal (dipanggil dari detect card) ─────────
+async function generateVariasiSoal() {
+  const { materialSummary, existingQuestions } = drillDetectState;
+  const config = GRADE_CONFIG[state.settings.level] || GRADE_CONFIG['junior_high'];
+  const levelLabel = config.label + ', Grade ' + state.settings.grade;
+  const typeNames = {
+    multiple_choice: 'Multiple Choice (4 options labeled A-D)',
+    true_false: 'True / False',
+    fill_blank: 'Fill in the Blank (use ___ for the blank)',
+    short_answer: 'Short Answer / Essay'
+  };
+  const selectedTypes = state.settings.types.map(t => typeNames[t]).join(', ');
+  const idToken = await window.getIdToken();
+
+  const existingQList = existingQuestions.length > 0
+    ? '\n\nSOAL ASLI YANG TERDETEKSI:\n' + existingQuestions.map((q, i) => (i+1) + '. ' + q).join('\n')
+    : '';
+
+  const quizPrompt = `You are an expert teacher. The student has uploaded images of an exam or exercise sheet containing questions. Your task is NOT to create new questions about the topic — instead, create VARIATIONS of the existing questions with changed values, names, or contexts, keeping the same concepts and difficulty.
 
 EXTRACTED CONTENT FROM QUESTION SHEET:
 ${materialSummary}${existingQList}
@@ -679,11 +947,7 @@ QUESTION TYPES TO USE: ${selectedTypes}
 
 INSTRUCTIONS FOR VARIATION MODE:
 1. Generate exactly ${state.settings.numQuestions} variation questions.
-2. Each variation must test the SAME concept/skill as the original questions but with DIFFERENT values, numbers, names, or contexts. Examples:
-   - Math: same equation type but different numbers (e.g. "2x+3=7" → "3x+5=14")
-   - Word problems: same structure but different names, objects, or quantities
-   - Science: same concept but different examples or scenarios
-   - Language: same grammar structure but different sentences
+2. Each variation must test the SAME concept/skill as the original questions but with DIFFERENT values, numbers, names, or contexts.
 3. Do NOT copy the original questions. Do NOT simply restate them.
 4. Distribute question types as evenly as possible: ${selectedTypes}
 5. Use the SAME LANGUAGE as the original questions (Bahasa Indonesia or English).
@@ -691,16 +955,60 @@ INSTRUCTIONS FOR VARIATION MODE:
    - For true_false in English: answer must be exactly "True" or "False"
 6. Adjust difficulty appropriately for: ${levelLabel}
 7. For multiple choice: exactly 4 options labeled A, B, C, D.
-8. EXPLANATION: Write 2-4 sentences explaining the solution method, referencing the concept being tested.
+8. EXPLANATION: Write 2-4 sentences explaining the solution method.
 9. Set imageCrop to null and svg to null for all questions.
 
 Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","mode":"variation","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":null}]}`;
 
-  } else {
-    showLoading('Langkah 2/2: Membuat soal…', `Membuat ${state.settings.numQuestions} soal dari konten yang diekstrak…`);
+  const dynamicTokens = Math.min(8000, Math.max(3000, state.settings.numQuestions * 320));
+  const generateRes = await fetch('/api/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: dynamicTokens,
+      messages: [{ role: 'user', content: quizPrompt }]
+    })
+  });
 
-    quizPrompt = `You are an expert teacher creating quiz questions from the following learning material summary.
+  if (!generateRes.ok) {
+    const err = await generateRes.json().catch(() => ({}));
+    if (generateRes.status === 403 && err?.error === 'no_credits') throw new Error('no_credits');
+    throw new Error(err?.error?.message || err?.error || 'Generate error ' + generateRes.status);
+  }
+
+  const data = await generateRes.json();
+  if (data.questions) {
+    data.questions = data.questions.map(q => ({ ...q, svg: null, imageCrop: null }));
+  }
+  if (typeof data._credits === 'number') {
+    window._currentCredits = data._credits;
+    window.renderCreditsBanner();
+  }
+
+  const rawText = data.content.map(b => b.text || '').join('');
+  const clean = rawText.replace(/```json|```/g, '').trim();
+  return JSON.parse(clean);
+}
+
+// ── Generate dari materi (non-soal) ───────────────────────────
+async function generateFromExtracted() {
+  const { materialSummary } = drillDetectState;
+  const config = GRADE_CONFIG[state.settings.level] || GRADE_CONFIG['junior_high'];
+  const levelLabel = config.label + ', Grade ' + state.settings.grade;
+  const typeNames = {
+    multiple_choice: 'Multiple Choice (4 options labeled A-D)',
+    true_false: 'True / False',
+    fill_blank: 'Fill in the Blank (use ___ for the blank)',
+    short_answer: 'Short Answer / Essay'
+  };
+  const selectedTypes = state.settings.types.map(t => typeNames[t]).join(', ');
+  const idToken = await window.getIdToken();
+
+  showLoading('Langkah 2/2: Membuat soal…', 'Membuat ' + state.settings.numQuestions + ' soal dari konten yang diekstrak…');
+
+  const quizPrompt = `You are an expert teacher creating quiz questions from the following learning material summary.
 
 MATERIAL SUMMARY:
 ${materialSummary}
@@ -712,56 +1020,43 @@ QUESTION TYPES TO USE: ${selectedTypes}
 INSTRUCTIONS:
 1. Generate exactly ${state.settings.numQuestions} questions based ONLY on the material above.
 2. Distribute question types as evenly as possible across: ${selectedTypes}
-3. Detect the language from the BODY TEXT of the material (not the title). Use that language for all questions and answers. If body text is Bahasa Indonesia, use Bahasa Indonesia. If English, use English.
+3. Detect the language from the BODY TEXT of the material (not the title). Use that language for all questions and answers.
    - For true_false in Bahasa Indonesia: answer must be exactly "Benar" or "Salah"
    - For true_false in English: answer must be exactly "True" or "False"
 4. Adjust difficulty appropriately for: ${levelLabel}
 5. For multiple choice: exactly 4 options labeled A, B, C, D.
 6. For fill in blank: replace key terms with ___.
 7. For short answer: ask open-ended questions about main concepts.
-8. EXPLANATION (very important): Write a comprehensive 2-4 sentence explanation for every question that:
-   - Directly references the specific content, concept, or fact from the uploaded material
-   - Explains WHY the answer is correct with reasoning or context from the material
-   - For wrong answers in multiple choice, briefly clarifies why they are incorrect
-   - Uses the same language as the question
-   - Is detailed enough that a student can understand without re-reading the material
+8. EXPLANATION: Write a comprehensive 2-4 sentence explanation for every question.
 
 IMAGE CROP INSTRUCTIONS:
 - The VISUAL MAP above lists all figures detected in the uploaded images with their exact positions.
 - For up to 3 questions, set "imageCrop" by matching the question to the most relevant figure in the VISUAL MAP.
-- Match by figureId (e.g. question mentions "Gambar 2.7" → use the entry with figureId "Gambar 2.7") OR by description keyword match.
 - Copy x, y, w, h values exactly from the matching VISUAL MAP entry. Use the img index as-is.
 - Format: {"img": <img>, "x": <x>, "y": <y>, "w": <w>, "h": <h>}
-- Set imageCrop to null if no matching visual exists in the VISUAL MAP.
-- Set svg to null for all questions.
+- Set imageCrop to null if no matching visual exists. Set svg to null for all questions.
 
 Respond ONLY with valid JSON, no markdown:
-{"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":{"img":0,"x":0.0,"y":0.1,"w":1.0,"h":0.4}},{"number":2,"type":"true_false","question":"...","options":[],"answer":"Benar","explanation":"...","svg":null,"imageCrop":null}]}`;
-  }
+{"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":{"img":0,"x":0.0,"y":0.1,"w":1.0,"h":0.4}}]}`;
 
-  const dynamicTokensUpload = Math.min(8000, Math.max(3000, state.settings.numQuestions * 320));
+  const dynamicTokens = Math.min(8000, Math.max(3000, state.settings.numQuestions * 320));
   const generateRes = await fetch('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: dynamicTokensUpload,
+      max_tokens: dynamicTokens,
       messages: [{ role: 'user', content: quizPrompt }]
     })
   });
 
   if (!generateRes.ok) {
     const err = await generateRes.json().catch(() => ({}));
-    if (generateRes.status === 403 && err?.error === 'no_credits') {
-      throw new Error('no_credits');
-    }
-    throw new Error(err?.error?.message || err?.error || `Generate error ${generateRes.status}`);
+    if (generateRes.status === 403 && err?.error === 'no_credits') throw new Error('no_credits');
+    throw new Error(err?.error?.message || err?.error || 'Generate error ' + generateRes.status);
   }
 
   const data = await generateRes.json();
-
-  // Update credit counter if server returned it
-  // Sanitize svg and imageCrop fields
   if (data.questions) {
     data.questions = data.questions.map(q => ({
       ...q,
@@ -777,24 +1072,14 @@ Respond ONLY with valid JSON, no markdown:
   const rawText = data.content.map(b => b.text || '').join('');
   const clean = rawText.replace(/```json|```/g, '').trim();
   try {
-    return JSON.parse(clean);
-  } catch (e) {
-    // Try to recover truncated JSON by closing open structures
-    const truncated = clean.replace(/,\s*$/, '');
-    const recovered = truncated
-      .replace(/("(?:explanation|answer|question|svg)"\s*:\s*)"[^"]*$/, '$1""')
-      .replace(/,?\s*\{[^}]*$/, '')  // remove last incomplete question object
-      + (truncated.match(/\[/) && !truncated.match(/\]$/) ? ']}' : '');
-    try {
-      const parsed = JSON.parse(recovered);
-      if (parsed.questions && parsed.questions.length > 0) {
-        console.warn('JSON was truncated — recovered ' + parsed.questions.length + ' questions');
-        return parsed;
-      }
-    } catch (_) {}
+    const parsed = JSON.parse(clean);
+    finishGenerate(parsed);
+    return parsed;
+  } catch(e) {
     throw new Error('Respons terpotong — coba lagi dengan lebih sedikit gambar.');
   }
 }
+
 
 // ── Render Quiz ────────────────────────────
 function renderQuiz(quiz) {
