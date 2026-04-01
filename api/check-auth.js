@@ -7,7 +7,7 @@ export const config = {
 };
 
 const FREE_CREDITS = 3;
-const PAID_CREDITS = 60;
+const PAID_CREDITS = 40;
 
 function getAdminApp() {
   if (getApps().length > 0) return getApps()[0];

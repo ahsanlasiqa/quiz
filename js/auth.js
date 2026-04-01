@@ -213,12 +213,12 @@ function hookLandingButtons() {
   });
   var btnPop = document.getElementById('btn-coba-pop');
   if (btnPop) btnPop.addEventListener('click', function() {
-    sessionStorage.setItem('pendingPack', '60');
+    sessionStorage.setItem('pendingPack', '40');
     document.getElementById('btn-google-login').click();
   });
   var btn30 = document.getElementById('btn-coba-30');
   if (btn30) btn30.addEventListener('click', function() {
-    sessionStorage.setItem('pendingPack', '30');
+    sessionStorage.setItem('pendingPack', '20');
     document.getElementById('btn-google-login').click();
   });
 }
