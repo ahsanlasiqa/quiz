@@ -575,7 +575,7 @@ async function extractAndDetect() {
   const idToken = await window.getIdToken();
 
   // ── STEP 1: Extract content from images (batched) ──
-  const BATCH_SIZE = 5;
+  const BATCH_SIZE = 3;
   const batches = [];
   for (let i = 0; i < state.images.length; i += BATCH_SIZE) {
     batches.push(state.images.slice(i, i + BATCH_SIZE));
@@ -631,7 +631,7 @@ Rules:
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1200,
+        max_tokens: 2000,
         messages: [{ role: 'user', content: parts }]
       })
     });
@@ -972,7 +972,7 @@ INSTRUCTIONS FOR VARIATION MODE:
 Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","mode":"variation","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":null}]}`;
 
-  const dynamicTokens = Math.min(8000, Math.max(3000, state.settings.numQuestions * 320));
+  const dynamicTokens = Math.min(12000, Math.max(4000, state.settings.numQuestions * 450));
   const generateRes = await fetchWithRetry('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
@@ -1048,7 +1048,7 @@ IMAGE CROP INSTRUCTIONS:
 Respond ONLY with valid JSON, no markdown:
 {"subject":"...","language":"...","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":{"img":0,"x":0.0,"y":0.1,"w":1.0,"h":0.4}}]}`;
 
-  const dynamicTokens = Math.min(8000, Math.max(3000, state.settings.numQuestions * 320));
+  const dynamicTokens = Math.min(12000, Math.max(4000, state.settings.numQuestions * 450));
   const generateRes = await fetchWithRetry('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
@@ -1083,7 +1083,20 @@ Respond ONLY with valid JSON, no markdown:
   try {
     return JSON.parse(clean);
   } catch(e) {
-    throw new Error('Respons terpotong — coba lagi dengan lebih sedikit gambar.');
+    // Coba recovery: tutup struktur JSON yang terpotong
+    try {
+      let attempt = clean.replace(/,\s*$/, '');
+      // Tutup string yang terbuka
+      attempt = attempt.replace(/"([^"\\]|\\.)*$/, '"');
+      // Hitung kurung yang belum ditutup
+      const opens = (attempt.match(/\[/g)||[]).length - (attempt.match(/\]/g)||[]).length;
+      const openB = (attempt.match(/\{/g)||[]).length - (attempt.match(/\}/g)||[]).length;
+      attempt += ']'.repeat(Math.max(0, opens)) + '}'.repeat(Math.max(0, openB));
+      const recovered = JSON.parse(attempt);
+      // Pastikan ada soal yang berhasil di-recover
+      if (recovered?.questions?.length > 0) return recovered;
+    } catch(_) {}
+    throw new Error('Respons terpotong — coba kurangi jumlah soal atau upload lebih sedikit gambar.');
   }
 }
 
@@ -1900,7 +1913,7 @@ Respond ONLY with valid JSON, no markdown:
 {"subject":"${mapel} — ${topik}","language":"id","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":null}]}`;
 
   // Dynamic max_tokens: ~300 tokens per question, min 3000, max 8000
-  const dynamicTokens = Math.min(8000, Math.max(3000, numQuestions * 320));
+  const dynamicTokens = Math.min(12000, Math.max(4000, numQuestions * 450));
 
   const res = await fetchWithRetry('/api/generate', {
     method: 'POST',
