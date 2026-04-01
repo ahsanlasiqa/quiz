@@ -40,7 +40,7 @@ window.TKA_QUESTIONS = {
       // No.13 — ans: B (Pernyataan 1 dan 2)
       { q: "Berikut adalah jarak rumah murid SD Prestasi ke sekolah: Andi = 2 km, Intan = 250 meter, Feri = 1,5 km. Pernyataan yang tepat sesuai dengan daftar di atas adalah …", opts: ["A. Jarak Andi 2000 m, Intan 0,25 km, Feri paling dekat","B. Jarak Andi 2000 m dan Intan 0,25 km (keduanya benar)","C. Pernyataan 1 dan 3","D. Pernyataan 2 dan 3"], ans: "B", expl: "Andi = 2 km = 2000 m ✓. Intan = 250 m = 0,25 km ✓. Feri = 1,5 km, bukan paling dekat (Intan paling dekat)." },
       // No.14 — ans: Pernyataan 1 dan 2 → ans: "B"
-      { q: "Perhatikan gambar berikut! [Gambar penggaris] Mata dadu pada dua sisi yang berlawanan berjumlah 7. Maka dadu yang mungkin mengisi sisi yang kosong adalah …", opts: ["A. 1","B. 13","C. 14","D. 15"], ans: "B", expl: "Dari gambar penggaris, angka yang terbaca adalah 13 cm.", imgSrc: "sd-p2-q14.png" },
+      { q: "Perhatikan gambar berikut! [Gambar penggaris] Berapa panjang spidol yang ada di gambar?", opts: ["A. 1","B. 13","C. 14","D. 15"], ans: "B", expl: "Dari gambar penggaris, angka yang terbaca adalah 13 cm.", imgSrc: "sd-p2-q14.png" },
       // No.15 — ans: C (1.200 cm³)
       { q: "Perhatikan gambar bangun ruang balok dengan panjang 15 cm, lebar 8 cm, dan tinggi 10 cm. Volume bangun tersebut adalah …", opts: ["A. 1.000 cm³","B. 1.150 cm³","C. 1.200 cm³","D. 1.250 cm³"], ans: "C", expl: "V = p × l × t = 15 × 8 × 10 = 1.200 cm³", imgSrc: "sd-p2-q15.png" },
       // No.16 — ans: Benar, Salah, Benar
