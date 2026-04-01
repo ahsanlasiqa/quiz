@@ -215,12 +215,29 @@ window.TKA = (function() {
     const mapelIdx = cfg.mapel.indexOf(q.mapel);
     const qNumInMapel = idx - (mapelIdx * cfg.jumlah) + 1;
 
+    // ── Image block (rendered only if question has imgSrc) ───────
+    const imgHtml = q.imgSrc
+      ? `<div class="tka-q-img-wrap">
+           <img
+             src="${escHtml(window.TKA_IMG_BASE || '/assets/soal/')  + escHtml(q.imgSrc)}"
+             alt="Gambar soal ${qNumInMapel}"
+             class="tka-q-img"
+             loading="lazy"
+             onerror="this.closest('.tka-q-img-wrap').classList.add('tka-img-error');this.style.display='none';this.nextElementSibling.style.display='flex'"
+           />
+           <div class="tka-img-fallback" style="display:none">
+             <span>🖼️</span><span>Gambar tidak tersedia</span>
+           </div>
+         </div>`
+      : '';
+
     card.innerHTML = `
       <div class="tka-q-meta">
         <span class="tka-q-mapel-badge" style="background:${mapelColor(q.mapel)}">${MAPEL_LABEL[q.mapel]}</span>
         <span class="tka-q-num">No. ${qNumInMapel}</span>
       </div>
       <p class="tka-q-text">${escHtml(q.q)}</p>
+      ${imgHtml}
       <div class="tka-options" id="tka-options">
         ${q.opts.map((opt, oi) => {
           const letter = ['A','B','C','D'][oi];
@@ -553,6 +570,7 @@ window.TKA = (function() {
               <span class="tka-review-qnum">Soal ${i - start + 1}</span>
             </div>
             <p class="tka-review-q">${escHtml(q.q)}</p>
+            ${q.imgSrc ? `<div class="tka-q-img-wrap tka-review-img"><img src="${escHtml(window.TKA_IMG_BASE || '/assets/soal/') + escHtml(q.imgSrc)}" alt="Gambar soal" class="tka-q-img" loading="lazy" onerror="this.style.display='none'"/></div>` : ''}
             <div class="tka-review-opts">
               ${q.opts.map((opt, oi) => {
                 const l = ['A','B','C','D'][oi];
