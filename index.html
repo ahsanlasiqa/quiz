@@ -413,10 +413,10 @@
           <span class="app-mode-tab-label">Bantai Soal</span>
           <span class="app-mode-tab-sub">Selesaikan soalmu sekarang</span>
         </button>
-        <button class="app-mode-tab" id="tab-tka" onclick="switchAppMode('tka')">
-          <span class="app-mode-tab-icon">🏆</span>
-          <span class="app-mode-tab-label">Prediksi TKA</span>
-          <span class="app-mode-tab-sub">Tes Kemampuan Akademik 2026</span>
+        <button class="app-mode-tab" id="tab-tryout" onclick="switchAppMode('tryout')">
+          <span class="app-mode-tab-icon">🎯</span>
+          <span class="app-mode-tab-label">Try Out</span>
+          <span class="app-mode-tab-sub">Simulasi ujian lengkap</span>
         </button>
       </div>
 
@@ -708,9 +708,90 @@
       </div><!-- /bantai-soal-section -->
 
       <!-- ══ PREDIKSI TKA SECTION ══ -->
-      <div id="tka-soal-section" class="hidden">
-        <div id="tka-container"></div>
-      </div><!-- /tka-soal-section -->
+      <div id="tryout-soal-section" class="hidden">
+
+        <!-- ── Try Out Hub ── -->
+        <div id="tryout-hub" class="tryout-hub">
+          <div class="tryout-hub-header">
+            <h2 class="tryout-hub-title">🎯 Pilih Simulasi Ujian</h2>
+            <p class="tryout-hub-sub">Pilih ujian yang sedang kamu persiapkan dan mulai latihan sekarang.</p>
+          </div>
+
+          <div class="tryout-cards-grid">
+
+            <!-- TKA 2026 — AKTIF & HOT -->
+            <button class="tryout-card tryout-card-hot" onclick="window.startTryout('tka')">
+              <div class="tryout-card-badge tryout-badge-hot">🔥 Sedang Berlangsung</div>
+              <div class="tryout-card-icon">🏆</div>
+              <div class="tryout-card-body">
+                <div class="tryout-card-title">Prediksi TKA 2026</div>
+                <div class="tryout-card-desc">SD, SMP, SMA — Matematika, Bahasa Indonesia, Bahasa Inggris</div>
+                <div class="tryout-card-meta">
+                  <span>⏱ Simulasi penuh</span>
+                  <span>🏅 Papan peringkat</span>
+                  <span class="tryout-meta-free">Gratis</span>
+                </div>
+              </div>
+              <div class="tryout-card-arrow">→</div>
+            </button>
+
+            <!-- CPNS SKD — Coming Soon -->
+            <button class="tryout-card tryout-card-soon" disabled>
+              <div class="tryout-card-badge tryout-badge-soon">⏳ Segera Hadir</div>
+              <div class="tryout-card-icon">📋</div>
+              <div class="tryout-card-body">
+                <div class="tryout-card-title">Simulasi SKD CPNS</div>
+                <div class="tryout-card-desc">TWK, TIU, TKP — 110 soal, 100 menit</div>
+                <div class="tryout-card-meta">
+                  <span>⏱ 100 menit</span>
+                  <span>📊 Nilai passing grade</span>
+                </div>
+              </div>
+              <div class="tryout-card-arrow">🔒</div>
+            </button>
+
+            <!-- SNBT — Coming Soon -->
+            <button class="tryout-card tryout-card-soon" disabled>
+              <div class="tryout-card-badge tryout-badge-soon">⏳ Segera Hadir</div>
+              <div class="tryout-card-icon">🎓</div>
+              <div class="tryout-card-body">
+                <div class="tryout-card-title">Try Out SNBT</div>
+                <div class="tryout-card-desc">Literasi, Penalaran Matematika, Bahasa Inggris</div>
+                <div class="tryout-card-meta">
+                  <span>⏱ Simulasi lengkap</span>
+                  <span>📈 Prediksi nilai</span>
+                </div>
+              </div>
+              <div class="tryout-card-arrow">🔒</div>
+            </button>
+
+            <!-- OSN — Coming Soon -->
+            <button class="tryout-card tryout-card-soon" disabled>
+              <div class="tryout-card-badge tryout-badge-soon">⏳ Segera Hadir</div>
+              <div class="tryout-card-icon">🔬</div>
+              <div class="tryout-card-body">
+                <div class="tryout-card-title">Simulasi OSN</div>
+                <div class="tryout-card-desc">Matematika, Fisika, Kimia, Biologi, Informatika</div>
+                <div class="tryout-card-meta">
+                  <span>🏫 SD, SMP, SMA</span>
+                  <span>🥇 Level Kabupaten–Nasional</span>
+                </div>
+              </div>
+              <div class="tryout-card-arrow">🔒</div>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- ── TKA Section (muncul saat user pilih TKA) ── -->
+        <div id="tka-soal-inner" class="hidden">
+          <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
+            ← Kembali ke Try Out
+          </button>
+          <div id="tka-container"></div>
+        </div>
+
+      </div><!-- /tryout-soal-section -->
 
       <div class="loading-overlay hidden" id="loading-overlay">
         <div class="loading-card">

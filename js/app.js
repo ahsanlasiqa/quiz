@@ -2033,14 +2033,14 @@ async function fetchWithRetry(url, options, maxRetries = 2) {
 
 window.switchAppMode = function(mode) {
   const sections = {
-    drill:  document.getElementById('drill-soal-section'),
-    bantai: document.getElementById('bantai-soal-section'),
-    tka:    document.getElementById('tka-soal-section'),
+    drill:   document.getElementById('drill-soal-section'),
+    bantai:  document.getElementById('bantai-soal-section'),
+    tryout:  document.getElementById('tryout-soal-section'),
   };
   const tabs = {
-    drill:  document.getElementById('tab-drill'),
-    bantai: document.getElementById('tab-bantai'),
-    tka:    document.getElementById('tab-tka'),
+    drill:   document.getElementById('tab-drill'),
+    bantai:  document.getElementById('tab-bantai'),
+    tryout:  document.getElementById('tab-tryout'),
   };
 
   Object.keys(sections).forEach(k => {
@@ -2048,11 +2048,34 @@ window.switchAppMode = function(mode) {
     tabs[k]?.classList.toggle('active', k === mode);
   });
 
-  // Init TKA when switching to it
-  if (mode === 'tka' && window.TKA) {
-    window.TKA.init();
+  // When switching to tryout, always show hub first
+  if (mode === 'tryout') {
+    const hub = document.getElementById('tryout-hub');
+    const tkaInner = document.getElementById('tka-soal-inner');
+    if (hub) hub.classList.remove('hidden');
+    if (tkaInner) tkaInner.classList.add('hidden');
   }
 
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// ── Mulai tryout tertentu ──────────────────────────────────────
+window.startTryout = function(type) {
+  if (type === 'tka') {
+    document.getElementById('tryout-hub').classList.add('hidden');
+    const inner = document.getElementById('tka-soal-inner');
+    inner.classList.remove('hidden');
+    if (window.TKA) window.TKA.init();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+};
+
+// ── Kembali ke hub dari dalam tryout ─────────────────────────
+window.backToTryoutHub = function() {
+  document.getElementById('tka-soal-inner').classList.add('hidden');
+  document.getElementById('tryout-hub').classList.remove('hidden');
+  // Stop TKA timer if running
+  if (window.TKA && window.TKA._stopTimer) window.TKA._stopTimer();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 

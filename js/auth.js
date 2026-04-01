@@ -75,10 +75,20 @@ function startAuth() {
 
     // Auto-switch tab if user came from a promo button
     var pendingTab = sessionStorage.getItem('pendingTab');
+    var pendingTryout = sessionStorage.getItem('pendingTryout');
     if (pendingTab) {
       sessionStorage.removeItem('pendingTab');
       setTimeout(function() {
-        if (window.switchAppMode) window.switchAppMode(pendingTab);
+        if (window.switchAppMode) {
+          window.switchAppMode(pendingTab);
+          // If came from TKA promo, auto-start TKA inside tryout hub
+          if (pendingTab === 'tryout' && pendingTryout) {
+            sessionStorage.removeItem('pendingTryout');
+            setTimeout(function() {
+              if (window.startTryout) window.startTryout(pendingTryout);
+            }, 200);
+          }
+        }
       }, 400);
     }
   }
@@ -208,7 +218,8 @@ function hookLandingButtons() {
   });
   var btnTkaPromo = document.getElementById('btn-tka-promo');
   if (btnTkaPromo) btnTkaPromo.addEventListener('click', function() {
-    sessionStorage.setItem('pendingTab', 'tka');
+    sessionStorage.setItem('pendingTab', 'tryout');
+    sessionStorage.setItem('pendingTryout', 'tka');
     document.getElementById('btn-google-login').click();
   });
   var btnPop = document.getElementById('btn-coba-pop');
