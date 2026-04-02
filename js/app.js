@@ -2052,7 +2052,7 @@ window.switchAppMode = function(mode) {
   if (mode === 'tryout') {
     const hub = document.getElementById('tryout-hub');
     if (hub) hub.classList.remove('hidden');
-    ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner'].forEach(id => {
+    ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner','osn-soal-inner'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.classList.add('hidden');
     });
@@ -2065,7 +2065,7 @@ window.switchAppMode = function(mode) {
 window.startTryout = function(type) {
   document.getElementById('tryout-hub').classList.add('hidden');
   // Hide all inner panels first
-  ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner'].forEach(id => {
+  ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner','osn-soal-inner'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.add('hidden');
   });
@@ -2079,13 +2079,16 @@ window.startTryout = function(type) {
   } else if (type === 'snbt') {
     document.getElementById('snbt-soal-inner').classList.remove('hidden');
     if (window.SNBT) window.SNBT.init();
+  } else if (type === 'osn') {
+    document.getElementById('osn-soal-inner').classList.remove('hidden');
+    if (window.OSN) window.OSN.init();
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 // ── Kembali ke hub dari dalam tryout ─────────────────────────
 window.backToTryoutHub = function() {
-  ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner'].forEach(id => {
+  ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner','osn-soal-inner'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.add('hidden');
   });
@@ -2093,6 +2096,7 @@ window.backToTryoutHub = function() {
   if (window.TKA && window.TKA._stopTimer) window.TKA._stopTimer();
   if (window.CPNS && window.CPNS._stopTimer) window.CPNS._stopTimer();
   if (window.SNBT && window.SNBT._stopTimer) window.SNBT._stopTimer();
+  if (window.OSN && window.OSN._stopTimer) window.OSN._stopTimer();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
