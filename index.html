@@ -735,19 +735,20 @@
               <div class="tryout-card-arrow">→</div>
             </button>
 
-            <!-- CPNS SKD — Coming Soon -->
-            <button class="tryout-card tryout-card-soon" disabled>
-              <div class="tryout-card-badge tryout-badge-soon">⏳ Segera Hadir</div>
+            <!-- CPNS SKD — AKTIF -->
+            <button class="tryout-card tryout-card-hot" onclick="window.startTryout('cpns')" style="border-color:#8b2a8b;background:linear-gradient(135deg,rgba(139,42,139,0.04) 0%,var(--warm-white) 100%)">
+              <div class="tryout-card-badge" style="background:rgba(139,42,139,0.12);color:#8b2a8b;border-color:rgba(139,42,139,0.25)">🆕 Tersedia</div>
               <div class="tryout-card-icon">📋</div>
               <div class="tryout-card-body">
-                <div class="tryout-card-title">Simulasi SKD CPNS</div>
-                <div class="tryout-card-desc">TWK, TIU, TKP — 110 soal, 100 menit</div>
+                <div class="tryout-card-title" style="color:#8b2a8b">Simulasi SKD CPNS</div>
+                <div class="tryout-card-desc">TWK, TIU, TKP — 100 soal, 90 menit</div>
                 <div class="tryout-card-meta">
-                  <span>⏱ 100 menit</span>
+                  <span>⏱ 90 menit</span>
                   <span>📊 Nilai passing grade</span>
+                  <span class="tryout-meta-free" style="background:rgba(139,42,139,0.1)!important;color:#8b2a8b!important">Tersedia</span>
                 </div>
               </div>
-              <div class="tryout-card-arrow">🔒</div>
+              <div class="tryout-card-arrow" style="color:#8b2a8b">→</div>
             </button>
 
             <!-- SNBT — Coming Soon -->
@@ -783,12 +784,20 @@
           </div>
         </div>
 
-        <!-- ── TKA Section (muncul saat user pilih TKA) ── -->
+        <!-- ── TKA Section ── -->
         <div id="tka-soal-inner" class="hidden">
           <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
             ← Kembali ke Try Out
           </button>
           <div id="tka-container"></div>
+        </div>
+
+        <!-- ── CPNS Section ── -->
+        <div id="cpns-soal-inner" class="hidden">
+          <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
+            ← Kembali ke Try Out
+          </button>
+          <div id="cpns-container"></div>
         </div>
 
       </div><!-- /tryout-soal-section -->
@@ -864,6 +873,8 @@
   <script>window.TKA_IMG_BASE = "/assets/soal/";</script>
   <script src="js/tka-questions.js"></script>
   <script src="js/tka.js"></script>
+  <script src="js/cpns-questions.js"></script>
+  <script src="js/cpns.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

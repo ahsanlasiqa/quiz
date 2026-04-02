@@ -2051,9 +2051,11 @@ window.switchAppMode = function(mode) {
   // When switching to tryout, always show hub first
   if (mode === 'tryout') {
     const hub = document.getElementById('tryout-hub');
-    const tkaInner = document.getElementById('tka-soal-inner');
     if (hub) hub.classList.remove('hidden');
-    if (tkaInner) tkaInner.classList.add('hidden');
+    ['tka-soal-inner','cpns-soal-inner'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    });
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2061,21 +2063,32 @@ window.switchAppMode = function(mode) {
 
 // ── Mulai tryout tertentu ──────────────────────────────────────
 window.startTryout = function(type) {
+  document.getElementById('tryout-hub').classList.add('hidden');
+  // Hide all inner panels first
+  ['tka-soal-inner','cpns-soal-inner'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
+
   if (type === 'tka') {
-    document.getElementById('tryout-hub').classList.add('hidden');
-    const inner = document.getElementById('tka-soal-inner');
-    inner.classList.remove('hidden');
+    document.getElementById('tka-soal-inner').classList.remove('hidden');
     if (window.TKA) window.TKA.init();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else if (type === 'cpns') {
+    document.getElementById('cpns-soal-inner').classList.remove('hidden');
+    if (window.CPNS) window.CPNS.init();
   }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 // ── Kembali ke hub dari dalam tryout ─────────────────────────
 window.backToTryoutHub = function() {
-  document.getElementById('tka-soal-inner').classList.add('hidden');
+  ['tka-soal-inner','cpns-soal-inner'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
   document.getElementById('tryout-hub').classList.remove('hidden');
-  // Stop TKA timer if running
   if (window.TKA && window.TKA._stopTimer) window.TKA._stopTimer();
+  if (window.CPNS && window.CPNS._stopTimer) window.CPNS._stopTimer();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
