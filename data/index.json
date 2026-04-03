@@ -10,5 +10,11 @@
     "label": "Paket 2",
     "sumber": "Latihan Soal UTBK-SNBT 2023-2024",
     "tahun": "2024"
+  },
+  {
+    "id": "paket3",
+    "label": "Paket 3",
+    "sumber": "Latihan Soal UTBK-SNBT 2024-2025",
+    "tahun": "2025"
   }
 ]
