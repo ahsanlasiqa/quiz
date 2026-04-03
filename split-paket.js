@@ -5,14 +5,14 @@
  *   node split-paket.js
  *
  * Input : js/snbt-questions.js  (format window.SNBT_QUESTIONS = { ... })
- * Output: public/data/paket1.json, paket2.json, ..., index.json
+ * Output: data/paket1.json, paket2.json, ..., index.json
  */
 
 const fs   = require('fs');
 const path = require('path');
 
 const INPUT  = path.join(__dirname, 'js', 'snbt-questions.js');
-const OUTDIR = path.join(__dirname, 'public', 'data');
+const OUTDIR = path.join(__dirname, 'data');
 
 const src   = fs.readFileSync(INPUT, 'utf8');
 const match = src.match(/window\.SNBT_QUESTIONS\s*=\s*(\{[\s\S]*\});?\s*$/);
