@@ -6,17 +6,24 @@
    3. Pemahaman Bacaan & Menulis       : 20 soal · 25 menit
    4. Pengetahuan Kuantitatif          : 20 soal · 20 menit
    Total: 90 soal · 90 menit
+   Tes Literasi
+   1. Literasi Bahasa Indonesia (IND)  : 30 soal · 30 menit
+   2. Literasi Bahasa Inggris (ENG)    : 20 soal · 20 menit
+   3. Literasi Matematika (MTK)        : 20 soal · 20 menit
+   Total : 70 soal · 70 menit
    ============================================================ */
 
 window.SNBT = (function() {
 
   const CONFIG = {
-    waktu: 90,
+    waktu: 160,
     sections: [
       { key: 'pu',  label: 'PU',  fullLabel: '🧠 Penalaran Umum',                  jumlah: 30, warna: '#1a5a9a' },
       { key: 'ppu', label: 'PPU', fullLabel: '📖 Pengetahuan & Pemahaman Umum',     jumlah: 20, warna: '#1a7a6e' },
       { key: 'pbm', label: 'PBM', fullLabel: '✍️ Pemahaman Bacaan & Menulis',       jumlah: 20, warna: '#c47a1a' },
-      { key: 'pk',  label: 'PK',  fullLabel: '🔢 Pengetahuan Kuantitatif',          jumlah: 20, warna: '#8b2a8b' },
+      { key: 'ind',  label: 'IND',  fullLabel: '🔢 Literasi Bahasa Indonesia',          jumlah: 20, warna: '#8b2a8b' },
+      { key: 'eng',  label: 'ENG',  fullLabel: '🔢 Literasi Bahasa Inggris',          jumlah: 20, warna: '#8b2a8b' },
+      { key: 'mtk',  label: 'MTK',  fullLabel: '🔢 Literasi Matematika',          jumlah: 20, warna: '#8b2a8b' },
     ],
     skorBenar: 1,
     skorSalah: 0,
@@ -81,6 +88,9 @@ window.SNBT = (function() {
             <span>📖 20 PPU</span>
             <span>✍️ 20 PBM</span>
             <span>🔢 20 PK</span>
+            <span>🔢 30 IND</span>
+            <span>🔢 20 ENG</span>
+            <span>🔢 20 MTK</span>
           </div>
         </button>`;
     }).join('');
@@ -98,6 +108,9 @@ window.SNBT = (function() {
           <div class="snbt-info-card"><span class="snbt-info-icon">📖</span><div class="snbt-info-label">Peng. & Pemahaman Umum</div><div class="snbt-info-val">20 soal</div></div>
           <div class="snbt-info-card"><span class="snbt-info-icon">✍️</span><div class="snbt-info-label">Pemahaman Bacaan & Menulis</div><div class="snbt-info-val">20 soal</div></div>
           <div class="snbt-info-card"><span class="snbt-info-icon">🔢</span><div class="snbt-info-label">Pengetahuan Kuantitatif</div><div class="snbt-info-val">20 soal</div></div>
+          <div class="snbt-info-card"><span class="snbt-info-icon">🔢</span><div class="snbt-info-label">Literasi Bahasa Indonesia</div><div class="snbt-info-val">30 soal</div></div>
+          <div class="snbt-info-card"><span class="snbt-info-icon">🔢</span><div class="snbt-info-label">Literasi Bahasa Inggris</div><div class="snbt-info-val">20 soal</div></div>
+          <div class="snbt-info-card"><span class="snbt-info-icon">🔢</span><div class="snbt-info-label">Literasi Matematika</div><div class="snbt-info-val">20 soal</div></div>
         </div>
 
         <p class="cpns-choose-label">Pilih Paket Latihan</p>
@@ -122,7 +135,7 @@ window.SNBT = (function() {
     const p = window.SNBT_QUESTIONS[paketKey];
     document.getElementById('snbt-confirm-info').innerHTML =
       `<span class="tka-confirm-jenjang">${p.label} — ${p.sumber}</span>` +
-      `<span class="tka-confirm-detail">90 soal · PU + PPU + PBM + PK · ⏱ 90 menit</span>`;
+      `<span class="tka-confirm-detail">90 soal · PU + PPU + PBM + PK + IND + ENG + MTK · ⏱ 160 menit</span>`;
     document.getElementById('snbt-confirm-panel').style.display = 'flex';
   }
 
@@ -160,7 +173,7 @@ window.SNBT = (function() {
             <span class="cpns-quiz-badge" style="background:#1a5a9a">TPS SNBT</span>
             <span class="cpns-quiz-progress" id="snbt-progress">Soal 1 / ${total}</span>
           </div>
-          <div class="tka-timer" id="snbt-timer">90:00</div>
+          <div class="tka-timer" id="snbt-timer">160:00</div>
         </div>
 
         <div class="cpns-section-tabs" id="snbt-section-tabs">${tabs}</div>

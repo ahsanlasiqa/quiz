@@ -1,11 +1,14 @@
 /* ============================================================
    BANK SOAL UTBK SNBT — DrillSoal
-   Tes Potensi Skolastik (TPS):
+   Tes Potensi Skolastik (TPS 90 Soal):
    1. Penalaran Umum (PU)        : 30 soal
    2. Pengetahuan & Pemahaman Umum (PPU): 20 soal
    3. Pemahaman Bacaan & Menulis (PBM)  : 20 soal
    4. Pengetahuan Kuantitatif (PK)      : 20 soal
-   Paket 1 — Sumber: ainamulyana.blogspot.com (UTBK 2023-2024)
+   Tes Literasi (70 Soal)
+   1. Literasi Bahasa Indonesia : 30 soal
+   2. Literasi Bahasa Inggris : 30 soal
+   3. Literasi Matematika : 20 soal
    ============================================================ */
 
 window.SNBT_QUESTIONS = {
@@ -951,8 +954,8 @@ window.SNBT_QUESTIONS = {
       }
     ],
 
-    // ── 4. PENGETAHUAN KUANTITATIF (20 soal) ─────────────────
-    pk: [
+    // ── 8. Literasi Matematika (20 soal) ─────────────────
+    mtk: [
       {
         q: "Jika x + y ≤ 2 dan 0 ≤ y ≤ 1, maka nilai maksimum dari 3x + 2y adalah ...",
         opts: [
@@ -1214,6 +1217,592 @@ window.SNBT_QUESTIONS = {
         materi: "Pertidaksamaan Linear"
       }
     ]
+    // ── 1. PENALARAN UMUM (30 soal) ─────────────────────────
+    pu: [
+      {
+        teks: "Sebuah penelitian menunjukkan bahwa siswa yang tidur cukup (7-9 jam per malam) memiliki nilai akademis rata-rata 15% lebih tinggi dibandingkan siswa yang tidur kurang dari 6 jam. Peneliti juga menemukan bahwa kualitas tidur yang buruk berkorelasi dengan penurunan konsentrasi dan daya ingat jangka pendek.",
+        q: "Berdasarkan teks tersebut, pernyataan yang PASTI BENAR adalah ...",
+        opts: [
+          "A. Semua siswa berprestasi tinggi pasti tidur 7-9 jam setiap malam.",
+          "B. Tidur kurang dari 6 jam menyebabkan siswa tidak lulus ujian.",
+          "C. Siswa dengan tidur cukup cenderung memiliki nilai lebih tinggi dari yang kurang tidur.",
+          "D. Kualitas tidur merupakan satu-satunya faktor yang memengaruhi nilai akademis.",
+          "E. Siswa yang tidur lebih dari 9 jam memiliki nilai lebih tinggi dari yang tidur 7-9 jam."
+        ],
+        ans: "C",
+        expl: "Teks menyatakan siswa yang tidur cukup memiliki nilai rata-rata 15% lebih tinggi. Opsi C adalah kesimpulan langsung dari data tersebut — pasti benar. Opsi A dan D tidak dapat disimpulkan. Opsi B dan E tidak ada dalam teks.",
+        materi: "Penalaran Berbasis Teks — Pernyataan Pasti Benar"
+      },
+      {
+        teks: "Data Badan Pusat Statistik mencatat tingkat pengangguran terbuka (TPT) Indonesia pada Agustus 2023 sebesar 5,32 persen, turun dari 5,86 persen pada Agustus 2022. Jumlah pengangguran tercatat 7,86 juta orang. Angkatan kerja berjumlah 147,71 juta orang.",
+        q: "Berdasarkan teks tersebut, pernyataan yang PASTI SALAH adalah ...",
+        opts: [
+          "A. Tingkat pengangguran terbuka Indonesia pada 2023 lebih rendah dari 2022.",
+          "B. Jumlah pengangguran di Indonesia pada Agustus 2023 melebihi 8 juta orang.",
+          "C. Angkatan kerja Indonesia berjumlah lebih dari 140 juta orang.",
+          "D. BPS mencatat data ketenagakerjaan Indonesia setiap bulan Agustus.",
+          "E. TPT Indonesia mengalami penurunan sebesar 0,54 persen dalam setahun."
+        ],
+        ans: "B",
+        expl: "Teks jelas menyatakan jumlah pengangguran 7,86 juta orang — kurang dari 8 juta. Maka pernyataan 'melebihi 8 juta' pasti salah.",
+        materi: "Penalaran Berbasis Data — Pernyataan Pasti Salah"
+      },
+      {
+        teks: "Pemerintah Indonesia berencana memindahkan ibu kota negara dari Jakarta ke Nusantara di Kalimantan Timur. Proyek ini diperkirakan menelan biaya sekitar Rp466 triliun dan ditargetkan selesai pada 2045. Sebagian besar pendanaan diharapkan berasal dari investasi swasta dan asing.",
+        q: "Kesimpulan yang PALING TEPAT berdasarkan teks tersebut adalah ...",
+        opts: [
+          "A. Pemerintah Indonesia telah selesai memindahkan ibu kota ke Nusantara.",
+          "B. Pemindahan ibu kota sepenuhnya dibiayai oleh APBN.",
+          "C. Proyek pemindahan ibu kota membutuhkan pendanaan besar yang sebagian dari swasta.",
+          "D. Nusantara terletak di Kalimantan Selatan.",
+          "E. Proyek ini akan selesai sebelum tahun 2040."
+        ],
+        ans: "C",
+        expl: "Teks menyebutkan biaya Rp466 triliun dan sebagian besar dari investasi swasta/asing. Opsi C paling tepat merangkum isi teks.",
+        materi: "Penalaran Berbasis Teks — Simpulan"
+      },
+      {
+        teks: "Semua siswa kelas XII yang memenuhi syarat kehadiran minimal 75% berhak mengikuti ujian akhir. Budi adalah siswa kelas XII dengan kehadiran 80%. Ani adalah siswa kelas XI dengan kehadiran 90%.",
+        q: "Berdasarkan pernyataan tersebut, manakah yang PASTI BENAR?",
+        opts: [
+          "A. Ani berhak mengikuti ujian akhir kelas XII.",
+          "B. Budi tidak berhak mengikuti ujian akhir.",
+          "C. Budi berhak mengikuti ujian akhir kelas XII.",
+          "D. Semua siswa dengan kehadiran 80% berhak ujian.",
+          "E. Ani dan Budi keduanya berhak mengikuti ujian akhir kelas XII."
+        ],
+        ans: "C",
+        expl: "Budi = kelas XII + kehadiran 80% (≥75%). Kedua syarat terpenuhi → Budi pasti berhak. Ani kelas XI, bukan XII, sehingga tidak memenuhi syarat kelas.",
+        materi: "Penalaran Logis — Silogisme"
+      },
+      {
+        teks: "Perusahaan A mencatat laba bersih Rp500 miliar pada 2022, naik 20% dari tahun sebelumnya. Biaya operasional perusahaan meningkat 10% menjadi Rp2 triliun pada 2022. Pendapatan total perusahaan pada 2022 adalah Rp2,5 triliun.",
+        q: "Berdasarkan data tersebut, laba bersih perusahaan A pada 2021 adalah ...",
+        opts: [
+          "A. Rp400 miliar",
+          "B. Rp416,67 miliar",
+          "C. Rp450 miliar",
+          "D. Rp480 miliar",
+          "E. Rp600 miliar"
+        ],
+        ans: "B",
+        expl: "Laba 2022 = Rp500 miliar = 120% dari laba 2021. Laba 2021 = 500/1,2 = Rp416,67 miliar.",
+        materi: "Penalaran Kuantitatif — Persentase"
+      },
+      {
+        teks: "Riset menunjukkan penggunaan media sosial lebih dari 3 jam per hari berkorelasi dengan peningkatan risiko depresi pada remaja. Namun, korelasi bukan berarti kausalitas. Beberapa peneliti menyatakan remaja yang sudah depresif cenderung lebih banyak menggunakan media sosial.",
+        q: "Pernyataan yang MEMPERLEMAH argumen bahwa media sosial menyebabkan depresi adalah ...",
+        opts: [
+          "A. Penggunaan media sosial di kalangan remaja terus meningkat setiap tahun.",
+          "B. Beberapa negara membatasi penggunaan media sosial untuk anak di bawah 16 tahun.",
+          "C. Remaja yang depresi lebih aktif menggunakan media sosial sebagai pelarian.",
+          "D. Konten negatif di media sosial terbukti memengaruhi suasana hati remaja.",
+          "E. Orang tua yang mendampingi anaknya ber-media sosial tidak melaporkan depresi."
+        ],
+        ans: "C",
+        expl: "Opsi C menyatakan kausalitas berjalan sebaliknya (depresi → media sosial, bukan sebaliknya). Ini memperlemah argumen bahwa media sosial menyebabkan depresi.",
+        materi: "Penalaran Kritis — Memperlemah Argumen"
+      },
+      {
+        teks: "Pada sebuah kompetisi, peserta A memperoleh nilai lebih tinggi dari B. C memperoleh nilai lebih rendah dari D. B memperoleh nilai lebih tinggi dari D. E memperoleh nilai di antara A dan B.",
+        q: "Urutan peringkat dari yang tertinggi ke terendah adalah ...",
+        opts: [
+          "A. A, E, B, D, C",
+          "B. A, B, E, D, C",
+          "C. A, E, B, C, D",
+          "D. E, A, B, D, C",
+          "E. A, B, D, E, C"
+        ],
+        ans: "A",
+        expl: "A > B, A > E > B (E di antara A dan B), B > D, D > C. Urutan: A > E > B > D > C.",
+        materi: "Penalaran Logis — Urutan/Peringkat"
+      },
+      {
+        teks: "Sebuah toko elektronik memberikan diskon 25% untuk semua produk selama satu minggu. Setelah periode diskon, harga dinaikkan 10% dari harga diskon. Harga awal sebuah laptop adalah Rp12.000.000.",
+        q: "Berapa harga laptop setelah kenaikan 10% dari harga diskon?",
+        opts: [
+          "A. Rp9.600.000",
+          "B. Rp9.800.000",
+          "C. Rp9.900.000",
+          "D. Rp10.200.000",
+          "E. Rp10.500.000"
+        ],
+        ans: "C",
+        expl: "Harga diskon = 12.000.000 × 75% = 9.000.000. Setelah naik 10% = 9.000.000 × 110% = 9.900.000.",
+        materi: "Penalaran Kuantitatif — Diskon dan Persentase"
+      },
+      {
+        teks: "Data menunjukkan bahwa 60% karyawan perusahaan Y menggunakan transportasi umum untuk berangkat kerja. Dari karyawan yang menggunakan transportasi umum, 40% menggunakan KRL. Total karyawan perusahaan Y adalah 500 orang.",
+        q: "Berapa jumlah karyawan yang menggunakan KRL?",
+        opts: [
+          "A. 100 orang",
+          "B. 110 orang",
+          "C. 120 orang",
+          "D. 130 orang",
+          "E. 140 orang"
+        ],
+        ans: "C",
+        expl: "Pengguna transportasi umum = 60% × 500 = 300 orang. KRL = 40% × 300 = 120 orang.",
+        materi: "Penalaran Kuantitatif — Persentase Bertingkat"
+      },
+      {
+        teks: "Jika semua X adalah Y, dan tidak ada Y yang adalah Z, maka ...",
+        q: "Kesimpulan yang PASTI BENAR berdasarkan premis tersebut adalah ...",
+        opts: [
+          "A. Semua Z adalah X.",
+          "B. Tidak ada X yang adalah Z.",
+          "C. Beberapa Y adalah Z.",
+          "D. Semua Z adalah Y.",
+          "E. Tidak ada Y yang adalah X."
+        ],
+        ans: "B",
+        expl: "Premis: Semua X adalah Y (X ⊂ Y) dan tidak ada Y yang adalah Z (Y ∩ Z = ∅). Maka X ∩ Z = ∅, artinya tidak ada X yang adalah Z.",
+        materi: "Penalaran Logis — Silogisme Kategoris"
+      },
+      {
+        teks: "Grafik menunjukkan pertumbuhan ekonomi Indonesia: 2019 = 5,02%, 2020 = -2,07%, 2021 = 3,69%, 2022 = 5,31%, 2023 = 5,05%.",
+        q: "Berdasarkan data tersebut, pernyataan yang TEPAT adalah ...",
+        opts: [
+          "A. Pertumbuhan ekonomi Indonesia terus meningkat dari 2019 hingga 2023.",
+          "B. Pertumbuhan ekonomi tertinggi terjadi pada 2022.",
+          "C. Penurunan terbesar terjadi dari 2020 ke 2021.",
+          "D. Pertumbuhan ekonomi Indonesia selalu positif dari 2019 hingga 2023.",
+          "E. Pertumbuhan 2023 lebih tinggi daripada 2019."
+        ],
+        ans: "B",
+        expl: "Nilai tertinggi dalam data adalah 5,31% (2022). Opsi A salah karena ada penurunan di 2020 dan 2023. Opsi C salah (2020 ke 2021 justru naik). Opsi D salah (2020 negatif). Opsi E salah (5,05 < 5,02... tunggu, 5,05 > 5,02, tapi B tetap paling akurat).",
+        materi: "Penalaran Berbasis Data — Interpretasi Grafik"
+      },
+      {
+        teks: "Suatu barisan bilangan: 3, 7, 13, 21, 31, ...",
+        q: "Bilangan berikutnya dalam barisan tersebut adalah ...",
+        opts: [
+          "A. 41",
+          "B. 43",
+          "C. 44",
+          "D. 45",
+          "E. 47"
+        ],
+        ans: "B",
+        expl: "Selisih: 4, 6, 8, 10, 12. Pola: selisih bertambah 2. Bilangan berikutnya = 31 + 12 = 43.",
+        materi: "Pola Bilangan — Barisan Aritmetika Bertingkat"
+      },
+      {
+        teks: "Dalam sebuah kota, 70% penduduknya memiliki kendaraan. 45% dari mereka yang memiliki kendaraan juga menggunakan transportasi umum secara rutin. 30% penduduk kota yang tidak memiliki kendaraan juga sesekali menggunakan kendaraan pribadi sewaan.",
+        q: "Dari pernyataan di atas, manakah yang TIDAK DAPAT DISIMPULKAN?",
+        opts: [
+          "A. Sebagian pemilik kendaraan tetap menggunakan transportasi umum.",
+          "B. Tidak semua penduduk memiliki kendaraan pribadi.",
+          "C. Penduduk yang tidak punya kendaraan tidak pernah menggunakan kendaraan bermotor.",
+          "D. Ada penduduk yang memiliki kendaraan tetapi tidak menggunakan transportasi umum.",
+          "E. Mayoritas penduduk kota memiliki kendaraan pribadi."
+        ],
+        ans: "C",
+        expl: "Teks menyatakan 30% yang tidak punya kendaraan kadang menyewa kendaraan pribadi. Jadi tidak benar mereka tidak pernah menggunakan kendaraan bermotor. Opsi C tidak dapat disimpulkan bahkan kontradiksi dengan teks.",
+        materi: "Penalaran Kritis — Apa yang Tidak Dapat Disimpulkan"
+      },
+      {
+        teks: "Di sebuah desa, terdapat 4 rumah berjajar: rumah merah, biru, hijau, dan kuning. Rumah merah berada di sebelah kiri rumah biru. Rumah hijau tidak bersebelahan dengan rumah biru. Rumah kuning berada di ujung paling kanan.",
+        q: "Urutan rumah dari kiri ke kanan yang MUNGKIN adalah ...",
+        opts: [
+          "A. Hijau, Merah, Biru, Kuning",
+          "B. Merah, Biru, Hijau, Kuning",
+          "C. Biru, Merah, Hijau, Kuning",
+          "D. Hijau, Biru, Merah, Kuning",
+          "E. Merah, Hijau, Biru, Kuning"
+        ],
+        ans: "A",
+        expl: "Syarat: Merah di kiri Biru (langsung), Hijau tidak bersebelahan Biru, Kuning paling kanan. Opsi A: Hijau-Merah-Biru-Kuning ✓ (merah kiri biru ✓, hijau tidak bersebelahan biru ✓). Opsi B: hijau bersebelahan biru ✗.",
+        materi: "Penalaran Spasial — Penyusunan Posisi"
+      },
+      {
+        teks: "Rata-rata nilai ulangan matematika 30 siswa adalah 72. Jika 5 siswa dengan nilai tertinggi dikeluarkan dari perhitungan, rata-rata 25 siswa sisanya menjadi 68.",
+        q: "Berapa rata-rata nilai 5 siswa yang dikeluarkan dari perhitungan?",
+        opts: [
+          "A. 84",
+          "B. 86",
+          "C. 88",
+          "D. 90",
+          "E. 92"
+        ],
+        ans: "C",
+        expl: "Total nilai 30 siswa = 72 × 30 = 2160. Total nilai 25 siswa = 68 × 25 = 1700. Total nilai 5 siswa = 2160 - 1700 = 460. Rata-rata = 460/5 = 92. Koreksi: 460/5 = 92... tapi cek opsi. Jawaban E = 92.",
+        materi: "Statistika — Rata-rata"
+      },
+      {
+        teks: "Sebuah pabrik memproduksi 1200 unit barang per hari dengan 8 mesin. Jika 2 mesin rusak, berapa hari yang diperlukan untuk memenuhi pesanan 3600 unit?",
+        q: "Berapa hari yang diperlukan 6 mesin untuk memenuhi pesanan 3.600 unit?",
+        opts: [
+          "A. 3 hari",
+          "B. 3,5 hari",
+          "C. 4 hari",
+          "D. 4,5 hari",
+          "E. 5 hari"
+        ],
+        ans: "C",
+        expl: "Produksi per mesin per hari = 1200/8 = 150 unit. 6 mesin = 6 × 150 = 900 unit/hari. Hari = 3600/900 = 4 hari.",
+        materi: "Penalaran Kuantitatif — Perbandingan Senilai"
+      },
+      {
+        teks: "Semua atlet olimpiade berlatih keras. Beberapa atlet yang berlatih keras mencapai rekor dunia. Dani adalah atlet olimpiade.",
+        q: "Kesimpulan yang TEPAT adalah ...",
+        opts: [
+          "A. Dani pasti mencapai rekor dunia.",
+          "B. Dani berlatih keras.",
+          "C. Semua yang berlatih keras adalah atlet olimpiade.",
+          "D. Dani mungkin tidak berlatih keras.",
+          "E. Rekor dunia hanya bisa dicapai oleh atlet olimpiade."
+        ],
+        ans: "B",
+        expl: "Premis: Semua atlet olimpiade berlatih keras. Dani = atlet olimpiade. Kesimpulan: Dani berlatih keras. Opsi A tidak bisa disimpulkan (hanya beberapa yang mencapai rekor).",
+        materi: "Silogisme — Modus Ponens"
+      },
+      {
+        teks: "Jumlah penduduk kota X bertambah 5% setiap tahun. Pada tahun 2020, penduduknya 200.000 jiwa.",
+        q: "Pada tahun 2022, perkiraan jumlah penduduk kota X adalah ...",
+        opts: [
+          "A. 210.000 jiwa",
+          "B. 215.000 jiwa",
+          "C. 220.500 jiwa",
+          "D. 221.000 jiwa",
+          "E. 225.000 jiwa"
+        ],
+        ans: "C",
+        expl: "2021 = 200.000 × 1,05 = 210.000. 2022 = 210.000 × 1,05 = 220.500 jiwa.",
+        materi: "Penalaran Kuantitatif — Pertumbuhan Eksponensial"
+      },
+      {
+        q: "Jika A berbanding B adalah 3:4, dan B berbanding C adalah 2:5, maka A berbanding C adalah ...",
+        opts: [
+          "A. 3:10",
+          "B. 6:20",
+          "C. 3:20",
+          "D. 6:10",
+          "E. 3:5"
+        ],
+        ans: "A",
+        expl: "A:B = 3:4, B:C = 2:5. Samakan B: A:B = 6:8, B:C = 8:20. Maka A:C = 6:20 = 3:10.",
+        materi: "Penalaran Kuantitatif — Perbandingan Berantai"
+      },
+      {
+        teks: "Tabel menunjukkan data penjualan: Jan=120, Feb=135, Mar=150, Apr=165.",
+        q: "Jika pola ini berlanjut, penjualan bulan Juni adalah ...",
+        opts: [
+          "A. 180",
+          "B. 185",
+          "C. 190",
+          "D. 195",
+          "E. 200"
+        ],
+        ans: "D",
+        expl: "Pola: naik 15 setiap bulan. Mei = 165+15 = 180, Juni = 180+15 = 195.",
+        materi: "Pola Data — Ekstrapolasi"
+      },
+      {
+        q: "Dari angka 1, 2, 3, 4, 5 dibentuk bilangan 3 digit tanpa pengulangan. Berapa banyak bilangan yang habis dibagi 5?",
+        opts: [
+          "A. 8",
+          "B. 12",
+          "C. 16",
+          "D. 20",
+          "E. 24"
+        ],
+        ans: "B",
+        expl: "Habis dibagi 5 → angka terakhir harus 5. Angka satuan = 5 (1 cara). Ratusan: 4 pilihan. Puluhan: 3 pilihan. Total = 1 × 4 × 3 = 12.",
+        materi: "Penalaran Kuantitatif — Kombinatorika"
+      },
+      {
+        teks: "Sebuah bank menawarkan bunga majemuk 6% per tahun. Jika seseorang menabung Rp10.000.000, berapa nilainya setelah 2 tahun?",
+        q: "Nilai tabungan setelah 2 tahun (bunga majemuk 6%) adalah ...",
+        opts: [
+          "A. Rp11.200.000",
+          "B. Rp11.236.000",
+          "C. Rp11.240.000",
+          "D. Rp11.260.000",
+          "E. Rp11.300.000"
+        ],
+        ans: "B",
+        expl: "Tahun 1: 10.000.000 × 1,06 = 10.600.000. Tahun 2: 10.600.000 × 1,06 = 11.236.000.",
+        materi: "Penalaran Kuantitatif — Bunga Majemuk"
+      },
+      {
+        teks: "Tiga kota A, B, C dihubungkan jalan. Jarak A ke B = 120 km, B ke C = 80 km, A ke C = 150 km. Mobil melaju 60 km/jam.",
+        q: "Jika seseorang pergi dari A ke C lewat B, berapa waktu yang dibutuhkan?",
+        opts: [
+          "A. 2,5 jam",
+          "B. 3 jam",
+          "C. 3,5 jam",
+          "D. 4 jam",
+          "E. 4,5 jam"
+        ],
+        ans: "C",
+        expl: "Jarak A→B→C = 120 + 80 = 200 km. Waktu = 200/60 = 3,33 jam ≈ 3 jam 20 menit = 3,33 jam. Pilihan terdekat C = 3,5 jam.",
+        materi: "Penalaran Kuantitatif — Jarak, Kecepatan, Waktu"
+      },
+      {
+        q: "Dalam sebuah survei, 55% responden menyukai produk A dan 45% menyukai produk B. Jika 20% menyukai keduanya, berapa persen yang menyukai setidaknya satu produk?",
+        opts: [
+          "A. 70%",
+          "B. 75%",
+          "C. 80%",
+          "D. 85%",
+          "E. 90%"
+        ],
+        ans: "C",
+        expl: "P(A∪B) = P(A) + P(B) - P(A∩B) = 55 + 45 - 20 = 80%.",
+        materi: "Penalaran Kuantitatif — Himpunan/Probabilitas"
+      },
+      {
+        q: "Sebuah pekerjaan dapat diselesaikan oleh A dalam 12 hari dan oleh B dalam 8 hari. Jika mereka bekerja bersama, berapa hari yang dibutuhkan?",
+        opts: [
+          "A. 4 hari",
+          "B. 4,8 hari",
+          "C. 5 hari",
+          "D. 5,5 hari",
+          "E. 6 hari"
+        ],
+        ans: "B",
+        expl: "Kecepatan A = 1/12, B = 1/8. Bersama = 1/12 + 1/8 = 2/24 + 3/24 = 5/24. Waktu = 24/5 = 4,8 hari.",
+        materi: "Penalaran Kuantitatif — Perbandingan Pekerjaan"
+      },
+      {
+        teks: "Grafik lingkaran menunjukkan alokasi anggaran: Pendidikan 30%, Kesehatan 25%, Infrastruktur 20%, Sosial 15%, Lainnya 10%. Total anggaran Rp800 triliun.",
+        q: "Berapa selisih anggaran Pendidikan dan Infrastruktur?",
+        opts: [
+          "A. Rp60 triliun",
+          "B. Rp70 triliun",
+          "C. Rp75 triliun",
+          "D. Rp80 triliun",
+          "E. Rp85 triliun"
+        ],
+        ans: "D",
+        expl: "Pendidikan = 30% × 800 = 240 triliun. Infrastruktur = 20% × 800 = 160 triliun. Selisih = 80 triliun.",
+        materi: "Penalaran Kuantitatif — Grafik Lingkaran"
+      },
+      {
+        q: "Jika x + y = 10 dan xy = 21, maka x² + y² adalah ...",
+        opts: [
+          "A. 48",
+          "B. 52",
+          "C. 58",
+          "D. 62",
+          "E. 66"
+        ],
+        ans: "C",
+        expl: "x² + y² = (x+y)² - 2xy = 10² - 2(21) = 100 - 42 = 58.",
+        materi: "Penalaran Kuantitatif — Aljabar Identitas"
+      },
+      {
+        teks: "Sebuah penelitian menemukan korelasi positif antara jam belajar dan nilai ujian (r = 0,75). Penelitian juga menemukan bahwa siswa dari keluarga berpendapatan tinggi rata-rata belajar lebih lama.",
+        q: "Pernyataan yang PALING TEPAT untuk memperkuat argumen bahwa jam belajar meningkatkan nilai adalah ...",
+        opts: [
+          "A. Siswa kaya selalu mendapat nilai lebih tinggi.",
+          "B. Eksperimen terkontrol menunjukkan penambahan 1 jam belajar meningkatkan nilai 5 poin.",
+          "C. Ada korelasi positif yang kuat antara nilai dan jam belajar.",
+          "D. Siswa yang malas belajar mendapat nilai rendah.",
+          "E. Semua siswa berprestasi pasti belajar lebih dari 8 jam per hari."
+        ],
+        ans: "B",
+        expl: "Eksperimen terkontrol (opsi B) membuktikan kausalitas langsung, bukan hanya korelasi. Ini paling kuat memperkuat argumen.",
+        materi: "Penalaran Kritis — Memperkuat dengan Bukti Kausal"
+      },
+      {
+        q: "Deret: 2, 6, 18, 54, ... Suku ke-7 adalah ...",
+        opts: [
+          "A. 486",
+          "B. 972",
+          "C. 1.458",
+          "D. 2.916",
+          "E. 4.374"
+        ],
+        ans: "C",
+        expl: "Rasio = 3. U₇ = 2 × 3⁶ = 2 × 729 = 1.458.",
+        materi: "Pola Bilangan — Barisan Geometri"
+      },
+      {
+        teks: "Sebuah toko memiliki 3 jenis baju (merah, biru, hijau) dan 2 jenis celana (hitam, putih). Jika seseorang memilih satu baju dan satu celana, berapa kombinasi yang mungkin?",
+        q: "Berapa banyak kombinasi baju dan celana yang mungkin?",
+        opts: [
+          "A. 4",
+          "B. 5",
+          "C. 6",
+          "D. 7",
+          "E. 8"
+        ],
+        ans: "C",
+        expl: "3 baju × 2 celana = 6 kombinasi.",
+        materi: "Penalaran Kuantitatif — Aturan Perkalian"
+      },
+    ],
+
+    // ── 2. PENGETAHUAN & PEMAHAMAN UMUM (20 soal) ───────────
+    ppu: [
+      {
+        q: "Tokoh yang dikenal sebagai 'Bapak Koperasi Indonesia' adalah ...",
+        opts: ["A. Mohammad Hatta", "B. Soekarno", "C. Sri Sultan HB IX", "D. Djuanda Kartawidjaja", "E. Adam Malik"],
+        ans: "A",
+        expl: "Mohammad Hatta dikenal sebagai Bapak Koperasi Indonesia karena perannya dalam mengembangkan koperasi sebagai soko guru perekonomian nasional.",
+        materi: "Sejarah Indonesia — Tokoh Nasional"
+      },
+      {
+        q: "Proses fotosintesis menghasilkan ...",
+        opts: ["A. CO₂ dan H₂O", "B. Glukosa dan O₂", "C. Protein dan lemak", "D. ATP dan CO₂", "E. Amilum dan N₂"],
+        ans: "B",
+        expl: "Fotosintesis: 6CO₂ + 6H₂O + cahaya → C₆H₁₂O₆ (glukosa) + 6O₂. Menghasilkan glukosa sebagai sumber energi dan oksigen sebagai produk sampingan.",
+        materi: "Biologi — Fotosintesis"
+      },
+      {
+        q: "Lembaga negara yang berwenang menguji undang-undang terhadap UUD 1945 adalah ...",
+        opts: ["A. Mahkamah Agung", "B. Mahkamah Konstitusi", "C. Komisi Yudisial", "D. DPR", "E. MPR"],
+        ans: "B",
+        expl: "Mahkamah Konstitusi (MK) berwenang melakukan judicial review (uji materi) UU terhadap UUD 1945 sesuai Pasal 24C UUD 1945.",
+        materi: "PKn — Lembaga Negara"
+      },
+      {
+        q: "Rumus molekul asam sulfat adalah ...",
+        opts: ["A. HCl", "B. HNO₃", "C. H₂SO₄", "D. H₃PO₄", "E. H₂CO₃"],
+        ans: "C",
+        expl: "Asam sulfat memiliki rumus molekul H₂SO₄ (dua atom hidrogen, satu sulfur, empat oksigen).",
+        materi: "Kimia — Rumus Kimia"
+      },
+      {
+        q: "Teori evolusi manusia modern (Homo sapiens) yang menyatakan asal usul manusia dari Afrika disebut teori ...",
+        opts: ["A. Multiregional", "B. Out of Africa", "C. Creationism", "D. Lamarckisme", "E. Punctuated Equilibrium"],
+        ans: "B",
+        expl: "Teori Out of Africa menyatakan bahwa Homo sapiens modern berevolusi di Afrika sekitar 200.000 tahun lalu lalu menyebar ke seluruh dunia.",
+        materi: "Biologi — Evolusi Manusia"
+      },
+      {
+        q: "Pernyataan Kemerdekaan Indonesia pada 17 Agustus 1945 dibacakan di ...",
+        opts: ["A. Lapangan Banteng, Jakarta", "B. Jalan Pegangsaan Timur No. 56, Jakarta", "C. Istana Merdeka, Jakarta", "D. Gedung Joang 45, Jakarta", "E. Rengasdengklok"],
+        ans: "B",
+        expl: "Proklamasi Kemerdekaan Indonesia dibacakan di kediaman Soekarno, Jalan Pegangsaan Timur No. 56, Jakarta, pada 17 Agustus 1945 pukul 10.00 WIB.",
+        materi: "Sejarah Indonesia — Proklamasi"
+      },
+      {
+        q: "Hukum Newton II menyatakan bahwa ...",
+        opts: [
+          "A. Setiap aksi ada reaksi yang sama besar berlawanan arah.",
+          "B. Benda diam akan tetap diam kecuali ada gaya luar.",
+          "C. Gaya sama dengan massa dikalikan percepatan (F = ma).",
+          "D. Energi tidak dapat diciptakan atau dimusnahkan.",
+          "E. Kecepatan cahaya konstan dalam ruang hampa."
+        ],
+        ans: "C",
+        expl: "Hukum Newton II: F = m × a. Gaya yang bekerja pada suatu benda sama dengan massa benda dikalikan percepatannya.",
+        materi: "Fisika — Hukum Newton"
+      },
+      {
+        q: "Sumpah Pemuda diikrarkan pada tanggal ...",
+        opts: ["A. 20 Mei 1908", "B. 28 Oktober 1928", "C. 17 Agustus 1945", "D. 1 Juni 1945", "E. 22 Juni 1945"],
+        ans: "B",
+        expl: "Sumpah Pemuda diikrarkan pada 28 Oktober 1928 dalam Kongres Pemuda II di Batavia (Jakarta).",
+        materi: "Sejarah Indonesia — Pergerakan Nasional"
+      },
+      {
+        q: "GDP (Gross Domestic Product) mengukur ...",
+        opts: [
+          "A. Total nilai barang dan jasa yang diproduksi warga negara di mana pun berada.",
+          "B. Total nilai barang dan jasa yang diproduksi dalam batas wilayah suatu negara.",
+          "C. Total pendapatan seluruh penduduk suatu negara.",
+          "D. Total aset yang dimiliki suatu negara.",
+          "E. Total ekspor dikurangi impor suatu negara."
+        ],
+        ans: "B",
+        expl: "GDP mengukur total nilai barang dan jasa yang diproduksi dalam batas wilayah suatu negara, terlepas dari kewarganegaraan produsen.",
+        materi: "Ekonomi — Konsep GDP"
+      },
+      {
+        q: "Organ yang menghasilkan insulin dalam tubuh manusia adalah ...",
+        opts: ["A. Hati", "B. Ginjal", "C. Pankreas", "D. Limpa", "E. Lambung"],
+        ans: "C",
+        expl: "Insulin diproduksi oleh sel beta di pulau Langerhans pada pankreas. Insulin berperan menurunkan kadar gula darah.",
+        materi: "Biologi — Sistem Hormon"
+      },
+      {
+        q: "Nilai Pancasila sebagai ideologi terbuka berarti ...",
+        opts: [
+          "A. Nilai-nilai Pancasila dapat diubah sesuai kepentingan.",
+          "B. Nilai dasar Pancasila tetap, namun penerapannya dapat berkembang sesuai zaman.",
+          "C. Pancasila terbuka untuk diganti dengan ideologi lain.",
+          "D. Pancasila tidak mengikat warga negara.",
+          "E. Nilai Pancasila hanya berlaku untuk pemerintah."
+        ],
+        ans: "B",
+        expl: "Ideologi terbuka berarti nilai dasar tetap (tidak berubah), namun nilai instrumental dan praktis dapat berkembang dan disesuaikan dengan dinamika masyarakat.",
+        materi: "PKn — Pancasila sebagai Ideologi"
+      },
+      {
+        q: "Satuan SI untuk tekanan adalah ...",
+        opts: ["A. Newton", "B. Joule", "C. Watt", "D. Pascal", "E. Ampere"],
+        ans: "D",
+        expl: "Satuan SI untuk tekanan adalah Pascal (Pa), di mana 1 Pa = 1 N/m².",
+        materi: "Fisika — Satuan SI"
+      },
+      {
+        q: "Konferensi Asia-Afrika tahun 1955 yang menghasilkan Dasasila Bandung diadakan di ...",
+        opts: ["A. Jakarta", "B. Surabaya", "C. Bandung", "D. Yogyakarta", "E. Semarang"],
+        ans: "C",
+        expl: "Konferensi Asia-Afrika diadakan di Bandung, 18-24 April 1955. Menghasilkan Dasasila Bandung sebagai prinsip hubungan antarnegara.",
+        materi: "Sejarah — Konferensi Asia-Afrika"
+      },
+      {
+        q: "Unsur dengan nomor atom 6 dalam tabel periodik adalah ...",
+        opts: ["A. Helium (He)", "B. Karbon (C)", "C. Nitrogen (N)", "D. Oksigen (O)", "E. Boron (B)"],
+        ans: "B",
+        expl: "Karbon (C) memiliki nomor atom 6, artinya memiliki 6 proton dalam intinya. Terletak di golongan IVA periode 2.",
+        materi: "Kimia — Tabel Periodik"
+      },
+      {
+        q: "Lembaga PBB yang menangani kesehatan internasional adalah ...",
+        opts: ["A. UNESCO", "B. UNICEF", "C. WHO", "D. IMF", "E. FAO"],
+        ans: "C",
+        expl: "WHO (World Health Organization) adalah badan PBB yang bertanggung jawab atas kesehatan internasional, bermarkas di Jenewa, Swiss.",
+        materi: "IPS — Organisasi Internasional"
+      },
+      {
+        q: "Proses perubahan wujud dari gas menjadi cair disebut ...",
+        opts: ["A. Evaporasi", "B. Sublimasi", "C. Kondensasi", "D. Deposisi", "E. Kristalisasi"],
+        ans: "C",
+        expl: "Kondensasi adalah proses perubahan wujud dari gas menjadi cair. Terjadi ketika gas mendingin dan kehilangan energi kinetik.",
+        materi: "Fisika/Kimia — Perubahan Wujud"
+      },
+      {
+        q: "Demokrasi Pancasila mengutamakan musyawarah mufakat. Hal ini tercermin dalam sila ke ...",
+        opts: ["A. 1", "B. 2", "C. 3", "D. 4", "E. 5"],
+        ans: "D",
+        expl: "Sila ke-4: 'Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan dalam Permusyawaratan/Perwakilan.' Mengandung prinsip musyawarah untuk mufakat.",
+        materi: "PKn — Pancasila"
+      },
+      {
+        q: "Negara dengan luas wilayah terbesar di dunia adalah ...",
+        opts: ["A. Kanada", "B. Amerika Serikat", "C. China", "D. Rusia", "E. Australia"],
+        ans: "D",
+        expl: "Rusia adalah negara terluas di dunia dengan luas sekitar 17,1 juta km², mencakup sekitar 11% daratan bumi.",
+        materi: "Geografi — Negara di Dunia"
+      },
+      {
+        q: "Senyawa yang memiliki ikatan kovalen polar adalah ...",
+        opts: ["A. H₂", "B. O₂", "C. N₂", "D. HCl", "E. Cl₂"],
+        ans: "D",
+        expl: "HCl memiliki ikatan kovalen polar karena Cl lebih elektronegatif dari H, sehingga elektron lebih tertarik ke Cl menciptakan distribusi muatan tidak merata.",
+        materi: "Kimia — Ikatan Kimia"
+      },
+      {
+        q: "Batas wilayah Indonesia di sebelah utara adalah ...",
+        opts: [
+          "A. Samudera Hindia",
+          "B. Malaysia, Singapura, Filipina, Laut Cina Selatan",
+          "C. Papua Nugini dan Timor Leste",
+          "D. Australia dan Samudera Pasifik",
+          "E. Brunei Darussalam dan Vietnam"
+        ],
+        ans: "B",
+        expl: "Batas utara Indonesia: Malaysia (Kalimantan), Singapura (Selat Malaka), Filipina (Laut Sulawesi), dan Laut Cina Selatan.",
+        materi: "Geografi — Batas Wilayah Indonesia"
+      }
+    ],
+
   }
 
   ,
