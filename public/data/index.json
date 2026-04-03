@@ -1,0 +1,14 @@
+[
+  {
+    "id": "paket1",
+    "label": "Paket 1",
+    "sumber": "Latihan Soal UTBK-SNBT 2023-2024",
+    "tahun": "2023"
+  },
+  {
+    "id": "paket2",
+    "label": "Paket 2",
+    "sumber": "Latihan Soal UTBK-SNBT 2023-2024",
+    "tahun": "2024"
+  }
+]

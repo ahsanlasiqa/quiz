@@ -53,6 +53,29 @@ window.SNBT = (function() {
     phase: 'select', startTime: null,
   };
 
+  // ══ LAZY LOADER ══════════════════════════════════════════════
+  // Menggantikan window.SNBT_QUESTIONS yang dulu di-load sekaligus.
+  // index.json  = daftar paket ringan (label, sumber, tahun) — di-load saat init
+  // paketX.json = soal lengkap — di-load hanya saat user mau mulai quiz
+  const _cache = {};  // in-memory cache: tidak fetch ulang paket yang sama
+
+  async function _fetchIndex() {
+    if (_cache['__index__']) return _cache['__index__'];
+    const res = await fetch('/data/index.json');
+    if (!res.ok) throw new Error('Gagal memuat daftar paket');
+    _cache['__index__'] = await res.json();
+    return _cache['__index__'];
+  }
+
+  async function _fetchPaket(paketId) {
+    if (_cache[paketId]) return _cache[paketId];
+    const res = await fetch(`/data/${paketId}.json`);
+    if (!res.ok) throw new Error(`Paket "${paketId}" tidak ditemukan`);
+    _cache[paketId] = await res.json();
+    return _cache[paketId];
+  }
+  // ─────────────────────────────────────────────────────────────
+
   function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -81,8 +104,8 @@ window.SNBT = (function() {
     return 0;
   }
 
-  function buildQuestions(paketKey, sections) {
-    const bank = window.SNBT_QUESTIONS[paketKey];
+  function buildQuestions(bank, sections) {
+    // bank = data paket yang sudah di-fetch (bukan window.SNBT_QUESTIONS[key])
     const all = [];
     sections.forEach(sec => {
       shuffle(bank[sec.key] || []).slice(0, sec.jumlah)
@@ -91,27 +114,33 @@ window.SNBT = (function() {
     return all;
   }
 
-  function init() { state.phase = 'select'; renderSelectPaket(); }
+  // ── init: load index dulu, lalu render pilih paket ───────────
+  async function init() {
+    state.phase = 'select';
+    const container = document.getElementById('snbt-container');
+    container.innerHTML = `<div style="text-align:center;padding:40px;opacity:.6">⏳ Memuat daftar paket…</div>`;
+    try {
+      const index = await _fetchIndex();
+      renderSelectPaket(index);
+    } catch(e) {
+      container.innerHTML = `<div style="text-align:center;padding:40px;color:red">❌ Gagal memuat paket. Coba refresh halaman.</div>`;
+    }
+  }
 
   // ══ PHASE 1: PILIH PAKET & MODE ══════════════════════════════
-  function renderSelectPaket() {
+  function renderSelectPaket(index) {
+    // index = array { id, label, sumber, tahun } dari index.json
     const container = document.getElementById('snbt-container');
-    const pakets = Object.keys(window.SNBT_QUESTIONS || {});
 
-    const paketCards = pakets.map(key => {
-      const p = window.SNBT_QUESTIONS[key];
-      const hasTPS      = ['pu','ppu','pbm','pk'].every(k => (p[k]||[]).length > 0);
-      const hasLiterasi = ['literasi_bi','literasi_ing','literasi_mat'].every(k => (p[k]||[]).length > 0);
-      return `
-        <button class="cpns-paket-btn" onclick="window.SNBT.previewPaket('${key}')">
+    const paketCards = index.map(p => `
+        <button class="cpns-paket-btn" onclick="window.SNBT.previewPaket('${p.id}')">
           <div class="cpns-paket-num">${p.label}</div>
           <div class="cpns-paket-src">${p.sumber}${p.tahun ? ' · '+p.tahun : ''}</div>
           <div class="cpns-paket-meta">
-            ${hasTPS      ? '<span>🧠 TPS (90 soal)</span>' : ''}
-            ${hasLiterasi ? '<span>📚 Literasi (70 soal)</span>' : ''}
+            <span>🧠 TPS (90 soal)</span>
+            <span>📚 Literasi (70 soal)</span>
           </div>
-        </button>`;
-    }).join('');
+        </button>`).join('');
 
     container.innerHTML = `
       <div class="cpns-select-wrap">
@@ -139,33 +168,35 @@ window.SNBT = (function() {
         </div>
         <p class="tka-credit-note">⚡ Menggunakan 1 kredit</p>
       </div>`;
+
+    // Simpan index ke state agar previewPaket bisa pakai
+    state._index = index;
   }
 
-  function previewPaket(paketKey) {
-    document.querySelectorAll('#snbt-container .cpns-paket-btn').forEach((btn, i) => {
-      btn.classList.toggle('selected', Object.keys(window.SNBT_QUESTIONS)[i] === paketKey);
+  // previewPaket: gunakan data index (ringan), tidak perlu fetch soal
+  function previewPaket(paketId) {
+    document.querySelectorAll('#snbt-container .cpns-paket-btn').forEach(btn => {
+      const key = btn.querySelector('.cpns-paket-num')?.textContent;
+      const p   = (state._index || []).find(x => x.id === paketId);
+      btn.classList.toggle('selected', btn.querySelector('.cpns-paket-num')?.textContent === p?.label);
     });
-    state.paket = paketKey;
+    state.paket = paketId;
     state.mode  = null;
     document.getElementById('snbt-confirm-panel').style.display = 'none';
 
-    const p = window.SNBT_QUESTIONS[paketKey];
-    const hasTPS      = ['pu','ppu','pbm','pk'].every(k => (p[k]||[]).length > 0);
-    const hasLiterasi = ['literasi_bi','literasi_ing','literasi_mat'].every(k => (p[k]||[]).length > 0);
-
-    const modeCards = Object.entries(MODES).map(([mk, mc]) => {
-      const ok = (mk==='tps' && hasTPS) || (mk==='literasi' && hasLiterasi) || (mk==='lengkap' && hasTPS && hasLiterasi);
-      return `
-        <button class="snbt-mode-btn${ok ? '' : ' snbt-mode-soon'}" id="snbt-mode-${mk}"
-          onclick="${ok ? `window.SNBT.selectMode('${mk}')` : 'void(0)'}">
+    // Untuk preview mode, kita tidak tahu persis seksi apa yang ada
+    // tanpa fetch soal. Tampilkan semua mode sebagai tersedia.
+    // Jika paket ternyata tidak punya seksi tertentu, buildQuestions akan menghasilkan array kosong.
+    const modeCards = Object.entries(MODES).map(([mk, mc]) => `
+        <button class="snbt-mode-btn" id="snbt-mode-${mk}"
+          onclick="window.SNBT.selectMode('${mk}')">
           <div class="snbt-mode-icon">${mc.icon}</div>
           <div class="snbt-mode-body">
             <div class="snbt-mode-label">${mc.label}</div>
             <div class="snbt-mode-desc">${mc.desc}</div>
-            <div class="snbt-mode-detail">${ok ? mc.detail : '⏳ Belum tersedia di paket ini'}</div>
+            <div class="snbt-mode-detail">${mc.detail}</div>
           </div>
-        </button>`;
-    }).join('');
+        </button>`).join('');
 
     document.getElementById('snbt-mode-grid').innerHTML = modeCards;
     document.getElementById('snbt-mode-wrap').style.display = 'block';
@@ -176,23 +207,36 @@ window.SNBT = (function() {
     document.querySelectorAll('.snbt-mode-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('snbt-mode-' + modeKey)?.classList.add('selected');
     const mc = MODES[modeKey];
-    const p  = window.SNBT_QUESTIONS[state.paket];
+    const p  = (state._index || []).find(x => x.id === state.paket) || {};
     document.getElementById('snbt-confirm-info').innerHTML =
-      `<span class="tka-confirm-jenjang">${mc.icon} ${mc.label} · ${p.label}</span>` +
+      `<span class="tka-confirm-jenjang">${mc.icon} ${mc.label} · ${p.label || ''}</span>` +
       `<span class="tka-confirm-detail">${mc.detail} · ${mc.desc}</span>`;
     document.getElementById('snbt-confirm-panel').style.display = 'flex';
   }
 
   // ══ PHASE 2: QUIZ ════════════════════════════════════════════
-  function startPaket() {
+  // startPaket: BARU di sini fetch soal lengkap (lazy)
+  async function startPaket() {
     if (!state.paket || !state.mode) return;
-    const credits = window._currentCredits ?? 0;
+    const credits   = window._currentCredits ?? 0;
     const isInvited = window._isInvited ?? false;
     if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.startCheckout?.(); return; }
 
+    // Tampilkan loading sebelum fetch
+    const container = document.getElementById('snbt-container');
+    container.innerHTML = `<div style="text-align:center;padding:60px;opacity:.6">⏳ Memuat soal…</div>`;
+
+    let bank;
+    try {
+      bank = await _fetchPaket(state.paket);
+    } catch(e) {
+      container.innerHTML = `<div style="text-align:center;padding:40px;color:red">❌ Gagal memuat soal. Coba lagi.</div>`;
+      return;
+    }
+
     const mc = MODES[state.mode];
     state.activeSections = SEMUA_SEKSI.filter(s => mc.seksi.includes(s.key));
-    state.allQuestions   = buildQuestions(state.paket, state.activeSections);
+    state.allQuestions   = buildQuestions(bank, state.activeSections);
     state.answers        = new Array(state.allQuestions.length).fill(null);
     state.currentIdx     = 0;
     state.phase          = 'quiz';
