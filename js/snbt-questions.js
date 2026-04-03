@@ -2208,6 +2208,1043 @@ window.SNBT_QUESTIONS = {
         expl: "Cari dua bilangan yang hasil kalinya −48 dan jumlahnya 2: 8 × (−6) = −48 dan 8+(−6) = 2. Maka (x+8)(x−6).",
         materi: "Aljabar — Faktorisasi Kuadrat"
       }
+    ],
+
+    // ── LITERASI BAHASA INDONESIA (30 soal) ─────────────────────
+    // Sumber: Latihan Soal UTBK-SNBT 2023-2024 (ainamulyana.blogspot.com)
+    literasi_bi: [
+
+      // ── WACANA 1: Tenaga Kerja Disabilitas (Soal 1–7) ──────────
+      {
+        teks: "Kementerian Ketenagakerjaan mencatat, terdapat 440 perusahaan dengan jumlah tenaga kerja sekitar 237 ribu orang. Dari jumlah itu, tenaga kerja disabilitas yang terserap baru sekitar 2.851 orang atau sekitar 1,2 persen yang berhasil ditempatkan dalam sektor tenaga kerja formal. Padahal, Undang-undang Nomor 8 tahun 2016 tentang Penyandang Disabilitas, mewajibkan pemerintah, pemerintah daerah, BUMN/BUMD mempekerjakan paling sedikit 2 persen penyandang disabilitas dari jumlah pegawai. Serta mewajibkan perusahaan swasta mempekerjakan sedikitnya 1 persen penyandang disabilitas.\n\nKepala Sub Direktorat Pemberdayaan Pengantar Kerja, Kementerian Tenaga Kerja dan Transmigrasi, Eva Trisiana, mengakui aspek pengawasan ini belum optimal meski di kementeriannya terdapat fungsi pengawasan yang bertugas untuk mengawasi implementasi dari UU tersebut. Oleh karena itu, Kemenaker terus melakukan sosialisasi maupun public campaign ke perusahaan-perusahaan, agar paling tidak perusahaan menyadari bahwa ada aturan tersebut.\n\nMelihat data pekerja disabilitas dengan status karyawan, hasil olah data Lokadata.id atas SAKERNAS 2019 mendapati, sebanyak 1,3 juta orang atau 15 persen bekerja di sektor formal tersebut. Jumlah karyawan difabel terbanyak terdapat di Provinsi Jawa Barat dengan 296 ribu orang, kemudian Jawa Timur 225 ribu, disusul Jawa Tengah 223 ribu. Sementara Ibu Kota Jakarta di posisi enam dengan 76 ribu orang. Tingginya pekerja disabilitas di Tanah Pasundan ini tidak terlepas dari beberapa hotel dan restoran yang mempekerjakan para penyandang disabilitas. Adapun, sampai tahun 2019 terdapat 3.000 hotel dan 12.000 restoran di Jabar yang berpotensi untuk memberdayakan para disabilitas.\n\nInternational Labour Organization (ILO) pun memiliki komitmen untuk mempromosikan keadilan sosial dan mencapai pekerjaan yang layak bagi penyandang disabilitas. Memastikan akses yang setara dan pelatihan bagi disabilitas pun termasuk dalam tujuan pembangunan berkelanjutan (SDGs) poin keempat. Oleh karena itu, upaya ILO untuk melibatkan penyandang disabilitas juga mencakup kegiatan, termasuk praktik internal dan kemitraan dengan badan PBB lain.",
+        q: "Berikut adalah fakta berdasarkan bacaan tersebut ....",
+        opts: [
+          "A. Jumlah karyawan difabel di Provinsi Jawa Tengah sebanyak 225 ribu karyawan",
+          "B. Sampai tahun 2018 terdapat 3.000 hotel dan 12.000 restoran di Jabar yang berpotensi memberdayakan pekerja difabel",
+          "C. Jumlah karyawan difabel terbanyak terdapat di Provinsi Jawa Barat dengan 296 ribu orang",
+          "D. Terdapat 440 perusahaan dengan jumlah pekerja difabel sebanyak 237 karyawan",
+          "E. Karyawan difabel telah terserap sejumlah 2% dari total pekerja di BUMN/BUMD dan 1% di perusahaan swasta"
+        ],
+        ans: "C",
+        expl: "Sesuai paragraf ketiga: jumlah karyawan difabel terbanyak terdapat di Provinsi Jawa Barat dengan 296 ribu orang. Opsi A salah (225 ribu adalah Jawa Timur, bukan Jawa Tengah). Opsi B salah (tahun 2019, bukan 2018). Opsi D salah (237 ribu adalah total tenaga kerja, bukan difabel). Opsi E salah (baru 1,2% yang terserap, belum memenuhi kuota).",
+        materi: "Literasi Bahasa Indonesia — Fakta dalam Teks"
+      },
+      {
+        teks: "Kementerian Ketenagakerjaan mencatat, terdapat 440 perusahaan dengan jumlah tenaga kerja sekitar 237 ribu orang. Dari jumlah itu, tenaga kerja disabilitas yang terserap baru sekitar 2.851 orang atau sekitar 1,2 persen yang berhasil ditempatkan dalam sektor tenaga kerja formal. Padahal, Undang-undang Nomor 8 tahun 2016 tentang Penyandang Disabilitas, mewajibkan pemerintah, pemerintah daerah, BUMN/BUMD mempekerjakan paling sedikit 2 persen penyandang disabilitas dari jumlah pegawai. Serta mewajibkan perusahaan swasta mempekerjakan sedikitnya 1 persen penyandang disabilitas.\n\nKepala Sub Direktorat Pemberdayaan Pengantar Kerja, Kementerian Tenaga Kerja dan Transmigrasi, Eva Trisiana, mengakui aspek pengawasan ini belum optimal meski di kementeriannya terdapat fungsi pengawasan yang bertugas untuk mengawasi implementasi dari UU tersebut. Oleh karena itu, Kemenaker terus melakukan sosialisasi maupun public campaign ke perusahaan-perusahaan, agar paling tidak perusahaan menyadari bahwa ada aturan tersebut.",
+        q: "Berikut adalah negasi pernyataan yang benar berdasarkan paragraf kedua pada teks tersebut, kecuali ....",
+        opts: [
+          "A. Kemenaker tidak melakukan sosialisasi maupun public campaign ke perusahaan-perusahaan",
+          "B. Tahun 2019 terdapat 3.000 hotel dan 12.000 restoran di Jabar yang berpotensi untuk memberdayakan para disabilitas",
+          "C. Fungsi pengawasan implementasi UU oleh kemenaker belum optimal",
+          "D. Kemenaker berjanji akan merealisasikan Undang-undang Nomor 8 tahun 2016",
+          "E. Pekerja/karyawan difabel belum terserap optimal, baik di BUMN/BUMD maupun di perusahaan swasta"
+        ],
+        ans: "C",
+        expl: "Negasi adalah pembantahan — negasi dari pernyataan yang benar adalah pernyataan yang salah. Soal mencari pengecualian dari negasi, berarti mencari pernyataan yang BENAR. Opsi C ('Fungsi pengawasan implementasi UU oleh kemenaker belum optimal') adalah pernyataan yang BENAR berdasarkan teks paragraf kedua, sehingga merupakan pengecualian (kecuali) dari daftar negasi.",
+        materi: "Literasi Bahasa Indonesia — Negasi Pernyataan"
+      },
+      {
+        teks: "Kementerian Ketenagakerjaan mencatat, terdapat 440 perusahaan dengan jumlah tenaga kerja sekitar 237 ribu orang. Dari jumlah itu, tenaga kerja disabilitas yang terserap baru sekitar 2.851 orang atau sekitar 1,2 persen yang berhasil ditempatkan dalam sektor tenaga kerja formal.",
+        q: "Berdasarkan teks tersebut, dari 440 perusahaan yang tercatat oleh Kemenaker berapa tenaga kerja disabilitas yang berhasil terserap?",
+        opts: [
+          "A. 76 ribu tenaga kerja",
+          "B. 237 ribu tenaga kerja",
+          "C. 2.800 tenaga kerja",
+          "D. 2.851 tenaga kerja",
+          "E. 225 ribu tenaga kerja"
+        ],
+        ans: "D",
+        expl: "Sesuai dengan teks pada paragraf pertama: tenaga kerja disabilitas yang terserap baru sekitar 2.851 orang atau sekitar 1,2 persen.",
+        materi: "Literasi Bahasa Indonesia — Menemukan Informasi Tersurat"
+      },
+      {
+        teks: "Melihat data pekerja disabilitas dengan status karyawan, hasil olah data Lokadata.id atas SAKERNAS 2019 mendapati, sebanyak 1,3 juta orang atau 15 persen bekerja di sektor formal tersebut. Jumlah karyawan difabel terbanyak terdapat di Provinsi Jawa Barat dengan 296 ribu orang, kemudian Jawa Timur 225 ribu, disusul Jawa Tengah 223 ribu. Sementara Ibu Kota Jakarta di posisi enam dengan 76 ribu orang. Adapun, sampai tahun 2019 terdapat 3.000 hotel dan 12.000 restoran di Jabar yang berpotensi untuk memberdayakan para disabilitas.\n\n[Data grafik] Provinsi Banten: 139 ribu | Sulawesi Selatan: 75 ribu",
+        q: "Berdasarkan grafik, jika Sulawesi Selatan berhasil menyerap 140 ribu karyawan difabel, maka ….",
+        opts: [
+          "A. Provinsi Jawa Barat akan menjadi urutan pertama jumlah difabel terbanyak",
+          "B. Provinsi Jawa Tengah akan naik urutannya menjadi urutan pertama terbanyak",
+          "C. Provinsi Sulawesi Selatan akan turun satu peringkat menjadi urutan ke-10",
+          "D. Provinsi Banten akan berada di urutan ke-5 setelah Sulawesi Selatan",
+          "E. Provinsi Lampung akan menjadi urutan terakhir jumlah difabel terbanyak"
+        ],
+        ans: "D",
+        expl: "Jika Sulawesi Selatan menyerap 140 ribu (semula 75 ribu), urutannya naik melampaui Banten (139 ribu) menjadi urutan ke-4. Dengan demikian Provinsi Banten turun ke urutan ke-5 setelah Sulawesi Selatan.",
+        materi: "Literasi Bahasa Indonesia — Interpretasi Data Grafik"
+      },
+      {
+        teks: "[Data grafik] Jumlah karyawan difabel 2019: Jawa Barat 296 ribu | Jawa Timur 225 ribu | Jawa Tengah 223 ribu | Banten 139 ribu | Sumatra Utara 128 ribu | DKI Jakarta 76 ribu | Sulawesi Selatan 75 ribu | Riau 70 ribu | Sumatra Selatan 67 ribu | Lampung 61 ribu",
+        q: "Selisih antara Provinsi Sumatera Selatan dan Banten terkait penyerapan karyawan difabel adalah ….",
+        opts: [
+          "A. 73 ribu Karyawan difabel",
+          "B. 72 ribu Karyawan difabel",
+          "C. 80 ribu Karyawan difabel",
+          "D. 70 ribu Karyawan difabel",
+          "E. 82 ribu Karyawan difabel"
+        ],
+        ans: "B",
+        expl: "Provinsi Sumatera Selatan: 67 ribu; Provinsi Banten: 139 ribu. Selisihnya: 139 − 67 = 72 ribu karyawan difabel.",
+        materi: "Literasi Bahasa Indonesia — Operasi Data Grafik"
+      },
+      {
+        teks: "Undang-undang Nomor 8 tahun 2016 tentang Penyandang Disabilitas mewajibkan pemerintah, pemerintah daerah, BUMN/BUMD mempekerjakan paling sedikit 2 persen penyandang disabilitas dari jumlah pegawai. Serta mewajibkan perusahaan swasta mempekerjakan sedikitnya 1 persen penyandang disabilitas.",
+        q: "UU yang mewajibkan mempekerjakan sedikitnya 1–2 persen penyandang disabilitas ialah ....",
+        opts: [
+          "A. UU ITE No.8 tahun 1994",
+          "B. UUD 1945",
+          "C. UU No. 20 tahun 2003",
+          "D. UU No. 8 tahun 2016",
+          "E. UU No. 11 tahun 2020"
+        ],
+        ans: "D",
+        expl: "Berdasarkan teks tersebut, UU yang mewajibkan mempekerjakan sedikitnya 2 persen penyandang disabilitas ialah UU No. 8 tahun 2016 tentang Penyandang Disabilitas.",
+        materi: "Literasi Bahasa Indonesia — Informasi Tersurat"
+      },
+      {
+        teks: "[Data grafik] Jumlah karyawan difabel 2019: Banten 139 ribu | Riau 70 ribu | (data provinsi lain tersedia)",
+        q: "Berdasarkan grafik tersebut, berapa jumlah karyawan difabel di Banten dan Riau?",
+        opts: [
+          "A. 119 ribu",
+          "B. 200 ribu",
+          "C. 224 ribu",
+          "D. 129 ribu",
+          "E. 209 ribu"
+        ],
+        ans: "E",
+        expl: "Provinsi Banten: 139 ribu karyawan difabel. Provinsi Riau: 70 ribu karyawan difabel. Jumlahnya: 139 + 70 = 209 ribu karyawan difabel.",
+        materi: "Literasi Bahasa Indonesia — Operasi Data Grafik"
+      },
+
+      // ── WACANA 2: Jabatan Manajer Perempuan (Soal 8–10) ────────
+      {
+        teks: "Data Badan Pusat Statistik (BPS) mencatat jabatan manajer di perusahaan-perusahaan Indonesia masih didominasi laki-laki. Dalam tiga tahun terakhir, angka tertinggi ada di 2016 sebesar 75,83%. Sebaliknya, hanya 24,17% jabatan manajer yang diisi oleh perempuan.\n\nMeskipun laki-laki masih mendominasi jabatan manajer, namun jumlahnya mulai berkurang perlahan pada 2017 dan 2018. Masing-masing sebesar 73,37% dan 71,03%. Kepercayaan terhadap perempuan untuk mengemban tugas sebagai manajer pun bertambah. Pada 2017 sebanyak 26,63% perempuan menjabat sebagai manajer. Tahun berikutnya naik menjadi 28,97%.\n\nRiset McKinsey tahun 2018 menyebutkan kesetaraan gender mampu mendongkrak Produk Domestik Bruto (PDB) tahunan Indonesia sebanyak US$ 135 miliar pada 2025. Kesetaraan gender perlu dukungan dari beragam pihak, baik pemerintah, swasta, dan individu.",
+        q: "Berdasarkan pemahaman kamu terhadap bacaan tersebut. Manakah pernyataan yang tidak tepat?",
+        opts: [
+          "A. Perempuan sudah mendominasi jabatan manager pada tahun 2017 dan 2018",
+          "B. Kesetaraan gender perlu dukungan dari beragam pihak, baik pemerintah, swasta, dan individu",
+          "C. Jabatan manajer di perusahaan-perusahaan Indonesia masih didominasi laki-laki",
+          "D. Kepercayaan terhadap perempuan untuk mengemban tugas sebagai manajer bertambah",
+          "E. Kesetaraan gender mampu mendongkrak Produk Domestik Bruto (PDB) tahunan Indonesia sebanyak US$ 135 miliar pada 2025"
+        ],
+        ans: "A",
+        expl: "Pernyataan A tidak tepat karena berdasarkan data BPS, jabatan manajer masih didominasi laki-laki pada 2017 (73,37%) dan 2018 (71,03%). Perempuan BELUM mendominasi — perempuan hanya 26,63% (2017) dan 28,97% (2018).",
+        materi: "Literasi Bahasa Indonesia — Pernyataan Tidak Tepat"
+      },
+      {
+        teks: "Data Badan Pusat Statistik (BPS) mencatat jabatan manajer di perusahaan-perusahaan Indonesia masih didominasi laki-laki. Dalam tiga tahun terakhir, angka tertinggi ada di 2016 sebesar 75,83%. Meskipun laki-laki masih mendominasi jabatan manajer, namun jumlahnya mulai berkurang perlahan pada 2017 dan 2018. Masing-masing sebesar 73,37% dan 71,03%. Kepercayaan terhadap perempuan untuk mengemban tugas sebagai manajer pun bertambah. Pada 2017 sebanyak 26,63% perempuan menjabat sebagai manajer. Tahun berikutnya naik menjadi 28,97%.",
+        q: "Kesimpulan yang tepat berdasarkan teks tersebut adalah ….",
+        opts: [
+          "A. Mau sekeras apapun usaha perempuan, jabatan manajer akan terus didominasi oleh laki-laki",
+          "B. Tingkat kepercayaan terhadap laki-laki untuk mengemban tugas sebagai manajer menurun drastis",
+          "C. Menurut data, selama tiga tahun terakhir tingkat kepercayaan terhadap perempuan untuk mengemban tugas sebagai manajer menurun drastis",
+          "D. Meskipun laki-laki masih mendominasi jabatan manajer, tetapi tingkat kepercayaan terhadap perempuan untuk mengemban tugas sebagai manajer bertambah",
+          "E. Meskipun laki-laki masih mendominasi jabatan manajer, tetapi tingkat kepercayaan terhadap laki-laki mulai menurun untuk mengemban tugas sebagai manajer"
+        ],
+        ans: "D",
+        expl: "Berdasarkan data, laki-laki masih mendominasi jabatan manajer, tetapi perlahan tingkat kepercayaan terhadap perempuan mulai naik (dari 24,17% → 26,63% → 28,97%). Opsi D paling tepat dan akurat mewakili isi teks.",
+        materi: "Literasi Bahasa Indonesia — Simpulan Teks"
+      },
+      {
+        teks: "Data Badan Pusat Statistik (BPS) mencatat jabatan manajer di perusahaan-perusahaan Indonesia masih didominasi laki-laki. Kepercayaan terhadap perempuan untuk mengemban tugas sebagai manajer pun bertambah. Pada 2017 sebanyak 26,63% perempuan menjabat sebagai manajer. Tahun berikutnya naik menjadi 28,97%.\n\n[Grafik] Jabatan Manajer Berdasarkan Jenis Kelamin 2016–2018: Laki-laki mendominasi di atas 70%; perempuan di bawah 30%.",
+        q: "Berdasarkan grafik, berikut adalah pernyataan yang tepat ….",
+        opts: [
+          "A. Pada tahun 2017, tingkat kepercayaan terhadap perempuan untuk mengemban tugas sebagai manajer berkurang menjadi di bawah 20%",
+          "B. Pada tahun 2018, 90% jabatan manajer dipegang oleh laki-laki",
+          "C. Pada tahun 2018, tingkat kepercayaan terhadap laki-laki untuk mengemban tugas sebagai manajer lebih rendah daripada perempuan",
+          "D. Pada tahun 2017, tingkat kepercayaan terhadap perempuan untuk mengemban tugas sebagai manajer bertambah, tetapi tidak sampai di angka 30%",
+          "E. Tingkat kepercayaan terhadap perempuan untuk mengemban tugas sebagai manajer bertambah sebanyak 50%"
+        ],
+        ans: "D",
+        expl: "Berdasarkan grafik dan teks, kenaikan tingkat kepercayaan terhadap perempuan memang naik pada 2017, tetapi tidak sampai 30% — sesuai teks yaitu 26,63%.",
+        materi: "Literasi Bahasa Indonesia — Interpretasi Grafik"
+      },
+
+      // ── WACANA 3: Keuangan Syariah (Soal 11–17) ────────────────
+      {
+        teks: "Aset keuangan syariah global telah mencapai AS$2,52 triliun pada tahun 2018. Angka tersebut meningkat 3,5 persen dari tahun sebelumnya, yaitu AS$2,46 triliun. Setiap tahunnya, aset Industri keuangan syariah dunia diperkirakan bertumbuh 5,5 persen secara rata-rata, dan akan menembus AS$3,47 triliun di 2024.\n\nPorsi aset keuangan syariah global masih didominasi oleh perbankan syariah, yakni sebesar 70 persen. Sektor ini sempat mengalami perlambatan pertumbuhan yang disebabkan oleh adanya transformasi melalui reorganisasi atau konsolidasi untuk mendorong terciptanya entitas berskala besar.\n\nDi sisi lain, surat utang syariah (sukuk) terus menunjukkan pertumbuhan yang baik seiring meningkatnya penggunaan sukuk sebagai alat pembiayaan korporasi dan pemerintahan. Porsi penerbitan sukuk sendiri tumbuh 10 persen pada 2018 menjadi AS$470 miliar.",
+        q: "Berdasarkan pemahaman kamu terhadap bacaan tersebut. Manakah pernyataan yang tepat?",
+        opts: [
+          "A. Aset keuangan syariah global telah mencapai AS$2,52 triliun pada tahun 2018",
+          "B. Aset Industri keuangan syariah dunia diperkirakan bertumbuh 9,5 persen secara rata-rata",
+          "C. Porsi aset keuangan syariah global masih didominasi oleh sukuk Syariah",
+          "D. Porsi aset perbankan syariah mencapai 80 persen",
+          "E. Porsi penerbitan sukuk tumbuh 10 persen pada 2019"
+        ],
+        ans: "A",
+        expl: "Berdasarkan teks, pernyataan yang tepat adalah aset keuangan syariah global telah mencapai AS$2,52 triliun pada tahun 2018. Opsi B salah (5,5% bukan 9,5%). Opsi C salah (perbankan syariah yang mendominasi, bukan sukuk). Opsi D salah (70%, bukan 80%). Opsi E salah (2018, bukan 2019).",
+        materi: "Literasi Bahasa Indonesia — Fakta dalam Teks"
+      },
+      {
+        teks: "Porsi aset keuangan syariah global masih didominasi oleh perbankan syariah, yakni sebesar 70 persen. Sektor ini sempat mengalami perlambatan pertumbuhan yang disebabkan oleh adanya transformasi melalui reorganisasi atau konsolidasi untuk mendorong terciptanya entitas berskala besar.",
+        q: "Berdasarkan teks tersebut, berapa persen jumlah porsi aset perbankan syariah?",
+        opts: [
+          "A. 19 persen",
+          "B. 119 persen",
+          "C. 70 persen",
+          "D. 4 persen",
+          "E. 7 persen"
+        ],
+        ans: "C",
+        expl: "Berdasarkan teks, distribusi aset keuangan syariah pada perbankan syariah sebesar 70 persen di tahun 2018.",
+        materi: "Literasi Bahasa Indonesia — Informasi Tersurat"
+      },
+      {
+        teks: "Aset keuangan syariah global telah mencapai AS$2,52 triliun pada tahun 2018. Porsi aset keuangan syariah global masih didominasi oleh perbankan syariah, yakni sebesar 70 persen. Di sisi lain, surat utang syariah (sukuk) terus menunjukkan pertumbuhan yang baik seiring meningkatnya penggunaan sukuk sebagai alat pembiayaan korporasi dan pemerintahan. Porsi penerbitan sukuk sendiri tumbuh 10 persen pada 2018 menjadi AS$470 miliar.",
+        q: "Kesimpulan yang tepat berdasarkan teks tersebut adalah ...",
+        opts: [
+          "A. Porsi aset keuangan syariah global masih didominasi oleh perbankan syariah meskipun sukuk terus menunjukkan pertumbuhan",
+          "B. Aset Industri keuangan syariah dunia diperkirakan bertumbuh",
+          "C. Porsi penerbitan sukuk tumbuh 10 persen pada 2018",
+          "D. Aset keuangan syariah Indonesia peringkat 7 dunia",
+          "E. Sektor keuangan syariah mengalami perlambatan dan pertumbuhan"
+        ],
+        ans: "A",
+        expl: "Kesimpulan teks: secara keseluruhan porsi aset keuangan syariah global masih didominasi oleh perbankan syariah meskipun sukuk terus menunjukkan pertumbuhan. Opsi A paling komprehensif dan akurat.",
+        materi: "Literasi Bahasa Indonesia — Simpulan Teks"
+      },
+      {
+        teks: "[Grafik Distribusi Aset Keuangan Syariah, 2018] Perbankan syariah: 70% | Sukuk syariah: 19% | Lainnya: 7% | Pendanaan syariah: 4%",
+        q: "Porsi distribusi aset keuangan syariah mana yang mencapai lebih dari 50 persen?",
+        opts: [
+          "A. Pendanaan syariah",
+          "B. Sukuk syariah",
+          "C. Lainnya",
+          "D. Pasar modal",
+          "E. Perbankan syariah"
+        ],
+        ans: "E",
+        expl: "Berdasarkan grafik, aset keuangan syariah yang mencapai lebih dari 50 persen adalah perbankan syariah, yaitu 70 persen.",
+        materi: "Literasi Bahasa Indonesia — Interpretasi Grafik"
+      },
+      {
+        teks: "[Grafik Distribusi Aset Keuangan Syariah, 2018] Perbankan syariah: 70% | Sukuk syariah: 19% | Lainnya: 7% | Pendanaan syariah: 4%",
+        q: "Jika jumlah persentase pendanaan syariah, sukuk syariah, dan lainnya pada grafik tersebut dijumlahkan, maka ...",
+        opts: [
+          "A. Perbankan syariah masih mendominasi aset keuangan syariah",
+          "B. Pendanaan syariah mendominasi aset keuangan syariah",
+          "C. Lainnya menjadi peringkat pertama aset keuangan syariah",
+          "D. Pendanaan syariah, sukuk syariah, dan lainnya mencapai lebih dari 50 persen",
+          "E. Distribusi aset keuangan syariah yang paling rendah ditempati oleh sukuk syariah"
+        ],
+        ans: "A",
+        expl: "Jika pendanaan syariah (4%) + sukuk syariah (19%) + lainnya (7%) dijumlahkan = 30 persen. Hal ini membuktikan bahwa perbankan syariah mendominasi aset keuangan syariah dengan persentase 70 persen.",
+        materi: "Literasi Bahasa Indonesia — Interpretasi Data"
+      },
+      {
+        teks: "Di sisi lain, surat utang syariah (sukuk) terus menunjukkan pertumbuhan yang baik seiring meningkatnya penggunaan sukuk sebagai alat pembiayaan korporasi dan pemerintahan. Porsi penerbitan sukuk sendiri tumbuh 10 persen pada 2018 menjadi AS$470 miliar.",
+        q: "Pada tahun berapa porsi penerbitan sukuk tumbuh sebesar 10 persen?",
+        opts: [
+          "A. 2019",
+          "B. 2020",
+          "C. 2021",
+          "D. 2018",
+          "E. 2017"
+        ],
+        ans: "D",
+        expl: "Berdasarkan teks tersebut, porsi penerbitan sukuk tumbuh sebesar 10 persen pada tahun 2018.",
+        materi: "Literasi Bahasa Indonesia — Informasi Tersurat"
+      },
+      {
+        teks: "[Grafik Distribusi Aset Keuangan Syariah, 2018] Perbankan syariah: 70% | Sukuk syariah: 19% | Lainnya: 7% | Pendanaan syariah: 4%",
+        q: "Berikut adalah distribusi aset keuangan syariah tahun 2018, kecuali….",
+        opts: [
+          "A. Pendanaan syariah",
+          "B. Reksadana",
+          "C. Semua benar",
+          "D. Sukuk syariah",
+          "E. Perbankan syariah"
+        ],
+        ans: "B",
+        expl: "Berdasarkan grafik, distribusi aset keuangan syariah tahun 2018 adalah pendanaan syariah, sukuk syariah, perbankan syariah, dan lainnya. Reksadana tidak termasuk dalam distribusi grafik tersebut.",
+        materi: "Literasi Bahasa Indonesia — Identifikasi Data Grafik"
+      },
+
+      // ── WACANA 4: Covid-19 Asia Tenggara (Soal 18–20) ──────────
+      {
+        teks: "Tak hanya di Indonesia, kasus positif Covid-19 terus bertambah setiap harinya di beberapa negara Asia Tenggara. Berdasarkan data Worldometer per September 2020, lima negara dengan kasus tertinggi di wilayah tersebut yakni Filipina, Indonesia, Singapura, Malaysia, dan Thailand. Namun, dari kelima negara tersebut Indonesia menjadi 'pemimpin' terkait jumlah kasus meninggal akibat Covid-19. Tercatat, total kasus kematian di tanah air mencapai 8.130 kasus.\n\nKasus kematian Covid-19 terendah yakni Singapura dengan total 27 kasus. Sedangkan, Filipina, Malaysia, dan Thailand mencatat jumlah kasus kematian korban masing-masing adalah 3.890 kasus, 128 kasus, dan 58 kasus.",
+        q: "Manakah pernyataan yang tidak tepat berdasarkan teks tersebut?",
+        opts: [
+          "A. Kasus positif Covid-19 terus bertambah setiap harinya di beberapa negara Asia Tenggara",
+          "B. Indonesia menjadi pemimpin jumlah kasus meninggal akibat Covid-19",
+          "C. Lima negara dengan kasus tertinggi Covid-19 di Asia Tenggara yakni Filipina, Indonesia, Singapura, Malaysia, dan Thailand",
+          "D. Kasus kematian korban Covid-19 di Filipina adalah 3.890 kasus",
+          "E. Kasus kematian korban Covid-19 di Filipina adalah 8.130 kasus"
+        ],
+        ans: "E",
+        expl: "Pernyataan E tidak tepat. Berdasarkan teks, kasus kematian di Filipina adalah 3.890 kasus. Angka 8.130 kasus adalah total kasus kematian di Indonesia, bukan Filipina.",
+        materi: "Literasi Bahasa Indonesia — Pernyataan Tidak Tepat"
+      },
+      {
+        teks: "Berdasarkan data Worldometer per September 2020, lima negara dengan kasus tertinggi di wilayah tersebut yakni Filipina, Indonesia, Singapura, Malaysia, dan Thailand. Namun, dari kelima negara tersebut Indonesia menjadi 'pemimpin' terkait jumlah kasus meninggal akibat Covid-19.",
+        q: "Berdasarkan teks tersebut, yang tidak termasuk lima negara dengan kasus tertinggi di wilayah Asia Tenggara adalah…",
+        opts: [
+          "A. Indonesia",
+          "B. Filipina",
+          "C. Singapura",
+          "D. Thailand",
+          "E. Vietnam"
+        ],
+        ans: "E",
+        expl: "Lima negara dengan kasus tertinggi di Asia Tenggara adalah Filipina, Indonesia, Singapura, Malaysia, dan Thailand. Jadi, yang tidak termasuk adalah negara Vietnam.",
+        materi: "Literasi Bahasa Indonesia — Informasi Tersurat"
+      },
+      {
+        teks: "[Grafik] Kasus Covid-19 Terbanyak di Asia Tenggara (per 7 September 2020): Thailand 3.445 | Malaysia 9.459 | Singapura 57.044 | Indonesia 196.989 | Filipina 238.727",
+        q: "Berdasarkan grafik tersebut, negara dengan jumlah kasus Covid-19 terendah di Asia Tenggara adalah…",
+        opts: [
+          "A. Singapura",
+          "B. Filipina",
+          "C. Thailand",
+          "D. Indonesia",
+          "E. Malaysia"
+        ],
+        ans: "C",
+        expl: "Berdasarkan grafik, negara dengan jumlah kasus Covid-19 terendah di Asia Tenggara adalah negara Thailand dengan jumlah kasus 3.445 per September 2020.",
+        materi: "Literasi Bahasa Indonesia — Interpretasi Grafik"
+      },
+
+      // ── WACANA 5: Kualitas Udara (Soal 21–26) ──────────────────
+      {
+        teks: "Kualitas udara di Tangerang Sel. (Banten) pada Selasa, 15 September 2020 pagi diprediksi paling tidak sehat di Indonesia. Menurut permodelan AirVisual, indeks kualitas udara (AQI) Tangerang Sel. berada di angka 174 pada pukul 06.00 WIB.\n\nCatatan ini lebih buruk dari kemarin pagi, yang berada pada AQI 166, atau terbilang tidak sehat. Data kualitas udara (AQI) menunjukkan bahwa semakin tinggi nilainya, maka udara semakin tidak sehat.\n\nRekor Tangerang Sel. termasuk yang tertinggi di antara spot lain di Indonesia, seperti Bekasi (Jawa Barat) dengan AQI 160, disusul Surabaya (Jawa Timur) dengan AQI 159.\n\nDi sisi lain, spot yang diprediksi memiliki kualitas udara terbaik di Indonesia adalah di Manokwari (Papua Barat) dengan AQI 9, disusul oleh Luwuk (Sulawesi Tengah), Bitung (Sulawesi Utara), dan 3 spot lain dengan AQI 13.\n\nPatut dicatat, prakiraan AirVisual tidak dapat mempertimbangkan peristiwa luar biasa, seperti bencana atau aturan terkait emisi gas buang kendaraan yang ditetapkan pemerintah. Karena itu, AirVisual menyatakan prediksinya bisa saja kurang akurat terkait dengan faktor tersebut.",
+        q: "Berdasarkan pemahaman kamu terhadap bacaan tersebut. Manakah pernyataan yang tepat?",
+        opts: [
+          "A. Kualitas udara di Tangerang Sel. (Banten) pada Selasa, 15 September 2020 pagi diprediksi paling sehat di Indonesia",
+          "B. Rekor Tangerang Sel. termasuk yang terendah di antara spot lain di Indonesia",
+          "C. Spot yang diprediksi memiliki kualitas udara paling tidak sehat di Indonesia adalah di Manokwari",
+          "D. Prakiraan AirVisual dapat mempertimbangkan peristiwa luar biasa, seperti bencana atau aturan terkait emisi gas buang kendaraan yang ditetapkan pemerintah",
+          "E. Data kualitas udara (AQI) menunjukkan bahwa semakin tinggi nilainya, maka udara semakin tidak sehat"
+        ],
+        ans: "E",
+        expl: "Berdasarkan teks, pernyataan yang tepat adalah: data kualitas udara (AQI) menunjukkan bahwa semakin tinggi nilainya, maka udara semakin tidak sehat.",
+        materi: "Literasi Bahasa Indonesia — Pernyataan Tepat"
+      },
+      {
+        teks: "Menurut permodelan AirVisual, indeks kualitas udara (AQI) Tangerang Sel. berada di angka 174 pada pukul 06.00 WIB.",
+        q: "Berdasarkan teks tersebut, berapa indeks kualitas udara (AQI) Tangerang Selatan pada hari Selasa, 15 September 2020 pukul 06.00 WIB?",
+        opts: [
+          "A. 13",
+          "B. 9",
+          "C. 174",
+          "D. 159",
+          "E. 160"
+        ],
+        ans: "C",
+        expl: "Berdasarkan teks tersebut, indeks kualitas udara (AQI) Tangerang Selatan pada hari Selasa, 15 September 2020 pukul 06.00 WIB adalah 174.",
+        materi: "Literasi Bahasa Indonesia — Informasi Tersurat"
+      },
+      {
+        teks: "Patut dicatat, prakiraan AirVisual tidak dapat mempertimbangkan peristiwa luar biasa, seperti bencana atau aturan terkait emisi gas buang kendaraan yang ditetapkan pemerintah. Karena itu, AirVisual menyatakan prediksinya bisa saja kurang akurat terkait dengan faktor tersebut.",
+        q: "Kesimpulan yang tepat berdasarkan teks tersebut adalah ...",
+        opts: [
+          "A. Prakiraan AirVisual tidak dapat mempertimbangkan peristiwa luar biasa tetapi hanya menyatakan prediksinya yang bisa saja kurang akurat",
+          "B. Indeks kualitas udara (AQI) Tangerang Sel. berada di angka 174 pada pukul 06.00 WIB",
+          "C. Rekor Tangerang Sel. termasuk yang tertinggi di antara spot lain di Indonesia",
+          "D. Spot yang diprediksi memiliki kualitas udara terbaik di Indonesia adalah di Manokwari (Papua Barat) dengan AQI 9",
+          "E. Data kualitas udara (AQI) menunjukkan bahwa semakin tinggi nilainya, maka udara semakin tidak sehat"
+        ],
+        ans: "A",
+        expl: "Kesimpulan teks diambil berdasarkan tujuan teks yang menginformasikan bahwa prakiraan AirVisual tidak dapat mempertimbangkan peristiwa luar biasa tetapi hanya menyatakan prediksinya yang bisa saja kurang akurat.",
+        materi: "Literasi Bahasa Indonesia — Simpulan Teks"
+      },
+      {
+        teks: "[Grafik 10 Spot Terbaik Kualitas Udara] Manokwari (Papua Barat): AQI 9 | Luwuk, Bitung, Manado, Tomohon, Tondano: AQI 13 | Banda Aceh, Lambaro, Sabang, Amlapura: AQI 17",
+        q: "Spot terbaik kualitas udara terdapat di wilayah?",
+        opts: [
+          "A. Bandung",
+          "B. Depok",
+          "C. Surabaya",
+          "D. Labuan Bajo",
+          "E. Manokwari"
+        ],
+        ans: "E",
+        expl: "Berdasarkan grafik, spot terbaik kualitas udara terdapat di wilayah Manokwari (Papua Barat) dengan AQI 9 — nilai terendah berarti udara paling sehat.",
+        materi: "Literasi Bahasa Indonesia — Identifikasi Data Grafik"
+      },
+      {
+        teks: "[Grafik 10 Spot Terburuk Kualitas Udara] Tangerang Sel. (Banten): 174 | Bekasi (Jawa Barat): 160 | Surabaya (Jawa Timur): 159 | Bandung (Jawa Barat): 154 | Pamulang (Banten): 153 | Depok (Jawa Barat): 153 | Parung (Jawa Barat): 153 | Sawangan (Jawa Barat): 153 | Labuan Bajo (NTT): 152 | Ciampea (Jawa Barat): 152",
+        q: "Wilayah yang tidak termasuk spot kualitas udara terburuk di wilayah Jawa Barat adalah…",
+        opts: [
+          "A. Kuningan",
+          "B. Bandung",
+          "C. Depok",
+          "D. Bekasi",
+          "E. Sawangan"
+        ],
+        ans: "A",
+        expl: "Berdasarkan grafik, spot kualitas udara terburuk di Jawa Barat adalah Bekasi, Bandung, Depok, Parung, Sawangan, dan Ciampea. Kuningan tidak termasuk dalam daftar tersebut.",
+        materi: "Literasi Bahasa Indonesia — Identifikasi Data Grafik"
+      },
+      {
+        teks: "[Grafik 10 Spot Terbaik Kualitas Udara] Manokwari (Papua Barat): AQI 9 | Lainnya AQI 13–17. [Grafik 10 Spot Terburuk] Labuan Bajo (NTT): AQI 152",
+        q: "Jika Labuan Bajo memiliki data kualitas udara (AQI) dengan angka 8, maka ...",
+        opts: [
+          "A. Sabang akan menjadi spot terbaik kualitas udara",
+          "B. Labuan Bajo akan menjadi spot terbaik kualitas udara",
+          "C. Ciampea akan menjadi spot terburuk kualitas udara",
+          "D. Amlapura akan menjadi spot terbaik kualitas udara",
+          "E. Luwuk akan menjadi spot terburuk kualitas udara"
+        ],
+        ans: "B",
+        expl: "Jika Labuan Bajo memiliki AQI 8 (lebih rendah dari Manokwari yang AQI 9), maka Labuan Bajo akan menjadi spot terbaik kualitas udara karena nilai AQI yang lebih rendah berarti udara lebih sehat.",
+        materi: "Literasi Bahasa Indonesia — Penalaran Hipotesis Data"
+      },
+
+      // ── WACANA 6: Pernikahan Dini (Soal 27–30) ─────────────────
+      {
+        teks: "Pandemi Covid-19 membawa masalah baru dengan meningkatnya jumlah pernikahan dini di Indonesia. Pada Januari-Juni 2020, 34.000 permohonan dispensasi pernikahan dini (di bawah 19 tahun) diajukan, 97% di antaranya dikabulkan, seperti dikutip dari BBC.com. Padahal sepanjang 2019, hanya terdapat 23.700 permohonan.\n\nPersoalan pernikahan dini telah menjadi permasalahan tersendiri bagi Indonesia. Berdasarkan data 2018, pernikahan dini ditemukan di seluruh bagian Indonesia. Sebanyak 1.184.100 perempuan berusia 20-24 tahun telah menikah di usia 18 tahun. Jumlah terbanyak berada di Jawa dengan 668.900 perempuan.\n\nBeragam faktor melatarbelakangi pernikahan usia muda. Beberapa di antaranya sebagai solusi persoalan ekonomi keluarga, pengaruh norma agama dan budaya setempat, serta minimnya edukasi terkait pernikahan dini.",
+        q: "Berdasarkan pemahaman kamu terhadap bacaan tersebut. Manakah pernyataan yang tidak tepat?",
+        opts: [
+          "A. Jumlah pernikahan dini di Indonesia meningkat",
+          "B. Beragam faktor melatarbelakangi pernikahan usia muda",
+          "C. Sebanyak 1.188.100 perempuan berusia 20-24 telah menikah di usia 18 tahun",
+          "D. Jumlah terbanyak pernikahan dini adalah di Jawa",
+          "E. Pada 2019 terdapat 23.700 permohonan"
+        ],
+        ans: "C",
+        expl: "Pernyataan C tidak tepat karena angka yang benar adalah 1.184.100 perempuan (bukan 1.188.100). Semua opsi lainnya sesuai dengan teks.",
+        materi: "Literasi Bahasa Indonesia — Pernyataan Tidak Tepat"
+      },
+      {
+        teks: "Pandemi Covid-19 membawa masalah baru dengan meningkatnya jumlah pernikahan dini di Indonesia. Pada Januari-Juni 2020, 34.000 permohonan dispensasi pernikahan dini (di bawah 19 tahun) diajukan, 97% di antaranya dikabulkan. Padahal sepanjang 2019, hanya terdapat 23.700 permohonan.",
+        q: "Berdasarkan teks tersebut, jumlah permohonan dispensasi pernikahan dini pada Januari-Juni 2020 adalah ...",
+        opts: [
+          "A. 668.900",
+          "B. 34.000",
+          "C. 23.700",
+          "D. 1.184.100",
+          "E. 97%"
+        ],
+        ans: "B",
+        expl: "Berdasarkan teks tersebut, jumlah permohonan dispensasi pernikahan dini pada Januari-Juni 2020 adalah 34.000.",
+        materi: "Literasi Bahasa Indonesia — Informasi Tersurat"
+      },
+      {
+        teks: "[Grafik] Jumlah Anak Perempuan Menikah Dini Berdasarkan Regional (2018): Jawa ~668.900 | Sumatra ~200.000 | Sulawesi ~130.000 | Kalimantan ~100.000 | Bali & Nusa Tenggara ~70.000 | Maluku & Papua ~40.000",
+        q: "Berdasarkan grafik tersebut, berapa jumlah anak perempuan menikah dini berdasarkan regional di Kalimantan?",
+        opts: [
+          "A. 100.000",
+          "B. 670.000",
+          "C. 180.000",
+          "D. 120.000",
+          "E. 50.000"
+        ],
+        ans: "A",
+        expl: "Berdasarkan grafik, jumlah anak perempuan menikah dini berdasarkan regional di Kalimantan adalah sekitar 100.000 orang.",
+        materi: "Literasi Bahasa Indonesia — Interpretasi Grafik"
+      },
+      {
+        teks: "[Grafik] Jumlah Anak Perempuan Menikah Dini Berdasarkan Regional (2018): Jawa ~668.900 | Sumatra ~200.000 | Sulawesi ~130.000 | Kalimantan ~100.000 | Bali & Nusa Tenggara ~70.000 | Maluku & Papua ~40.000",
+        q: "Wilayah dengan pernikahan anak perempuan usia dini terendah berada di wilayah …",
+        opts: [
+          "A. Jawa dan Bali",
+          "B. Nusa Tenggara dan Maluku",
+          "C. Papua dan Maluku",
+          "D. Papua dan Nusa Tenggara",
+          "E. Nusa Tenggara dan Bali"
+        ],
+        ans: "C",
+        expl: "Berdasarkan grafik, wilayah dengan pernikahan anak perempuan usia dini terendah berada di wilayah Papua dan Maluku (digabung dalam satu kategori Maluku & Papua dengan angka paling kecil).",
+        materi: "Literasi Bahasa Indonesia — Interpretasi Grafik"
+      }
+    ],
+
+    // ── LITERASI BAHASA INGGRIS (20 soal) ───────────────────────
+    // Sumber: Latihan Soal UTBK-SNBT 2023-2024 (ainamulyana.blogspot.com)
+    literasi_ing: [
+
+      // ── TEXT 1: Cats (Soal 1–2) ──────────────────────────────
+      {
+        teks: "Cats also called the domestic cat or house cat (with its scientific name: Felis silvestris catus or Felis catus) is a type of carnivorous mammal of the family Felidae. The word 'cat' generally refers to a 'cat' that has been tamed, but can also refer to the 'big cats' such as lions and tigers.\n\nCats are considered as 'perfect carnivore' with teeth and particular digestive tract. The first premolar and molar teeth form a pair of fangs on each side of the mouth that works effectively as a pair of scissors to tear the meat. Although these features also exist in the Canidae or dog, but these traits are better developed in cats.\n\nUnlike other carnivores, cats eat almost non vegetable substance. Bears and dogs sometimes eat berries, roots, or honey as a supplement, while cats only eat meat, usually freshly killed prey. In captivity, cats cannot adapt to a vegetarian diet because they cannot synthesize all the amino acids from plant material; it is in contrast with domesticated dogs, which commonly are fed a mixture of meat and vegetables and sometimes they can adapt to a completely vegetarian meal.\n\nCats have mingled with human life since at least 6000 BC, from the skeleton of the cat found on the island of Cyprus. The ancient Egyptians of 3500 BC have used cats to keep away the rats or other rodents from the barn where the crops were saved. Currently, the cat is one of the most popular pets in the world.",
+        q: '"….., but these traits are better developed in cats." (Paragraph 2). The word "traits" could best be replaced by ….',
+        opts: [
+          "A. Tries",
+          "B. Trails",
+          "C. Trials",
+          "D. Characteristics",
+          "E. Characterized"
+        ],
+        ans: "D",
+        expl: "Characteristics (karakter/ciri-ciri/sifat) adalah persamaan kata dari traits (karakter/ciri-ciri/sifat).",
+        materi: "Literasi Bahasa Inggris — Vocabulary (Synonym)"
+      },
+      {
+        teks: "Cats also called the domestic cat or house cat (with its scientific name: Felis silvestris catus or Felis catus) is a type of carnivorous mammal of the family Felidae. The word 'cat' generally refers to a 'cat' that has been tamed, but can also refer to the 'big cats' such as lions and tigers.\n\nCats are considered as 'perfect carnivore' with teeth and particular digestive tract. The first premolar and molar teeth form a pair of fangs on each side of the mouth that works effectively as a pair of scissors to tear the meat. Although these features also exist in the Canidae or dog, but these traits are better developed in cats.\n\nUnlike other carnivores, cats eat almost non vegetable substance. Bears and dogs sometimes eat berries, roots, or honey as a supplement, while cats only eat meat, usually freshly killed prey. In captivity, cats cannot adapt to a vegetarian diet because they cannot synthesize all the amino acids from plant material.\n\nCats have mingled with human life since at least 6000 BC, from the skeleton of the cat found on the island of Cyprus. The ancient Egyptians of 3500 BC have used cats to keep away the rats or other rodents from the barn where the crops were saved. Currently, the cat is one of the most popular pets in the world.",
+        q: "These following statements are true, EXCEPT ….",
+        opts: [
+          "A. Cats are considered as 'perfect carnivore' with teeth and particular digestive tract",
+          "B. Cats eat almost non-vegetable substance",
+          "C. Cats cannot adapt to a vegetarian diet because they cannot synthesize all the amino acids from plant material",
+          "D. Cats have mingled with human life since at least 600 BC",
+          "E. The cat is one of the most popular pets in the world"
+        ],
+        ans: "D",
+        expl: "Pada paragraf keempat disebutkan bahwa kucing sudah berbaur dengan manusia setidaknya sejak 6000 BC (bukan 600 BC). Opsi D menyebutkan 600 BC, yang salah.",
+        materi: "Literasi Bahasa Inggris — Reading Comprehension (True/False)"
+      },
+
+      // ── TEXT 2: Burj Khalifa (Soal 3–4) ─────────────────────
+      {
+        teks: "The Burj Khalifa (or how it was called until 2010, Burj Dubai) opened on January 14th, 2010. Even before the building construction was finished, starting from 2007, it had become the highest skyscraper in the world. Its exact height is 2,722 feet, or 829.8 meters, and it obviously can be seen from any point in Dubai. The number of floors, however, is a bit fewer than some might expect: Burj Khalifa totals in 163 floors.\n\nBurj Khalifa looks like a stalagmite, which means it resembles vertical minerals growing from cave floors. Stalagmites usually have a shape of a cone, and so does Burj Khalifa.\n\nThe most impressive aspect about Burj Khalifa is that it had been planned to be a 'city within the city'. There are three entrances to the tower, because it is so huge that one or two would not be enough. At the foot of the skyscraper, there is a big artificial lake that measures up to 12 hectares.\n\nInside, the building is as magnificent as it is from the outside. The interiors were projected by famous designers. The air inside Burj Khalifa is conditioned and flavored; 57 elevators work 24 hours each day to transport visitors between floors.",
+        q: '"Inside, the building is as magnificent as it is from the outside." (paragraph 4). Which one of the following words is the ANTONYM of "magnificent"?',
+        opts: [
+          "A. Pretty",
+          "B. Beautiful",
+          "C. Great",
+          "D. Good",
+          "E. Execrable"
+        ],
+        ans: "E",
+        expl: "Execrable (sangat buruk) adalah lawan kata dari magnificent (mengagumkan). Pilihan A, B, C, dan D bukan lawan kata dari magnificent.",
+        materi: "Literasi Bahasa Inggris — Vocabulary (Antonym)"
+      },
+      {
+        teks: "The Burj Khalifa (or how it was called until 2010, Burj Dubai) opened on January 14th, 2010. Its exact height is 2,722 feet, or 829.8 meters. The number of floors is 163 floors, which is 16'2\" (about 5 meters) for each floor.\n\nThe most impressive aspect about Burj Khalifa is that it had been planned to be a 'city within the city'. There are three entrances to the tower, because it is so huge that one or two would not be enough. At the foot of the skyscraper, there is a big artificial lake that measures up to 12 hectares.\n\nInside, the building is as magnificent as it is from the outside. The interior of the Armani hotel, located on the floors from first to 39th, was designed by Giorgio Armani himself. 57 elevators work 24 hours each day to transport visitors between floors.",
+        q: "These following statements are true, EXCEPT ….",
+        opts: [
+          "A. Burj Khalifa has 163 floors, which is 16'2\" (about 5 meters) for each floor",
+          "B. There are four entrances to the tower of Burj Khalifa",
+          "C. There is a big artificial lake that measures up to 12 hectares at Burj Khalifa",
+          "D. The interior of the Armani hotel, located on the floors from first to 39th, was designed by Giorgio Armani himself",
+          "E. 57 elevators work 24 hours each day to transport visitors between floors at Burj Khalifa"
+        ],
+        ans: "B",
+        expl: "Pada paragraf ketiga disebutkan ada 3 gerbang masuk ('There are three entrances to the tower'), bukan 4. Pilihan A, C, D, dan E sudah sesuai dengan teks.",
+        materi: "Literasi Bahasa Inggris — Reading Comprehension (True/False)"
+      },
+
+      // ── TEXT 3: Age of the Earth (Soal 5–6) ─────────────────
+      {
+        teks: "We believe the Earth is about 4.6 billion years old. At present we are forced to look to other bodies in the solar system for hints as to what the early history of the Earth was like. Studies of our moon, Mercury, Mars, and the large satellites of Jupiter and Saturn have provided ample evidence that all these large celestial bodies had formed. The lunar record indicates that the rate of impacts decreased to its present low level about 4 billion years ago. On Earth, subsequent erosion and crustal motions have obliterated the craters that must have formed during this epoch.\n\nScientists estimate the Earth's age by measuring the ratios of various radioactive elements in rocks. The oldest Earth's rocks tested thus far are about 3⅓ billion years old. But no one knows whether these are the oldest rocks on Earth. Tests on rocks from the moon and on meteorites show that these are about 4.6 billion years old. Scientists believe that this is the true age of the solar system and probably the true age of the Earth.",
+        q: "It can be inferred from the passage that the age of the earth is estimated by ….",
+        opts: [
+          "A. By examining fossils and prehistoric remains",
+          "B. By showing the erosion patterns",
+          "C. By researching about volcanic activity",
+          "D. By studying about the great sun and moon",
+          "E. By measuring the ratios of various radioactive elements in rocks"
+        ],
+        ans: "E",
+        expl: "Dapat disimpulkan bahwa usia bumi diestimasi melalui 'measuring the ratios of various radioactive elements in rocks', sesuai paragraf ke-2 baris pertama.",
+        materi: "Literasi Bahasa Inggris — Reading Comprehension (Inference)"
+      },
+      {
+        teks: "On Earth, subsequent erosion and crustal motions have obliterated the craters that must have formed during this epoch.",
+        q: '"On Earth, subsequent erosion and crustal motions have obliterated the craters…." The underlined word "obliterated" is closest in meaning to ….',
+        opts: [
+          "A. Construct",
+          "B. Initiate",
+          "C. Build",
+          "D. Eliminated",
+          "E. Create"
+        ],
+        ans: "D",
+        expl: "Sinonim dari obliterated (melenyapkan) yaitu eliminated (melenyapkan). Construct = membangun; Initiate = menginisiasi; Build = membangun; Create = menciptakan.",
+        materi: "Literasi Bahasa Inggris — Vocabulary (Synonym)"
+      },
+
+      // ── TEXT 4: Legend of West Java (Soal 7) ────────────────
+      {
+        teks: "Long, long ago, when the gods and goddesses used to mingle in the affairs of mortals, there was a small kingdom on the slope of Mount Wayang in West Java. The King, named Sang Prabu, was a wise man. He had an only daughter, called Princess Teja Nirmala, who was famous for her beauty but she was not married. One day Sang Prabu made up his mind to settle the matter by a show of strength.\n\nAfter that, Prince of Blambangan, named Raden Begawan had won the competition. Unfortunately, the wicked fairy, Princess Segara fell in love with Raden Begawan and used magic power to render him unconscious and he forgot his wedding. When Sang Prabu was searching, Raden Begawan saw him and soon realized that he had been enchanted by the wicked fairy. The fairy could not accept this, so she killed Raden Begawan. When Princess Teja Nirmala heard this, she was very sad. So a nice fairy took her to the Kahyangan.",
+        q: 'What is the closest meaning to the word "mingle" in paragraph 1?',
+        opts: [
+          "A. Celebrate",
+          "B. Accelerate",
+          "C. Associate",
+          "D. Future",
+          "E. Compliment"
+        ],
+        ans: "C",
+        expl: "Associate berarti bergaul/bercampur baur — paling dekat maknanya dengan 'mingle'. Celebrate = merayakan; Accelerate = percepatan/mempercepat; Future = masa depan; Compliment = pujian.",
+        materi: "Literasi Bahasa Inggris — Vocabulary (Synonym)"
+      },
+
+      // ── TEXT 5: Paris (Soal 8) ───────────────────────────────
+      {
+        teks: "Paris is the capital city of France. It is one of the most beautiful cities in the world. It is also one of the world's most crowded cities. Lovely gardens and parks are found throughout Paris. At night, many palaces and statues are lit up. For this reason, Paris is often called the city of light. Every year, millions of people visit Paris. The most popular place to visit is the Eiffel Tower. This huge structure has become the symbol of Paris. D'Louvre, one of the world's largest art museums draws many visitors. The Cathedral Notre Dame, a famous church, is another favourite place to visit.",
+        q: '"At night, many palaces and statues are lit up." The underlined phrase is closest in meaning to ….',
+        opts: [
+          "A. Light up",
+          "B. Beautiful",
+          "C. Strong",
+          "D. Fragile",
+          "E. Famous"
+        ],
+        ans: "A",
+        expl: "'Lit up' dalam konteks kalimat ini berarti menyala/diterangi. Paling dekat dengan 'light up' yang juga berarti menyala. Beautiful = cantik; Strong = kuat; Fragile = rapuh; Famous = terkenal.",
+        materi: "Literasi Bahasa Inggris — Vocabulary (Phrasal Verb)"
+      },
+
+      // ── TEXT 6: Television Programs (Soal 9) ────────────────
+      {
+        teks: "Television gives several programs for its viewers. One kind of television program is News Report. News Report is a program that is reported all of the news in the world. This is the factual program; all of the news is a fact. Some of the news programs on television are Liputan 6 Siang, Dunia Dalam Berita, Fokus Siang, and others. Another program is an infotainment program. Same as the news program, this program is the factual program and giving information to viewers. Different from the news program, the infotainment programme informs the celebrity's news.",
+        q: '"Same as the news program, this program is the factual program and giving an information to viewers." What is the closest meaning of "viewers"?',
+        opts: [
+          "A. Traveler",
+          "B. Spectator",
+          "C. Citizen",
+          "D. Presenter",
+          "E. Director"
+        ],
+        ans: "B",
+        expl: "Spectator berarti penonton — memiliki arti yang sama dengan viewers. Traveler = petualang; Citizen = masyarakat; Presenter = pembawa acara; Director = direktur.",
+        materi: "Literasi Bahasa Inggris — Vocabulary (Synonym)"
+      },
+
+      // ── TEXT 7: Career (Soal 10) ─────────────────────────────
+      {
+        teks: "A career is an individual's journey through learning, work and other aspects of life. Everybody who has a career exactly wants to advance their career. If you want to advance your career, you will have to make some careful decisions about which jobs you take. You may have to take a lower salary for a job that offers you the experience that you need. But you should never accept a job if it is not related to your career goals.\n\nAccepting a job that is not within your career path will not give you the skill or experience you need or want. You will find yourself frustrated in such a position and consequently will not perform your best. This will have an effect on the people around you, who will not feel as if you are being part of the team.",
+        q: '"You will find yourself frustrated in such a position and consequently will not perform your best." The underlined word "frustrated" has the closest meaning to ….',
+        opts: [
+          "A. Cool",
+          "B. Stay calm",
+          "C. Depressed",
+          "D. Qualified",
+          "E. Strong"
+        ],
+        ans: "C",
+        expl: "Sinonim dari frustrated (frustasi) adalah depressed (depresi/tertekan). Cool = keren; Stay Calm = tenang; Qualified = berkualitas; Strong = kuat.",
+        materi: "Literasi Bahasa Inggris — Vocabulary (Synonym)"
+      },
+
+      // ── TEXT 8: Amelia Earhart (Soal 11–12) ─────────────────
+      {
+        teks: "One of the more famous of these was the disappearance in 1937 of a pioneer woman aviator, Amelia Earhart. On the second last stage of an attempted round the world flight, she had radioed her position as she and her navigator searched desperately for their destination, a tiny island in the Pacific.\n\nThe plane never arrived at Howland Island. One fanciful theory had her being captured by the Japanese in the Marshall Islands and later executed as an American spy; another had her living out her days under an assumed name as a housewife in New Jersey.\n\nSeventy years after Earhart's disappearance, 'myth busters' continue to search for her. She vanished into thin air. There are currently two main theories about Amelia Earhart's fate.\n\nThere were reports of distress calls from the Phoenix Islands. Some say the plane could have broadcast only if it were on land, not in the water. Newspapers at the time reported Earhart and her navigator were marooned on an island. An Earhart researcher, Elgen Long, claims that Earhart's airplane ran out of gas within fifty-two miles of the island.\n\nWhatever the explanation, the prospect of finding the remains is unsettling to many.",
+        q: "All the following are theories about Amelia's fate EXCEPT:",
+        opts: [
+          "A. She escaped incognito and lived under an assumed name",
+          "B. She crashed somewhere on Howland Island",
+          "C. She and the navigator were stranded on an island",
+          "D. She was captured by the Japanese and executed as a spy",
+          "E. She ran out of gas"
+        ],
+        ans: "B",
+        expl: "Opsi B tidak disebutkan dalam teks — teks justru menyatakan bahwa pesawat tidak pernah sampai di Howland Island. Opsi A, C, D, dan E semuanya disebutkan sebagai teori dalam teks.",
+        materi: "Literasi Bahasa Inggris — Reading Comprehension (Exception)"
+      },
+      {
+        teks: "Aircraft had developed rapidly in sophistication after World War One, with the 1920s and 1930s marked by an aeronautical record-setting frenzy.",
+        q: '"Aircraft had developed rapidly in sophistication after World War One." The underlined word "rapidly" is best replaced by ….',
+        opts: [
+          "A. Well",
+          "B. Apace",
+          "C. Moderate",
+          "D. Softly",
+          "E. Faintly"
+        ],
+        ans: "B",
+        expl: "Rapidly dalam Bahasa Indonesia berarti dengan cepat. Apace = dengan cepat. Well = baik; Moderate = sedang; Softly = dengan lembut; Faintly = samar-samar.",
+        materi: "Literasi Bahasa Inggris — Vocabulary (Synonym)"
+      },
+
+      // ── TEXT 9: Aboriginal Rights in Canada (Soal 13–15) ────
+      {
+        teks: "The struggle to obtain legal recognition of aboriginal rights is a difficult one, and even if a right is written into the law there is no guarantee that the future will not bring changes to the law that undermines the right. The federal government of Canada in 1982 extended constitutional protection to those aboriginal rights already recognized under the law. This protection was extended to the Indian, Inuit, and Métis peoples.\n\nAboriginal rights in Canada are defined by the constitution as aboriginal peoples' rights to ownership of land and its resources, the inherent right of aboriginal societies to self-government, and the right to legal recognition of indigenous customs.\n\nFurthermore, even if aboriginal peoples are successful in convincing the courts that specific rights should be recognized, it is frequently difficult to determine exactly what these rights amount to. In a 1984 case in Ontario, an aboriginal group claimed that its property rights should be interpreted as full ownership in the contemporary sense of private property, which allows for the sale of the land or its resources. But the provincial court instead ruled that the law had previously recognized only the aboriginal right to use the land and therefore granted property rights so minimal as to allow only the bare survival of the community.",
+        q: "The following statements are true in the passage, EXCEPT?",
+        opts: [
+          "A. The Canadian government has recognized the rights of the aboriginal people and it is written in the law",
+          "B. Canada not only protects the rights of aborigines but also other tribes",
+          "C. The aborigines do not have a record of the customs they protect",
+          "D. Aborigines have rights to land ownership and are allowed to sell the land",
+          "E. The aborigines have not yet taken their case to Canada's Supreme Court"
+        ],
+        ans: "D",
+        expl: "Opsi D tidak tepat: pengadilan provinsi memutuskan bahwa hak aborigin atas tanah hanya sebatas hak pakai (bukan kepemilikan penuh), dan tidak disebutkan boleh menjualnya. Hak jual tanah justru diklaim oleh kelompok aborigin tapi ditolak pengadilan.",
+        materi: "Literasi Bahasa Inggris — Reading Comprehension (True/False)"
+      },
+      {
+        teks: "In a 1984 case in Ontario, an aboriginal group claimed that its property rights should be interpreted as full ownership in the contemporary sense of private property, which allows for the sale of the land or its resources.",
+        q: '"…aboriginal group claimed that its property rights should be interpreted as full ownership…" The word "interpreted" is closest in meaning to ….',
+        opts: [
+          "A. Construed",
+          "B. Evident",
+          "C. Explicit",
+          "D. Manifest",
+          "E. Spoken"
+        ],
+        ans: "A",
+        expl: "Interpreted berarti diartikan atau ditafsirkan. Construed = ditafsirkan — paling tepat. Evident = terbukti; Explicit = eksplisit/tegas; Manifest = nyata; Spoken = diucapkan.",
+        materi: "Literasi Bahasa Inggris — Vocabulary (Synonym)"
+      },
+      {
+        teks: "The intent of the constitutional protection is to recognize only long-standing traditional customs, not those of recent origin; provincial courts therefore require aboriginal peoples to provide legal documentation that any customs they seek to protect were practiced sufficiently long ago. However, this requirement makes it difficult for aboriginal societies, which often relied on oral tradition rather than written records, to support their claims.",
+        q: 'In the second paragraph, what does the word "they" refer to?',
+        opts: [
+          "A. Canadian federal government",
+          "B. Provincial courts",
+          "C. Canadian society",
+          "D. Indian peoples",
+          "E. Aboriginal peoples"
+        ],
+        ans: "E",
+        expl: "Kata 'they' merujuk pada Aboriginal peoples — subjek kalimat yang diminta untuk menyediakan dokumentasi hukum mengenai kebiasaan yang ingin mereka lindungi.",
+        materi: "Literasi Bahasa Inggris — Reading Comprehension (Pronoun Reference)"
+      },
+
+      // ── TEXT 10: Dirty Britain (Soal 16–17) ─────────────────
+      {
+        teks: "Before the grass has thickened on the roadside verges and leaves have started growing on the trees is a perfect time to look around and see just how dirty Britain has become. The pavements are stained with chewing gum that has been spat out and the gutters are full of discarded fast food cartons.\n\nThe problem is that the rubbish created by our increasingly mobile lives lasts a lot longer than before. If it is not cleared up and properly thrown away, it stays in the undergrowth for years; a semi-permanent reminder of what a tatty little country we have now.\n\nFirstly, it is estimated that 10 billion plastic bags have been given to shoppers. These will take anything from 100 to 1,000 years to rot.\n\nWhat is clearly necessary right now is some sort of combined initiative, both individual and collective, before it is too late. Yet we know that people respond to their environment. If things around them are clean and tidy, people behave cleanly and tidily. If they are surrounded by squalor, they behave squalidly.",
+        q: 'What is the closest meaning of the word "tatty" in the second paragraph?',
+        opts: [
+          "A. Seedy",
+          "B. Wrong",
+          "C. Ugly",
+          "D. Stingy",
+          "E. Greasy"
+        ],
+        ans: "A",
+        expl: "Kata tatty dalam kalimat itu berarti kumuh/lusuh. Sinonim paling dekat adalah Seedy (lusuh/kumuh). Wrong = salah; Ugly = jelek; Stingy = pelit; Greasy = berminyak.",
+        materi: "Literasi Bahasa Inggris — Vocabulary (Synonym)"
+      },
+      {
+        teks: "What is clearly necessary right now is some sort of combined initiative, both individual and collective, before it is too late. Yet we know that people respond to their environment. If things around them are clean and tidy, people behave cleanly and tidily. If they are surrounded by squalor, they behave squalidly. Now, much of Britain looks pretty squalid.",
+        q: "What can we infer from the last paragraph?",
+        opts: [
+          "A. People are squalid",
+          "B. People behave according to what they see around them",
+          "C. People are clean and tidy",
+          "D. People are like a vast municipal rubbish tip",
+          "E. People today are behaving dirty"
+        ],
+        ans: "B",
+        expl: "Paragraf terakhir menyatakan: 'people respond to their environment' — jika bersih, orang berperilaku bersih; jika kotor, orang berperilaku kotor. Kesimpulan paling tepat: orang berperilaku sesuai dengan apa yang mereka lihat di sekitarnya.",
+        materi: "Literasi Bahasa Inggris — Reading Comprehension (Inference)"
+      },
+
+      // ── TEXT 11: Siem Reap / Cambodia (Soal 18–20) ──────────
+      {
+        teks: "Siem Reap is a small town near the world famous temple of Angkor Wat. The town is charming and worth exploring, with some fine examples of Khmer and French colonial architecture.\n\nFrom the 9th to the 14th centuries, when Europe was still struggling out of the Dark Ages, the Cambodian Empire of Angkor covered most of present-day Cambodia, Laos, Vietnam, and Thailand. The heart of this empire during the 12th century was the ancient capital of Angkor Thom, near present day Siem Reap, the site of the world's largest temple complexes, which were rediscovered in 1861. This spectacular city was built over 30 years under the reign of King Suryavarman II (1113-1150). The area covers about 400 square kilometres.\n\nIn Angkor Wat you will find more than 100 stone monuments and temple buildings, each of which contains countless statues, sculptures and reliefs. The most important temples to visit in the area are Angkor Wat, especially at sunrise or sunset; Angkor Thom, the remains of the capital; Ta Prohm, a palace overgrown by jungle; and Bayon.\n\nVisas are required to enter Cambodia. You can obtain one on arrival at Siem Reap International Airport for $20. Please ensure you take comfortable walking shoes, light clothing and plenty of water to drink as it is very hot there. The most commonly accepted currency in Cambodia is the US dollar.",
+        q: 'What can be inferred about "Cambodia" according to the passage?',
+        opts: [
+          "A. Siem Reap is the capital",
+          "B. It has Khmer and Vietnamese architecture",
+          "C. It's home of the world's largest temple complexes",
+          "D. Near to Angkor Thom",
+          "E. Overgrown by jungle and Bayon"
+        ],
+        ans: "C",
+        expl: "Disebutkan pada paragraf 2: 'Angkor Thom, near present day Siem Reap, the site of the world's largest temple complexes'. Kamboja adalah rumah bagi kompleks kuil terbesar di dunia.",
+        materi: "Literasi Bahasa Inggris — Reading Comprehension (Inference)"
+      },
+      {
+        teks: "Please ensure you take comfortable walking shoes, light clothing and plenty of water to drink as it is very hot there.",
+        q: 'What is the closest meaning of the word "ensure" in the last paragraph?',
+        opts: [
+          "A. Undermine",
+          "B. Bring",
+          "C. Guarantee",
+          "D. Few",
+          "E. Satisfied"
+        ],
+        ans: "C",
+        expl: "Ensure dalam Bahasa Indonesia berarti memastikan. Guarantee berarti menjamin — paling dekat maknanya. Undermine = merusak; Bring = membawa; Few = beberapa; Satisfied = puas.",
+        materi: "Literasi Bahasa Inggris — Vocabulary (Synonym)"
+      },
+      {
+        teks: "Siem Reap is a small town near the world famous temple of Angkor Wat. The Cambodian Empire of Angkor covered most of present-day Cambodia, Laos, Vietnam, and Thailand. The heart of this empire during the 12th century was the ancient capital of Angkor Thom. This spectacular city was built over 30 years under the reign of King Suryavarman II (1113-1150).\n\nIn Angkor Wat you will find more than 100 stone monuments and temple buildings. The most important temples to visit are Angkor Wat, especially at sunrise or sunset; Angkor Thom, the remains of the capital; Ta Prohm, a palace overgrown by jungle; and Bayon.\n\nVisas are required to enter Cambodia. You can obtain one on arrival at Siem Reap International Airport for $20, and 1 passport photo is required per person. You will also need another passport photo for the Angkor Temple Entrance Pass. The most commonly accepted currency in Cambodia is the US dollar.",
+        q: "The following statements are true in the passage, EXCEPT?",
+        opts: [
+          "A. Most people visit Siem Reap because it is close to temples",
+          "B. Angkor Wat was the capital of the Cambodian empire",
+          "C. Dawn and dusk are particularly good times to visit Angkor Wat",
+          "D. You will need a couple of passport photos",
+          "E. The US dollar is widely accepted in Cambodia"
+        ],
+        ans: "B",
+        expl: "Opsi B tidak tepat — ibu kota kekaisaran Kamboja adalah Angkor Thom, bukan Angkor Wat. Teks menyebut Angkor Thom sebagai 'the ancient capital', sementara Angkor Wat adalah kuil terkenal. Opsi C benar karena teks menyebut waktu terbaik kunjungan adalah saat sunrise atau sunset.",
+        materi: "Literasi Bahasa Inggris — Reading Comprehension (True/False)"
+      }
+    ],
+
+    // ── LITERASI MATEMATIKA (20 soal) ───────────────────────────
+    // Sumber: Latihan Soal UTBK-SNBT 2023-2024 (ainamulyana.blogspot.com)
+    literasi_mat: [
+
+      // ── WACANA 1: Media Sosial & Misinformasi (Soal 1–2) ────
+      {
+        teks: "Media sosial menjadi sumber utama informasi yang dinilai menyesatkan. Facebook dianggap menjadi platform dengan potensi kesalahan informasi terbesar. Sebanyak 29% responden, terutama dari Filipina, Denmark, dan Italia menilai media sosial tersebut paling berisiko menyebarkan informasi yang tak benar.\n\nAplikasi pesan singkat, seperti Facebook Messenger dan WhatsApp juga berisiko menyesatkan. Sebanyak 14% responden menilai aplikasi tersebut rentan menyebarkan berita yang keliru.\n\nReuters Institute untuk Studi Jurnalisme bekerja sama dengan YouGov melakukan survei terhadap 80.155 responden. Penelitian yang tersebar di 40 negara ini berupaya untuk mengetahui bagaimana berita dikonsumsi di sejumlah negara.\n\n[Grafik] Platform yang berpotensi menyesatkan informasi (%): Facebook 29% | Aplikasi pesan singkat 14% | Mesin pencari 10% | YouTube 6% | Twitter 6%",
+        q: "Di antara 5 opsi di bawah ini, berapakah jumlah responden yang paling mungkin yang memilih YouTube sebagai platform dengan potensi menyesatkan informasi?",
+        opts: [
+          "A. 13.626",
+          "B. 8.015",
+          "C. 11.221",
+          "D. 23.244",
+          "E. 4.809"
+        ],
+        ans: "E",
+        expl: "Sekitar 6% responden memilih YouTube sebagai platform yang berpotensi menyesatkan informasi. Maka: 6% × 80.155 = 4.809 responden.",
+        materi: "Literasi Matematika — Persentase dari Data"
+      },
+      {
+        teks: "Reuters Institute untuk Studi Jurnalisme bekerja sama dengan YouGov melakukan survei terhadap 80.155 responden. Platform yang berpotensi menyesatkan informasi (%): Facebook 29% | Aplikasi pesan singkat 14% | Mesin pencari 10% | YouTube 6% | Twitter 6%",
+        q: "Berapakah jumlah total responden yang paling mungkin yang memilih aplikasi pesan singkat, Twitter, dan Facebook sebagai platform dengan potensi menyesatkan informasi?",
+        opts: [
+          "A. 37.839",
+          "B. 35.867",
+          "C. 39.274",
+          "D. 40.021",
+          "E. 25.083"
+        ],
+        ans: "C",
+        expl: "Aplikasi pesan singkat = 14% × 80.155 = 11.221. Twitter = 6% × 80.155 = 4.809. Facebook = 29% × 80.155 = 23.244. Total = 11.221 + 4.809 + 23.244 = 39.274 responden.",
+        materi: "Literasi Matematika — Penjumlahan Persentase"
+      },
+
+      // ── WACANA 2: Covid-19 Global (Soal 3–7) ────────────────
+      {
+        teks: "Berdasarkan data Senin (14/9) hingga pukul 01.28 GMT, 10 negara dengan kasus tertinggi Covid-19 di dunia tersebar di Amerika, Eropa, Asia, dan Afrika. Negara-negara itu memiliki 555 ribu–6,7 juta kasus terkonfirmasi Covid-19. Secara global, setidaknya terdapat 29.179.972 kasus yang tersebar di 215 negara.\n\nAmerika Serikat masih berada di peringkat pertama dengan catatan kasus Covid-19 tertinggi. Jumlahnya mencapai 6.708.458 kasus atau 23% dari total kasus di dunia. Sebanyak 198.520 orang meninggal dunia dan 3.974.949 orang lainnya dinyatakan sembuh.\n\nIndia bertengger di posisi kedua dengan 4.845.003 kasus Covid-19. Angka itu setara dengan 16,6% total kasus dunia. Pasien yang dinyatakan meninggal dunia sebesar 79.754 orang. Sementara 3.777.044 orang lainnya telah pulih dari penyakit Covid-19.",
+        q: "Berdasarkan teks tersebut, kasus Covid-19 tersebar di … negara.",
+        opts: [
+          "A. 555",
+          "B. 4",
+          "C. 23",
+          "D. 215",
+          "E. 512"
+        ],
+        ans: "D",
+        expl: "Berdasarkan teks tersebut, kasus Covid-19 tersebar di 215 negara ('setidaknya terdapat 29.179.972 kasus yang tersebar di 215 negara').",
+        materi: "Literasi Matematika — Membaca Data Teks"
+      },
+      {
+        teks: "[Grafik] 10 Negara dengan Kasus Covid-19 Tertinggi (per 14/9): Amerika Serikat ~6,8 juta | India ~4,8 juta | Brasil ~4,3 juta | Rusia ~1,1 juta | Peru, Kolombia, Meksiko, Afrika Selatan, Spanyol, Argentina ~0,5–0,7 juta",
+        q: "Berdasarkan grafik tersebut, berapa juta kasus Covid-19 yang terjadi di India?",
+        opts: [
+          "A. 1 juta",
+          "B. 4,2 juta",
+          "C. 4,8 juta",
+          "D. 6,6 juta",
+          "E. 4 juta"
+        ],
+        ans: "C",
+        expl: "Berdasarkan grafik dan teks (India: 4.845.003 kasus), kasus Covid-19 yang terjadi di India adalah sekitar 4,8 juta.",
+        materi: "Literasi Matematika — Membaca Data Grafik"
+      },
+      {
+        teks: "[Grafik] 10 Negara dengan Kasus Covid-19 Tertinggi (per 14/9): Amerika Serikat ~6,8 juta | India ~4,8 juta | Brasil ~4,3 juta | Rusia ~1,1 juta | (6 negara lainnya ~0,5–0,7 juta masing-masing)",
+        q: "Berapakah total kasus Covid-19 pada 4 negara yang memiliki kasus Covid-19 tertinggi yang paling mungkin?",
+        opts: [
+          "A. 18,2 juta kasus",
+          "B. 19,5 juta kasus",
+          "C. 14,6 juta kasus",
+          "D. 17 juta kasus",
+          "E. 15,9 juta kasus"
+        ],
+        ans: "D",
+        expl: "4 negara tertinggi: Amerika Serikat ≈6,8 juta + India ≈4,8 juta + Brasil ≈4,3 juta + Rusia ≈1,1 juta = 17 juta kasus.",
+        materi: "Literasi Matematika — Penjumlahan Data Grafik"
+      },
+      {
+        teks: "[Grafik] India ~4,8 juta kasus | Argentina ~0,6 juta kasus",
+        q: "Berapakah selisih kasus Covid-19 yang berada di India dengan Argentina?",
+        opts: [
+          "A. 4 juta kasus",
+          "B. 4,7 juta kasus",
+          "C. 4,2 juta kasus",
+          "D. 4,8 juta kasus",
+          "E. 5 juta kasus"
+        ],
+        ans: "C",
+        expl: "India ≈ 4,8 juta kasus; Argentina ≈ 0,6 juta kasus. Selisihnya: 4,8 − 0,6 = 4,2 juta kasus Covid-19.",
+        materi: "Literasi Matematika — Selisih Data Grafik"
+      },
+      {
+        teks: "[Grafik] India ~4,8 juta kasus | Brasil ~4,4 juta kasus",
+        q: "Berdasarkan grafik tersebut, selisih kasus Covid-19 di India dan Brasil sebesar ...",
+        opts: [
+          "A. 0,4 juta",
+          "B. 0,04 juta",
+          "C. 0,004 juta",
+          "D. 0,0004 juta",
+          "E. 0,00004 juta"
+        ],
+        ans: "A",
+        expl: "Jumlah kasus Covid-19 di India sebesar 4,8 juta. Sedangkan di Brasil sebesar 4,4 juta. Sehingga selisihnya adalah 0,4 juta.",
+        materi: "Literasi Matematika — Selisih Data Grafik"
+      },
+
+      // ── WACANA 3: RAPBN PEN 2021 (Soal 8–13) ────────────────
+      {
+        teks: "Perekonomian global turut terkena dampak buruk pandemi Covid-19. OECD memproyeksikan pertumbuhan ekonomi global sepanjang 2020 terkontraksi 6%. Namun, bisa terkontraksi 7,6% bila virus corona merebak lagi sebelum akhir tahun.\n\nTak seperti saran pertama OECD, pemerintah Indonesia sudah memangkas alokasi dana Pemulihan Ekonomi Nasional (PEN) menjadi Rp 356,5 triliun dalam Rancangan Anggaran Pendapatan dan Belanja Negara (RAPBN) 2021. Angka tersebut lebih rendah 48,7% dibandingkan tahun ini, yakni Rp 695,2 triliun.",
+        q: "Manakah pernyataan yang tepat berdasarkan teks tersebut?",
+        opts: [
+          "A. OECD memproyeksikan pertumbuhan ekonomi global sepanjang 2020 terkontraksi 5%",
+          "B. Pemerintah Indonesia sudah memangkas alokasi dana PEN menjadi Rp346,5 triliun",
+          "C. APBN Indonesia tahun ini adalah sebesar Rp 695,2 miliar",
+          "D. Pemerintah Indonesia memangkas alokasi dana PEN hingga 48,7%",
+          "E. Pemerintah Indonesia menaikan alokasi dana PEN hingga 48,7%"
+        ],
+        ans: "D",
+        expl: "Di paragraf dua terdapat pernyataan bahwa alokasi dana PEN mengalami penurunan dari Rp 695,2 triliun menjadi Rp 356,5 triliun. Penurunan tersebut sebesar 48,7%. Opsi D paling tepat.",
+        materi: "Literasi Matematika — Membaca Data Teks"
+      },
+      {
+        teks: "[Grafik] Pemulihan Ekonomi Nasional dalam NK RAPBN 2021 (Rp Triliun): K/L & Pemda 136,7 | Perlindungan Sosial 110,2 | UMKM 48,8 | Kesehatan 25,4 | Insentif Usaha 20,4 | Pembiayaan Korporasi 14,9",
+        q: "Berapakah selisih RAPBN 2021 antara RAPBN untuk K/L & Pemda dengan RAPBN untuk insentif usaha?",
+        opts: [
+          "A. 116,3 Miliar",
+          "B. 117,8 Miliar",
+          "C. 117,9 Triliun",
+          "D. 116,3 Triliun",
+          "E. 170 Triliun"
+        ],
+        ans: "D",
+        expl: "RAPBN untuk K/L & Pemda = 136,7 Triliun. RAPBN untuk Insentif Usaha = 20,4 Triliun. Selisihnya: 136,7 − 20,4 = 116,3 Triliun.",
+        materi: "Literasi Matematika — Selisih Data Grafik"
+      },
+      {
+        teks: "[Grafik] RAPBN 2021 (Rp Triliun): K/L & Pemda 136,7 | Perlindungan Sosial 110,2 | UMKM 48,8 | Kesehatan 25,4 | Insentif Usaha 20,4 | Pembiayaan Korporasi 14,9",
+        q: "Berapakah selisih RAPBN 2021 antara RAPBN tertinggi ke-2 dengan RAPBN tertinggi ke-5?",
+        opts: [
+          "A. 89,8 Miliar",
+          "B. 90 Miliar",
+          "C. 89,8 Triliun",
+          "D. 90 Triliun",
+          "E. 109 Triliun"
+        ],
+        ans: "C",
+        expl: "Tertinggi ke-2: Perlindungan Sosial = 110,2 Triliun. Tertinggi ke-5: Insentif Usaha = 20,4 Triliun. Selisih: 110,2 − 20,4 = 89,8 Triliun.",
+        materi: "Literasi Matematika — Selisih Data Grafik"
+      },
+      {
+        teks: "[Grafik] RAPBN 2021 (Rp Triliun): K/L & Pemda 136,7 | Perlindungan Sosial 110,2 | UMKM 48,8 | Kesehatan 25,4 | Insentif Usaha 20,4 | Pembiayaan Korporasi 14,9",
+        q: "Berdasarkan RAPBN 2021 untuk pemulihan ekonomi nasional, jika dana untuk kesehatan ditambah 3× lipat dari dana insentif usaha, maka pernyataan yang tepat adalah …",
+        opts: [
+          "A. Nilainya akan lebih tinggi daripada dana perlindungan sosial",
+          "B. Nilainya akan lebih rendah dari dana pembiayaan korporasi ditambah dengan dana UMKM",
+          "C. Nilainya akan lebih rendah daripada dana perlindungan sosial",
+          "D. Nilainya akan lebih rendah daripada dana UMKM",
+          "E. Nilainya akan sama dengan 3 kali dana kesehatan"
+        ],
+        ans: "C",
+        expl: "Dana kesehatan + 3× dana insentif usaha = 25,4 + 3×20,4 = 25,4 + 61,2 = 86,6 Triliun. Dana perlindungan sosial = 110,2 Triliun. Maka 86,6 < 110,2 → nilainya lebih rendah daripada dana perlindungan sosial.",
+        materi: "Literasi Matematika — Operasi Hitung Data Grafik"
+      },
+      {
+        teks: "[Grafik] RAPBN 2021 (Rp Triliun): K/L & Pemda 136,7 | Perlindungan Sosial 110,2 | UMKM 48,8 | Kesehatan 25,4 | Insentif Usaha 20,4 | Pembiayaan Korporasi 14,9",
+        q: "Jika dana pembiayaan korporasi ditambah dengan dana perlindungan sosial, mana yang paling mungkin?",
+        opts: [
+          "A. Nilainya akan lebih tinggi daripada total dana insentif usaha, kesehatan, perlindungan sosial, dan UMKM",
+          "B. Nilainya akan lebih rendah daripada 8× dana pembiayaan korporasi",
+          "C. Nilainya akan lebih tinggi daripada total dana UMKM, kesehatan, dan insentif usaha",
+          "D. Nilainya akan lebih rendah daripada dana perlindungan sosial",
+          "E. Nilainya akan lebih tinggi daripada dana K/L & Pemda"
+        ],
+        ans: "C",
+        expl: "Pembiayaan korporasi + Perlindungan sosial = 14,9 + 110,2 = 125,1 Triliun. Total UMKM + Kesehatan + Insentif usaha = 48,8 + 25,4 + 20,4 = 94,6 Triliun. Karena 125,1 > 94,6, nilainya lebih tinggi.",
+        materi: "Literasi Matematika — Operasi Hitung Data Grafik"
+      },
+      {
+        teks: "[Grafik] RAPBN 2021 (Rp Triliun): UMKM 48,8 | Insentif Usaha 20,4",
+        q: "Berdasarkan grafik, berapa selisih antara sektor UMKM dan Insentif Usaha yang didanai oleh pemerintah?",
+        opts: [
+          "A. Rp28,3 triliun",
+          "B. Rp30,4 triliun",
+          "C. Rp26,5 triliun",
+          "D. Rp29,4 triliun",
+          "E. Rp28,4 triliun"
+        ],
+        ans: "E",
+        expl: "UMKM = Rp48,8 triliun. Insentif Usaha = Rp20,4 triliun. Selisihnya: 48,8 − 20,4 = Rp28,4 triliun.",
+        materi: "Literasi Matematika — Selisih Data Grafik"
+      },
+
+      // ── WACANA 4: Proyek Infrastruktur 2005–2019 (Soal 14–20)
+      {
+        teks: "Sepanjang 2015-2019, pemerintah telah mendanai lebih dari 100 proyek infrastruktur. Proyek yang didanai investasi pemerintah itu bernilai Rp 658,87 triliun. Dari keseluruhan proyek tersebut, pembangunan jalan mendominasi hingga 56 proyek. Proyek tersebut menghasilkan ± 2.971 kilometer. Nilai proyeknya mencapai Rp 465,4 triliun. Selain pembangunan jalan, terdapat 15 proyek di sektor kesehatan.\n\n[Grafik] Jumlah proyek per sektor: Jalan 57 | Kesehatan 15 | Pelabuhan 10 | Transportasi 6 | Telekomunikasi 5 | Pengelolaan Air 5 | Bandara 3 | Kawasan 3 | Transmisi 2",
+        q: "Manakah pernyataan yang benar di bawah ini?",
+        opts: [
+          "A. Jumlah proyek pada sektor bandara ditambah dengan jumlah proyek pada sektor kesehatan akan melebihi jumlah proyek pada sektor jalan",
+          "B. Jumlah proyek pada sektor telekomunikasi ditambah dengan jumlah proyek pada sektor pelabuhan akan melebihi jumlah proyek pada sektor transmisi ditambah dengan sektor pengelolaan air",
+          "C. Jumlah proyek pada sektor jalan tidak akan melebihi total dari jumlah proyek kesehatan, pelabuhan, transportasi, dan pengelolaan air",
+          "D. Jumlah proyek pada sektor bandara ditambah dengan jumlah proyek pada sektor kesehatan akan melebihi jumlah proyek pada sektor pelabuhan ditambah dengan sektor jalan",
+          "E. Jumlah proyek pada sektor transportasi lebih sedikit daripada jumlah proyek pada sektor telekomunikasi"
+        ],
+        ans: "B",
+        expl: "Telekomunikasi + Pelabuhan = 5 + 10 = 15 proyek. Transmisi + Pengelolaan Air = 2 + 5 = 7 proyek. Karena 15 > 7, opsi B benar. Opsi A: 3+15=18 < 57 (salah). Opsi C: 57 > 15+10+6+5=36 (salah). Opsi D: 3+15=18 < 10+57=67 (salah). Opsi E: 6 > 5 (salah).",
+        materi: "Literasi Matematika — Perbandingan Data Grafik"
+      },
+      {
+        teks: "Proyek yang didanai investasi pemerintah bernilai Rp 658,87 triliun. Dari keseluruhan proyek tersebut, pembangunan jalan mendominasi dengan nilai proyek Rp 465,4 triliun.",
+        q: "Berapakah nilai proyek selain daripada proyek pembangunan jalan?",
+        opts: [
+          "A. 193,4 Triliun",
+          "B. 194 Triliun",
+          "C. 193,47 Triliun",
+          "D. 273 Triliun",
+          "E. 200 Triliun"
+        ],
+        ans: "C",
+        expl: "Total proyek yang didanai Rp658,87 Triliun. Proyek pembangunan jalan Rp465,4 Triliun. Nilai proyek selain jalan: 658,87 − 465,4 = Rp193,47 Triliun.",
+        materi: "Literasi Matematika — Pengurangan Data"
+      },
+      {
+        teks: "[Grafik] Jumlah proyek per sektor: Jalan 57 | Kesehatan 15 | Pelabuhan 10 | Transportasi 6 | Telekomunikasi 5 | Pengelolaan Air 5 | Bandara 3 | Kawasan 3 | Transmisi 2",
+        q: "Jika proyek Bandara ditambah 30 proyek, maka …",
+        opts: [
+          "A. Proyeknya akan lebih sedikit daripada proyek Kesehatan",
+          "B. Proyeknya akan lebih sedikit daripada total proyek pengelolaan air, transportasi, dan telekomunikasi",
+          "C. Akan menjadi peringkat ke-2 proyek infrastruktur setelah proyek pembangunan jalan",
+          "D. Proyek akan berada di bawah proyek pelabuhan",
+          "E. Proyek transmisi menjadi 32 proyek"
+        ],
+        ans: "C",
+        expl: "Bandara awalnya 3 + 30 = 33 proyek. Ini lebih banyak dari Kesehatan (15), Pelabuhan (10), dsb., tapi lebih sedikit dari Jalan (57). Maka Bandara menjadi peringkat ke-2 setelah proyek Jalan.",
+        materi: "Literasi Matematika — Penalaran Hipotesis Data"
+      },
+      {
+        teks: "[Grafik] Jumlah proyek per sektor: Jalan 57 | Kesehatan 15 | Pelabuhan 10 | Transportasi 6 | Telekomunikasi 5 | Pengelolaan Air 5 | Bandara 3 | Kawasan 3 | Transmisi 2",
+        q: "Jika pada tahun ini pemerintah tidak memberikan dana infrastruktur untuk pembuatan jalan, manakah pernyataan yang TIDAK tepat?",
+        opts: [
+          "A. Proyek kesehatan menjadi proyek infrastruktur terbanyak",
+          "B. Proyek transmisi tetap menjadi proyek infrastruktur paling sedikit",
+          "C. Proyek transportasi menjadi proyek infrastruktur ke-4 terbanyak",
+          "D. Proyek bandara menjadi proyek infrastruktur ke-3 dari yang paling sedikit",
+          "E. Proyek pelabuhan akan tetap 10 proyek"
+        ],
+        ans: "C",
+        expl: "Jika jalan dihilangkan, urutan terbanyak: Kesehatan(15)→Pelabuhan(10)→Transportasi(6)→Telekomunikasi(5)=Pengelolaan Air(5)→Bandara(3)=Kawasan(3)→Transmisi(2). Transportasi adalah ke-3 terbanyak, bukan ke-4. Opsi C salah.",
+        materi: "Literasi Matematika — Penalaran Hipotesis Data"
+      },
+      {
+        teks: "[Grafik] Jumlah proyek per sektor: Transportasi ~6 proyek | Telekomunikasi ~5 proyek",
+        q: "Berapakah selisih yang paling mungkin antara proyek transportasi dengan proyek telekomunikasi?",
+        opts: [
+          "A. 1–2 proyek",
+          "B. 5 proyek",
+          "C. 4 proyek",
+          "D. 6 proyek",
+          "E. 7 proyek"
+        ],
+        ans: "A",
+        expl: "Berdasarkan grafik, transportasi ≈ 6 proyek dan telekomunikasi ≈ 5 proyek. Selisihnya adalah sekitar 1–2 proyek.",
+        materi: "Literasi Matematika — Selisih Data Grafik"
+      },
+      {
+        teks: "[Grafik] Jumlah proyek per sektor: Jalan 57 | Kesehatan 15 | Pelabuhan 10 | Transportasi 6 | Telekomunikasi 5 | Pengelolaan Air 5 | Bandara 3 | Kawasan 3 | Transmisi 2",
+        q: "Berapakah total proyek pembuatan jalan, kesehatan, pelabuhan, transportasi, telekomunikasi, pengelolaan air, bandara, kawasan, dan transmisi yang paling mungkin?",
+        opts: [
+          "A. 106",
+          "B. 115",
+          "C. 116",
+          "D. 120",
+          "E. 125"
+        ],
+        ans: "A",
+        expl: "Total: 57 + 15 + 10 + 6 + 5 + 5 + 3 + 3 + 2 = 106 proyek.",
+        materi: "Literasi Matematika — Penjumlahan Data Grafik"
+      },
+      {
+        teks: "Dari keseluruhan proyek tersebut, pembangunan jalan mendominasi hingga 56 proyek. Nilai proyeknya mencapai Rp 465,4 triliun.",
+        q: "Jika pada proyek pembuatan jalan, dana yang diberikan dibagi secara merata, berapakah biaya setiap proyek yang dikeluarkan?",
+        opts: [
+          "A. 10 Triliun",
+          "B. 15 Triliun",
+          "C. 8,31 Triliun",
+          "D. 9 Triliun",
+          "E. 11 Triliun"
+        ],
+        ans: "C",
+        expl: "Nilai proyek jalan = 465,4 triliun, menghasilkan 56 proyek. Biaya per proyek: 465,4 ÷ 56 = 8,31 Triliun setiap proyeknya.",
+        materi: "Literasi Matematika — Pembagian Data"
+      }
     ]
   }
 
