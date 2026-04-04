@@ -21,10 +21,39 @@ window.OSN = (function() {
 
   let state = {
     phase: 'select_jenjang',
-    jenjang: null, mapelKey: null, levelKey: null,
+    jenjang: null, mapelKey: null, levelKey: null, paketKey: null,
     allQuestions: [], answers: [],
     currentIdx: 0, timerInterval: null, secondsLeft: 0, startTime: null,
   };
+
+  // ══ LAZY LOADER ══════════════════════════════════════════════
+  // osn-index.json           → metadata ringan — di-load saat init
+  // osn-{bank}--{lv}.json   → soal flat level  — di-load saat mau quiz
+  // osn-{bank}--{lv}--{pk}.json → soal per paket — di-load saat mau quiz
+  const _cache = {};
+
+  async function _fetchIndex() {
+    if (_cache['__index__']) return _cache['__index__'];
+    const res = await fetch('/data/osn-index.json');
+    if (!res.ok) throw new Error('Gagal memuat index OSN');
+    _cache['__index__'] = await res.json();
+    return _cache['__index__'];
+  }
+
+  async function _fetchFile(filename) {
+    if (_cache[filename]) return _cache[filename];
+    const res = await fetch(`/data/${filename}`);
+    if (!res.ok) throw new Error(`Gagal memuat ${filename}`);
+    _cache[filename] = await res.json();
+    return _cache[filename];
+  }
+
+  function _getBankMeta(bankKey) {
+    return (_cache['__index__'] || []).find(b => b.key === bankKey) || null;
+  }
+
+  function getBankKey() { return `${state.jenjang}_${state.mapelKey}`; }
+  // ─────────────────────────────────────────────────────────────
 
   function shuffle(arr) {
     const a = [...arr];
@@ -39,37 +68,21 @@ window.OSN = (function() {
     return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  function getBankKey()   { return `${state.jenjang}_${state.mapelKey}`; }
-  function getBank()      { return window.OSN_QUESTIONS?.[getBankKey()]; }
-  function getLevelData() { return getBank()?.[state.levelKey]; }
-
-  /**
-   * Mengambil semua soal dari satu level.
-   * Menangani DUA struktur:
-   *   1. Flat   : { label, sumber, soal: [...] }
-   *   2. Paket  : { paket1: { label, sumber, soal: [...] }, paket2: {...} }
-   */
-  function getLevelSoal(ld) {
-    if (!ld) return [];
-    // Struktur flat — ada key 'soal' langsung
-    if (Array.isArray(ld.soal)) return ld.soal;
-    // Struktur multi-paket — gabungkan soal dari semua paket
-    return Object.values(ld)
-      .filter(v => v && Array.isArray(v.soal))
-      .flatMap(v => v.soal);
+  function fmtLoader(msg) {
+    return `<div style="text-align:center;padding:60px;opacity:.6">${msg}</div>`;
   }
 
-  /**
-   * Hitung total soal di satu level (untuk UI "X soal tersedia").
-   * Sama seperti getLevelSoal tapi hanya return angka.
-   */
-  function countLevelSoal(ld) {
-    return getLevelSoal(ld).length;
-  }
-
-  function init() {
+  // ── init ─────────────────────────────────────────────────────
+  async function init() {
     state.phase = 'select_jenjang';
-    renderSelectJenjang();
+    const container = document.getElementById('osn-container');
+    container.innerHTML = fmtLoader('⏳ Memuat...');
+    try {
+      await _fetchIndex();
+      renderSelectJenjang();
+    } catch(e) {
+      container.innerHTML = `<div style="text-align:center;padding:40px;color:red">❌ Gagal memuat data OSN. Coba refresh.</div>`;
+    }
   }
 
   // ══ PHASE 1: PILIH JENJANG ════════════════════════════════════
@@ -109,6 +122,7 @@ window.OSN = (function() {
   function renderSelectMapel(jConf) {
     state.phase = 'select_mapel';
     const container = document.getElementById('osn-container');
+    const index     = _cache['__index__'] || [];
 
     const mapelMeta = {
       ipa:         { label: 'IPA',         icon: '🔬', desc: 'Ilmu Pengetahuan Alam' },
@@ -120,9 +134,9 @@ window.OSN = (function() {
     };
 
     const cards = jConf.mapel.map(mk => {
-      const bank   = window.OSN_QUESTIONS?.[`${jConf.key}_${mk}`];
-      // ✅ FIX: pakai getLevelSoal agar multi-paket pun terdeteksi
-      const hasKab = countLevelSoal(bank?.kabupaten) > 0;
+      const bankMeta = index.find(b => b.key === `${jConf.key}_${mk}`);
+      // Cek ada soal di level kabupaten (apapun tipenya)
+      const hasKab = (bankMeta?.levels?.kabupaten?.count || 0) > 0;
       const mm     = mapelMeta[mk] || { label: mk, icon: '📖', desc: mk };
       return `
         <button class="osn-mapel-btn${hasKab ? '' : ' osn-soon'}"
@@ -153,6 +167,7 @@ window.OSN = (function() {
 
   function selectMapel(mapelKey) {
     state.mapelKey = mapelKey;
+    state.paketKey = null;
     renderSelectLevel();
   }
 
@@ -160,14 +175,18 @@ window.OSN = (function() {
   function renderSelectLevel() {
     state.phase = 'select_level';
     const container = document.getElementById('osn-container');
-    const bank      = getBank();
+    const bankMeta  = _getBankMeta(getBankKey());
 
     const levelCards = Object.keys(LEVEL_CONFIG).map(lk => {
-      const lc    = LEVEL_CONFIG[lk];
-      const ld    = bank?.[lk];
-      // ✅ FIX: pakai countLevelSoal agar multi-paket pun terhitung
-      const count   = countLevelSoal(ld);
+      const lc      = LEVEL_CONFIG[lk];
+      const lvMeta  = bankMeta?.levels?.[lk];
+      const count   = lvMeta?.count || 0;
       const hasData = count > 0;
+      const isPaket = lvMeta?.type === 'paket';
+
+      // Label tambahan: jika multi-paket, tampilkan jumlah paket
+      const paketInfo = isPaket ? ` · ${lvMeta.pakets.length} paket` : '';
+
       return `
         <button class="osn-level-btn${hasData ? '' : ' osn-soon'}"
           style="--lv-color:${lc.warna}"
@@ -175,7 +194,7 @@ window.OSN = (function() {
           <span class="osn-level-icon">${lc.icon}</span>
           <div class="osn-level-body">
             <div class="osn-level-label">${lc.label}</div>
-            <div class="osn-level-meta">${hasData ? `${count} soal tersedia · ${lc.waktu} menit` : 'Segera hadir'}</div>
+            <div class="osn-level-meta">${hasData ? `${count} soal tersedia · ${lc.waktu} menit${paketInfo}` : 'Segera hadir'}</div>
           </div>
           ${!hasData ? '<span class="osn-soon-badge">🔒</span>' : `<span class="osn-level-arrow" style="color:${lc.warna}">→</span>`}
         </button>`;
@@ -185,9 +204,9 @@ window.OSN = (function() {
       <div class="osn-select-wrap">
         <button class="tryout-back-btn" onclick="window.OSN.selectJenjang('${state.jenjang}')">← Ganti Mapel</button>
         <div class="osn-steps-row">
-          <div class="osn-step osn-step-done" onclick="window.OSN.init()">1. ${bank?.jenjang || state.jenjang.toUpperCase()}</div>
+          <div class="osn-step osn-step-done" onclick="window.OSN.init()">1. ${bankMeta?.jenjang || state.jenjang.toUpperCase()}</div>
           <div class="osn-step-arrow">›</div>
-          <div class="osn-step osn-step-done" onclick="window.OSN.selectJenjang('${state.jenjang}')">2. ${bank?.mapel || state.mapelKey}</div>
+          <div class="osn-step osn-step-done" onclick="window.OSN.selectJenjang('${state.jenjang}')">2. ${bankMeta?.mapel || state.mapelKey}</div>
           <div class="osn-step-arrow">›</div>
           <div class="osn-step osn-step-active">3. Level</div>
         </div>
@@ -198,6 +217,56 @@ window.OSN = (function() {
 
   function selectLevel(levelKey) {
     state.levelKey = levelKey;
+    state.paketKey = null;
+    const bankMeta = _getBankMeta(getBankKey());
+    const lvMeta   = bankMeta?.levels?.[levelKey];
+
+    // Jika level multi-paket → tampilkan pilih paket dulu
+    if (lvMeta?.type === 'paket') {
+      renderSelectPaket();
+    } else {
+      renderConfirm();
+    }
+  }
+
+  // ══ PHASE 3b: PILIH PAKET (hanya untuk level multi-paket) ════════
+  function renderSelectPaket() {
+    state.phase = 'select_paket';
+    const container = document.getElementById('osn-container');
+    const bankMeta  = _getBankMeta(getBankKey());
+    const lvMeta    = bankMeta?.levels?.[state.levelKey];
+    const lc        = LEVEL_CONFIG[state.levelKey];
+
+    const paketCards = lvMeta.pakets.map(p => `
+      <button class="osn-level-btn" style="--lv-color:${lc.warna}"
+        onclick="window.OSN.selectPaket('${p.key}')">
+        <span class="osn-level-icon">${lc.icon}</span>
+        <div class="osn-level-body">
+          <div class="osn-level-label">${p.label}</div>
+          <div class="osn-level-meta">${p.count} soal · ${lc.waktu} menit</div>
+        </div>
+        <span class="osn-level-arrow" style="color:${lc.warna}">→</span>
+      </button>`).join('');
+
+    container.innerHTML = `
+      <div class="osn-select-wrap">
+        <button class="tryout-back-btn" onclick="window.OSN.renderSelectLevel()">← Ganti Level</button>
+        <div class="osn-steps-row">
+          <div class="osn-step osn-step-done" onclick="window.OSN.init()">1. ${bankMeta?.jenjang || ''}</div>
+          <div class="osn-step-arrow">›</div>
+          <div class="osn-step osn-step-done" onclick="window.OSN.selectJenjang('${state.jenjang}')">2. ${bankMeta?.mapel || ''}</div>
+          <div class="osn-step-arrow">›</div>
+          <div class="osn-step osn-step-done" onclick="window.OSN.renderSelectLevel()">3. ${lc.icon} ${lc.label}</div>
+          <div class="osn-step-arrow">›</div>
+          <div class="osn-step osn-step-active">4. Paket</div>
+        </div>
+        <p class="cpns-choose-label">Pilih Paket Soal</p>
+        <div class="osn-level-grid">${paketCards}</div>
+      </div>`;
+  }
+
+  function selectPaket(paketKey) {
+    state.paketKey = paketKey;
     renderConfirm();
   }
 
@@ -205,23 +274,34 @@ window.OSN = (function() {
   function renderConfirm() {
     state.phase = 'confirm';
     const container = document.getElementById('osn-container');
-    const bank      = getBank();
-    const ld        = getLevelData();
+    const bankMeta  = _getBankMeta(getBankKey());
+    const lvMeta    = bankMeta?.levels?.[state.levelKey];
     const lc        = LEVEL_CONFIG[state.levelKey];
-    // ✅ FIX: pakai countLevelSoal
-    const count     = countLevelSoal(ld);
+    const isPaket   = lvMeta?.type === 'paket';
 
-    // Ambil sumber: flat → ld.sumber, multi-paket → paket pertama
-    const sumber = ld?.sumber || Object.values(ld || {}).find(v => v?.sumber)?.sumber || 'Kumpulan Soal OSN — Kemendikdasmen';
+    // Info soal tergantung tipe level
+    let count, confirmLabel, sumber, backFn;
+    if (isPaket) {
+      const pd      = lvMeta.pakets.find(p => p.key === state.paketKey);
+      count         = pd?.count || 0;
+      confirmLabel  = `${bankMeta?.label} · ${lc.icon} ${lc.label} · ${pd?.label || state.paketKey}`;
+      sumber        = 'Kumpulan Soal OSN — Kemendikdasmen';
+      backFn        = `window.OSN.renderSelectPaket()`;
+    } else {
+      count         = lvMeta?.count || 0;
+      confirmLabel  = `${bankMeta?.label} · ${lc.icon} ${lc.label}`;
+      sumber        = 'Kumpulan Soal OSN — Kemendikdasmen';
+      backFn        = `window.OSN.selectMapel('${state.mapelKey}')`;
+    }
 
     container.innerHTML = `
       <div class="osn-select-wrap">
-        <button class="tryout-back-btn" onclick="window.OSN.selectMapel('${state.mapelKey}')">← Ganti Level</button>
+        <button class="tryout-back-btn" onclick="${backFn}">← Ganti ${isPaket ? 'Paket' : 'Level'}</button>
         <div class="osn-confirm-card" style="border-color:${lc.warna}">
           <div class="osn-confirm-header" style="background:${lc.warna}">
-            <span class="osn-confirm-icon">${bank.icon}</span>
+            <span class="osn-confirm-icon">${bankMeta?.icon || '📖'}</span>
             <div>
-              <div class="osn-confirm-title">${bank.label} · ${lc.icon} ${lc.label}</div>
+              <div class="osn-confirm-title">${confirmLabel}</div>
               <div class="osn-confirm-sub">${sumber}</div>
             </div>
           </div>
@@ -245,23 +325,41 @@ window.OSN = (function() {
   }
 
   // ══ PHASE 5: QUIZ ════════════════════════════════════════════════
-  function startQuiz() {
+  // BARU di sini soal di-fetch (lazy) — pilih file yang tepat
+  async function startQuiz() {
     const credits   = window._currentCredits ?? 0;
     const isInvited = window._isInvited ?? false;
     if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.startCheckout?.(); return; }
 
-    const ld = getLevelData();
-    const lc = LEVEL_CONFIG[state.levelKey];
+    const container = document.getElementById('osn-container');
+    const lc        = LEVEL_CONFIG[state.levelKey];
+    const bankMeta  = _getBankMeta(getBankKey());
+    const lvMeta    = bankMeta?.levels?.[state.levelKey];
+    container.innerHTML = fmtLoader('⏳ Memuat soal...');
 
-    // ✅ FIX: pakai getLevelSoal — handle flat & multi-paket
-    const allSoal = getLevelSoal(ld);
-    if (!allSoal.length) {
-      document.getElementById('osn-container').innerHTML =
-        `<div style="text-align:center;padding:40px;opacity:.6">⚠️ Soal belum tersedia untuk level ini.</div>`;
+    let soalData;
+    try {
+      if (lvMeta?.type === 'paket') {
+        // Multi-paket: fetch file paket yang dipilih
+        const pd = lvMeta.pakets.find(p => p.key === state.paketKey);
+        if (!pd) throw new Error('Paket tidak ditemukan');
+        soalData = await _fetchFile(pd.file);
+      } else {
+        // Flat: fetch file level langsung
+        soalData = await _fetchFile(lvMeta.file);
+      }
+    } catch(e) {
+      container.innerHTML = `<div style="text-align:center;padding:40px;color:red">❌ Gagal memuat soal. Coba lagi.</div>`;
       return;
     }
 
-    state.allQuestions = shuffle(allSoal).slice(0, lc.jumlah);
+    const soal = soalData?.soal || [];
+    if (!soal.length) {
+      container.innerHTML = fmtLoader('⚠️ Soal belum tersedia untuk level ini.');
+      return;
+    }
+
+    state.allQuestions = shuffle(soal).slice(0, lc.jumlah);
     state.answers      = new Array(state.allQuestions.length).fill(null);
     state.currentIdx   = 0;
     state.phase        = 'quiz';
@@ -275,15 +373,21 @@ window.OSN = (function() {
 
   function renderQuizShell() {
     const total     = state.allQuestions.length;
-    const bank      = getBank();
+    const bankMeta  = _getBankMeta(getBankKey());
     const lc        = LEVEL_CONFIG[state.levelKey];
     const container = document.getElementById('osn-container');
+
+    // Label header quiz: sertakan nama paket jika ada
+    const lvMeta    = bankMeta?.levels?.[state.levelKey];
+    const paketLabel = (lvMeta?.type === 'paket' && state.paketKey)
+      ? ' · ' + (lvMeta.pakets.find(p => p.key === state.paketKey)?.label || state.paketKey)
+      : '';
 
     container.innerHTML = `
       <div class="cpns-quiz-shell">
         <div class="cpns-quiz-header">
           <div class="cpns-quiz-title">
-            <span class="cpns-quiz-badge" style="background:${lc.warna}">${bank.icon} OSN ${bank.jenjang} · ${lc.label}</span>
+            <span class="cpns-quiz-badge" style="background:${lc.warna}">${bankMeta?.icon || '📖'} OSN ${bankMeta?.jenjang || ''} · ${lc.label}${paketLabel}</span>
             <span class="cpns-quiz-progress" id="osn-progress">Soal 1 / ${total}</span>
           </div>
           <div class="tka-timer" id="osn-timer">${String(Math.floor(lc.waktu)).padStart(2,'0')}:00</div>
@@ -307,16 +411,16 @@ window.OSN = (function() {
 
   function renderQuestion(idx) {
     state.currentIdx = idx;
-    const q     = state.allQuestions[idx];
-    const total = state.allQuestions.length;
-    const lc    = LEVEL_CONFIG[state.levelKey];
-    const bank  = getBank();
+    const q        = state.allQuestions[idx];
+    const total    = state.allQuestions.length;
+    const lc       = LEVEL_CONFIG[state.levelKey];
+    const bankMeta = _getBankMeta(getBankKey());
 
     document.getElementById('osn-progress').textContent = `Soal ${idx + 1} / ${total}`;
 
     document.getElementById('osn-question-card').innerHTML = `
       <div class="tka-q-meta">
-        <span class="tka-q-mapel-badge" style="background:${lc.warna}">${bank.icon} ${bank.mapel} · ${lc.label}</span>
+        <span class="tka-q-mapel-badge" style="background:${lc.warna}">${bankMeta?.icon || '📖'} ${bankMeta?.mapel || ''} · ${lc.label}</span>
         <span class="tka-q-num">No. ${idx + 1}</span>
       </div>
       <p class="tka-q-text">${escHtml(q.q)}</p>
@@ -416,10 +520,17 @@ window.OSN = (function() {
     const total     = state.allQuestions.length;
     const pct       = Math.round((benar / total) * 100);
     const lc        = LEVEL_CONFIG[state.levelKey];
-    const bank      = getBank();
+    const bankMeta  = _getBankMeta(getBankKey());
     const minsE     = Math.floor(elapsed / 60), secsE = elapsed % 60;
     const emoji     = pct >= 90 ? '🏆' : pct >= 75 ? '🥇' : pct >= 60 ? '🥈' : pct >= 45 ? '🥉' : '📚';
     const msg       = pct >= 90 ? 'Luar Biasa!' : pct >= 75 ? 'Sangat Bagus!' : pct >= 60 ? 'Bagus!' : pct >= 45 ? 'Cukup' : 'Terus Berlatih!';
+
+    // Tombol ulangi kembali ke pilih paket jika ada
+    const lvMeta     = bankMeta?.levels?.[state.levelKey];
+    const repeatBtn  = lvMeta?.type === 'paket'
+      ? `<button class="tka-btn-retry" onclick="window.OSN.startQuiz()">↺ Ulangi Paket Ini</button>
+         <button class="tka-nav-btn" onclick="window.OSN.renderSelectPaket()">🔄 Ganti Paket</button>`
+      : `<button class="tka-btn-retry" onclick="window.OSN.startQuiz()">↺ Ulangi Level Ini</button>`;
 
     container.innerHTML = `
       <div class="tka-result-wrap">
@@ -450,7 +561,7 @@ window.OSN = (function() {
         </div>
         <div class="tka-result-actions">
           <button class="btn-new" onclick="window.OSN.showReview()">📖 Lihat Pembahasan</button>
-          <button class="tka-btn-retry" onclick="window.OSN.startQuiz()">↺ Ulangi Level Ini</button>
+          ${repeatBtn}
           <button class="tka-nav-btn" onclick="window.OSN.renderSelectLevel()">🔼 Coba Level Lain</button>
         </div>
       </div>`;
@@ -459,11 +570,16 @@ window.OSN = (function() {
   // ══ REVIEW ═══════════════════════════════════════════════════════
   function showReview() {
     const container = document.getElementById('osn-container');
-    const bank      = getBank();
     const lc        = LEVEL_CONFIG[state.levelKey];
+    const bankMeta  = _getBankMeta(getBankKey());
+    const lvMeta    = bankMeta?.levels?.[state.levelKey];
+    const paketLabel = (lvMeta?.type === 'paket' && state.paketKey)
+      ? ' · ' + (lvMeta.pakets.find(p => p.key === state.paketKey)?.label || '')
+      : '';
+
     let html = `<div class="tka-review-wrap">
       <h2 class="tka-review-title">📖 Pembahasan Soal</h2>
-      <div class="tka-review-mapel-header" style="background:${lc.warna}">${bank.icon} ${bank.label} · ${lc.icon} ${lc.label}</div>`;
+      <div class="tka-review-mapel-header" style="background:${lc.warna}">${bankMeta?.icon || ''} ${bankMeta?.label || ''} · ${lc.icon} ${lc.label}${paketLabel}</div>`;
 
     state.allQuestions.forEach((q, i) => {
       const userAns = state.answers[i];
@@ -498,6 +614,7 @@ window.OSN = (function() {
 
   return {
     init, selectJenjang, selectMapel, selectLevel, renderSelectLevel,
+    renderSelectPaket, selectPaket,
     startQuiz, navigate, jumpTo, selectAnswer, confirmSubmit,
     showReview, _stopTimer
   };

@@ -5,14 +5,42 @@
  *   node split-osn.js
  *
  * Input : js/osn-questions.js  (format window.OSN_QUESTIONS = { ... })
- * Output: data/osn-index.json, data/osn-sd_ipa.json, data/osn-smp_ipa.json, dst.
+ * Output: data/osn-index.json + file JSON per bank/level/paket
  *
- * Naming convention: osn-{bankKey}.json  (contoh: osn-sd_ipa.json, osn-sma_biologi.json)
- * agar tidak bentrok dengan file SNBT/CPNS/TKA di folder data/ yang sama.
+ * ── NAMING CONVENTION FILE OUTPUT ──────────────────────────────────────────
  *
- * Mendukung DUA struktur level:
- *   1. Flat  : { label, sumber, soal: [...] }
- *   2. Paket : { paket1: { label, sumber, soal: [...] }, paket2: {...}, ... }
+ * Level FLAT (soal langsung, tidak berpaking):
+ *   data/osn-{bankKey}--{level}.json
+ *   contoh: osn-sd_ipa--kabupaten.json
+ *           osn-smp_ipa--provinsi.json
+ *
+ * Level MULTI-PAKET (berisi paket1, paket2, ...):
+ *   data/osn-{bankKey}--{level}--{paketKey}.json
+ *   contoh: osn-smp_ipa--kabupaten--paket1.json
+ *           osn-smp_ipa--kabupaten--paket2.json
+ *
+ * Prefix "osn-" dan separator "--" memastikan tidak bentrok dengan
+ * file SNBT/CPNS/TKA di folder data/ yang sama.
+ *
+ * ── osn-index.json ─────────────────────────────────────────────────────────
+ * Berisi metadata ringan TANPA soal, dipakai osn.js untuk:
+ *   - Menampilkan UI pilih mapel/level (tersedia / segera hadir)
+ *   - Mengetahui path file yang harus di-fetch (flat vs multi-paket)
+ *
+ * Format levels per bank:
+ *   "kabupaten": {
+ *     "type": "flat",            // atau "paket"
+ *     "count": 43,               // total soal
+ *     "file": "osn-sd_ipa--kabupaten.json"   // jika flat
+ *   }
+ *   "kabupaten": {
+ *     "type": "paket",
+ *     "count": 80,
+ *     "pakets": [
+ *       { "key": "paket1", "label": "Paket 1", "count": 40, "file": "osn-smp_ipa--kabupaten--paket1.json" },
+ *       { "key": "paket2", "label": "Paket 2", "count": 40, "file": "osn-smp_ipa--kabupaten--paket2.json" }
+ *     ]
+ *   }
  */
 
 const fs   = require('fs');
@@ -27,41 +55,95 @@ if (!match) { console.error('❌ window.OSN_QUESTIONS tidak ditemukan'); process
 
 const all  = eval('(' + match[1] + ')');
 const keys = Object.keys(all);
+const LEVELS = ['kabupaten', 'provinsi', 'semifinal', 'final'];
 
 fs.mkdirSync(OUTDIR, { recursive: true });
 
-/**
- * Hitung total soal dari satu level — mendukung flat & multi-paket.
- *   Flat   : ld.soal adalah array langsung
- *   Paket  : ld adalah { paket1: { soal: [...] }, paket2: { soal: [...] } }
- */
-function countSoal(ld) {
+// ── Helpers ────────────────────────────────────────────────────────────────
+
+function isMultiPaket(ld) {
+  if (!ld) return false;
+  if (Array.isArray(ld.soal)) return false;
+  return Object.values(ld).some(v => v && Array.isArray(v.soal));
+}
+
+function countFlat(ld) {
+  if (!ld) return 0;
+  if (Array.isArray(ld.soal)) return ld.soal.length;
+  return 0;
+}
+
+function countAll(ld) {
   if (!ld) return 0;
   if (Array.isArray(ld.soal)) return ld.soal.length;
   return Object.values(ld)
     .filter(v => v && Array.isArray(v.soal))
-    .reduce((sum, v) => sum + v.soal.length, 0);
+    .reduce((s, v) => s + v.soal.length, 0);
 }
 
-// Tulis setiap bank sebagai file JSON terpisah
-keys.forEach(key => {
-  const out = path.join(OUTDIR, `osn-${key}.json`);
-  fs.writeFileSync(out, JSON.stringify(all[key]));
-  const kb    = (fs.statSync(out).size / 1024).toFixed(1);
-  const total = ['kabupaten','provinsi','semifinal','final']
-    .reduce((s, lv) => s + countSoal(all[key][lv]), 0);
-  console.log(`✓ osn-${key}.json  (${kb} KB, ${total} soal)`);
-});
+function write(filename, data) {
+  const outPath = path.join(OUTDIR, filename);
+  fs.writeFileSync(outPath, JSON.stringify(data));
+  const kb = (fs.statSync(outPath).size / 1024).toFixed(1);
+  return kb;
+}
 
-// Tulis osn-index.json: metadata ringan TANPA data soal
-const index = keys.map(key => {
-  const val    = all[key];
-  const levels = {};
-  ['kabupaten','provinsi','semifinal','final'].forEach(lv => {
-    levels[lv] = countSoal(val[lv]);
+// ── Proses setiap bank ─────────────────────────────────────────────────────
+
+const index = [];
+
+keys.forEach(bankKey => {
+  const bank    = all[bankKey];
+  const levelsMeta = {};
+  let   totalSoal  = 0;
+
+  console.log(`\n📦 ${bankKey} (${bank.label})`);
+
+  LEVELS.forEach(lv => {
+    const ld = bank[lv];
+
+    if (isMultiPaket(ld)) {
+      // ── Multi-paket: tulis satu file per paket ──────────────────────────
+      const paketKeys  = Object.keys(ld);
+      const paketsMeta = [];
+      let   lvTotal    = 0;
+
+      paketKeys.forEach(pk => {
+        const pd       = ld[pk];
+        const count    = pd?.soal?.length || 0;
+        const filename = `osn-${bankKey}--${lv}--${pk}.json`;
+        const kb       = write(filename, pd);
+        lvTotal       += count;
+        paketsMeta.push({ key: pk, label: pd.label || pk, count, file: filename });
+        console.log(`  ✓ ${filename}  (${kb} KB, ${count} soal)`);
+      });
+
+      levelsMeta[lv] = { type: 'paket', count: lvTotal, pakets: paketsMeta };
+      totalSoal     += lvTotal;
+
+    } else {
+      // ── Flat: satu file per level ───────────────────────────────────────
+      const count    = countFlat(ld);
+      const filename = `osn-${bankKey}--${lv}.json`;
+      const kb       = write(filename, ld || { label: '', sumber: '', soal: [] });
+
+      levelsMeta[lv] = { type: 'flat', count, file: filename };
+      totalSoal     += count;
+      console.log(`  ✓ ${filename}  (${kb} KB, ${count} soal)`);
+    }
   });
-  return { key, label: val.label, jenjang: val.jenjang, mapel: val.mapel, icon: val.icon, levels };
+
+  index.push({
+    key:     bankKey,
+    label:   bank.label,
+    jenjang: bank.jenjang,
+    mapel:   bank.mapel,
+    icon:    bank.icon,
+    levels:  levelsMeta,
+    total:   totalSoal,
+  });
 });
 
+// ── Tulis index ────────────────────────────────────────────────────────────
 fs.writeFileSync(path.join(OUTDIR, 'osn-index.json'), JSON.stringify(index, null, 2));
-console.log(`\n✅ ${keys.length} bank + osn-index.json → ${OUTDIR}`);
+console.log(`\n✅ osn-index.json + ${keys.length} bank → ${OUTDIR}`);

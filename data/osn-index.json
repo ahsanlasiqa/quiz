@@ -6,11 +6,28 @@
     "mapel": "Ilmu Pengetahuan Alam",
     "icon": "🔬",
     "levels": {
-      "kabupaten": 43,
-      "provinsi": 0,
-      "semifinal": 0,
-      "final": 0
-    }
+      "kabupaten": {
+        "type": "flat",
+        "count": 43,
+        "file": "osn-sd_ipa--kabupaten.json"
+      },
+      "provinsi": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-sd_ipa--provinsi.json"
+      },
+      "semifinal": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-sd_ipa--semifinal.json"
+      },
+      "final": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-sd_ipa--final.json"
+      }
+    },
+    "total": 43
   },
   {
     "key": "smp_ipa",
@@ -19,12 +36,41 @@
     "mapel": "Ilmu Pengetahuan Alam",
     "icon": "⚗️",
     "levels": {
-      "kabupaten": 40,
-      "provinsi": 0,
-      "semifinal": 0,
-      "final": 0,
-      "kabupaten_paket": 2
-    }
+      "kabupaten": {
+        "type": "paket",
+        "count": 80,
+        "pakets": [
+          {
+            "key": "paket1",
+            "label": "Paket 1",
+            "count": 40,
+            "file": "osn-smp_ipa--kabupaten--paket1.json"
+          },
+          {
+            "key": "paket2",
+            "label": "Paket 2",
+            "count": 40,
+            "file": "osn-smp_ipa--kabupaten--paket2.json"
+          }
+        ]
+      },
+      "provinsi": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-smp_ipa--provinsi.json"
+      },
+      "semifinal": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-smp_ipa--semifinal.json"
+      },
+      "final": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-smp_ipa--final.json"
+      }
+    },
+    "total": 80
   },
   {
     "key": "sma_biologi",
@@ -33,11 +79,28 @@
     "mapel": "Biologi",
     "icon": "🧬",
     "levels": {
-      "kabupaten": 0,
-      "provinsi": 0,
-      "semifinal": 0,
-      "final": 0
-    }
+      "kabupaten": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-sma_biologi--kabupaten.json"
+      },
+      "provinsi": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-sma_biologi--provinsi.json"
+      },
+      "semifinal": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-sma_biologi--semifinal.json"
+      },
+      "final": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-sma_biologi--final.json"
+      }
+    },
+    "total": 0
   },
   {
     "key": "sma_fisika",
@@ -46,10 +109,27 @@
     "mapel": "Fisika",
     "icon": "⚛️",
     "levels": {
-      "kabupaten": 0,
-      "provinsi": 0,
-      "semifinal": 0,
-      "final": 0
-    }
+      "kabupaten": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-sma_fisika--kabupaten.json"
+      },
+      "provinsi": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-sma_fisika--provinsi.json"
+      },
+      "semifinal": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-sma_fisika--semifinal.json"
+      },
+      "final": {
+        "type": "flat",
+        "count": 0,
+        "file": "osn-sma_fisika--final.json"
+      }
+    },
+    "total": 0
   }
 ]
