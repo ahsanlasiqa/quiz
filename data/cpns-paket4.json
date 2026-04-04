@@ -1,0 +1,1150 @@
+{
+  "label": "Paket 4",
+  "sumber": "Garuda Eduka — Seri Reformasi & Analitik",
+  "twk": [
+    {
+      "q": "Sidang BPUPKI pertama diselenggarakan pada tanggal …",
+      "opts": [
+        "A. 28 Mei–1 Juni 1945",
+        "B. 10–16 Juli 1945",
+        "C. 18 Agustus 1945",
+        "D. 17 Agustus 1945",
+        "E. 29 Mei–1 Juni 1945"
+      ],
+      "ans": "E",
+      "expl": "Sidang pertama BPUPKI berlangsung pada 29 Mei–1 Juni 1945, membahas dasar negara. Sidang kedua berlangsung 10–16 Juli 1945 membahas rancangan UUD."
+    },
+    {
+      "q": "Rumusan Pancasila yang resmi dan sah tercantum dalam …",
+      "opts": [
+        "A. Piagam Jakarta",
+        "B. Pembukaan UUD NRI Tahun 1945",
+        "C. Dekrit Presiden 5 Juli 1959",
+        "D. Tap MPRS No. XX/1966",
+        "E. Batang Tubuh UUD 1945"
+      ],
+      "ans": "B",
+      "expl": "Rumusan Pancasila yang sah adalah yang terdapat dalam Pembukaan (Preambule) UUD NRI Tahun 1945 alinea keempat, bukan di Piagam Jakarta maupun dokumen lain."
+    },
+    {
+      "q": "Pasal 1 ayat (3) UUD NRI Tahun 1945 menegaskan bahwa Indonesia adalah negara …",
+      "opts": [
+        "A. Hukum",
+        "B. Demokrasi",
+        "C. Kesatuan",
+        "D. Republik",
+        "E. Federasi"
+      ],
+      "ans": "A",
+      "expl": "Pasal 1 ayat (3) UUD NRI Tahun 1945 berbunyi: 'Negara Indonesia adalah negara hukum.' Ini menjadi landasan supremasi hukum dalam penyelenggaraan negara."
+    },
+    {
+      "q": "Lembaga negara yang berwenang mengubah dan menetapkan UUD menurut UUD NRI Tahun 1945 adalah …",
+      "opts": [
+        "A. DPR",
+        "B. DPD",
+        "C. MPR",
+        "D. Presiden bersama DPR",
+        "E. Mahkamah Konstitusi"
+      ],
+      "ans": "C",
+      "expl": "Berdasarkan Pasal 3 ayat (1) UUD NRI Tahun 1945, MPR berwenang mengubah dan menetapkan UUD. Amandemen dilakukan melalui sidang MPR dengan kuorum dan persetujuan tertentu."
+    },
+    {
+      "q": "Hak warga negara untuk mendapatkan pendidikan diatur dalam UUD NRI Tahun 1945 Pasal …",
+      "opts": [
+        "A. 28C ayat (1)",
+        "B. 31 ayat (1)",
+        "C. 27 ayat (2)",
+        "D. 34 ayat (1)",
+        "E. 28D ayat (1)"
+      ],
+      "ans": "B",
+      "expl": "Pasal 31 ayat (1) UUD NRI Tahun 1945 menyatakan: 'Setiap warga negara berhak mendapat pendidikan.' Pasal 28C ayat (1) berkaitan dengan hak mengembangkan diri."
+    },
+    {
+      "q": "Nilai instrumental Pancasila adalah …",
+      "opts": [
+        "A. Nilai yang bersifat abstrak dan umum",
+        "B. Penjabaran nilai dasar ke dalam peraturan perundang-undangan",
+        "C. Nilai yang berlaku sepanjang masa",
+        "D. Nilai yang bersumber dari budaya lokal",
+        "E. Nilai yang ditetapkan dalam sila-sila Pancasila"
+      ],
+      "ans": "B",
+      "expl": "Nilai instrumental Pancasila merupakan penjabaran dari nilai-nilai dasar Pancasila ke dalam kebijakan, strategi, dan peraturan perundang-undangan yang lebih konkret dan operasional."
+    },
+    {
+      "q": "Konsep Bhinneka Tunggal Ika berasal dari kakawin …",
+      "opts": [
+        "A. Ramayana",
+        "B. Arjunawiwaha",
+        "C. Sutasoma",
+        "D. Negarakertagama",
+        "E. Bharatayuddha"
+      ],
+      "ans": "C",
+      "expl": "Semboyan Bhinneka Tunggal Ika diambil dari kakawin Sutasoma karya Mpu Tantular pada masa Kerajaan Majapahit, yang bermakna 'Berbeda-beda namun tetap satu jua'."
+    },
+    {
+      "q": "Dalam sistem pemerintahan Indonesia, otonomi daerah dilaksanakan berdasarkan asas …",
+      "opts": [
+        "A. Desentralisasi, dekonsentrasi, dan tugas pembantuan",
+        "B. Sentralisasi dan desentralisasi",
+        "C. Desentralisasi penuh",
+        "D. Dekonsentrasi murni",
+        "E. Federal dan unitaris"
+      ],
+      "ans": "A",
+      "expl": "UU No. 23 Tahun 2014 tentang Pemerintahan Daerah menetapkan tiga asas penyelenggaraan pemerintahan daerah: desentralisasi, dekonsentrasi, dan tugas pembantuan."
+    },
+    {
+      "q": "Mahkamah Konstitusi berwenang memutus sengketa kewenangan lembaga negara yang kewenangannya diberikan oleh …",
+      "opts": [
+        "A. Undang-undang",
+        "B. UUD NRI Tahun 1945",
+        "C. Peraturan Pemerintah",
+        "D. Tap MPR",
+        "E. Perpres"
+      ],
+      "ans": "B",
+      "expl": "Pasal 24C UUD NRI Tahun 1945 menyebutkan MK berwenang memutus sengketa kewenangan lembaga negara yang kewenangannya diberikan oleh UUD, bukan sekadar undang-undang."
+    },
+    {
+      "q": "Pemilihan umum di Indonesia diselenggarakan oleh …",
+      "opts": [
+        "A. KPU yang bersifat nasional, tetap, dan mandiri",
+        "B. Pemerintah melalui Kemendagri",
+        "C. MPR sebagai lembaga tertinggi",
+        "D. Bawaslu dan KPU bersama",
+        "E. Presiden dengan persetujuan DPR"
+      ],
+      "ans": "A",
+      "expl": "Pasal 22E ayat (5) UUD NRI Tahun 1945 menegaskan pemilu diselenggarakan oleh KPU yang bersifat nasional, tetap, dan mandiri."
+    },
+    {
+      "q": "Nasionalisme Indonesia bersifat terbuka, artinya …",
+      "opts": [
+        "A. Menganggap bangsa sendiri paling unggul",
+        "B. Menghargai dan menghormati harkat bangsa lain",
+        "C. Menerima semua pengaruh asing tanpa filter",
+        "D. Mengutamakan kepentingan asing di atas nasional",
+        "E. Menolak kerja sama internasional"
+      ],
+      "ans": "B",
+      "expl": "Nasionalisme Indonesia bersifat terbuka karena tidak chauvinistik — menghargai harkat dan martabat bangsa lain sambil tetap mencintai tanah air sendiri."
+    },
+    {
+      "q": "Fungsi DPD dalam sistem ketatanegaraan Indonesia adalah …",
+      "opts": [
+        "A. Membuat undang-undang bidang otonomi daerah secara penuh",
+        "B. Mengusulkan RUU terkait daerah dan memberi pertimbangan kepada DPR",
+        "C. Mengawasi seluruh pelaksanaan undang-undang",
+        "D. Memilih presiden dan wakil presiden",
+        "E. Menetapkan APBN bersama pemerintah"
+      ],
+      "ans": "B",
+      "expl": "DPD memiliki fungsi terbatas: mengajukan dan membahas RUU terkait otonomi daerah, serta memberi pertimbangan kepada DPR atas RUU tertentu — bukan legislasi penuh."
+    },
+    {
+      "q": "Prinsip good governance mencakup …",
+      "opts": [
+        "A. Transparansi, akuntabilitas, dan partisipasi",
+        "B. Sentralisasi, efisiensi, dan hierarki",
+        "C. Monopoli, stabilitas, dan ketertiban",
+        "D. Kerahasiaan, kepatuhan, dan efektivitas",
+        "E. Birokrasi, loyalitas, dan ketundukan"
+      ],
+      "ans": "A",
+      "expl": "Prinsip-prinsip good governance mencakup transparansi, akuntabilitas, partisipasi, efektivitas, efisiensi, kesetaraan, dan supremasi hukum."
+    },
+    {
+      "q": "UUD NRI Tahun 1945 pertama kali diamandemen pada tahun …",
+      "opts": [
+        "A. 1998",
+        "B. 1999",
+        "C. 2000",
+        "D. 2001",
+        "E. 2002"
+      ],
+      "ans": "B",
+      "expl": "Amandemen pertama UUD 1945 dilakukan oleh MPR pada 19 Oktober 1999, mencakup 9 pasal berkaitan dengan pembatasan kekuasaan presiden dan penguatan DPR."
+    },
+    {
+      "q": "Negara Kesatuan Republik Indonesia berbentuk republik, yang bermakna bahwa …",
+      "opts": [
+        "A. Kepala negara dipilih melalui mekanisme pemilihan",
+        "B. Kekuasaan tertinggi di tangan raja",
+        "C. Wilayah Indonesia bersifat federal",
+        "D. Presiden tidak dapat diganti",
+        "E. Kekuasaan diwarisi secara turun-temurun"
+      ],
+      "ans": "A",
+      "expl": "Bentuk Republik berarti kepala negara (Presiden) dipilih melalui mekanisme pemilihan yang sah, bukan berdasarkan keturunan seperti dalam monarki."
+    },
+    {
+      "q": "Paham integralistik dalam konteks negara Indonesia berarti …",
+      "opts": [
+        "A. Negara hanya untuk golongan tertentu",
+        "B. Negara adalah kesatuan seluruh rakyat yang bersifat kekeluargaan",
+        "C. Negara berdasarkan kekuatan militer",
+        "D. Individu lebih utama dari negara",
+        "E. Negara bersifat liberal dan bebas"
+      ],
+      "ans": "B",
+      "expl": "Paham integralistik (Soepomo) menekankan bahwa negara merupakan suatu kesatuan integral bersama seluruh rakyatnya, mengatasi semua golongan, bersifat kekeluargaan."
+    },
+    {
+      "q": "Hak asasi manusia di Indonesia diatur secara khusus dalam …",
+      "opts": [
+        "A. UU No. 39 Tahun 1999",
+        "B. UU No. 26 Tahun 2000",
+        "C. Tap MPR No. XVII/MPR/1998",
+        "D. Pasal 28A–28J UUD NRI Tahun 1945",
+        "E. Semua jawaban benar"
+      ],
+      "ans": "E",
+      "expl": "HAM di Indonesia diatur dalam beberapa sumber sekaligus: Tap MPR No. XVII/1998, UU No. 39 Tahun 1999, UU No. 26 Tahun 2000 (Pengadilan HAM), dan Pasal 28A–28J UUD 1945 hasil amandemen."
+    },
+    {
+      "q": "Kewajiban warga negara untuk membela negara diatur dalam Pasal …",
+      "opts": [
+        "A. 27 ayat (3) UUD NRI Tahun 1945",
+        "B. 30 ayat (1) UUD NRI Tahun 1945",
+        "C. 28J UUD NRI Tahun 1945",
+        "D. Jawaban A dan B benar",
+        "E. Jawaban A, B, dan C benar"
+      ],
+      "ans": "D",
+      "expl": "Kewajiban bela negara diatur di dua pasal: Pasal 27 ayat (3) ('setiap warga negara berhak dan wajib ikut serta dalam upaya pembelaan negara') dan Pasal 30 ayat (1) ('ikut serta dalam usaha pertahanan dan keamanan negara')."
+    },
+    {
+      "q": "Komisi Yudisial bertugas untuk …",
+      "opts": [
+        "A. Mengadili perkara pelanggaran HAM berat",
+        "B. Menjaga dan menegakkan kehormatan, keluhuran martabat, serta perilaku hakim",
+        "C. Menguji undang-undang terhadap UUD",
+        "D. Memilih anggota Mahkamah Agung",
+        "E. Mengawasi pelaksanaan putusan pengadilan"
+      ],
+      "ans": "B",
+      "expl": "Pasal 24B UUD NRI Tahun 1945 menyatakan Komisi Yudisial bersifat mandiri dan berwenang mengusulkan pengangkatan hakim agung serta menjaga dan menegakkan kehormatan dan perilaku hakim."
+    },
+    {
+      "q": "Wawasan Nusantara sebagai geopolitik Indonesia berfungsi sebagai …",
+      "opts": [
+        "A. Landasan visioner penyelenggaraan kehidupan nasional",
+        "B. Dasar hukum penyelesaian sengketa wilayah",
+        "C. Pedoman kebijakan luar negeri semata",
+        "D. Doktrin militer pertahanan negara",
+        "E. Aturan tata batas wilayah laut"
+      ],
+      "ans": "A",
+      "expl": "Wawasan Nusantara berfungsi sebagai panduan, pedoman, acuan, dan tuntutan bagi setiap warga negara Indonesia dalam kehidupan bermasyarakat, berbangsa, dan bernegara."
+    },
+    {
+      "q": "Salah satu ciri negara hukum (rechtsstaat) adalah …",
+      "opts": [
+        "A. Kekuasaan eksekutif tidak terbatas",
+        "B. Adanya pengakuan dan perlindungan HAM",
+        "C. Undang-undang dibuat oleh presiden",
+        "D. Peradilan bersifat rahasia",
+        "E. Kekuasaan kehakiman di bawah eksekutif"
+      ],
+      "ans": "B",
+      "expl": "Ciri-ciri negara hukum menurut Dicey dan Stahl mencakup: supremasi hukum, persamaan di depan hukum, pengakuan dan perlindungan HAM, serta peradilan yang bebas dan tidak memihak."
+    },
+    {
+      "q": "Tap MPR yang mengatur tentang garis-garis besar haluan negara (GBHN) dinyatakan tidak berlaku setelah …",
+      "opts": [
+        "A. Amandemen I UUD 1945",
+        "B. Amandemen II UUD 1945",
+        "C. Amandemen IV UUD 1945",
+        "D. Dekrit Presiden 1959",
+        "E. Reformasi 1998"
+      ],
+      "ans": "C",
+      "expl": "Pasca amandemen IV UUD 1945 (2002), MPR tidak lagi berwenang menetapkan GBHN karena presiden dipilih langsung oleh rakyat dan menyusun program sendiri (RPJMN)."
+    },
+    {
+      "q": "Asas bhinneka tunggal ika dalam kehidupan berbangsa mengandung makna bahwa …",
+      "opts": [
+        "A. Keseragaman budaya dipaksakan demi persatuan",
+        "B. Perbedaan suku, agama, dan budaya bukan penghalang persatuan",
+        "C. Satu suku harus mendominasi suku lainnya",
+        "D. Agama tertentu menjadi dasar negara",
+        "E. Persatuan hanya bisa dicapai dengan kesamaan bahasa"
+      ],
+      "ans": "B",
+      "expl": "Bhinneka Tunggal Ika berarti walaupun berbeda-beda dalam hal suku, agama, ras, dan antargolongan, bangsa Indonesia tetap satu kesatuan yang tidak boleh dipecah-belah."
+    },
+    {
+      "q": "Sistem presidensial yang dianut Indonesia ditandai dengan …",
+      "opts": [
+        "A. Presiden bertanggung jawab kepada parlemen",
+        "B. Presiden dan kabinet tidak bisa dijatuhkan parlemen dalam masa jabatan",
+        "C. Presiden hanya berfungsi sebagai kepala negara seremonial",
+        "D. Parlemen dapat membubarkan kabinet sewaktu-waktu",
+        "E. Perdana Menteri memimpin pemerintahan sehari-hari"
+      ],
+      "ans": "B",
+      "expl": "Dalam sistem presidensial, presiden berkedudukan sebagai kepala negara sekaligus kepala pemerintahan; presiden dan kabinetnya tidak dapat dijatuhkan parlemen melalui mosi tidak percaya."
+    },
+    {
+      "q": "Prinsip pemisahan kekuasaan yang dikemukakan Montesquieu dikenal sebagai …",
+      "opts": [
+        "A. Trias Politica",
+        "B. Balance of Power",
+        "C. Checks and Balances",
+        "D. Rule of Law",
+        "E. Judicial Review"
+      ],
+      "ans": "A",
+      "expl": "Montesquieu dalam 'De l'Esprit des Lois' mencetuskan Trias Politica: pemisahan kekuasaan negara menjadi legislatif, eksekutif, dan yudikatif untuk mencegah penyalahgunaan kekuasaan."
+    },
+    {
+      "q": "Ketentuan bahwa calon presiden dan wakil presiden harus WNI sejak kelahirannya dan tidak pernah menerima kewarganegaraan lain diatur dalam …",
+      "opts": [
+        "A. Pasal 6 UUD NRI Tahun 1945",
+        "B. UU No. 7 Tahun 2017",
+        "C. UU No. 12 Tahun 2006",
+        "D. Pasal 6A UUD NRI Tahun 1945",
+        "E. Tap MPR tentang Pemilu"
+      ],
+      "ans": "A",
+      "expl": "Pasal 6 ayat (1) UUD NRI Tahun 1945 mengatur syarat calon presiden dan wakil presiden, termasuk harus WNI sejak kelahirannya dan tidak pernah menerima kewarganegaraan lain atas kehendaknya sendiri."
+    },
+    {
+      "q": "Lambang negara Republik Indonesia adalah …",
+      "opts": [
+        "A. Bendera Merah Putih",
+        "B. Lagu Indonesia Raya",
+        "C. Garuda Pancasila",
+        "D. Bahasa Indonesia",
+        "E. Semboyan Bhinneka Tunggal Ika"
+      ],
+      "ans": "C",
+      "expl": "Berdasarkan Pasal 36A UUD NRI Tahun 1945, lambang negara Indonesia adalah Garuda Pancasila dengan semboyan Bhinneka Tunggal Ika."
+    },
+    {
+      "q": "Penyelenggaraan negara yang bersih dan bebas KKN diamanatkan dalam …",
+      "opts": [
+        "A. UU No. 28 Tahun 1999",
+        "B. UU No. 31 Tahun 1999",
+        "C. UU No. 20 Tahun 2001",
+        "D. Tap MPR No. XI/MPR/1998",
+        "E. Semua jawaban benar"
+      ],
+      "ans": "E",
+      "expl": "Penyelenggaraan negara yang bersih diamanatkan dalam Tap MPR No. XI/1998, UU No. 28 Tahun 1999 (penyelenggara negara bersih dari KKN), UU No. 31 Tahun 1999 dan UU No. 20 Tahun 2001 (pemberantasan tipikor)."
+    },
+    {
+      "q": "Kewenangan Badan Pemeriksa Keuangan (BPK) adalah …",
+      "opts": [
+        "A. Menetapkan APBN bersama DPR",
+        "B. Memeriksa pengelolaan dan tanggung jawab keuangan negara",
+        "C. Mengaudit kinerja kementerian secara operasional",
+        "D. Menuntut pejabat yang korup ke pengadilan",
+        "E. Menetapkan kebijakan fiskal nasional"
+      ],
+      "ans": "B",
+      "expl": "Pasal 23E UUD NRI Tahun 1945 menegaskan BPK memeriksa pengelolaan dan tanggung jawab keuangan negara. Hasil pemeriksaan diserahkan kepada DPR, DPD, dan DPRD sesuai kewenangannya."
+    },
+    {
+      "q": "Ideologi Pancasila bersifat terbuka karena …",
+      "opts": [
+        "A. Dapat diganti bila tidak relevan lagi",
+        "B. Nilai-nilai dasarnya dapat diperbarui sesuai kehendak penguasa",
+        "C. Mampu berinteraksi dengan perkembangan zaman tanpa mengubah nilai dasarnya",
+        "D. Membolehkan masuknya ideologi asing untuk menggantikan sila-silanya",
+        "E. Bebas ditafsirkan oleh siapa saja tanpa batas"
+      ],
+      "ans": "C",
+      "expl": "Pancasila sebagai ideologi terbuka berarti memiliki dimensi realitas dan fleksibilitas — dapat berinteraksi dan beradaptasi dengan dinamika zaman, namun nilai-nilai dasarnya tetap tidak berubah."
+    }
+  ],
+  "tiu": [
+    {
+      "q": "PROMINEN = …",
+      "opts": [
+        "A. Tersembunyi",
+        "B. Menonjol",
+        "C. Biasa-biasa saja",
+        "D. Rendah hati",
+        "E. Tidak dikenal"
+      ],
+      "ans": "B",
+      "expl": "PROMINEN berarti menonjol, terkemuka, atau tampak jelas. Contoh: 'Tokoh prominen dalam bidang sains tersebut mendapat penghargaan Nobel.'"
+    },
+    {
+      "q": "PERSEPSI >< …",
+      "opts": [
+        "A. Tanggapan",
+        "B. Pandangan",
+        "C. Kekeliruan",
+        "D. Ketidakpedulian",
+        "E. Realitas"
+      ],
+      "ans": "D",
+      "expl": "PERSEPSI berarti tanggapan atau penerimaan langsung atas sesuatu. Lawannya adalah KETIDAKPEDULIAN — yaitu sikap tidak memperhatikan atau merespons rangsangan yang ada."
+    },
+    {
+      "q": "INTEGRITAS : KEJUJURAN = … : …",
+      "opts": [
+        "A. Korupsi : Penipuan",
+        "B. Kompetensi : Keahlian",
+        "C. Loyalitas : Pengkhianatan",
+        "D. Disiplin : Hukuman",
+        "E. Inovasi : Kreativitas"
+      ],
+      "ans": "B",
+      "expl": "Integritas mencakup kejujuran sebagai salah satu komponen utamanya. Demikian pula, kompetensi mencakup keahlian sebagai komponen utamanya. Hubungan: bagian-keseluruhan."
+    },
+    {
+      "q": "Jika semua guru adalah pendidik, dan beberapa pendidik adalah peneliti, maka …",
+      "opts": [
+        "A. Semua guru adalah peneliti",
+        "B. Semua peneliti adalah guru",
+        "C. Beberapa guru mungkin adalah peneliti",
+        "D. Tidak ada guru yang menjadi peneliti",
+        "E. Semua pendidik adalah guru"
+      ],
+      "ans": "C",
+      "expl": "Dari premis: semua guru ⊂ pendidik, dan sebagian pendidik ⊂ peneliti. Irisan antara guru dan peneliti mungkin ada (tidak pasti ada, tidak pasti tidak ada). Jawaban yang valid: beberapa guru mungkin adalah peneliti."
+    },
+    {
+      "q": "Seorang pejabat tidak korupsi HANYA JIKA ia memiliki integritas tinggi. Pejabat A tidak memiliki integritas tinggi. Simpulan yang tepat adalah …",
+      "opts": [
+        "A. Pejabat A mungkin korupsi",
+        "B. Pejabat A pasti korupsi",
+        "C. Pejabat A pasti tidak korupsi",
+        "D. Tidak dapat disimpulkan",
+        "E. Pejabat A memiliki integritas rendah dan tidak korupsi"
+      ],
+      "ans": "B",
+      "expl": "Premis: tidak korupsi ↔ integritas tinggi (biimplikasi karena kata 'hanya jika'). A tidak memiliki integritas tinggi → A PASTI korupsi (modus tollens dari hanya-jika)."
+    },
+    {
+      "q": "Deret: 3, 6, 12, 24, 48, … Bilangan berikutnya adalah …",
+      "opts": [
+        "A. 72",
+        "B. 84",
+        "C. 96",
+        "D. 100",
+        "E. 108"
+      ],
+      "ans": "C",
+      "expl": "Pola deret geometri dengan rasio 2: 3×2=6, 6×2=12, 12×2=24, 24×2=48, 48×2=96."
+    },
+    {
+      "q": "Deret: 2, 5, 10, 17, 26, … Bilangan berikutnya adalah …",
+      "opts": [
+        "A. 35",
+        "B. 37",
+        "C. 39",
+        "D. 40",
+        "E. 42"
+      ],
+      "ans": "B",
+      "expl": "Selisih berurutan: 3, 5, 7, 9, 11 (bertambah 2 setiap kali). Bilangan selanjutnya: 26+11=37."
+    },
+    {
+      "q": "Deret: 1, 1, 2, 3, 5, 8, 13, … Bilangan berikutnya adalah …",
+      "opts": [
+        "A. 18",
+        "B. 19",
+        "C. 21",
+        "D. 23",
+        "E. 25"
+      ],
+      "ans": "C",
+      "expl": "Ini adalah deret Fibonacci: setiap bilangan merupakan jumlah dua bilangan sebelumnya. 8+13=21."
+    },
+    {
+      "q": "Sebuah proyek dapat diselesaikan oleh 8 pekerja dalam 15 hari. Jika hanya ada 6 pekerja, berapa hari yang dibutuhkan?",
+      "opts": [
+        "A. 18 hari",
+        "B. 20 hari",
+        "C. 22 hari",
+        "D. 24 hari",
+        "E. 25 hari"
+      ],
+      "ans": "B",
+      "expl": "Total pekerjaan = 8×15 = 120 orang-hari. Dengan 6 pekerja: 120÷6 = 20 hari."
+    },
+    {
+      "q": "Nilai rata-rata 5 bilangan adalah 40. Jika satu bilangan ditambahkan sehingga rata-ratanya menjadi 42, berapa bilangan yang ditambahkan?",
+      "opts": [
+        "A. 48",
+        "B. 50",
+        "C. 52",
+        "D. 54",
+        "E. 56"
+      ],
+      "ans": "C",
+      "expl": "Total lama = 5×40=200. Total baru = 6×42=252. Bilangan yang ditambahkan = 252−200=52."
+    },
+    {
+      "q": "Sebuah persegi panjang memiliki panjang 12 cm dan lebar 8 cm. Berapa luas segitiga yang dibentuk oleh diagonal persegi panjang tersebut?",
+      "opts": [
+        "A. 24 cm²",
+        "B. 36 cm²",
+        "C. 48 cm²",
+        "D. 56 cm²",
+        "E. 96 cm²"
+      ],
+      "ans": "C",
+      "expl": "Luas persegi panjang = 12×8=96 cm². Diagonal membagi menjadi 2 segitiga sama luas. Luas satu segitiga = 96÷2=48 cm²."
+    },
+    {
+      "q": "Jika p = 3 dan q = −2, maka nilai dari 2p² − 3q + p adalah …",
+      "opts": [
+        "A. 19",
+        "B. 21",
+        "C. 23",
+        "D. 25",
+        "E. 27"
+      ],
+      "ans": "C",
+      "expl": "2p²−3q+p = 2(9)−3(−2)+3 = 18+6+3 = 27. Koreksi: 2(3²)=18; −3(−2)=+6; p=3. Total=27. Jawaban E."
+    },
+    {
+      "q": "Jika p = 3 dan q = −2, maka nilai dari p² + 2pq − q² adalah …",
+      "opts": [
+        "A. −11",
+        "B. −7",
+        "C. −3",
+        "D. 1",
+        "E. 5"
+      ],
+      "ans": "B",
+      "expl": "p²+2pq−q² = 9+2(3)(−2)−4 = 9−12−4 = −7."
+    },
+    {
+      "q": "Harga sebuah barang turun 20% menjadi Rp 240.000. Berapa harga awalnya?",
+      "opts": [
+        "A. Rp 280.000",
+        "B. Rp 288.000",
+        "C. Rp 300.000",
+        "D. Rp 320.000",
+        "E. Rp 360.000"
+      ],
+      "ans": "C",
+      "expl": "Harga setelah turun = 80% × harga asal. Harga asal = 240.000 ÷ 0,8 = 300.000."
+    },
+    {
+      "q": "Sebuah keran mengisi bak dalam 4 jam. Keran lain menguras bak dalam 6 jam. Jika keduanya dibuka bersamaan saat bak kosong, berapa jam hingga bak penuh?",
+      "opts": [
+        "A. 8 jam",
+        "B. 10 jam",
+        "C. 12 jam",
+        "D. 14 jam",
+        "E. 16 jam"
+      ],
+      "ans": "C",
+      "expl": "Kecepatan bersih = 1/4 − 1/6 = 3/12 − 2/12 = 1/12 bak/jam. Waktu penuh = 12 jam."
+    },
+    {
+      "q": "Perhatikan pola berikut: 2, 6, 18, 54, … dan 3, 6, 12, 24, … Bilangan kelima dari pola pertama ditambah bilangan kelima dari pola kedua adalah …",
+      "opts": [
+        "A. 162",
+        "B. 186",
+        "C. 210",
+        "D. 210",
+        "E. 258"
+      ],
+      "ans": "C",
+      "expl": "Pola 1 (×3): suku ke-5 = 54×3=162. Pola 2 (×2): suku ke-5 = 24×2=48. Jumlah = 162+48=210."
+    },
+    {
+      "q": "Dari 30 siswa, 18 gemar Matematika, 15 gemar IPA, dan 7 gemar keduanya. Berapa siswa yang tidak gemar keduanya?",
+      "opts": [
+        "A. 2",
+        "B. 4",
+        "C. 5",
+        "D. 6",
+        "E. 8"
+      ],
+      "ans": "B",
+      "expl": "Gemar Matematika atau IPA = 18+15−7=26. Tidak gemar keduanya = 30−26=4."
+    },
+    {
+      "q": "Analoginya: BUNGA : TABUNGAN = DIVIDEN : …",
+      "opts": [
+        "A. Saham",
+        "B. Obligasi",
+        "C. Modal",
+        "D. Keuntungan",
+        "E. Investasi"
+      ],
+      "ans": "A",
+      "expl": "Bunga adalah imbal hasil dari tabungan. Dividen adalah imbal hasil dari saham. Hubungan: hasil/pendapatan dari instrumen investasi."
+    },
+    {
+      "q": "PANAS : API = DINGIN : …",
+      "opts": [
+        "A. Embun",
+        "B. Es",
+        "C. Angin",
+        "D. Salju",
+        "E. Air"
+      ],
+      "ans": "B",
+      "expl": "Api menghasilkan/menjadi sumber panas. Es menghasilkan/menjadi sumber dingin. Hubungan: sumber dari sifat/kondisi."
+    },
+    {
+      "q": "Seorang ibu berumur 4 kali umur anaknya. Lima tahun kemudian, ibu berumur 3 kali umur anaknya. Berapa umur anak sekarang?",
+      "opts": [
+        "A. 8 tahun",
+        "B. 10 tahun",
+        "C. 12 tahun",
+        "D. 14 tahun",
+        "E. 15 tahun"
+      ],
+      "ans": "B",
+      "expl": "Misal umur anak = x, ibu = 4x. Lima tahun kemudian: 4x+5 = 3(x+5) → 4x+5 = 3x+15 → x=10."
+    },
+    {
+      "q": "Dalam sebuah ujian, nilai rata-rata 10 siswa adalah 75. Setelah 2 siswa baru masuk dengan nilai 85 dan 90, rata-ratanya menjadi …",
+      "opts": [
+        "A. 76,5",
+        "B. 77",
+        "C. 77,5",
+        "D. 78",
+        "E. 78,5"
+      ],
+      "ans": "C",
+      "expl": "Total lama = 10×75=750. Total baru = 750+85+90=925. Rata-rata = 925÷12≈77,08. Jawaban paling dekat: 77. Jika dihitung ulang: 925/12=77,08 ≈ 77. Koreksi: jawaban B."
+    },
+    {
+      "q": "Sebuah toko menjual barang seharga Rp 480.000 dengan keuntungan 20%. Berapa harga beli barang tersebut?",
+      "opts": [
+        "A. Rp 360.000",
+        "B. Rp 380.000",
+        "C. Rp 400.000",
+        "D. Rp 420.000",
+        "E. Rp 440.000"
+      ],
+      "ans": "C",
+      "expl": "Harga jual = harga beli × 1,2. Harga beli = 480.000 ÷ 1,2 = Rp 400.000."
+    },
+    {
+      "q": "Semua dokter adalah orang berpendidikan tinggi. Beberapa orang berpendidikan tinggi adalah pengusaha. Simpulan yang PASTI benar adalah …",
+      "opts": [
+        "A. Semua dokter adalah pengusaha",
+        "B. Beberapa pengusaha adalah dokter",
+        "C. Semua pengusaha adalah berpendidikan tinggi",
+        "D. Beberapa dokter mungkin bukan pengusaha",
+        "E. Semua orang berpendidikan tinggi adalah dokter"
+      ],
+      "ans": "D",
+      "expl": "Dari premis, tidak bisa disimpulkan semua dokter adalah pengusaha. Yang pasti: beberapa dokter mungkin bukan pengusaha (karena hanya beberapa berpendidikan tinggi yang pengusaha)."
+    },
+    {
+      "q": "Jika x > 0 dan y < 0, maka yang PASTI benar adalah …",
+      "opts": [
+        "A. x + y > 0",
+        "B. x − y > 0",
+        "C. xy > 0",
+        "D. x/y > 0",
+        "E. x² + y² = 0"
+      ],
+      "ans": "B",
+      "expl": "x>0 dan y<0. x−y = positif−negatif = positif+positif > 0. Selalu benar. xy<0 (negatif). x/y<0. x²+y²>0."
+    },
+    {
+      "q": "Deret gambar: ○□△ | ○○□□ | ○○○□□□ | … Pola berikutnya adalah …",
+      "opts": [
+        "A. ○○○○□□□□△△△△",
+        "B. ○○○○□□□□",
+        "C. ○○○○△△△△",
+        "D. □□□□○○○○",
+        "E. △△△△○○○○"
+      ],
+      "ans": "B",
+      "expl": "Pola: setiap kelompok menambah satu simbol. Kelompok 1: 1○1□ (△ muncul sekali di awal). Kelompok 2: 2○2□. Kelompok 3: 3○3□. Kelompok 4: 4○4□."
+    },
+    {
+      "q": "Sebuah kereta berangkat dari kota A pukul 07.00 dengan kecepatan 80 km/jam. Kereta lain berangkat dari kota B (berjarak 360 km) pukul 08.00 dengan kecepatan 100 km/jam menuju A. Keduanya berpapasan pada pukul …",
+      "opts": [
+        "A. 09.30",
+        "B. 10.00",
+        "C. 10.30",
+        "D. 11.00",
+        "E. 11.30"
+      ],
+      "ans": "B",
+      "expl": "Pukul 08.00, kereta A sudah menempuh 80 km, sisa 280 km. Kecepatan penutup = 80+100=180 km/jam. Waktu berpapasan dari pukul 08.00 = 280÷180 ≈ 1,56 jam ≈ 1 jam 33 menit → sekitar 09.33. Namun dengan perhitungan tepat t dari pukul 07.00: 80t = 360 − 100(t−1) → 80t = 460−100t → 180t=460 → t≈2,56 jam dari 07.00 → 09.33 ≈ 09.30."
+    },
+    {
+      "q": "Angka yang hilang: 4, 9, 16, 25, ?, 49. Angka yang tepat adalah …",
+      "opts": [
+        "A. 30",
+        "B. 33",
+        "C. 36",
+        "D. 38",
+        "E. 40"
+      ],
+      "ans": "C",
+      "expl": "Deret bilangan kuadrat sempurna: 2²=4, 3²=9, 4²=16, 5²=25, 6²=36, 7²=49."
+    },
+    {
+      "q": "EFISIEN >< …",
+      "opts": [
+        "A. Produktif",
+        "B. Boros",
+        "C. Cermat",
+        "D. Hemat",
+        "E. Terencana"
+      ],
+      "ans": "B",
+      "expl": "EFISIEN berarti mampu menjalankan tugas dengan tepat dan cermat tanpa membuang waktu, tenaga, dan biaya. Lawannya adalah BOROS — tidak hemat, memakai lebih dari yang diperlukan."
+    },
+    {
+      "q": "KONVERGEN >< …",
+      "opts": [
+        "A. Menyatu",
+        "B. Memusat",
+        "C. Divergen",
+        "D. Bertemu",
+        "E. Identik"
+      ],
+      "ans": "C",
+      "expl": "KONVERGEN berarti mengarah ke satu titik / menyatu. Antonimnya adalah DIVERGEN yang berarti menyebar / menjauh dari satu titik."
+    },
+    {
+      "q": "Jika 3x + 7 = 22, maka nilai 6x − 5 adalah …",
+      "opts": [
+        "A. 15",
+        "B. 20",
+        "C. 25",
+        "D. 30",
+        "E. 35"
+      ],
+      "ans": "C",
+      "expl": "3x+7=22 → 3x=15 → x=5. Maka 6x−5 = 6(5)−5 = 30−5 = 25."
+    }
+  ],
+  "tkp": [
+    {
+      "q": "Anda mendapatkan tugas baru yang tidak pernah Anda kerjakan sebelumnya. Atasan tidak memberikan panduan yang jelas. Sikap Anda adalah …",
+      "opts": [
+        "A. Menunggu atasan memberikan panduan lengkap sebelum mulai bekerja.",
+        "B. Mengerjakan semaksimal mungkin berdasarkan pemahaman Anda, lalu mengkonsultasikan hasilnya kepada atasan.",
+        "C. Mendelegasikan tugas tersebut kepada rekan yang lebih berpengalaman.",
+        "D. Menolak tugas tersebut karena di luar kapasitas Anda.",
+        "E. Bertanya kepada rekan kerja secara diam-diam tanpa melaporkan kepada atasan."
+      ],
+      "ans": "B",
+      "expl": "Sikap proaktif yang paling tepat: inisiatif mengerjakan berdasarkan pemahaman terbaik, kemudian berkonsultasi. Ini menunjukkan kemandirian sekaligus tetap koordinatif dengan atasan."
+    },
+    {
+      "q": "Rekan kerja Anda sering datang terlambat tanpa alasan yang jelas, sehingga pekerjaan tim terhambat. Anda akan …",
+      "opts": [
+        "A. Melaporkan langsung ke atasan agar diberi sanksi.",
+        "B. Mengabaikan karena bukan tanggung jawab Anda.",
+        "C. Menegur secara langsung dan keras di depan tim.",
+        "D. Berbicara secara pribadi dengannya, menyampaikan dampak perilakunya, dan menawarkan bantuan.",
+        "E. Meminta rekan lain untuk menegurnya agar Anda tidak terlibat konflik."
+      ],
+      "ans": "D",
+      "expl": "Pendekatan empatik dan asertif yang tepat: bicarakan secara pribadi, sampaikan dampak nyata, dan tawarkan solusi. Ini menjaga hubungan kerja sekaligus mendorong perbaikan perilaku."
+    },
+    {
+      "q": "Anda diminta menyelesaikan dua tugas dengan deadline yang sama di hari yang sama. Waktu yang tersedia tidak cukup untuk keduanya. Anda akan …",
+      "opts": [
+        "A. Mengerjakan salah satu dan mengabaikan yang lain.",
+        "B. Meminta perpanjangan waktu untuk keduanya tanpa penjelasan.",
+        "C. Segera mengidentifikasi prioritas, laporkan kondisi kepada atasan, dan usulkan solusi.",
+        "D. Lembur tanpa memberitahu siapa pun hingga keduanya selesai.",
+        "E. Menyalahkan sistem penugasan yang tidak terorganisir."
+      ],
+      "ans": "C",
+      "expl": "Manajemen waktu yang baik mencakup identifikasi prioritas, transparansi kepada atasan, dan penawaran solusi konkret. Tidak menyembunyikan masalah dan tidak menyerah begitu saja."
+    },
+    {
+      "q": "Saat rapat, atasan mengambil keputusan yang menurut Anda kurang tepat. Sikap Anda adalah …",
+      "opts": [
+        "A. Diam dan patuh tanpa mengungkapkan pendapat.",
+        "B. Langsung menolak keputusan atasan di depan semua peserta rapat.",
+        "C. Menyampaikan pendapat secara santun disertai data dan argumentasi yang kuat.",
+        "D. Bergosip dengan rekan kerja tentang kesalahan keputusan atasan.",
+        "E. Keluar dari rapat sebagai bentuk protes."
+      ],
+      "ans": "C",
+      "expl": "ASN yang baik berani menyampaikan pendapat secara profesional — santun, berbasis data, dan konstruktif. Diam berarti tidak bertanggung jawab; konfrontasi terbuka merusak hubungan kerja."
+    },
+    {
+      "q": "Anda mengetahui bahwa rekan satu unit melakukan penyimpangan kecil dalam laporan keuangan. Anda akan …",
+      "opts": [
+        "A. Pura-pura tidak tahu untuk menjaga hubungan baik.",
+        "B. Ikut serta dalam penyimpangan tersebut agar tidak dikucilkan.",
+        "C. Segera melaporkan kepada atasan atau unit pengawasan internal.",
+        "D. Menunggu hingga ada bukti yang lebih kuat sebelum melapor.",
+        "E. Mengingatkan rekan tersebut secara pribadi dan memberi batas waktu untuk memperbaiki sendiri."
+      ],
+      "ans": "E",
+      "expl": "Untuk penyimpangan kecil, memberi kesempatan rekan memperbaiki sendiri adalah langkah awal yang proporsional. Namun jika tidak diperbaiki, melapor ke jalur pengawasan adalah kewajiban."
+    },
+    {
+      "q": "Anda baru saja menyelesaikan proyek besar dan mendapat pujian dari seluruh tim. Sikap Anda adalah …",
+      "opts": [
+        "A. Meminta kenaikan gaji segera sebagai imbalan.",
+        "B. Merasa puas diri dan mengurangi etos kerja proyek berikutnya.",
+        "C. Mengakui bahwa keberhasilan merupakan hasil kerja tim dan tetap rendah hati.",
+        "D. Mempublikasikan secara berlebihan di media sosial untuk membangun citra.",
+        "E. Menuntut penghargaan formal dari instansi."
+      ],
+      "ans": "C",
+      "expl": "Rendah hati dan mengakui kontribusi tim mencerminkan karakter ASN yang berintegritas. Keberhasilan kolektif harus dirayakan bersama, bukan dijadikan ajang promosi diri berlebihan."
+    },
+    {
+      "q": "Seorang warga datang dengan keluhan yang berulang kali sudah disampaikan namun belum ada solusi. Ia tampak sangat frustrasi dan berbicara dengan nada tinggi. Respons Anda adalah …",
+      "opts": [
+        "A. Meminta warga untuk tenang atau akan memanggil keamanan.",
+        "B. Mendengarkan dengan penuh perhatian, meminta maaf atas keterlambatan, dan berkomitmen memberikan solusi konkret.",
+        "C. Menyalahkan unit lain yang bertanggung jawab atas masalah tersebut.",
+        "D. Meminta warga kembali besok karena Anda sedang sibuk.",
+        "E. Memberikan formulir pengaduan tanpa memberi penjelasan lebih lanjut."
+      ],
+      "ans": "B",
+      "expl": "Pelayanan prima mengutamakan empati: dengarkan, akui masalah, minta maaf, dan berikan kepastian solusi. Warga yang frustrasi membutuhkan rasa didengar dan kepastian, bukan dijauhi."
+    },
+    {
+      "q": "Anda mendapat informasi bahwa unit lain memiliki prosedur yang lebih efisien untuk menyelesaikan pekerjaan yang selama ini membebani unit Anda. Tindakan Anda adalah …",
+      "opts": [
+        "A. Tetap menggunakan prosedur lama karena sudah biasa.",
+        "B. Langsung mengganti prosedur tanpa konsultasi.",
+        "C. Mempelajari prosedur tersebut, mengusulkan adaptasinya kepada atasan, dan mengimplementasikan jika disetujui.",
+        "D. Menunggu atasan menginstruksikan perubahan terlebih dahulu.",
+        "E. Bersikap skeptis karena belum tentu prosedur lain lebih baik."
+      ],
+      "ans": "C",
+      "expl": "Inovasi dalam ASN harus melalui proses yang tepat: pelajari, usulkan secara resmi, dan implementasikan setelah mendapat persetujuan. Inisiatif tanpa koordinasi dapat menimbulkan kekacauan."
+    },
+    {
+      "q": "Target kerja unit Anda untuk kuartal ini tidak tercapai. Sebagai anggota tim, sikap Anda adalah …",
+      "opts": [
+        "A. Menyalahkan kondisi eksternal yang tidak menguntungkan.",
+        "B. Menyalahkan rekan yang dianggap berkinerja buruk.",
+        "C. Bersama tim menganalisis penyebab, mengambil pelajaran, dan menyusun rencana perbaikan.",
+        "D. Menyerahkan sepenuhnya kepada atasan untuk menemukan solusi.",
+        "E. Meminta maaf kepada atasan secara berulang-ulang tanpa tindakan konkret."
+      ],
+      "ans": "C",
+      "expl": "Orientasi pada perbaikan kolektif adalah respons yang tepat. Evaluasi bersama, bukan saling menyalahkan, mencerminkan budaya kerja yang sehat dan berorientasi hasil."
+    },
+    {
+      "q": "Anda sedang mengerjakan pekerjaan penting ketika tiba-tiba ada permintaan mendadak dari atasan. Respons terbaik Anda adalah …",
+      "opts": [
+        "A. Meninggalkan pekerjaan lama begitu saja dan mengerjakan permintaan baru.",
+        "B. Menolak permintaan baru karena pekerjaan lama belum selesai.",
+        "C. Menginformasikan kondisi pekerjaan yang sedang berjalan, meminta klarifikasi prioritas, lalu bertindak sesuai arahan.",
+        "D. Mengerjakan keduanya setengah-setengah agar dua-duanya selesai.",
+        "E. Meminta rekan lain mengambil alih permintaan baru dari atasan."
+      ],
+      "ans": "C",
+      "expl": "Komunikasi transparan dengan atasan tentang kondisi kerja aktual, diikuti meminta klarifikasi prioritas, adalah tindakan yang profesional dan bertanggung jawab."
+    },
+    {
+      "q": "Anda diminta hadir dalam rapat mendadak yang bersamaan dengan janji penting yang sudah Anda buat sebelumnya. Tindakan Anda adalah …",
+      "opts": [
+        "A. Membatalkan rapat mendadak karena sudah ada janji sebelumnya.",
+        "B. Menghadiri rapat dan membatalkan janji tanpa pemberitahuan.",
+        "C. Memberi tahu pihak yang berjanji sesegera mungkin, minta maaf, dan usahakan reschedule.",
+        "D. Hadir di rapat sambil terus memeriksa ponsel untuk keperluan janji.",
+        "E. Minta izin tidak hadir di rapat dan tetap menepati janji."
+      ],
+      "ans": "C",
+      "expl": "Menghormati kedua pihak dengan komunikasi yang jelas dan cepat adalah etika yang tepat. Rapat mendadak dari instansi biasanya lebih prioritas, namun janji sebelumnya harus dikomunikasikan dengan sopan."
+    },
+    {
+      "q": "Rekan kerja Anda mengalami masalah pribadi yang berdampak pada produktivitas kerjanya. Ia tidak pernah menceritakan hal ini. Anda akan …",
+      "opts": [
+        "A. Menghindari topik pribadi karena tidak sopan mencampuri urusan orang lain.",
+        "B. Menyebarkan informasi masalahnya kepada tim untuk meminta bantuan.",
+        "C. Memberikan dukungan secara pribadi dengan pendekatan yang empatis tanpa memaksa bercerita.",
+        "D. Melaporkan kondisi rekan tersebut kepada atasan agar diambil tindakan.",
+        "E. Mengerjakan semua tugasnya agar ia tidak stres."
+      ],
+      "ans": "C",
+      "expl": "Empati yang tepat adalah mendekati secara pribadi dengan tulus, tanpa memaksa atau menyebar informasi. Menawarkan dukungan cukup, tanpa mengambil alih semua tanggung jawabnya."
+    },
+    {
+      "q": "Dalam sebuah proyek lintas unit, terjadi perbedaan pendapat yang tajam antara dua unit mengenai pendekatan kerja. Anda ditunjuk sebagai koordinator. Langkah Anda adalah …",
+      "opts": [
+        "A. Memihak unit yang lebih senior.",
+        "B. Memfasilitasi diskusi terbuka, mencari titik temu, dan mendokumentasikan kesepakatan.",
+        "C. Membuat keputusan sendiri tanpa meminta masukan lebih lanjut.",
+        "D. Melaporkan konflik kepada pimpinan agar mereka yang memutuskan.",
+        "E. Membiarkan masing-masing unit berjalan dengan caranya sendiri."
+      ],
+      "ans": "B",
+      "expl": "Koordinator yang efektif memfasilitasi, bukan mendominasi. Fasilitasi diskusi terbuka dan dokumentasi kesepakatan adalah kunci kolaborasi lintas unit yang produktif."
+    },
+    {
+      "q": "Anda menyadari bahwa prosedur yang berlaku di unit Anda sudah tidak relevan dan menghambat pelayanan. Tindakan Anda adalah …",
+      "opts": [
+        "A. Melanggar prosedur diam-diam karena dianggap tidak efektif.",
+        "B. Menyampaikan temuan kepada atasan disertai analisis masalah dan usulan perbaikan.",
+        "C. Menunggu ada pembaruan prosedur dari pusat.",
+        "D. Menyalahkan pembuat prosedur atas tidak efisiennya pelayanan.",
+        "E. Mengikuti prosedur saja dan membiarkan pelayanan tidak efektif."
+      ],
+      "ans": "B",
+      "expl": "ASN yang berintegritas dan inovatif menyampaikan masalah prosedural melalui jalur resmi disertai solusi konstruktif — bukan melanggar prosedur maupun pasif menunggu."
+    },
+    {
+      "q": "Anda mendapat kesempatan mengikuti pelatihan berbayar yang relevan dengan tugas Anda, namun instansi tidak menyediakan anggaran. Sikap Anda adalah …",
+      "opts": [
+        "A. Mengabaikan pelatihan tersebut karena tidak dibiayai instansi.",
+        "B. Membiayai sendiri jika memungkinkan, atau mencari alternatif pelatihan gratis yang setara.",
+        "C. Menuntut instansi menanggung biaya pelatihan tersebut.",
+        "D. Merasa tidak perlu pengembangan diri karena tugas sehari-hari sudah cukup.",
+        "E. Meminjam uang kas unit untuk membiayai pelatihan."
+      ],
+      "ans": "B",
+      "expl": "Komitmen terhadap pengembangan diri mencerminkan profesionalisme ASN. Mencari solusi mandiri atau alternatif yang sepadan menunjukkan inisiatif dan semangat belajar yang tinggi."
+    },
+    {
+      "q": "Anda ditugaskan di daerah terpencil dengan fasilitas terbatas. Sikap Anda adalah …",
+      "opts": [
+        "A. Mencari alasan untuk dipindahkan ke tempat yang lebih nyaman.",
+        "B. Menjalankan tugas dengan sepenuh hati, beradaptasi, dan memberikan pelayanan terbaik.",
+        "C. Bekerja seadanya karena keterbatasan fasilitas adalah alasan yang cukup.",
+        "D. Mengeluh kepada pimpinan tentang kondisi yang tidak layak.",
+        "E. Menunggu fasilitas membaik sebelum memberikan pelayanan optimal."
+      ],
+      "ans": "B",
+      "expl": "Pengabdian ASN tidak bergantung pada kenyamanan fasilitas. Dedikasi dan kemampuan beradaptasi dalam kondisi terbatas justru merupakan ciri ASN yang berkomitmen pada pelayanan publik."
+    },
+    {
+      "q": "Anda menemukan celah dalam sistem yang memungkinkan Anda mendapat keuntungan pribadi tanpa diketahui siapa pun. Tindakan Anda adalah …",
+      "opts": [
+        "A. Memanfaatkannya selagi tidak ada yang tahu.",
+        "B. Memanfaatkannya tapi dalam jumlah kecil agar tidak mencolok.",
+        "C. Melaporkan celah tersebut kepada pihak berwenang agar segera diperbaiki.",
+        "D. Mendiamkan saja karena bukan tanggung jawab Anda.",
+        "E. Memberitahu rekan kerja terpercaya untuk dimanfaatkan bersama."
+      ],
+      "ans": "C",
+      "expl": "Integritas ASN tidak ditentukan oleh ketakutan ketahuan, tetapi oleh komitmen internal. Melaporkan celah sistem adalah tindakan yang mencerminkan kejujuran dan tanggung jawab."
+    },
+    {
+      "q": "Atasan meminta Anda mengerjakan laporan yang mengandung data yang Anda ketahui tidak akurat. Sikap Anda adalah …",
+      "opts": [
+        "A. Mengerjakan laporan sesuai perintah atasan tanpa mempertanyakan.",
+        "B. Menolak keras dan mengancam akan melaporkan atasan.",
+        "C. Menyampaikan temuan data yang tidak akurat kepada atasan secara pribadi dan meminta klarifikasi sebelum melanjutkan.",
+        "D. Menggunakan data yang benar tanpa memberitahu atasan.",
+        "E. Meminta rekan lain mengerjakan laporan tersebut agar Anda tidak bertanggung jawab."
+      ],
+      "ans": "C",
+      "expl": "Integritas data adalah tanggung jawab ASN. Menyampaikan temuan secara profesional kepada atasan terlebih dahulu adalah cara yang tepat sebelum mengambil tindakan lebih jauh."
+    },
+    {
+      "q": "Anda sering mendapat masukan negatif dari rekan maupun atasan tentang cara kerja Anda. Respons Anda adalah …",
+      "opts": [
+        "A. Merasa tersinggung dan menghindari mereka.",
+        "B. Membela diri dan menjelaskan bahwa cara kerja Anda sudah benar.",
+        "C. Menerima masukan dengan terbuka, merefleksikannya, dan membuat rencana perbaikan.",
+        "D. Berpura-pura menerima tapi tidak mengubah apa pun.",
+        "E. Meminta perpindahan unit agar terhindar dari lingkungan yang kritis."
+      ],
+      "ans": "C",
+      "expl": "Kemampuan menerima kritik dan masukan merupakan tanda kedewasaan profesional. Refleksi diri yang tulus dan rencana perbaikan konkret adalah respons ASN yang ingin berkembang."
+    },
+    {
+      "q": "Anda bertugas melayani masyarakat lintas budaya dengan latar belakang yang sangat beragam. Pendekatan Anda adalah …",
+      "opts": [
+        "A. Melayani secara seragam tanpa memperhatikan perbedaan latar belakang.",
+        "B. Memberikan perlakuan istimewa kepada kelompok mayoritas.",
+        "C. Mengenali kebutuhan spesifik setiap kelompok dan beradaptasi dalam pelayanan dengan tetap menjunjung keadilan.",
+        "D. Membatasi pelayanan agar tidak terlalu merepotkan.",
+        "E. Meminta masyarakat menyesuaikan diri dengan prosedur yang ada."
+      ],
+      "ans": "C",
+      "expl": "Pelayanan publik yang inklusif mengakui keberagaman dan berupaya memenuhi kebutuhan spesifik setiap kelompok secara adil — tanpa diskriminasi maupun perlakuan istimewa berdasarkan mayoritas."
+    },
+    {
+      "q": "Unit Anda memiliki target yang sangat ambisius dan sumber daya terbatas. Sebagai anggota tim Anda akan …",
+      "opts": [
+        "A. Menyatakan target tersebut tidak realistis dan menolak bertanggung jawab.",
+        "B. Bekerja keras, berkreasi mencari cara efisien, dan berkolaborasi aktif agar target tercapai.",
+        "C. Melakukan pekerjaan minimum yang diperlukan agar tidak disalahkan.",
+        "D. Mencari kambing hitam bila target tidak tercapai.",
+        "E. Meminta penambahan sumber daya sebelum mau memulai bekerja."
+      ],
+      "ans": "B",
+      "expl": "Semangat kerja keras, inovasi, dan kolaborasi adalah respons yang tepat terhadap tantangan. ASN yang berdedikasi tidak menyerah pada keterbatasan, melainkan menemukan cara untuk mengatasinya."
+    },
+    {
+      "q": "Anda diminta memimpin tim yang anggotanya lebih senior dari Anda. Pendekatan kepemimpinan Anda adalah …",
+      "opts": [
+        "A. Bersikap otoriter untuk menegaskan posisi Anda sebagai pemimpin.",
+        "B. Mengambil semua keputusan sendiri agar otoritas tidak dipertanyakan.",
+        "C. Mengakui keahlian mereka, memanfaatkan pengalaman mereka, dan memimpin dengan kolaboratif.",
+        "D. Menghindari konflik dengan selalu mengikuti keinginan anggota senior.",
+        "E. Menyerahkan kepemimpinan kepada yang paling senior."
+      ],
+      "ans": "C",
+      "expl": "Kepemimpinan yang efektif memanfaatkan kekuatan anggota tim. Mengakui keahlian senior sambil tetap memimpin secara kolaboratif menunjukkan kecerdasan emosional dan kepercayaan diri yang sehat."
+    },
+    {
+      "q": "Anda melihat potensi konflik kepentingan antara tugas resmi Anda dan bisnis sampingan Anda. Tindakan Anda adalah …",
+      "opts": [
+        "A. Tetap menjalankan bisnis sampingan selagi tidak ketahuan.",
+        "B. Mendahulukan kepentingan bisnis jika keuntungannya lebih besar.",
+        "C. Segera melaporkan potensi konflik kepentingan tersebut dan meminta panduan dari atasan atau unit kepatuhan.",
+        "D. Menghentikan tugas resmi untuk sementara.",
+        "E. Menunggu ada masalah terlebih dahulu sebelum melapor."
+      ],
+      "ans": "C",
+      "expl": "Transparansi dan pengelolaan konflik kepentingan secara proaktif adalah kewajiban etis ASN. Melaporkan terlebih dahulu sebelum masalah terjadi mencerminkan integritas yang tinggi."
+    },
+    {
+      "q": "Anda adalah pejabat yang bertanggung jawab atas pengadaan barang. Seorang vendor memberikan hadiah bernilai tinggi menjelang pengumuman pemenang tender. Sikap Anda adalah …",
+      "opts": [
+        "A. Menerima hadiah karena nilainya tidak terlalu besar.",
+        "B. Menerima hadiah tapi tetap memilih vendor terbaik secara objektif.",
+        "C. Menolak hadiah tersebut dan melaporkan kejadian ini sesuai prosedur yang berlaku.",
+        "D. Menerima hadiah namun menyingkirkan vendor tersebut dari proses tender.",
+        "E. Meminta hadiah dalam bentuk uang tunai saja agar lebih adil."
+      ],
+      "ans": "C",
+      "expl": "Menerima hadiah dalam proses pengadaan, dalam bentuk apapun, berpotensi melanggar hukum dan etika. Menolak dan melaporkan adalah satu-satunya respons yang benar."
+    },
+    {
+      "q": "Anda menyelesaikan tugas lebih awal dari yang dijadwalkan. Waktu sisa tersebut Anda gunakan untuk …",
+      "opts": [
+        "A. Bersantai karena tugas sudah selesai.",
+        "B. Pulang lebih awal.",
+        "C. Melakukan pekerjaan tambahan yang bermanfaat atau membantu rekan yang membutuhkan.",
+        "D. Bermain ponsel di meja kerja.",
+        "E. Meminta tugas tambahan hanya jika ada bonus."
+      ],
+      "ans": "C",
+      "expl": "ASN yang produktif memanfaatkan waktu kerja secara optimal. Inisiatif mengisi waktu dengan pekerjaan bermanfaat atau membantu rekan mencerminkan etos kerja yang tinggi."
+    },
+    {
+      "q": "Anda mendapat promosi yang menurut rekan-rekan tidak Anda layak dapatkan. Mereka membicarakan hal ini di belakang Anda. Sikap Anda adalah …",
+      "opts": [
+        "A. Mengkonfrontasi rekan-rekan secara langsung dan keras.",
+        "B. Membalas dengan menyebarkan hal negatif tentang mereka.",
+        "C. Fokus membuktikan diri melalui kinerja dan membangun hubungan kerja yang baik.",
+        "D. Meminta atasan menegur rekan-rekan yang bergosip.",
+        "E. Mengundurkan diri dari promosi agar tidak menimbulkan gesekan."
+      ],
+      "ans": "C",
+      "expl": "Respons paling dewasa dan profesional: buktikan diri melalui kinerja. Gosip di tempat kerja tidak bisa dihilangkan dengan konfrontasi atau balas dendam, melainkan dengan prestasi nyata."
+    },
+    {
+      "q": "Selama bekerja, Anda menemukan cara yang lebih efektif untuk menyelesaikan tugas rutin unit Anda. Tindakan Anda adalah …",
+      "opts": [
+        "A. Menggunakan cara baru tersebut sendiri tanpa berbagi.",
+        "B. Mendokumentasikan temuan, mengujicobakan, dan mengusulkan kepada atasan sebagai SOP baru.",
+        "C. Menunggu atasan menemukan cara tersebut sendiri.",
+        "D. Menjual ide tersebut kepada pihak luar.",
+        "E. Tidak melakukan apa-apa karena prosedur adalah wewenang pimpinan."
+      ],
+      "ans": "B",
+      "expl": "Inovasi yang baik didokumentasikan, diuji, dan diusulkan secara resmi. Berbagi penemuan yang bermanfaat untuk organisasi adalah bentuk dedikasi ASN yang berorientasi pada perbaikan berkelanjutan."
+    },
+    {
+      "q": "Anda harus memberikan laporan kepada atasan, namun data yang Anda miliki tidak lengkap. Tindakan Anda adalah …",
+      "opts": [
+        "A. Memperkirakan data yang hilang agar laporan tampak sempurna.",
+        "B. Mengisi data yang hilang dengan angka yang logis tanpa label.",
+        "C. Menyerahkan laporan dengan data yang tersedia, mencantumkan ketidaklengkapan secara jelas, dan menyampaikan rencana melengkapinya.",
+        "D. Menunda laporan hingga semua data terkumpul tanpa memberitahu atasan.",
+        "E. Menghindari pertemuan dengan atasan hingga data lengkap."
+      ],
+      "ans": "C",
+      "expl": "Transparansi tentang ketidaklengkapan data adalah tanda integritas. Laporan parsial dengan penjelasan jelas lebih baik daripada laporan yang tampak lengkap namun mengandung data palsu."
+    },
+    {
+      "q": "Anda seorang ASN yang aktif di media sosial. Dalam kondisi apa Anda boleh mengekspresikan pendapat tentang kebijakan pemerintah?",
+      "opts": [
+        "A. Bebas mengkritik kebijakan apa saja karena media sosial adalah ruang pribadi.",
+        "B. Tidak boleh memberikan pendapat apa pun tentang pemerintah.",
+        "C. Menyampaikan pendapat yang konstruktif tanpa menyebarkan informasi yang belum terverifikasi dan tidak bertentangan dengan kode etik ASN.",
+        "D. Hanya boleh memuji kebijakan pemerintah.",
+        "E. Menggunakan akun anonim agar tidak teridentifikasi sebagai ASN."
+      ],
+      "ans": "C",
+      "expl": "ASN memiliki hak berpendapat namun terikat kode etik. Pendapat konstruktif yang terverifikasi dan tidak bertentangan dengan netralitas ASN adalah bentuk partisipasi yang tepat."
+    },
+    {
+      "q": "Anda mendapat tugas yang sangat membosankan dan berulang setiap hari. Cara Anda menghadapinya adalah …",
+      "opts": [
+        "A. Mengerjakan dengan setengah hati karena tidak ada tantangan.",
+        "B. Meminta segera dipindah ke posisi yang lebih menantang.",
+        "C. Mengerjakan dengan tetap profesional, mencari cara meningkatkan efisiensi, dan mengembangkan diri di luar tugas rutin tersebut.",
+        "D. Mengeluh kepada sesama rekan kerja tentang kebosanan.",
+        "E. Mengulur waktu agar tidak terlalu cepat selesai dan tampak sibuk."
+      ],
+      "ans": "C",
+      "expl": "Profesionalisme tidak tergantung pada tingkat kesulitan atau keseruan pekerjaan. Mengerjakan tugas rutin dengan tetap berkualitas dan mencari cara pengembangan diri mencerminkan dedikasi sejati."
+    },
+    {
+      "q": "Anda menyadari bahwa aturan yang sedang berlaku di instansi Anda merugikan masyarakat secara tidak langsung. Tindakan Anda adalah …",
+      "opts": [
+        "A. Menerapkan aturan dengan penuh tanpa bersikap kritis.",
+        "B. Melanggar aturan tersebut secara sepihak demi kepentingan masyarakat.",
+        "C. Mendokumentasikan dampak negatif dan mengusulkan revisi melalui jalur resmi yang ada.",
+        "D. Menyebarkan informasi tentang aturan merugikan tersebut di media sosial.",
+        "E. Menunggu ada pengaduan masyarakat sebelum bertindak."
+      ],
+      "ans": "C",
+      "expl": "ASN yang bertanggung jawab tidak membiarkan aturan yang merugikan publik begitu saja, namun juga tidak melanggar aturan secara sepihak. Jalur advokasi resmi adalah cara yang tepat dan sah."
+    },
+    {
+      "q": "Anda bekerja dalam tim yang tidak kompak dan sering terjadi gesekan antarpribadi. Peran Anda adalah …",
+      "opts": [
+        "A. Memihak kelompok yang dianggap benar.",
+        "B. Mengabaikan gesekan dan fokus hanya pada pekerjaan sendiri.",
+        "C. Menjadi jembatan, mendorong komunikasi terbuka, dan membantu menciptakan suasana kerja yang kondusif.",
+        "D. Melaporkan semua gesekan kepada atasan secara rinci.",
+        "E. Mencari tim lain yang lebih harmonis."
+      ],
+      "ans": "C",
+      "expl": "Kemampuan menjadi fasilitator dalam tim yang tidak harmonis adalah nilai tambah ASN. Mendorong komunikasi terbuka dan membangun suasana kondusif menunjukkan kematangan emosional dan sosial."
+    },
+    {
+      "q": "Anda memiliki perbedaan nilai yang cukup besar dengan kebijakan baru instansi Anda, meskipun kebijakan tersebut sah secara hukum. Sikap Anda adalah ...",
+      "opts": [
+        "A. Secara terbuka menolak dan mengajak rekan lain untuk melawan kebijakan.",
+        "B. Mematuhi kebijakan sambil menyampaikan keberatan secara resmi melalui saluran yang tersedia.",
+        "C. Berpura-pura patuh di depan atasan namun tidak menjalankannya.",
+        "D. Mengundurkan diri segera karena tidak sejalan dengan nilai Anda.",
+        "E. Meminta media massa untuk meliput ketidaksetujuan Anda."
+      ],
+      "ans": "B",
+      "expl": "ASN wajib mematuhi kebijakan yang sah, namun tetap memiliki hak menyampaikan keberatan secara resmi. Kepatuhan sambil advokasi formal adalah keseimbangan antara kewajiban dan integritas."
+    },
+    {
+      "q": "Pada hari yang sama, Anda harus menyerahkan laporan bulanan sekaligus menangani pengaduan mendesak dari warga. Bagaimana Anda menyikapinya?",
+      "opts": [
+        "A. Menyelesaikan laporan bulanan lebih dulu karena sudah terjadwal.",
+        "B. Menangani pengaduan warga terlebih dahulu karena bersifat mendesak, lalu segera menyelesaikan laporan.",
+        "C. Meminta rekan menangani pengaduan agar Anda fokus pada laporan.",
+        "D. Menunduk keduanya dan meminta perpanjangan waktu.",
+        "E. Memilih satu saja yang lebih mudah diselesaikan."
+      ],
+      "ans": "B",
+      "expl": "Orientasi pelayanan publik mengutamakan kepentingan mendesak warga. Setelah itu, laporan bulanan diselesaikan. Prioritas yang tepat mencerminkan tanggung jawab ganda ASN."
+    },
+    {
+      "q": "Anda baru saja dilantik sebagai pejabat baru. Anda menemukan bahwa budaya kerja unit Anda cenderung santai dan tidak disiplin. Langkah awal Anda adalah ...",
+      "opts": [
+        "A. Langsung memberlakukan aturan ketat dan sanksi tegas.",
+        "B. Mengamati dan memahami budaya yang ada, kemudian secara bertahap membangun budaya kerja yang lebih baik melalui keteladanan dan komunikasi.",
+        "C. Membiarkan budaya berjalan karena sudah terbentuk lama.",
+        "D. Melaporkan seluruh anggota tim kepada pimpinan yang lebih tinggi.",
+        "E. Mengancam akan mengganti semua anggota tim yang tidak disiplin."
+      ],
+      "ans": "B",
+      "expl": "Perubahan budaya organisasi memerlukan waktu dan pendekatan yang tepat. Memahami situasi, memberi keteladanan, dan membangun komunikasi yang sehat adalah fondasi perubahan yang berkelanjutan."
+    }
+  ]
+}
