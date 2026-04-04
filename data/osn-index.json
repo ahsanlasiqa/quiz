@@ -1,0 +1,54 @@
+[
+  {
+    "key": "sd_ipa",
+    "label": "SD · IPA",
+    "jenjang": "SD",
+    "mapel": "Ilmu Pengetahuan Alam",
+    "icon": "🔬",
+    "levels": {
+      "kabupaten": 43,
+      "provinsi": 0,
+      "semifinal": 0,
+      "final": 0
+    }
+  },
+  {
+    "key": "smp_ipa",
+    "label": "SMP · IPA",
+    "jenjang": "SMP",
+    "mapel": "Ilmu Pengetahuan Alam",
+    "icon": "⚗️",
+    "levels": {
+      "kabupaten": 0,
+      "provinsi": 0,
+      "semifinal": 0,
+      "final": 0
+    }
+  },
+  {
+    "key": "sma_biologi",
+    "label": "SMA · Biologi",
+    "jenjang": "SMA",
+    "mapel": "Biologi",
+    "icon": "🧬",
+    "levels": {
+      "kabupaten": 0,
+      "provinsi": 0,
+      "semifinal": 0,
+      "final": 0
+    }
+  },
+  {
+    "key": "sma_fisika",
+    "label": "SMA · Fisika",
+    "jenjang": "SMA",
+    "mapel": "Fisika",
+    "icon": "⚛️",
+    "levels": {
+      "kabupaten": 0,
+      "provinsi": 0,
+      "semifinal": 0,
+      "final": 0
+    }
+  }
+]
