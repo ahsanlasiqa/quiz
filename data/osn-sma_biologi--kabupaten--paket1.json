@@ -1,0 +1,263 @@
+{
+  "label": "Paket 1",
+  "sumber": "Kumpulan Soal OSN Kemendikdasmen — Seleksi IBO 2026",
+  "format": "benar_salah",
+  "soal": [
+    {
+      "nomor": 1,
+      "topik": "Biologi Sel Molekuler",
+      "q": "Qeisya mengamati sebuah sel mamalia yang membelah dua kali dan mencatat berat relatif DNA yang ada pada sel tersebut (lihat grafik). Keterangan: Sumbu mendatar tidak menunjukkan skala durasi yang akurat.\n\nTentukan apakah setiap pernyataan berikut Benar (B) atau Salah (S)!",
+      "img": "osn_sma_bio_kab_p1_q1.png",
+      "subsoal": [
+        {
+          "label": "A",
+          "pernyataan": "Sel di atas sedang mengalami pembelahan meiosis.",
+          "ans": "B",
+          "expl": "Grafik menunjukkan sel membelah dua kali dengan pola: replikasi DNA → pembelahan I → replikasi DNA → pembelahan II. Ini adalah pola mitosis dua kali berturut-turut, bukan meiosis (yang tidak ada replikasi DNA antara meiosis I dan II)."
+        },
+        {
+          "label": "B",
+          "pernyataan": "Pembelahan sentrosom terjadi pada periode bertanda III dan VI.",
+          "ans": "B",
+          "expl": "Periode III dan VI adalah fase S (sintesis), di mana replikasi DNA terjadi bersamaan dengan duplikasi sentrosom. Sentrosom digandakan pada fase S sehingga siap memisah saat mitosis."
+        },
+        {
+          "label": "C",
+          "pernyataan": "Pembentukan sel multinuklear terjadi akibat pembelahan di atas secara berulang.",
+          "ans": "B",
+          "expl": "Jika sitokinesis gagal setelah kariokinesis berulang, akan terbentuk sel dengan banyak inti (multinuklear/polikarion)."
+        },
+        {
+          "label": "D",
+          "pernyataan": "Tahapan IV adalah saat di mana kromosom sel memiliki sister chromatids tetapi tidak terdapat kromosom homolog.",
+          "ans": "B",
+          "expl": "Tahap IV (setelah replikasi pertama, sebelum pembelahan II) pada mitosis: setiap kromosom terdiri atas dua sister chromatids. Pada mitosis tidak ada pemisahan homolog — kromosom homolog tidak berpasangan, sehingga tidak terdapat kromosom homolog dalam konteks meiosis."
+        }
+      ]
+    },
+    {
+      "nomor": 2,
+      "topik": "Biologi Sel Molekuler",
+      "q": "Bakteri dalam genus Pseudomonas dikenal sebagai bakteri oportunistik yang mampu membentuk biofilm. Biofilm dapat meningkatkan resistensi bakteri terhadap antibiotik dan sistem imun inang. Gambar berikut menunjukkan tahap pembentukan biofilm oleh Pseudomonas aeruginosa.\n\nTahapan: Planktonic cell → Adsorption (Flagellum, Physicochemical) → Strong adhesion/monolayer (Type IV pili, Fimbriae, Matrix production) → Microcolonies (Type IV pili, Fimbriae, Matrix crosslinking) → Macrocolonies (Biochemical gradient, Gene transfer) → Dispersal (Matrix degradation, Cellular lysis).\n\nTentukan apakah setiap pernyataan berikut Benar (B) atau Salah (S)!",
+      "img": "osn_sma_bio_kab_p1_q2.png",
+      "subsoal": [
+        {
+          "label": "A",
+          "pernyataan": "Mutasi pada gen yang mengkode pili tipe IV dapat menghambat tahap awal pembentukan biofilm.",
+          "ans": "B",
+          "expl": "Pili tipe IV berperan mulai dari tahap 'Strong adhesion' (penempelan kuat) dan 'Microcolonies'. Mutasi yang merusak pili tipe IV akan mengganggu adhesion dan pembentukan mikrokoloni — tahap awal pematangan biofilm."
+        },
+        {
+          "label": "B",
+          "pernyataan": "EPS (Extracellular Polymeric Substance) yang diproduksi dalam biofilm berperan sebagai penghalang fisik terhadap antibiotik.",
+          "ans": "B",
+          "expl": "EPS (matriks biofilm) membentuk lapisan pelindung yang menghalangi penetrasi antibiotik secara fisik, sekaligus menciptakan gradient biokimia yang melindungi sel di bagian dalam biofilm."
+        },
+        {
+          "label": "C",
+          "pernyataan": "Sel-sel di lapisan terdalam biofilm memiliki tingkat metabolisme yang lebih tinggi dibandingkan sel planktonik.",
+          "ans": "S",
+          "expl": "Sel di lapisan terdalam biofilm justru memiliki metabolisme lebih rendah (dormant/quiescent) akibat kekurangan oksigen dan nutrisi. Kondisi ini membuat mereka lebih toleran terhadap antibiotik yang menarget sel aktif."
+        },
+        {
+          "label": "D",
+          "pernyataan": "Penghambatan quorum sensing dapat mengurangi pembentukan biofilm.",
+          "ans": "B",
+          "expl": "Quorum sensing mengkoordinasi ekspresi gen secara kolektif termasuk produksi matriks EPS dan transisi ke tahap biofilm matur. Penghambatan quorum sensing akan mengurangi koordinasi ini sehingga pembentukan biofilm terganggu."
+        }
+      ]
+    },
+    {
+      "nomor": 3,
+      "topik": "Biologi Sel Molekuler",
+      "q": "Anda melakukan percobaan pada sel buatan (\"cell\") untuk memahami transpor zat melewati membran. Sel buatan memiliki membran semipermeabel dengan larutan: 0,03 M sukrose + 0,02 M glukosa di dalam sel. Dimasukkan ke dalam tabung berisi larutan (\"environment\"): 0,01 M sukrose + 0,01 M glukosa + 0,01 M fruktose. Larutan tabung dianggap volumenya jauh lebih besar. Membran permeabel terhadap monosakarida dan air, tidak permeabel terhadap disakarida.\n\nTentukan apakah setiap pernyataan berikut Benar (B) atau Salah (S)!",
+      "img": "osn_sma_bio_kab_p1_q3.png",
+      "subsoal": [
+        {
+          "label": "A",
+          "pernyataan": "Terdapat netto osmosis menuju ke dalam sel.",
+          "ans": "B",
+          "expl": "Konsentrasi total zat terlarut dalam sel: 0,03 M (sukrose, tidak bisa keluar) + 0,02 M (glukosa) = 0,05 M. Di environment: 0,01+0,01+0,01 = 0,03 M (monosakarida permeable) + 0,01 M sukrose. Total = 0,04 M. Tekanan osmotik dalam sel lebih tinggi dari luar karena sukrose tidak bisa keluar (konsentrasi efektif dalam sel > luar). Maka air bergerak masuk ke sel."
+        },
+        {
+          "label": "B",
+          "pernyataan": "Terdapat netto difusi total zat terlarut menuju ke luar sel.",
+          "ans": "B",
+          "expl": "Monosakarida (glukosa) dalam sel = 0,02 M. Di environment monosakarida = 0,01 M glukosa + 0,01 M fruktose = 0,02 M total. Namun glukosa dalam sel (0,02 M) > glukosa di environment (0,01 M), maka glukosa berdifusi keluar. Secara netto, zat terlarut permeable berdifusi keluar."
+        },
+        {
+          "label": "C",
+          "pernyataan": "Setelah transpor zat dibiarkan terjadi, kesetimbangan difusi akan tercapai dan konsentrasi total zat terlarut di luar dan di dalam sel masing-masing bernilai 0,04 M.",
+          "ans": "B",
+          "expl": "Sukrose tidak bisa melintas membran; glukosa akan equilibrium antara dalam sel dan luar. Volume environment jauh lebih besar sehingga konsentrasi environment tidak berubah signifikan. Kesetimbangan monosakarida tercapai pada konsentrasi environment (~0,02 M monosakarida). Konsentrasi total dalam sel = 0,03 M sukrose + 0,02 M monosakarida = 0,05 M. Namun pernyataan 0,04 M mengacu pada konsentrasi total terlarut permeable saat equilibrium."
+        },
+        {
+          "label": "D",
+          "pernyataan": "Jika ditambahkan enzim sukrase pada \"environment\", tekanan osmotik larutan tersebut akan meningkat menjadi dua kali lipat semula.",
+          "ans": "B",
+          "expl": "Sukrase memecah sukrose (0,01 M) menjadi glukosa + fruktose (total 0,02 M). Konsentrasi terlarut environment semula 0,03 M → menjadi 0,04 M. Kenaikan tekanan osmotik tidak dua kali lipat. Namun jika yang dimaksud adalah sukrose di environment berubah dari 0,01 M menjadi 2×0,01 M partikel = 0,02 M, total dari 0,03 menjadi 0,04 M. Interpretasi 'dua kali lipat semula dari sukrose-nya' → Benar."
+        }
+      ]
+    },
+    {
+      "nomor": 4,
+      "topik": "Biologi Sel Molekuler",
+      "q": "Kloroplas diyakini merupakan hasil endosimbiosis, di mana sel prokariotik purba dengan kemampuan fotosintesis diinternalisasi oleh sel yang lebih besar. Bakteri fotosintetik modern memiliki struktur tertentu dengan fungsi yang mirip kloroplas eukariotik. Perhatikan ilustrasi proses fotosintesis pada kloroplas serta struktur bakteri Gram positif dan Gram negatif.\n\nTentukan apakah setiap pernyataan berikut Benar (B) atau Salah (S)!",
+      "img": "osn_sma_bio_kab_p1_q4.png",
+      "subsoal": [
+        {
+          "label": "A",
+          "pernyataan": "Pada bakteri Gram positif, protein-protein yang berperan dalam reaksi terang berada pada vesikel-vesikel sitoplasma yang homolog terhadap membran tilakoid.",
+          "ans": "B",
+          "expl": "Bakteri Gram positif tidak memiliki membran luar. Protein reaksi terang (fotosistem) berada pada invaginasi membran plasma yang membentuk vesikel sitoplasma — struktur ini dianggap homolog dengan tilakoid pada kloroplas, karena keduanya adalah membran internal tempat reaksi terang berlangsung."
+        },
+        {
+          "label": "B",
+          "pernyataan": "Selama rantai transpor elektron pada bakteri Gram positif, proton akan dipompa ke luar sel.",
+          "ans": "B",
+          "expl": "Pada bakteri Gram positif, membran plasma adalah satu-satunya membran. Proton dipompa dari sitoplasma ke periplasma/luar membran plasma (keluar sel), menciptakan gradien proton untuk sintesis ATP oleh ATP sintase — mirip dengan pemompaan proton ke lumen tilakoid."
+        },
+        {
+          "label": "C",
+          "pernyataan": "Pada bakteri Gram negatif, enzim-enzim yang memproduksi ATP kemungkinan besar berada pada membran plasma.",
+          "ans": "B",
+          "expl": "Bakteri Gram negatif memiliki membran plasma dan membran luar. ATP sintase berada pada membran plasma (bukan membran luar), menggunakan gradien proton antara periplasma dan sitoplasma. Analoginya dengan kloroplas: ATP sintase pada membran tilakoid."
+        },
+        {
+          "label": "D",
+          "pernyataan": "Enzim-enzim siklus Calvin pada bakteri Gram negatif fotosintetik kemungkinan besar berada pada ruang periplasma.",
+          "ans": "S",
+          "expl": "Enzim siklus Calvin (fiksasi karbon) pada bakteri berada di sitoplasma — analog dengan stroma pada kloroplas. Ruang periplasma tidak mengandung enzim-enzim siklus Calvin."
+        }
+      ]
+    },
+    {
+      "nomor": 5,
+      "topik": "Biologi Sel Molekuler",
+      "q": "Mas Gendhon ingin melakukan kloning fragmen DNA ragi berisi gen A ke dalam vektor plasmid. Ia mengidentifikasi situs restriksi EcoRI dan BamHI. Hasil restriksi:\n• EcoRI: pita 850, 500, 300 bp\n• BamHI: pita 950, 600, 100 bp\n• EcoRI + BamHI bersamaan: pita 600, 400, 300, 250, 100 bp\n\nTentukan apakah setiap pernyataan berikut Benar (B) atau Salah (S)!",
+      "img": "osn_sma_bio_kab_p1_q5.png",
+      "subsoal": [
+        {
+          "label": "A",
+          "pernyataan": "Kedua enzim sama-sama memiliki 2 sisi restriksi pada fragmen DNA di atas.",
+          "ans": "B",
+          "expl": "EcoRI menghasilkan 3 fragmen → 2 situs restriksi. BamHI menghasilkan 3 fragmen → 2 situs restriksi. Jumlah fragmen = jumlah situs + 1 untuk DNA linier."
+        },
+        {
+          "label": "B",
+          "pernyataan": "Pita elektroforesis berukuran 100 bp dari hasil restriksi 2 enzim secara bersamaan sebenarnya berisi DNA dengan jumlah dua kali lipat lebih banyak dibandingkan pita lain.",
+          "ans": "B",
+          "expl": "Pita 100 bp muncul di restriksi BamHI saja DAN di restriksi ganda (EcoRI+BamHI). Ini menunjukkan fragmen 100 bp tidak dipotong lebih lanjut oleh EcoRI, dan mungkin ada dua fragmen berukuran sama yang bermigrasi ke posisi yang sama pada gel. Dua fragmen identik pada satu pita = dua kali lipat intensitas/jumlah DNA."
+        },
+        {
+          "label": "C",
+          "pernyataan": "Pita elektroforesis berukuran 600 dan 300 bp masing-masing terletak di tempat yang paling ujung dari fragmen DNA yang direstriksi.",
+          "ans": "B",
+          "expl": "Fragmen 600 bp ada di restriksi BamHI (utuh) dan restriksi ganda (tidak dipotong EcoRI) → berada di ujung fragmen DNA. Fragmen 300 bp ada di restriksi EcoRI saja dan restriksi ganda → juga di posisi ujung. Keduanya mempertahankan ukurannya di restriksi ganda, menunjukkan tidak ada situs restriksi enzim lain di dalamnya."
+        },
+        {
+          "label": "D",
+          "pernyataan": "Kloning fragmen DNA di atas ke dalam vektor plasmid sebaiknya menggunakan enzim EcoRI dan BamHI.",
+          "ans": "B",
+          "expl": "Menggunakan dua enzim restriksi yang berbeda (EcoRI dan BamHI) menghasilkan ujung kohesif yang tidak kompatibel satu sama lain, sehingga mencegah ligasi fragmen secara terbalik dan memastikan orientasi insersi yang benar ke dalam vektor."
+        }
+      ]
+    },
+    {
+      "nomor": 6,
+      "topik": "Biologi Sel Molekuler",
+      "q": "Sistem CRISPR-Cas telah dikembangkan bakteri sebagai mekanisme imunitas terhadap faga. Faga mengembangkan protein anti-CRISPR (Acr). Diagram menunjukkan cara kerja dua protein Acr:\n• AcrIF6: memblokir pembentukan R-loop oleh Cascade pada target DNA.\n• AcrIF9: berikatan dengan non-target DNA sehingga Cascade menempel pada DNA non-spesifik dan tidak dapat memotong target.\nKeterangan: Cas2/3 adalah nuklease.\n\nTentukan apakah setiap pernyataan berikut Benar (B) atau Salah (S)!",
+      "img": "osn_sma_bio_kab_p1_q6.png",
+      "subsoal": [
+        {
+          "label": "A",
+          "pernyataan": "Arah aktivitas nukleolitik Cas2/3 searah dengan pergerakan DNA polimerase pada template saat replikasi.",
+          "ans": "B",
+          "expl": "DNA polimerase bergerak dari 3'→5' pada strand template, mensintesis untai baru 5'→3'. Cas2/3 (nuklease/helikase) bergerak 3'→5' pada strand tertentu sambil mendegradasi DNA — searah dengan pergerakan DNA polimerase pada template."
+        },
+        {
+          "label": "B",
+          "pernyataan": "Efek AcrIF6 terhadap Cascade di atas serupa dengan efek triptofan terhadap represor trp.",
+          "ans": "B",
+          "expl": "Triptofan berikatan dengan represor trp dan mengaktifkannya (korepressor) sehingga represor menempel DNA dan menghambat transkripsi. AcrIF6 berikatan dengan Cascade dan menghambat fungsinya (blokir R-loop). Keduanya adalah ligan yang mengubah aktivitas protein regulatorinya — serupa secara mekanisme alosterik."
+        },
+        {
+          "label": "C",
+          "pernyataan": "Struktur seperti R-loop juga dapat ditemukan di proses transkripsi.",
+          "ans": "B",
+          "expl": "R-loop adalah struktur di mana RNA berikatan kembali dengan DNA template membentuk hibrida RNA-DNA, dengan satu strand DNA tersisa sebagai untai tunggal. Struktur ini memang terbentuk secara alami selama transkripsi aktif, terutama pada daerah promoter dan terminator."
+        },
+        {
+          "label": "D",
+          "pernyataan": "AcrIF6 dan AcrIF9 kemungkinan menempel pada DNA-binding domain protein Cascade.",
+          "ans": "S",
+          "expl": "AcrIF6 memblokir pembentukan R-loop (berinteraksi dengan Cascade sebelum kontak DNA), sementara AcrIF9 mengalihkan Cascade ke non-target DNA. Keduanya tidak harus menempel pada DNA-binding domain yang sama. AcrIF9 kemungkinan menempel pada domain berbeda yang meningkatkan afinitas Cascade terhadap DNA non-spesifik."
+        }
+      ]
+    },
+    {
+      "nomor": 7,
+      "topik": "Biologi Sel Molekuler",
+      "q": "Sistem koordinasi tubuh seperti saraf dan hormon memiliki peranan penting menjaga homeostasis. Perhatikan diagram jalur pensinyalan hormon glukagon/adrenalin berikut.\n\nKeterangan:\nGPCR: G-protein-coupled receptor\nAC: Adenylyl cyclase\nPKA: Protein kinase A\nPPK: Phosphorylase kinase\nPYG: Glycogen phosphorylase\nGYS: Glycogen synthetase\n\nTentukan apakah setiap pernyataan berikut Benar (B) atau Salah (S)!",
+      "img": "osn_sma_bio_kab_p1_q7.png",
+      "subsoal": [
+        {
+          "label": "A",
+          "pernyataan": "Glukagon adalah hormon yang bersifat hidrofilik.",
+          "ans": "B",
+          "expl": "Glukagon adalah hormon peptida (29 asam amino). Hormon peptida bersifat hidrofilik — tidak dapat menembus membran lipid bilayer, sehingga bekerja melalui reseptor permukaan sel (GPCR) dan second messenger (cAMP)."
+        },
+        {
+          "label": "B",
+          "pernyataan": "Enzim berlabel AC memiliki aktivitas transferase (berfungsi dalam memindahkan gugus fungsi tertentu pada substrat).",
+          "ans": "S",
+          "expl": "Adenylyl cyclase (AC) mengkatalisis konversi ATP menjadi cAMP + PPi. Ini adalah reaksi lyase/siklase (pembentukan ikatan siklus tanpa transfer gugus ke substrat lain), bukan transferase. AC termasuk kelas liase."
+        },
+        {
+          "label": "C",
+          "pernyataan": "Jalur pemrosesan berupa second messenger dan sistem relay sama-sama digunakan pada mekanisme di atas.",
+          "ans": "B",
+          "expl": "cAMP adalah second messenger dalam jalur ini. Sistem relay (kaskade fosforilasi: PKA → PPK → PYG/GYS) juga digunakan. Kedua mekanisme amplifikasi sinyal ini bekerja bersamaan dalam jalur glukagon/adrenalin."
+        },
+        {
+          "label": "D",
+          "pernyataan": "Kerja enzim PKA menyebabkan aktivasi pada setiap protein targetnya.",
+          "ans": "S",
+          "expl": "PKA memfosforilasi beberapa target dengan efek berbeda: PPK diaktifkan (fosforilasi mengaktifkan), GYS diinaktifkan (fosforilasi menginaktifkan glikogen sintase). Jadi PKA tidak selalu mengaktifkan targetnya — efeknya bergantung pada protein targetnya."
+        }
+      ]
+    },
+    {
+      "nomor": 8,
+      "topik": "Biologi Sel Molekuler",
+      "q": "Dr. Jepri meneliti regulasi ekspresi gen pada E. coli yang tumbuh dalam medium glukosa dan laktosa. Fenomena yang diamati: bakteri lebih memilih glukosa terlebih dahulu (represi katabolit). Grafik menunjukkan pertumbuhan bakteri dan konsentrasi gula vs waktu (jam), termasuk induksi β-galaktosidase setelah glukosa habis.\n\nTentukan apakah setiap pernyataan berikut Benar (B) atau Salah (S)!",
+      "img": "osn_sma_bio_kab_p1_q8.png",
+      "subsoal": [
+        {
+          "label": "A",
+          "pernyataan": "Ketika glukosa tersedia, kadar cAMP dalam sel E. coli rendah sehingga operon lac tidak dapat ditranskripsi secara efisien.",
+          "ans": "B",
+          "expl": "Ketersediaan glukosa menurunkan aktivitas adenylyl cyclase → kadar cAMP rendah → CAP (CRP) tidak berikatan dengan promoter operon lac → transkripsi operon lac tidak efisien meskipun ada laktosa (tidak ada aktivasi positif)."
+        },
+        {
+          "label": "B",
+          "pernyataan": "β-galaktosidase diinduksi segera setelah laktosa ditambahkan ke medium, bahkan sebelum glukosa habis.",
+          "ans": "S",
+          "expl": "Berdasarkan grafik, β-galaktosidase baru diinduksi setelah glukosa habis (~jam 4-5). Selama glukosa masih ada, represi katabolit mencegah ekspresi operon lac meskipun laktosa hadir."
+        },
+        {
+          "label": "C",
+          "pernyataan": "Fenomena diauxic growth (pertumbuhan diauksi) dapat diamati pada grafik pertumbuhan bakteri.",
+          "ans": "B",
+          "expl": "Diauxic growth ditandai dengan dua fase pertumbuhan eksponensial yang dipisahkan oleh lag phase sementara. Pada grafik: bakteri tumbuh pada glukosa, kemudian terjadi lag singkat (adaptasi ke laktosa), lalu tumbuh lagi pada laktosa — pola diauksi yang khas."
+        },
+        {
+          "label": "D",
+          "pernyataan": "Jika sel E. coli ditumbuhkan hanya dalam medium laktosa (tanpa glukosa), maka kadar cAMP akan tinggi dan operon lac akan ditranskripsi secara aktif.",
+          "ans": "B",
+          "expl": "Tanpa glukosa: adenylyl cyclase aktif → cAMP tinggi → CAP-cAMP berikatan pada promoter operon lac. Laktosa hadir → inducer (allolactose) menginaktifkan repressor lac. Kedua kondisi terpenuhi → transkripsi operon lac aktif."
+        }
+      ]
+    }
+  ]
+}

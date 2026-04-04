@@ -1,0 +1,28 @@
+{
+  "label": "SMA · Biologi",
+  "jenjang": "SMA",
+  "mapel": "Biologi",
+  "icon": "🧬",
+  "kabupaten": {
+    "paket1": {
+      "label": "Paket 1",
+      "sumber": "Kumpulan Soal OSN Kemendikdasmen — Seleksi IBO 2026",
+      "total": 8
+    }
+  },
+  "provinsi": {
+    "label": "Level Provinsi",
+    "sumber": "Kumpulan Soal OSN Kemendikdasmen — Tingkat Provinsi",
+    "pakets": {}
+  },
+  "semifinal": {
+    "label": "Level Semifinal",
+    "sumber": "Kumpulan Soal OSN Kemendikdasmen — Semifinal Nasional",
+    "pakets": {}
+  },
+  "final": {
+    "label": "Level Final",
+    "sumber": "Kumpulan Soal OSN Kemendikdasmen — Final Nasional",
+    "pakets": {}
+  }
+}
