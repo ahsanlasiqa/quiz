@@ -26,35 +26,6 @@ window.OSN = (function() {
     currentIdx: 0, timerInterval: null, secondsLeft: 0, startTime: null,
   };
 
-  // ══ LAZY LOADER ══════════════════════════════════════════════
-  // Menggantikan window.OSN_QUESTIONS yang dulu di-load sekaligus.
-  // osn-index.json       → metadata ringan (level counts) — di-load saat init
-  // osn-{bankKey}.json   → data soal lengkap — di-load hanya saat user mulai quiz
-  const _cache = {};
-
-  async function _fetchIndex() {
-    if (_cache['__osn_index__']) return _cache['__osn_index__'];
-    const res = await fetch('/data/osn-index.json');
-    if (!res.ok) throw new Error('Gagal memuat index OSN');
-    _cache['__osn_index__'] = await res.json();
-    return _cache['__osn_index__'];
-  }
-
-  async function _fetchBank(bankKey) {
-    if (_cache[bankKey]) return _cache[bankKey];
-    const res = await fetch(`/data/osn-${bankKey}.json`);
-    if (!res.ok) throw new Error(`Bank soal "${bankKey}" tidak ditemukan`);
-    _cache[bankKey] = await res.json();
-    return _cache[bankKey];
-  }
-
-  function _getBankMeta(bankKey) {
-    return (_cache['__osn_index__'] || []).find(b => b.key === bankKey) || null;
-  }
-  // ─────────────────────────────────────────────────────────────
-
-  function getBankKey() { return `${state.jenjang}_${state.mapelKey}`; }
-
   function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -68,17 +39,37 @@ window.OSN = (function() {
     return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  // ── init: fetch index, lalu render pilih jenjang ─────────────
-  async function init() {
+  function getBankKey()   { return `${state.jenjang}_${state.mapelKey}`; }
+  function getBank()      { return window.OSN_QUESTIONS?.[getBankKey()]; }
+  function getLevelData() { return getBank()?.[state.levelKey]; }
+
+  /**
+   * Mengambil semua soal dari satu level.
+   * Menangani DUA struktur:
+   *   1. Flat   : { label, sumber, soal: [...] }
+   *   2. Paket  : { paket1: { label, sumber, soal: [...] }, paket2: {...} }
+   */
+  function getLevelSoal(ld) {
+    if (!ld) return [];
+    // Struktur flat — ada key 'soal' langsung
+    if (Array.isArray(ld.soal)) return ld.soal;
+    // Struktur multi-paket — gabungkan soal dari semua paket
+    return Object.values(ld)
+      .filter(v => v && Array.isArray(v.soal))
+      .flatMap(v => v.soal);
+  }
+
+  /**
+   * Hitung total soal di satu level (untuk UI "X soal tersedia").
+   * Sama seperti getLevelSoal tapi hanya return angka.
+   */
+  function countLevelSoal(ld) {
+    return getLevelSoal(ld).length;
+  }
+
+  function init() {
     state.phase = 'select_jenjang';
-    const container = document.getElementById('osn-container');
-    container.innerHTML = `<div style="text-align:center;padding:40px;opacity:.6">⏳ Memuat...</div>`;
-    try {
-      await _fetchIndex();
-      renderSelectJenjang();
-    } catch(e) {
-      container.innerHTML = `<div style="text-align:center;padding:40px;color:red">❌ Gagal memuat data OSN. Coba refresh halaman.</div>`;
-    }
+    renderSelectJenjang();
   }
 
   // ══ PHASE 1: PILIH JENJANG ════════════════════════════════════
@@ -115,11 +106,9 @@ window.OSN = (function() {
   }
 
   // ══ PHASE 2: PILIH MATA PELAJARAN ════════════════════════════════
-  // Menggunakan data dari osn-index.json (sudah di-cache) — tanpa fetch soal
   function renderSelectMapel(jConf) {
     state.phase = 'select_mapel';
     const container = document.getElementById('osn-container');
-    const index = _cache['__osn_index__'] || [];
 
     const mapelMeta = {
       ipa:         { label: 'IPA',         icon: '🔬', desc: 'Ilmu Pengetahuan Alam' },
@@ -131,9 +120,10 @@ window.OSN = (function() {
     };
 
     const cards = jConf.mapel.map(mk => {
-      const bankMeta = index.find(b => b.key === `${jConf.key}_${mk}`);
-      const hasKab   = bankMeta?.levels?.kabupaten > 0;
-      const mm       = mapelMeta[mk] || { label: mk, icon: '📖', desc: mk };
+      const bank   = window.OSN_QUESTIONS?.[`${jConf.key}_${mk}`];
+      // ✅ FIX: pakai getLevelSoal agar multi-paket pun terdeteksi
+      const hasKab = countLevelSoal(bank?.kabupaten) > 0;
+      const mm     = mapelMeta[mk] || { label: mk, icon: '📖', desc: mk };
       return `
         <button class="osn-mapel-btn${hasKab ? '' : ' osn-soon'}"
           onclick="${hasKab ? `window.OSN.selectMapel('${mk}')` : 'void(0)'}">
@@ -167,16 +157,16 @@ window.OSN = (function() {
   }
 
   // ══ PHASE 3: PILIH LEVEL ═════════════════════════════════════════
-  // Menggunakan level counts dari osn-index.json — tanpa fetch soal
   function renderSelectLevel() {
     state.phase = 'select_level';
     const container = document.getElementById('osn-container');
-    const bankKey   = getBankKey();
-    const bankMeta  = _getBankMeta(bankKey);
+    const bank      = getBank();
 
     const levelCards = Object.keys(LEVEL_CONFIG).map(lk => {
-      const lc      = LEVEL_CONFIG[lk];
-      const count   = bankMeta?.levels?.[lk] || 0;
+      const lc    = LEVEL_CONFIG[lk];
+      const ld    = bank?.[lk];
+      // ✅ FIX: pakai countLevelSoal agar multi-paket pun terhitung
+      const count   = countLevelSoal(ld);
       const hasData = count > 0;
       return `
         <button class="osn-level-btn${hasData ? '' : ' osn-soon'}"
@@ -195,9 +185,9 @@ window.OSN = (function() {
       <div class="osn-select-wrap">
         <button class="tryout-back-btn" onclick="window.OSN.selectJenjang('${state.jenjang}')">← Ganti Mapel</button>
         <div class="osn-steps-row">
-          <div class="osn-step osn-step-done" onclick="window.OSN.init()">1. ${bankMeta?.jenjang || state.jenjang.toUpperCase()}</div>
+          <div class="osn-step osn-step-done" onclick="window.OSN.init()">1. ${bank?.jenjang || state.jenjang.toUpperCase()}</div>
           <div class="osn-step-arrow">›</div>
-          <div class="osn-step osn-step-done" onclick="window.OSN.selectJenjang('${state.jenjang}')">2. ${bankMeta?.mapel || state.mapelKey}</div>
+          <div class="osn-step osn-step-done" onclick="window.OSN.selectJenjang('${state.jenjang}')">2. ${bank?.mapel || state.mapelKey}</div>
           <div class="osn-step-arrow">›</div>
           <div class="osn-step osn-step-active">3. Level</div>
         </div>
@@ -212,24 +202,26 @@ window.OSN = (function() {
   }
 
   // ══ PHASE 4: KONFIRMASI ═══════════════════════════════════════════
-  // Metadata dari index — soal belum di-fetch
   function renderConfirm() {
     state.phase = 'confirm';
     const container = document.getElementById('osn-container');
-    const bankKey   = getBankKey();
-    const bankMeta  = _getBankMeta(bankKey);
+    const bank      = getBank();
+    const ld        = getLevelData();
     const lc        = LEVEL_CONFIG[state.levelKey];
-    const count     = bankMeta?.levels?.[state.levelKey] || 0;
-    const sumber    = 'Kumpulan Soal OSN — Kemendikdasmen';
+    // ✅ FIX: pakai countLevelSoal
+    const count     = countLevelSoal(ld);
+
+    // Ambil sumber: flat → ld.sumber, multi-paket → paket pertama
+    const sumber = ld?.sumber || Object.values(ld || {}).find(v => v?.sumber)?.sumber || 'Kumpulan Soal OSN — Kemendikdasmen';
 
     container.innerHTML = `
       <div class="osn-select-wrap">
         <button class="tryout-back-btn" onclick="window.OSN.selectMapel('${state.mapelKey}')">← Ganti Level</button>
         <div class="osn-confirm-card" style="border-color:${lc.warna}">
           <div class="osn-confirm-header" style="background:${lc.warna}">
-            <span class="osn-confirm-icon">${bankMeta?.icon || '📖'}</span>
+            <span class="osn-confirm-icon">${bank.icon}</span>
             <div>
-              <div class="osn-confirm-title">${bankMeta?.label || bankKey} · ${lc.icon} ${lc.label}</div>
+              <div class="osn-confirm-title">${bank.label} · ${lc.icon} ${lc.label}</div>
               <div class="osn-confirm-sub">${sumber}</div>
             </div>
           </div>
@@ -253,31 +245,23 @@ window.OSN = (function() {
   }
 
   // ══ PHASE 5: QUIZ ════════════════════════════════════════════════
-  // BARU di sini soal di-fetch (lazy)
-  async function startQuiz() {
+  function startQuiz() {
     const credits   = window._currentCredits ?? 0;
     const isInvited = window._isInvited ?? false;
     if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.startCheckout?.(); return; }
 
-    const container = document.getElementById('osn-container');
-    const lc        = LEVEL_CONFIG[state.levelKey];
-    container.innerHTML = `<div style="text-align:center;padding:60px;opacity:.6">⏳ Memuat soal...</div>`;
+    const ld = getLevelData();
+    const lc = LEVEL_CONFIG[state.levelKey];
 
-    let bank;
-    try {
-      bank = await _fetchBank(getBankKey());
-    } catch(e) {
-      container.innerHTML = `<div style="text-align:center;padding:40px;color:red">❌ Gagal memuat soal. Coba lagi.</div>`;
+    // ✅ FIX: pakai getLevelSoal — handle flat & multi-paket
+    const allSoal = getLevelSoal(ld);
+    if (!allSoal.length) {
+      document.getElementById('osn-container').innerHTML =
+        `<div style="text-align:center;padding:40px;opacity:.6">⚠️ Soal belum tersedia untuk level ini.</div>`;
       return;
     }
 
-    const ld = bank?.[state.levelKey];
-    if (!ld?.soal?.length) {
-      container.innerHTML = `<div style="text-align:center;padding:40px;opacity:.6">⚠️ Soal belum tersedia untuk level ini.</div>`;
-      return;
-    }
-
-    state.allQuestions = shuffle(ld.soal).slice(0, lc.jumlah);
+    state.allQuestions = shuffle(allSoal).slice(0, lc.jumlah);
     state.answers      = new Array(state.allQuestions.length).fill(null);
     state.currentIdx   = 0;
     state.phase        = 'quiz';
@@ -290,16 +274,16 @@ window.OSN = (function() {
   }
 
   function renderQuizShell() {
-    const total    = state.allQuestions.length;
-    const bankMeta = _getBankMeta(getBankKey());
-    const lc       = LEVEL_CONFIG[state.levelKey];
+    const total     = state.allQuestions.length;
+    const bank      = getBank();
+    const lc        = LEVEL_CONFIG[state.levelKey];
     const container = document.getElementById('osn-container');
 
     container.innerHTML = `
       <div class="cpns-quiz-shell">
         <div class="cpns-quiz-header">
           <div class="cpns-quiz-title">
-            <span class="cpns-quiz-badge" style="background:${lc.warna}">${bankMeta?.icon || '📖'} OSN ${bankMeta?.jenjang || ''} · ${lc.label}</span>
+            <span class="cpns-quiz-badge" style="background:${lc.warna}">${bank.icon} OSN ${bank.jenjang} · ${lc.label}</span>
             <span class="cpns-quiz-progress" id="osn-progress">Soal 1 / ${total}</span>
           </div>
           <div class="tka-timer" id="osn-timer">${String(Math.floor(lc.waktu)).padStart(2,'0')}:00</div>
@@ -323,16 +307,16 @@ window.OSN = (function() {
 
   function renderQuestion(idx) {
     state.currentIdx = idx;
-    const q        = state.allQuestions[idx];
-    const total    = state.allQuestions.length;
-    const lc       = LEVEL_CONFIG[state.levelKey];
-    const bankMeta = _getBankMeta(getBankKey());
+    const q     = state.allQuestions[idx];
+    const total = state.allQuestions.length;
+    const lc    = LEVEL_CONFIG[state.levelKey];
+    const bank  = getBank();
 
     document.getElementById('osn-progress').textContent = `Soal ${idx + 1} / ${total}`;
 
     document.getElementById('osn-question-card').innerHTML = `
       <div class="tka-q-meta">
-        <span class="tka-q-mapel-badge" style="background:${lc.warna}">${bankMeta?.icon || '📖'} ${bankMeta?.mapel || ''} · ${lc.label}</span>
+        <span class="tka-q-mapel-badge" style="background:${lc.warna}">${bank.icon} ${bank.mapel} · ${lc.label}</span>
         <span class="tka-q-num">No. ${idx + 1}</span>
       </div>
       <p class="tka-q-text">${escHtml(q.q)}</p>
@@ -432,7 +416,7 @@ window.OSN = (function() {
     const total     = state.allQuestions.length;
     const pct       = Math.round((benar / total) * 100);
     const lc        = LEVEL_CONFIG[state.levelKey];
-    const bankMeta  = _getBankMeta(getBankKey());
+    const bank      = getBank();
     const minsE     = Math.floor(elapsed / 60), secsE = elapsed % 60;
     const emoji     = pct >= 90 ? '🏆' : pct >= 75 ? '🥇' : pct >= 60 ? '🥈' : pct >= 45 ? '🥉' : '📚';
     const msg       = pct >= 90 ? 'Luar Biasa!' : pct >= 75 ? 'Sangat Bagus!' : pct >= 60 ? 'Bagus!' : pct >= 45 ? 'Cukup' : 'Terus Berlatih!';
@@ -475,11 +459,11 @@ window.OSN = (function() {
   // ══ REVIEW ═══════════════════════════════════════════════════════
   function showReview() {
     const container = document.getElementById('osn-container');
+    const bank      = getBank();
     const lc        = LEVEL_CONFIG[state.levelKey];
-    const bankMeta  = _getBankMeta(getBankKey());
     let html = `<div class="tka-review-wrap">
       <h2 class="tka-review-title">📖 Pembahasan Soal</h2>
-      <div class="tka-review-mapel-header" style="background:${lc.warna}">${bankMeta?.icon || '📖'} ${bankMeta?.label || ''} · ${lc.icon} ${lc.label}</div>`;
+      <div class="tka-review-mapel-header" style="background:${lc.warna}">${bank.icon} ${bank.label} · ${lc.icon} ${lc.label}</div>`;
 
     state.allQuestions.forEach((q, i) => {
       const userAns = state.answers[i];
@@ -495,7 +479,7 @@ window.OSN = (function() {
             ${q.opts.map((opt, oi) => {
               const l   = ['A','B','C','D','E'][oi];
               let   cls = 'tka-review-opt';
-              if (l === q.ans)     cls += ' review-opt-correct';
+              if (l === q.ans)        cls += ' review-opt-correct';
               else if (l === userAns) cls += ' review-opt-wrong';
               return `<div class="${cls}">${escHtml(opt)}</div>`;
             }).join('')}
