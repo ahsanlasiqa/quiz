@@ -7,9 +7,22 @@
     "icon": "🔬",
     "levels": {
       "kabupaten": {
-        "count": 43,
-        "type": "flat",
-        "file": "osn-sd_ipa--kabupaten.json"
+        "count": 80,
+        "type": "paket",
+        "pakets": [
+          {
+            "key": "paket1",
+            "label": "Paket 1",
+            "count": 40,
+            "file": "osn-sd_ipa--kabupaten--paket1.json"
+          },
+          {
+            "key": "paket2",
+            "label": "Paket 2",
+            "count": 40,
+            "file": "osn-sd_ipa--kabupaten--paket2.json"
+          }
+        ]
       },
       "provinsi": {
         "count": 0
