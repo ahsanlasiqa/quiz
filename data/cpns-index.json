@@ -2,16 +2,21 @@
   {
     "id": "paket1",
     "label": "Paket 1",
-    "sumber": "Latihan Tes Sistem CAT — Garuda Eduka"
+    "sumber": "Latihan Tes Sistem CAT"
   },
   {
     "id": "paket2",
     "label": "Paket 2",
-    "sumber": "Garuda Eduka — Seri Kebangsaan & Logika"
+    "sumber": "Seri Kebangsaan & Logika"
   },
   {
     "id": "paket3",
     "label": "Paket 3",
-    "sumber": "Garuda Eduka — Seri Integritas & Kritis"
+    "sumber": "Seri Integritas & Kritis"
+  },
+  {
+    "id": "paket4",
+    "label": "Paket 4",
+    "sumber": "Seri Reformasi & Analitik"
   }
 ]
