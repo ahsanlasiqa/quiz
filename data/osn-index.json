@@ -7,27 +7,20 @@
     "icon": "🔬",
     "levels": {
       "kabupaten": {
-        "type": "flat",
         "count": 43,
+        "type": "flat",
         "file": "osn-sd_ipa--kabupaten.json"
       },
       "provinsi": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-sd_ipa--provinsi.json"
+        "count": 0
       },
       "semifinal": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-sd_ipa--semifinal.json"
+        "count": 0
       },
       "final": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-sd_ipa--final.json"
+        "count": 0
       }
-    },
-    "total": 43
+    }
   },
   {
     "key": "smp_ipa",
@@ -37,8 +30,8 @@
     "icon": "⚗️",
     "levels": {
       "kabupaten": {
-        "type": "paket",
         "count": 80,
+        "type": "paket",
         "pakets": [
           {
             "key": "paket1",
@@ -55,22 +48,15 @@
         ]
       },
       "provinsi": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-smp_ipa--provinsi.json"
+        "count": 0
       },
       "semifinal": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-smp_ipa--semifinal.json"
+        "count": 0
       },
       "final": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-smp_ipa--final.json"
+        "count": 0
       }
-    },
-    "total": 80
+    }
   },
   {
     "key": "sma_biologi",
@@ -80,27 +66,18 @@
     "icon": "🧬",
     "levels": {
       "kabupaten": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-sma_biologi--kabupaten.json"
+        "count": 0
       },
       "provinsi": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-sma_biologi--provinsi.json"
+        "count": 0
       },
       "semifinal": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-sma_biologi--semifinal.json"
+        "count": 0
       },
       "final": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-sma_biologi--final.json"
+        "count": 0
       }
-    },
-    "total": 0
+    }
   },
   {
     "key": "sma_fisika",
@@ -110,26 +87,17 @@
     "icon": "⚛️",
     "levels": {
       "kabupaten": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-sma_fisika--kabupaten.json"
+        "count": 0
       },
       "provinsi": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-sma_fisika--provinsi.json"
+        "count": 0
       },
       "semifinal": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-sma_fisika--semifinal.json"
+        "count": 0
       },
       "final": {
-        "type": "flat",
-        "count": 0,
-        "file": "osn-sma_fisika--final.json"
+        "count": 0
       }
-    },
-    "total": 0
+    }
   }
 ]
