@@ -14,7 +14,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <!-- Midtrans Snap -->
-  <script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-SlhoAop1NZxXT_c6"></script>
+  <script src="https://app.midtrans.com/snap/snap.js" data-client-key="replace-later"></script>
 </head>
 <body>
 
@@ -418,6 +418,11 @@
           <span class="app-mode-tab-label">Try Out</span>
           <span class="app-mode-tab-sub">Simulasi ujian lengkap</span>
         </button>
+        <button class="app-mode-tab" id="tab-profil" onclick="switchAppMode('profil')">
+          <span class="app-mode-tab-icon">👤</span>
+          <span class="app-mode-tab-label">Profil</span>
+          <span class="app-mode-tab-sub">Progress &amp; rencana studi</span>
+        </button>
       </div>
 
       <!-- ══ DRILL SOAL SECTION ══ -->
@@ -820,6 +825,11 @@
 
       </div><!-- /tryout-soal-section -->
 
+      <!-- ── PROFIL SECTION ── -->
+      <div id="profil-section" class="hidden">
+        <div id="profil-container"></div>
+      </div>
+
       <div class="loading-overlay hidden" id="loading-overlay">
         <div class="loading-card">
           <div class="spinner"></div>
@@ -844,7 +854,11 @@
     </main>
   </div>
 
-  <!-- Interactive Quiz Overlay -->
+  <!-- ── PROFIL MODALS ── -->
+  <div id="profil-modal-backdrop" class="profil-modal-backdrop hidden" onclick="window.PROFIL?.closeModals()"></div>
+  <div id="profil-modal-edit" class="profil-modal hidden"></div>
+  <div id="profil-modal-studyplan" class="profil-modal hidden"></div>
+
   <div class="interactive-overlay hidden" id="interactive-overlay">
     <div class="interactive-modal">
       <button class="iq-close" id="iq-close">✕ Tutup</button>
@@ -895,6 +909,7 @@
   <script src="js/snbt.js"></script>
 
   <script src="js/osn.js"></script>
+  <script src="js/profil.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

@@ -1783,6 +1783,15 @@ function showInteractiveResults(quiz, answers) {
   const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '👍' : pct >= 40 ? '📚' : '💪';
   const msg = pct >= 80 ? 'Luar biasa!' : pct >= 60 ? 'Bagus!' : pct >= 40 ? 'Terus belajar!' : 'Jangan menyerah!';
 
+  // Catat sesi ke profil
+  window.PROFIL_recordSession?.('other', {
+    pct,
+    totalBenar: score,
+    totalSoal:  quiz.questions.length,
+    scores: {},
+    elapsed: 0,
+  });
+
   container.innerHTML = `
     <div class="iq-score-banner">
       <div class="iq-score-emoji">${emoji}</div>
@@ -2036,11 +2045,13 @@ window.switchAppMode = function(mode) {
     drill:   document.getElementById('drill-soal-section'),
     bantai:  document.getElementById('bantai-soal-section'),
     tryout:  document.getElementById('tryout-soal-section'),
+    profil:  document.getElementById('profil-section'),
   };
   const tabs = {
     drill:   document.getElementById('tab-drill'),
     bantai:  document.getElementById('tab-bantai'),
     tryout:  document.getElementById('tab-tryout'),
+    profil:  document.getElementById('tab-profil'),
   };
 
   Object.keys(sections).forEach(k => {
@@ -2056,6 +2067,11 @@ window.switchAppMode = function(mode) {
       const el = document.getElementById(id);
       if (el) el.classList.add('hidden');
     });
+  }
+
+  // When switching to profil, init/re-render
+  if (mode === 'profil') {
+    window.PROFIL?.init();
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2098,6 +2114,38 @@ window.backToTryoutHub = function() {
   if (window.SNBT && window.SNBT._stopTimer) window.SNBT._stopTimer();
   if (window.OSN && window.OSN._stopTimer) window.OSN._stopTimer();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// ── Patch PROFIL_recordSession ke modul tryout ────────────────
+// Setiap modul (TKA/CPNS/SNBT/OSN) memanggil window._onTryoutResult
+// saat quiz selesai. Kita patch setelah DOM siap.
+(function patchTryoutResultHooks() {
+  // TKA
+  const _tkaSubmit = window.TKA?.submitQuiz;
+  if (window.TKA && _tkaSubmit) {
+    window.TKA.submitQuiz = function(isAuto) {
+      _tkaSubmit.call(this, isAuto);
+      // TKA result — dipanggil setelah render, ambil dari state internal via DOM
+      setTimeout(() => {
+        const pctEl = document.querySelector('#tka-container .tka-score-pct');
+        if (!pctEl) return;
+        const m = pctEl.textContent.match(/(\d+)%/);
+        const bEl = document.querySelector('#tka-container .tka-score-num');
+        const parts = bEl ? bEl.textContent.split('/') : [];
+        window.PROFIL_recordSession?.('tka_sma', {
+          pct: m ? parseInt(m[1]) : 0,
+          totalBenar: parts[0] ? parseInt(parts[0].trim()) : 0,
+          totalSoal:  parts[1] ? parseInt(parts[1].trim()) : 0,
+          scores: {}, elapsed: 0,
+        });
+      }, 100);
+    };
+  }
+})();
+
+// Simpler: hook via window event yang dipanggil tiap modul selesai
+window._onTryoutResult = function(jenis, pct, totalBenar, totalSoal, scores, elapsed) {
+  window.PROFIL_recordSession?.(jenis, { pct, totalBenar, totalSoal, scores: scores || {}, elapsed: elapsed || 0 });
 };
 
 // ══════════════════════════════════════════════════════════════

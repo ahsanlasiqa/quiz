@@ -4470,3 +4470,737 @@ body {
 .snbt-st-label { font-size: 0.75rem; color: var(--ink-muted); margin-bottom: 4px; }
 .snbt-st-val   { font-size: 1.1rem; font-weight: 800; color: var(--ink); }
 .snbt-st-val span { font-size: 0.8rem; font-weight: 400; color: var(--ink-muted); }
+
+
+/* ══════════════════════════════════════════════════════════════
+   PROFIL — Halaman Profil & Progress
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Wrapper utama ─────────────────────────────────────────── */
+.profil-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 0 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Hero / Identitas ──────────────────────────────────────── */
+.profil-hero {
+  background: white;
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: var(--shadow);
+}
+
+.profil-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.profil-avatar-img,
+.profil-avatar-fallback {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.profil-avatar-fallback {
+  background: linear-gradient(135deg, var(--teal), var(--teal-light));
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+}
+.profil-avatar-edit {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 2px solid white;
+  font-size: 0.65rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s;
+}
+.profil-avatar-edit:hover { transform: scale(1.15); }
+
+.profil-hero-info { flex: 1; min-width: 0; }
+.profil-name {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: var(--ink);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.profil-email {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+}
+.profil-bio {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.profil-hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.profil-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--teal-pale);
+  color: var(--teal);
+}
+
+/* ── Stat cards ────────────────────────────────────────────── */
+.profil-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.profil-stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px 12px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.18s;
+}
+.profil-stat-card:hover { transform: translateY(-2px); }
+.profil-stat-num {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.profil-stat-label {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  font-weight: 500;
+}
+
+/* ── Kesiapan / Readiness bar ──────────────────────────────── */
+.profil-readiness-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  box-shadow: var(--shadow);
+}
+.profil-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-muted);
+  margin-bottom: 14px;
+}
+.profil-readiness-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.profil-readiness-bar-wrap {
+  flex: 1;
+  height: 10px;
+  background: rgba(26,18,8,0.07);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.profil-readiness-bar {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--teal), var(--teal-light));
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
+}
+.profil-readiness-pct {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--teal);
+  min-width: 44px;
+  text-align: right;
+}
+.profil-readiness-label {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  margin-top: 6px;
+}
+
+/* Countdown chip */
+.profil-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--amber-pale);
+  color: #9a6000;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+.profil-countdown-overdue {
+  background: rgba(224,92,58,0.1);
+  color: var(--coral);
+}
+
+/* ── Rencana Studi card ────────────────────────────────────── */
+.profil-studyplan-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  box-shadow: var(--shadow);
+}
+.profil-studyplan-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.profil-btn-edit-plan {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--teal);
+  background: var(--teal-pale);
+  border: none;
+  border-radius: 8px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.profil-btn-edit-plan:hover { background: #b8e8e3; }
+
+.profil-studyplan-empty {
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  padding: 10px 0 4px;
+}
+.profil-studyplan-empty button {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--teal);
+  background: var(--teal-pale);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 18px;
+  cursor: pointer;
+}
+
+.profil-plan-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.profil-plan-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(26,18,8,0.06);
+  color: var(--ink-light);
+}
+
+.profil-plan-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.profil-plan-meta-item {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+.profil-plan-meta-item strong {
+  color: var(--ink);
+}
+
+.profil-plan-catatan {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--ink-light);
+  background: var(--amber-pale);
+  border-left: 3px solid var(--amber);
+  padding: 8px 12px;
+  border-radius: 0 8px 8px 0;
+  line-height: 1.5;
+}
+
+/* ── Trend mini chart ──────────────────────────────────────── */
+.profil-trend-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  box-shadow: var(--shadow);
+}
+.profil-trend-empty {
+  text-align: center;
+  padding: 20px;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+}
+.profil-chart-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 72px;
+  margin-top: 8px;
+}
+.profil-chart-bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  height: 100%;
+}
+.profil-chart-bar {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  min-height: 4px;
+  transition: height 0.4s cubic-bezier(.4,0,.2,1);
+}
+.profil-chart-val {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+/* ── Per-jenis breakdown ───────────────────────────────────── */
+.profil-perjenis-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  box-shadow: var(--shadow);
+}
+.profil-perjenis-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+.profil-perjenis-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(26,18,8,0.03);
+  border-radius: 12px;
+}
+.profil-perjenis-icon {
+  font-size: 1.25rem;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.profil-perjenis-info { flex: 1; min-width: 0; }
+.profil-perjenis-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.profil-perjenis-meta {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  margin-top: 1px;
+}
+.profil-perjenis-score {
+  text-align: right;
+  flex-shrink: 0;
+}
+.profil-perjenis-pct {
+  font-size: 1rem;
+  font-weight: 800;
+}
+.profil-perjenis-best {
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  margin-top: 1px;
+}
+.profil-perjenis-bar-wrap {
+  width: 60px;
+  height: 5px;
+  background: rgba(26,18,8,0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.profil-perjenis-bar {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.5s;
+}
+
+.profil-perjenis-empty {
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  padding: 20px;
+}
+
+/* ── Riwayat ───────────────────────────────────────────────── */
+.profil-riwayat-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  box-shadow: var(--shadow);
+}
+.profil-riwayat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+.profil-riwayat-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(26,18,8,0.025);
+  transition: background 0.15s;
+}
+.profil-riwayat-item:hover { background: rgba(26,18,8,0.05); }
+.profil-riwayat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.profil-riwayat-info { flex: 1; min-width: 0; }
+.profil-riwayat-jenis {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.profil-riwayat-meta {
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  margin-top: 1px;
+}
+.profil-riwayat-skor {
+  text-align: right;
+  flex-shrink: 0;
+}
+.profil-riwayat-pct {
+  display: block;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.profil-riwayat-detail {
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+}
+
+.profil-riwayat-empty {
+  text-align: center;
+  padding: 20px;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+}
+.profil-riwayat-empty button {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--teal);
+  background: var(--teal-pale);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 18px;
+  cursor: pointer;
+}
+
+/* ── Modal Backdrop ────────────────────────────────────────── */
+.profil-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26,18,8,0.45);
+  z-index: 900;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* ── Modal container ───────────────────────────────────────── */
+.profil-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 901;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  pointer-events: none;
+}
+.profil-modal:not(.hidden) {
+  pointer-events: auto;
+}
+
+/* ── Modal inner panel ─────────────────────────────────────── */
+.profil-modal-inner {
+  background: var(--warm-white);
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-width: 560px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 -8px 48px rgba(26,18,8,0.18);
+  animation: slideUpModal 0.28s cubic-bezier(.4,0,.2,1);
+}
+@keyframes slideUpModal {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.profil-modal-wide {
+  max-width: 640px;
+}
+
+.profil-modal-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+  position: sticky;
+  top: 0;
+  background: var(--warm-white);
+  z-index: 1;
+}
+.profil-modal-hdr h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--ink);
+}
+.profil-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(26,18,8,0.07);
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.profil-modal-close:hover { background: rgba(26,18,8,0.13); }
+
+.profil-modal-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.profil-studyplan-modal-body {
+  gap: 20px;
+}
+
+.profil-modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 0 24px 24px;
+}
+.profil-btn-cancel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  background: rgba(26,18,8,0.06);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.profil-btn-cancel:hover { background: rgba(26,18,8,0.11); }
+.profil-btn-save {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+  background: var(--teal);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.15s;
+}
+.profil-btn-save:hover {
+  background: var(--teal-light);
+  transform: translateY(-1px);
+}
+
+/* ── Form elements ─────────────────────────────────────────── */
+.profil-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.profil-form-group label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.profil-form-sub {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+.profil-form-group input[type="text"],
+.profil-form-group input[type="date"],
+.profil-form-group textarea {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: white;
+  border: 1.5px solid rgba(26,18,8,0.12);
+  border-radius: 12px;
+  padding: 10px 14px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.18s;
+}
+.profil-form-group input:focus,
+.profil-form-group textarea:focus {
+  border-color: var(--teal);
+}
+.profil-char-count {
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  text-align: right;
+}
+.profil-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Range slider */
+.profil-range-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.profil-range-wrap input[type="range"] {
+  flex: 1;
+  accent-color: var(--teal);
+  cursor: pointer;
+}
+.profil-range-val {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--teal);
+  min-width: 22px;
+  text-align: center;
+}
+.profil-range-unit {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+}
+
+/* ── Ujian & Mapel toggles ─────────────────────────────────── */
+.profil-ujian-grid,
+.profil-mapel-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.profil-ujian-toggle,
+.profil-mapel-toggle {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid rgba(26,18,8,0.15);
+  background: white;
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.profil-ujian-toggle:hover,
+.profil-mapel-toggle:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+.profil-mapel-toggle.active {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: white;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .profil-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px 16px;
+  }
+  .profil-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .profil-form-row {
+    grid-template-columns: 1fr;
+  }
+  .profil-readiness-card,
+  .profil-studyplan-card,
+  .profil-trend-card,
+  .profil-perjenis-card,
+  .profil-riwayat-card {
+    padding: 16px;
+  }
+  .profil-modal-inner {
+    border-radius: 20px 20px 0 0;
+  }
+  .profil-modal-hdr,
+  .profil-modal-body,
+  .profil-modal-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .profil-wrap { gap: 14px; }
+}
+
+@media (max-width: 380px) {
+  .profil-stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .profil-stat-num  { font-size: 1.3rem; }
+}
