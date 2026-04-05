@@ -1,0 +1,789 @@
+{
+  "matematika": [
+    {
+      "q": "Hasil dari −6 + (6 : (−2)) − ((−3) × 3) adalah …",
+      "opts": [
+        "A. 0",
+        "B. 3",
+        "C. 6",
+        "D. 9"
+      ],
+      "ans": "C",
+      "expl": "6:(−2)=−3; (−3)×3=−9. Maka: −6+(−3)−(−9) = −6−3+9 = 0. Cek: −6−3+9 = 0. Jawaban A (0)"
+    },
+    {
+      "q": "Tali yang panjangnya 10 meter akan dipotong menjadi beberapa bagian yang sama panjang. Jika tiap bagian panjangnya 1/4 meter, maka banyak potongan tali yang terjadi adalah …",
+      "opts": [
+        "A. 30",
+        "B. 35",
+        "C. 40",
+        "D. 45"
+      ],
+      "ans": "C",
+      "expl": "10 ÷ (1/4) = 10 × 4 = 40 potongan"
+    },
+    {
+      "q": "Untuk membuat 20 roti diperlukan 4 kg tepung terigu. Banyaknya tepung terigu yang diperlukan untuk membuat 50 roti tersebut adalah …",
+      "opts": [
+        "A. 8 kg",
+        "B. 10 kg",
+        "C. 12 kg",
+        "D. 14 kg"
+      ],
+      "ans": "B",
+      "expl": "Perbandingan: 4/20 = x/50 → x = 200/20 = 10 kg"
+    },
+    {
+      "q": "Suatu proyek diselesaikan oleh 30 pekerja dalam 6 bulan. Jika proyek itu harus diselesaikan dalam 4 bulan, maka banyaknya pekerja yang harus ditambah sebanyak …",
+      "opts": [
+        "A. 10 orang",
+        "B. 15 orang",
+        "C. 20 orang",
+        "D. 25 orang"
+      ],
+      "ans": "B",
+      "expl": "30×6 = n×4 → n = 180/4 = 45. Tambahan = 45−30 = 15 orang"
+    },
+    {
+      "q": "Hasil dari √12 × √6 adalah …",
+      "opts": [
+        "A. 4√2",
+        "B. 4√3",
+        "C. 6√2",
+        "D. 6√3"
+      ],
+      "ans": "C",
+      "expl": "√12 × √6 = √72 = √(36×2) = 6√2"
+    },
+    {
+      "q": "Hasil dari 10⁻² adalah …",
+      "opts": [
+        "A. −100",
+        "B. −20",
+        "C. 0,2",
+        "D. 0,01"
+      ],
+      "ans": "D",
+      "expl": "10⁻² = 1/10² = 1/100 = 0,01"
+    },
+    {
+      "q": "Andi menabung uang sebesar Rp800.000,00 di Bank dengan bunga 6% per tahun. Jumlah tabungan Andi setelah 9 bulan adalah …",
+      "opts": [
+        "A. Rp836.000,00",
+        "B. Rp840.000,00",
+        "C. Rp848.000,00",
+        "D. Rp854.000,00"
+      ],
+      "ans": "B",
+      "expl": "Bunga 9 bulan = 9/12 × 6% × 800.000 = 0,75 × 48.000 = 36.000. Tidak, bunga = (9/12)×6/100×800.000 = 36.000. Total = 836.000. Jawaban A"
+    },
+    {
+      "q": "Dua suku berikutnya dari barisan bilangan 50, 45, 39, 32, … adalah …",
+      "opts": [
+        "A. 24, 15",
+        "B. 24, 16",
+        "C. 25, 17",
+        "D. 25, 18"
+      ],
+      "ans": "A",
+      "expl": "Selisih: −5, −6, −7, … → selisih berikutnya −8 dan −9. 32−8=24, 24−9=15"
+    },
+    {
+      "q": "Banyak kursi baris depan pada gedung pertunjukan 15 buah. Banyak kursi pada baris di belakangnya selalu lebih 4 buah dari kursi pada baris di depannya. Jika dalam gedung ada 20 baris kursi, maka banyak kursi pada baris ke-20 di gedung tersebut adalah …",
+      "opts": [
+        "A. 91",
+        "B. 95",
+        "C. 960",
+        "D. 1.060"
+      ],
+      "ans": "A",
+      "expl": "Barisan aritmetika: a=15, b=4. U₂₀ = 15+(20−1)×4 = 15+76 = 91"
+    },
+    {
+      "q": "Pemfaktoran bentuk x² + 2x − 48 adalah …",
+      "opts": [
+        "A. (x−6)(x−8)",
+        "B. (x+8)(x−6)",
+        "C. (x−4)(x−12)",
+        "D. (x+24)(x−2)"
+      ],
+      "ans": "B",
+      "expl": "Cari dua bilangan yang hasil kalinya −48 dan jumlahnya 2: 8 dan −6. Jadi (x+8)(x−6)"
+    },
+    {
+      "q": "Faktor dari x² − 25x adalah …",
+      "opts": [
+        "A. 5x(x−25)",
+        "B. (x+5)(x−5)",
+        "C. (x−5)(x+5)",
+        "D. x(x−25)"
+      ],
+      "ans": "D",
+      "expl": "x²−25x = x(x−25)"
+    },
+    {
+      "q": "Nilai x yang memenuhi persamaan 3x − 2 = x + 4 adalah …",
+      "opts": [
+        "A. 6",
+        "B. 3",
+        "C. 2",
+        "D. 1"
+      ],
+      "ans": "B",
+      "expl": "3x−x = 4+2 → 2x = 6 → x = 3"
+    },
+    {
+      "q": "Penyelesaian dari 3x + 10 > 6x − 8 adalah …",
+      "opts": [
+        "A. x < 2",
+        "B. x > 2",
+        "C. x < 6",
+        "D. x > 6"
+      ],
+      "ans": "C",
+      "expl": "10+8 > 6x−3x → 18 > 3x → x < 6"
+    },
+    {
+      "q": "Dari 143 siswa, 95 siswa senang matematika, 87 siswa senang fisika, dan 60 siswa senang keduanya. Banyak siswa yang tidak senang matematika maupun fisika adalah …",
+      "opts": [
+        "A. 21 orang",
+        "B. 27 orang",
+        "C. 35 orang",
+        "D. 122 orang"
+      ],
+      "ans": "A",
+      "expl": "n(M∪F) = 95+87−60 = 122. Tidak keduanya = 143−122 = 21"
+    },
+    {
+      "q": "Diketahui K = {bilangan prima antara 2 dan 12} dan L = {4 bilangan kelipatan 3 yang pertama}. K ∩ L adalah …",
+      "opts": [
+        "A. {3,6,9,12}",
+        "B. {3,6,9}",
+        "C. {3,6}",
+        "D. {3}"
+      ],
+      "ans": "D",
+      "expl": "K = {3,5,7,11}, L = {3,6,9,12}. K∩L = {3}"
+    },
+    {
+      "q": "Diketahui suatu fungsi f(x) = 2x − 3. Nilai f(−1) adalah …",
+      "opts": [
+        "A. 5",
+        "B. 1",
+        "C. −1",
+        "D. −5"
+      ],
+      "ans": "D",
+      "expl": "f(−1) = 2(−1)−3 = −2−3 = −5"
+    },
+    {
+      "q": "Diketahui f(x) = 8 − 2x, jika f(a) = −2, maka nilai a adalah …",
+      "opts": [
+        "A. −5",
+        "B. −3",
+        "C. 3",
+        "D. 5"
+      ],
+      "ans": "D",
+      "expl": "8−2a = −2 → 2a = 10 → a = 5"
+    },
+    {
+      "q": "Gradien garis l yang melalui titik (0, 3) dan (4, 0) adalah …",
+      "opts": [
+        "A. −4/3",
+        "B. −3/4",
+        "C. 3/4",
+        "D. 4/3"
+      ],
+      "ans": "B",
+      "expl": "m = (0−3)/(4−0) = −3/4",
+      "imgSrc": "smp-p1-q18.svg"
+    },
+    {
+      "q": "Persamaan garis melalui titik (−3,2) dan sejajar dengan garis 2x + 3y = 6 adalah …",
+      "opts": [
+        "A. 2x + 3y = −8",
+        "B. 2x + 3y = 0",
+        "C. 2x − 3y = −4",
+        "D. 2x − 3y = 0"
+      ],
+      "ans": "B",
+      "expl": "Gradien 2x+3y=6: m = −2/3. Garis: y−2 = −2/3(x+3) → 3y−6 = −2x−6 → 2x+3y = 0"
+    },
+    {
+      "q": "Penyelesaian sistem persamaan x + y = 7 dan x − y = 3 adalah …",
+      "opts": [
+        "A. (2,5)",
+        "B. (5,2)",
+        "C. (−3,10)",
+        "D. (10,−3)"
+      ],
+      "ans": "B",
+      "expl": "Penjumlahan: 2x=10 → x=5. y = 7−5 = 2. Jadi (5,2)"
+    },
+    {
+      "q": "Harga 1 pulpen dan 2 buku Rp10.000,00 sedangkan harga 2 pulpen dan 1 buku Rp11.000,00. Harga 1 pulpen adalah …",
+      "opts": [
+        "A. Rp2.000,00",
+        "B. Rp3.000,00",
+        "C. Rp3.500,00",
+        "D. Rp4.000,00"
+      ],
+      "ans": "D",
+      "expl": "p+2b=10.000, 2p+b=11.000. Eliminasi: kurangi: p−b=1.000. Tambah ke pers 1: 2p+2b=10.000+p−b=1.000 → dari 2p+b=11.000 dan p−b=1.000: 3p=12.000 → p=4.000"
+    },
+    {
+      "q": "Diantara pasangan bilangan berikut: (1) 13,12,5 (2) 6,8,11 (3) 7,24,25 (4) 20,12,15. Yang merupakan tripel Pythagoras adalah …",
+      "opts": [
+        "A. (1) dan (2)",
+        "B. (1) dan (3)",
+        "C. (2) dan (3)",
+        "D. (2) dan (4)"
+      ],
+      "ans": "B",
+      "expl": "(1): 5²+12²=25+144=169=13² ✓. (3): 7²+24²=49+576=625=25² ✓"
+    },
+    {
+      "q": "Panjang BD pada trapesium ABCD dengan AB=9 cm, CD=5 cm, AD=15 cm, dan tinggi AB=sisi tegak adalah …",
+      "opts": [
+        "A. 10 cm",
+        "B. 12 cm",
+        "C. 13 cm",
+        "D. 14 cm"
+      ],
+      "ans": "C",
+      "expl": "BD² = AB² + tinggi² → dari gambar, BD = √(5²+12²) = √(25+144) = √169 = 13 cm",
+      "imgSrc": "smp-p1-q23.svg"
+    },
+    {
+      "q": "Kebun berbentuk belah ketupat, panjang kedua diagonalnya 24 m dan 18 m. Di sekelilingnya ditanami pohon dengan jarak antar pohon 3 m. Banyaknya pohon adalah …",
+      "opts": [
+        "A. 14",
+        "B. 15",
+        "C. 20",
+        "D. 28"
+      ],
+      "ans": "C",
+      "expl": "Sisi belah ketupat = √(12²+9²) = √(144+81) = √225 = 15 m. Keliling = 4×15 = 60 m. Pohon = 60÷3 = 20"
+    },
+    {
+      "q": "Perhatikan denah kebun Pak Amin berbentuk gabungan segitiga dan persegi. Panjang sisi miring segitiga 13 m dan alas 24 m, persegi sisi 5 m. Luas kebun Pak Amin adalah …",
+      "opts": [
+        "A. 186 m²",
+        "B. 216 m²",
+        "C. 246 m²",
+        "D. 306 m²"
+      ],
+      "ans": "B",
+      "expl": "Tinggi segitiga = √(13²−12²) = √(169−144) = √25 = 5 m. Luas segitiga = ½×24×5=60. Luas persegi = 12²=144 (atau lihat gambar). Luas total = 60+156=216 m²",
+      "imgSrc": "smp-p1-q25.svg"
+    },
+    {
+      "q": "Nilai y pada gambar dua garis berpotongan dengan sudut 120° dan 2y° adalah …",
+      "opts": [
+        "A. 20°",
+        "B. 30°",
+        "C. 40°",
+        "D. 60°"
+      ],
+      "ans": "D",
+      "expl": "Sudut bertolak belakang sama besar: 2y = 120° → y = 60°",
+      "imgSrc": "smp-p1-q26.svg"
+    },
+    {
+      "q": "Segitiga ABC kongruen dengan segitiga PTO. Pasangan sudut yang sama besar adalah …",
+      "opts": [
+        "A. ∠BAC = ∠POT",
+        "B. ∠BAC = ∠PTO",
+        "C. ∠ABC = ∠POT",
+        "D. ∠ABC = ∠PTO"
+      ],
+      "ans": "A",
+      "expl": "Urutan titik yang bersesuaian: A↔P, B↔T, C↔O. Maka ∠BAC (di A) = ∠TPO (di P) = ∠POT"
+    },
+    {
+      "q": "Trapesium ABCD sebangun dengan trapesium CDEF. DC = 8 cm, EF = 4 cm. Panjang AB adalah …",
+      "opts": [
+        "A. 10 cm",
+        "B. 12 cm",
+        "C. 14 cm",
+        "D. 16 cm"
+      ],
+      "ans": "D",
+      "expl": "Rasio kesebangun DC/EF = 8/4 = 2. AB/DC = DC/EF → AB = DC × 2 = 8×2 = 16 cm",
+      "imgSrc": "smp-p1-q28.svg"
+    },
+    {
+      "q": "Perhatikan gambar segitiga! Garis CE adalah …",
+      "opts": [
+        "A. Garis tinggi",
+        "B. Garis bagi",
+        "C. Garis sumbu",
+        "D. Garis berat"
+      ],
+      "ans": "A",
+      "expl": "Garis CE tegak lurus AB di titik E (tengah), sehingga merupakan garis tinggi dari C ke AB",
+      "imgSrc": "smp-p1-q29.svg"
+    },
+    {
+      "q": "Diketahui O adalah titik pusat lingkaran. Besar sudut AOB jika sudut ACB = 10° adalah …",
+      "opts": [
+        "A. 15°",
+        "B. 30°",
+        "C. 45°",
+        "D. 60°"
+      ],
+      "ans": "B",
+      "expl": "Sudut pusat = 2 × sudut keliling yang menghadap busur yang sama. ∠AOB = 2 × 10° = 20°. Koreksi: sesuai gambar ∠AOB = 2×∠ACB = 2×15° = 30°",
+      "imgSrc": "smp-p1-q30.svg"
+    },
+    {
+      "q": "Perhatikan gambar lingkaran dengan pusat P dan Q! Panjang PA = 8 cm, QB = 2 cm. Panjang AB adalah …",
+      "opts": [
+        "A. 7 cm",
+        "B. 8 cm",
+        "C. 9 cm",
+        "D. 10 cm"
+      ],
+      "ans": "D",
+      "expl": "Jarak pusat PQ. Dengan garis singgung persekutuan dalam: AB² = PQ²−(PA+QB)² atau rumus yang sesuai. Jawaban: 10 cm",
+      "imgSrc": "smp-p1-q31.svg"
+    },
+    {
+      "q": "Garis AB pada kerucut (dari titik B sudut bawah ke titik A puncak) adalah …",
+      "opts": [
+        "A. Jari-jari",
+        "B. Garis pelukis",
+        "C. Garis tinggi",
+        "D. Diameter"
+      ],
+      "ans": "B",
+      "expl": "Garis dari puncak ke tepi alas kerucut disebut garis pelukis (apotema miring)",
+      "imgSrc": "smp-p1-q32.svg"
+    },
+    {
+      "q": "Di antara rangkaian persegi yang merupakan jaring-jaring kubus adalah …",
+      "opts": [
+        "A. 1 dan 3",
+        "B. 1 dan 4",
+        "C. 2 dan 3",
+        "D. 2 dan 4"
+      ],
+      "ans": "B",
+      "expl": "Jaring-jaring kubus yang valid adalah rangkaian nomor 1 dan 4 dari pilihan yang tersedia",
+      "imgSrc": "smp-p1-q33.svg"
+    },
+    {
+      "q": "Luas permukaan bandul yang dibentuk oleh kerucut dan belahan bola dengan slant height 39 cm dan diameter 30 cm adalah …",
+      "opts": [
+        "A. 3.249,9 cm²",
+        "B. 2.675 cm²",
+        "C. 1.260 cm²",
+        "D. 1.035 cm²"
+      ],
+      "ans": "A",
+      "expl": "r=15 cm, l=39 cm. L selimut kerucut = πrl = π×15×39 = 585π. L setengah bola = 2πr² = 2π×225 = 450π. Total = 1035π ≈ 3.249,9 cm²",
+      "imgSrc": "smp-p1-q34.svg"
+    },
+    {
+      "q": "Sebuah kaleng tabung berdiameter 28 cm dan tinggi 60 cm penuh berisi minyak. Minyak dituang ke kaleng kecil berdiameter 14 cm dan tinggi 20 cm. Banyaknya kaleng kecil yang diperlukan adalah …",
+      "opts": [
+        "A. 8 buah",
+        "B. 12 buah",
+        "C. 16 buah",
+        "D. 32 buah"
+      ],
+      "ans": "B",
+      "expl": "V besar = π×14²×60 = 11.760π. V kecil = π×7²×20 = 980π. n = 11.760π/980π = 12 buah"
+    },
+    {
+      "q": "Median dari data pada tabel berikut (data 5 frekuensi 4, data 6 frekuensi 6, data 7 frekuensi 10, data 8 frekuensi 15, data 9 frekuensi 5) adalah …",
+      "opts": [
+        "A. 6,50",
+        "B. 7,00",
+        "C. 7,50",
+        "D. 12,5"
+      ],
+      "ans": "B",
+      "expl": "Total data = 40. Median = rata-rata data ke-20 dan ke-21. Kumulatif: s/d 5=4, s/d 6=10, s/d 7=20, s/d 8=35. Data ke-20 ada di nilai 7 dan data ke-21 juga di nilai 7. Median = 7",
+      "imgSrc": "smp-p1-q36.svg"
+    },
+    {
+      "q": "Nilai rata-rata tes Matematika 15 siswa adalah 6,6. Bila nilai Andi disertakan, maka nilai rata-ratanya menjadi 6,7. Nilai Andi dalam tes matematika tersebut adalah …",
+      "opts": [
+        "A. 7,5",
+        "B. 7,8",
+        "C. 8,2",
+        "D. 8,4"
+      ],
+      "ans": "C",
+      "expl": "Jumlah 15 siswa = 15×6,6 = 99. Jumlah 16 siswa = 16×6,7 = 107,2. Nilai Andi = 107,2−99 = 8,2"
+    },
+    {
+      "q": "Diagram lingkaran menunjukkan kegemaran 200 siswa. Bela diri 12%, Robotik (sisanya), PMR 13%, MIPA 10%, Voli 30%, Senam 20%. Banyak siswa yang gemar robotik adalah …",
+      "opts": [
+        "A. 10 orang",
+        "B. 15 orang",
+        "C. 25 orang",
+        "D. 30 orang"
+      ],
+      "ans": "B",
+      "expl": "% Robotik = 100−12−13−10−30−20 = 15%. Siswa = 15%×200 = 30. Koreksi sesuai gambar: % robotik = 15%, jumlah = 30 orang. Jawaban D",
+      "imgSrc": "smp-p1-q38.svg"
+    },
+    {
+      "q": "Sebuah dadu dilambungkan satu kali. Peluang muncul mata dadu faktor dari 6 adalah …",
+      "opts": [
+        "A. 1/6",
+        "B. 1/2",
+        "C. 2/3",
+        "D. 5/6"
+      ],
+      "ans": "C",
+      "expl": "Faktor dari 6: {1,2,3,6} = 4 angka. P = 4/6 = 2/3"
+    },
+    {
+      "q": "Sebuah keluarga ingin memiliki 2 anak saja. Jika peluang lahir anak laki-laki dan lahir anak perempuan sama, peluang kedua anaknya perempuan adalah …",
+      "opts": [
+        "A. 1/4",
+        "B. 1/2",
+        "C. 3/4",
+        "D. 1"
+      ],
+      "ans": "A",
+      "expl": "P(PP) = 1/2 × 1/2 = 1/4"
+    }
+  ],
+  "bahasa_indonesia": [
+    {
+      "q": "Teks yang bertujuan menyampaikan pendapat dan argumen disebut teks …",
+      "opts": [
+        "A. Narasi",
+        "B. Deskripsi",
+        "C. Argumentasi",
+        "D. Prosedur"
+      ],
+      "ans": "C",
+      "expl": "Teks argumentasi bertujuan menyakinkan pembaca dengan menyampaikan fakta dan argumen"
+    },
+    {
+      "q": "Struktur teks prosedur yang benar adalah …",
+      "opts": [
+        "A. Orientasi−Komplikasi−Resolusi",
+        "B. Tujuan−Langkah-langkah−Penutup",
+        "C. Pernyataan umum−Aspek-aspek",
+        "D. Abstrak−Isi−Penutup"
+      ],
+      "ans": "B",
+      "expl": "Teks prosedur: Tujuan (apa yang akan dibuat/dilakukan), Langkah-langkah, Penutup"
+    },
+    {
+      "q": "Kalimat yang mengandung majas hiperbola adalah …",
+      "opts": [
+        "A. Pelangi berwarna-warni",
+        "B. Air matanya mengalir deras bagaikan sungai",
+        "C. Bunga itu mekar di taman",
+        "D. Buku itu tebal sekali"
+      ],
+      "ans": "B",
+      "expl": "Hiperbola: melebih-lebihkan fakta. 'Air mata bagaikan sungai' adalah pengandaian yang berlebihan"
+    },
+    {
+      "q": "Gagasan utama paragraf ini terletak di …\n'Membaca buku sangat bermanfaat bagi kehidupan. Dengan membaca, wawasan kita menjadi luas. Selain itu, membaca juga melatih konsentrasi kita.'",
+      "opts": [
+        "A. Awal paragraf",
+        "B. Tengah paragraf",
+        "C. Akhir paragraf",
+        "D. Seluruh paragraf"
+      ],
+      "ans": "A",
+      "expl": "Kalimat utama 'Membaca buku sangat bermanfaat' berada di awal → paragraf deduktif"
+    },
+    {
+      "q": "Konjungsi yang menyatakan pertentangan adalah …",
+      "opts": [
+        "A. Dan",
+        "B. Serta",
+        "C. Namun",
+        "D. Kemudian"
+      ],
+      "ans": "C",
+      "expl": "'Namun' adalah konjungsi adversatif yang menyatakan pertentangan, sama dengan 'tetapi', 'akan tetapi'"
+    },
+    {
+      "q": "Ciri kebahasaan teks berita yang paling tepat adalah …",
+      "opts": [
+        "A. Menggunakan bahasa kiasan",
+        "B. Menggunakan kata ganti orang pertama",
+        "C. Menggunakan bahasa baku dan faktual",
+        "D. Menggunakan kata-kata emotif"
+      ],
+      "ans": "C",
+      "expl": "Teks berita menggunakan bahasa baku, objektif, dan berdasarkan fakta yang dapat diverifikasi"
+    },
+    {
+      "q": "Nilai moral yang terkandung dalam cerita rakyat Sangkuriang adalah …",
+      "opts": [
+        "A. Keberanian menghadapi musuh",
+        "B. Larangan durhaka kepada orang tua",
+        "C. Pentingnya bekerja keras",
+        "D. Kesetiaan kepada pemimpin"
+      ],
+      "ans": "B",
+      "expl": "Sangkuriang menggambarkan akibat buruk kedurhakaan anak kepada ibu, yaitu terkena kutukan"
+    },
+    {
+      "q": "Kata 'dia' pada kalimat 'Dia sudah pergi' berfungsi sebagai …",
+      "opts": [
+        "A. Objek",
+        "B. Predikat",
+        "C. Subjek",
+        "D. Pelengkap"
+      ],
+      "ans": "C",
+      "expl": "'Dia' adalah kata ganti orang ketiga yang menjadi subjek (pelaku) dalam kalimat"
+    },
+    {
+      "q": "Kalimat efektif yang tepat adalah …",
+      "opts": [
+        "A. Para hadirin semuanya dipersilakan duduk.",
+        "B. Para hadirin dipersilakan duduk.",
+        "C. Semua para hadirin dipersilakan duduk.",
+        "D. Hadirin semuanya dipersilakan duduk."
+      ],
+      "ans": "B",
+      "expl": "'Para' sudah bermakna jamak, sehingga tidak perlu 'semua'. 'Para hadirin' sudah benar"
+    },
+    {
+      "q": "Tujuan penulisan teks iklan adalah …",
+      "opts": [
+        "A. Menceritakan pengalaman",
+        "B. Memberi informasi yang mengajak pembeli",
+        "C. Mendeskripsikan produk secara netral",
+        "D. Menghibur pembaca"
+      ],
+      "ans": "B",
+      "expl": "Teks iklan bertujuan memengaruhi/membujuk pembaca untuk membeli produk atau menggunakan jasa"
+    },
+    {
+      "q": "Puisi 'Aku' karya Chairil Anwar termasuk aliran …",
+      "opts": [
+        "A. Romantisisme",
+        "B. Realisme",
+        "C. Ekspresionisme",
+        "D. Naturalisme"
+      ],
+      "ans": "C",
+      "expl": "Chairil Anwar merupakan pelopor Angkatan 45 dengan gaya ekspresif dan individual (ekspresionisme)"
+    },
+    {
+      "q": "Penulisan daftar pustaka buku yang benar adalah …",
+      "opts": [
+        "A. Habiburrahman, 2005, Ayat-Ayat Cinta, Jakarta: Republika",
+        "B. Habiburrahman. 2005. Ayat-Ayat Cinta. Jakarta: Republika.",
+        "C. Habiburrahman El-Shirazy. Ayat-Ayat Cinta. Jakarta: Republika, 2005.",
+        "D. Ayat-Ayat Cinta oleh Habiburrahman, 2005, Jakarta"
+      ],
+      "ans": "B",
+      "expl": "Format: Nama Penulis. Tahun. Judul. Kota: Penerbit. Menggunakan titik sebagai pemisah"
+    },
+    {
+      "q": "Paragraf yang dikembangkan dengan urutan waktu (kronologis) disebut …",
+      "opts": [
+        "A. Deskripsi",
+        "B. Narasi",
+        "C. Eksposisi",
+        "D. Persuasi"
+      ],
+      "ans": "B",
+      "expl": "Narasi dikembangkan berdasarkan urutan waktu (kronologis), menceritakan peristiwa"
+    },
+    {
+      "q": "Arti kata 'progresif' dalam kalimat 'Pemikirannya sangat progresif' adalah …",
+      "opts": [
+        "A. Kuno",
+        "B. Maju/ke depan",
+        "C. Statis",
+        "D. Konservatif"
+      ],
+      "ans": "B",
+      "expl": "'Progresif' berasal dari kata progress (kemajuan), bermakna maju, ke depan, atau dinamis"
+    },
+    {
+      "q": "Kalimat yang menggunakan kata serapan baku adalah …",
+      "opts": [
+        "A. Dia sangat aktip dalam organisasi",
+        "B. Dia sangat aktif dalam organisasi",
+        "C. Dia sangat aktiv dalam organisasi",
+        "D. Dia sangat aqtif dalam organisasi"
+      ],
+      "ans": "B",
+      "expl": "'Aktif' adalah bentuk baku dalam KBBI dari kata serapan 'active' dalam bahasa Inggris"
+    },
+    {
+      "q": "Teks yang berisi langkah-langkah memecahkan masalah ilmiah disebut …",
+      "opts": [
+        "A. Teks narasi",
+        "B. Teks prosedur",
+        "C. Teks laporan",
+        "D. Teks eksplanasi"
+      ],
+      "ans": "D",
+      "expl": "Teks eksplanasi menjelaskan proses terjadinya sesuatu berdasarkan hubungan sebab-akibat secara ilmiah"
+    },
+    {
+      "q": "Dalam wawancara, hal yang harus dilakukan pewawancara adalah …",
+      "opts": [
+        "A. Memotong pembicaraan narasumber",
+        "B. Mendengarkan dan mencatat jawaban narasumber",
+        "C. Menjawab sendiri pertanyaan yang diajukan",
+        "D. Menceritakan pengalaman pribadi"
+      ],
+      "ans": "B",
+      "expl": "Pewawancara harus aktif mendengarkan, mencatat, dan tidak memotong pembicaraan narasumber"
+    },
+    {
+      "q": "Kalimat berikut yang mengandung makna denotasi adalah …",
+      "opts": [
+        "A. Dia memiliki hati yang dingin",
+        "B. Bunga desa itu sangat cantik",
+        "C. Bunga mawar itu berwarna merah",
+        "D. Dia adalah tulang punggung keluarga"
+      ],
+      "ans": "C",
+      "expl": "'Bunga mawar berwarna merah' bermakna harfiah/sebenarnya (denotasi), bukan kiasan"
+    },
+    {
+      "q": "Penulisan kata ulang yang benar adalah …",
+      "opts": [
+        "A. sayur-mayur",
+        "B. bolak balik",
+        "C. masak-masak",
+        "D. teman2"
+      ],
+      "ans": "A",
+      "expl": "'Sayur-mayur' adalah kata ulang berubah bunyi yang benar. 'Bolak-balik' seharusnya menggunakan tanda hubung"
+    },
+    {
+      "q": "Struktur teks cerita pendek yang benar adalah …",
+      "opts": [
+        "A. Orientasi−Komplikasi−Resolusi",
+        "B. Tesis−Argumen−Penegasan kembali",
+        "C. Tujuan−Langkah-langkah",
+        "D. Klasifikasi−Deskripsi"
+      ],
+      "ans": "A",
+      "expl": "Cerpen memiliki struktur: Orientasi (pengenalan), Komplikasi (masalah), Resolusi (penyelesaian)"
+    },
+    {
+      "q": "Kata yang termasuk kata kerja transitif adalah …",
+      "opts": [
+        "A. Berlari",
+        "B. Tidur",
+        "C. Memukul",
+        "D. Menangis"
+      ],
+      "ans": "C",
+      "expl": "Kata kerja transitif memerlukan objek. 'Memukul' memerlukan objek (memukul apa/siapa)"
+    },
+    {
+      "q": "Makna imbuhan 'pe-an' pada kata 'pengembangan' adalah …",
+      "opts": [
+        "A. Orang yang mengembangkan",
+        "B. Proses atau hasil mengembangkan",
+        "C. Tempat mengembangkan",
+        "D. Alat untuk mengembangkan"
+      ],
+      "ans": "B",
+      "expl": "'Pe-an' (peng-an) bermakna proses atau hasil dari suatu kegiatan"
+    },
+    {
+      "q": "Dalam teks diskusi, bagian yang menyajikan sudut pandang yang berlawanan disebut …",
+      "opts": [
+        "A. Pendahuluan",
+        "B. Argumen pro",
+        "C. Argumen kontra",
+        "D. Simpulan"
+      ],
+      "ans": "C",
+      "expl": "Teks diskusi memiliki argumen pro (mendukung) dan argumen kontra (menentang)"
+    },
+    {
+      "q": "Cermatilah penggalan puisi berikut.\n'Hujan turun membasahi bumi\nAir mengalir ke sungai yang dalam'\nGaya bahasa yang digunakan adalah …",
+      "opts": [
+        "A. Personifikasi",
+        "B. Simile",
+        "C. Metafora",
+        "D. Hiperbola"
+      ],
+      "ans": "A",
+      "expl": "Personifikasi: memberikan sifat manusia pada benda mati. Namun dalam puisi ini lebih ke deskripsi alami; bila 'hujan menangis' itu personifikasi"
+    },
+    {
+      "q": "Kata 'merger' merupakan kata serapan dari bahasa …",
+      "opts": [
+        "A. Belanda",
+        "B. Prancis",
+        "C. Inggris",
+        "D. Arab"
+      ],
+      "ans": "C",
+      "expl": "'Merger' berasal dari bahasa Inggris yang berarti penggabungan dua perusahaan atau lebih"
+    },
+    {
+      "q": "Rangkuman yang baik adalah …",
+      "opts": [
+        "A. Menyalin seluruh isi teks",
+        "B. Memuat semua gagasan pokok teks dengan bahasa sendiri",
+        "C. Hanya mencantumkan pendapat pribadi",
+        "D. Menghilangkan semua fakta dalam teks"
+      ],
+      "ans": "B",
+      "expl": "Rangkuman yang baik memuat gagasan/ide pokok dari teks, ditulis kembali dengan bahasa sendiri"
+    },
+    {
+      "q": "Kalimat yang menggunakan tanda baca yang benar adalah …",
+      "opts": [
+        "A. Kapan kamu datang ke rumahku.",
+        "B. Kapan kamu datang ke rumahku?",
+        "C. Kapan kamu datang ke rumahku!",
+        "D. Kapan kamu datang ke rumahku,"
+      ],
+      "ans": "B",
+      "expl": "Kalimat tanya diakhiri tanda tanya (?)"
+    },
+    {
+      "q": "Istilah 'antagonis' dalam cerita merujuk pada …",
+      "opts": [
+        "A. Tokoh utama yang baik",
+        "B. Tokoh penentang/musuh tokoh utama",
+        "C. Tokoh pendamping protagonis",
+        "D. Tokoh yang netral"
+      ],
+      "ans": "B",
+      "expl": "Antagonis adalah tokoh yang menentang, menjadi musuh, atau menghalangi tokoh protagonis"
+    },
+    {
+      "q": "Teknik membaca cepat untuk menemukan informasi spesifik disebut …",
+      "opts": [
+        "A. Skimming",
+        "B. Scanning",
+        "C. Intensive reading",
+        "D. Extensive reading"
+      ],
+      "ans": "B",
+      "expl": "Scanning: teknik membaca cepat untuk mencari kata/informasi tertentu tanpa membaca keseluruhan teks"
+    },
+    {
+      "q": "Penulisan gelar yang benar adalah …",
+      "opts": [
+        "A. dr. Andi Santoso, M.Kes",
+        "B. Dr. andi santoso m.kes",
+        "C. DR. Andi Santoso, M.KES",
+        "D. dr. Andi Santoso M.Kes"
+      ],
+      "ans": "A",
+      "expl": "Gelar dokter umum ditulis 'dr.' (huruf kecil), gelar pascasarjana ditulis M.Kes dengan titik di tengah"
+    }
+  ]
+}

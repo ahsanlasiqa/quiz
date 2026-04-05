@@ -1,0 +1,68 @@
+[
+  {
+    "key": "SD",
+    "label": "SD / MI",
+    "icon": "🎒",
+    "durasi": 60,
+    "mapel": [
+      {
+        "key": "matematika",
+        "label": "📐 Matematika",
+        "count": 30,
+        "file": "tka-sd.json"
+      },
+      {
+        "key": "bahasa_indonesia",
+        "label": "📖 Bahasa Indonesia",
+        "count": 31,
+        "file": "tka-sd.json"
+      }
+    ]
+  },
+  {
+    "key": "SMP",
+    "label": "SMP / MTs",
+    "icon": "📚",
+    "durasi": 60,
+    "mapel": [
+      {
+        "key": "matematika",
+        "label": "📐 Matematika",
+        "count": 40,
+        "file": "tka-smp.json"
+      },
+      {
+        "key": "bahasa_indonesia",
+        "label": "📖 Bahasa Indonesia",
+        "count": 30,
+        "file": "tka-smp.json"
+      }
+    ]
+  },
+  {
+    "key": "SMA",
+    "label": "SMA / MA / SMK",
+    "icon": "🎓",
+    "durasi": 90,
+    "mapel": [
+      {
+        "key": "matematika",
+        "label": "📐 Matematika",
+        "count": 50,
+        "file": "tka-sma.json"
+      },
+      {
+        "key": "bahasa_indonesia",
+        "label": "📖 Bahasa Indonesia",
+        "count": 50,
+        "file": "tka-sma.json"
+      },
+      {
+        "key": "bahasa_inggris",
+        "label": "🌐 Bahasa Inggris",
+        "count": 50,
+        "file": "tka-sma.json"
+      }
+    ]
+  }
+]

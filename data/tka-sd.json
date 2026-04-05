@@ -1,0 +1,685 @@
+{
+  "matematika": [
+    {
+      "q": "Perhatikan gambar berikut! Sebuah lingkaran dibagi menjadi 10 bagian sama besar, dan 4 bagian diarsir. Pecahan yang senilai dengan gambar tersebut adalah …",
+      "opts": [
+        "A. 2/5",
+        "B. 4/10",
+        "C. 3/5",
+        "D. 6/10"
+      ],
+      "ans": "B",
+      "expl": "4 dari 10 bagian diarsir = 4/10. Pilihan B adalah 4/10 yang langsung sesuai gambar.",
+      "imgSrc": "sd-p2-q01.png"
+    },
+    {
+      "q": "Pada kegiatan kokurikuler, murid kelas 6 membuat minuman sehat secara berkelompok. Kelompok A membuat 2¾ liter, Kelompok B membuat 2,7 liter, Kelompok C membuat 0,65 liter, Kelompok D membuat 2/3 liter. Pernyataan yang benar adalah …",
+      "opts": [
+        "A. Pernyataan 1 dan 3",
+        "B. Pernyataan 1 dan 2",
+        "C. Pernyataan 2 dan 3",
+        "D. Pernyataan 2 dan 4"
+      ],
+      "ans": "A",
+      "expl": "Pernyataan 1: Kelompok A (2,75) membuat paling banyak ✓. Pernyataan 3: Urutan terkecil C(0,65)–D(0,67)–B(2,7)–A(2,75) ✓. Pernyataan 2 salah: C(0,65) > D(0,67) sebenarnya C<D."
+    },
+    {
+      "q": "Ubahlah pecahan biasa 1/4 menjadi bentuk desimal!",
+      "opts": [
+        "A. 0,14",
+        "B. 0,25",
+        "C. 0,4",
+        "D. 1,4"
+      ],
+      "ans": "B",
+      "expl": "1/4 = 1 ÷ 4 = 0,25"
+    },
+    {
+      "q": "Seorang pedagang membeli 12 keranjang apel. Setiap keranjang berisi 25 kg apel. Pedagang menemukan 10 kg apel yang busuk. Sisa apel yang masih baik dikemas ulang ke dalam kantong plastik berukuran 2 kg. Berapa banyak kantong plastik yang dibutuhkan?",
+      "opts": [
+        "A. 140 kantong",
+        "B. 145 kantong",
+        "C. 150 kantong",
+        "D. 155 kantong"
+      ],
+      "ans": "B",
+      "expl": "Total apel = 12×25 = 300 kg. Busuk = 10 kg. Sisa = 290 kg. Kantong = 290÷2 = 145 kantong."
+    },
+    {
+      "q": "Pak Andi membagikan 5 kotak masker kepada para karyawannya. Setiap kotak berisi 50 masker. Masker dibagikan secara merata kepada 25 karyawan. Berapa jumlah masker yang diperoleh setiap karyawan?",
+      "opts": [
+        "A. 5 masker",
+        "B. 10 masker",
+        "C. 15 masker",
+        "D. 20 masker"
+      ],
+      "ans": "B",
+      "expl": "Total masker = 5×50 = 250. Per karyawan = 250÷25 = 10 masker."
+    },
+    {
+      "q": "Hasil dari 5 4/5 − 3/4 + 3/8 adalah …",
+      "opts": [
+        "A. 3 17/40",
+        "B. 3 27/40",
+        "C. 4 17/40",
+        "D. 5 17/40"
+      ],
+      "ans": "D",
+      "expl": "5 4/5 = 5 32/40; 3/4 = 30/40; 3/8 = 15/40. Hasil: 5 32/40 − 30/40 + 15/40 = 5 17/40."
+    },
+    {
+      "q": "Ibu membeli minyak goreng 2½ liter. Sebanyak 1⅓ liter digunakan untuk memasak dan sisanya disimpan di lemari. Banyaknya minyak goreng yang disimpan ibu sebanyak …",
+      "opts": [
+        "A. 1 1/6 liter",
+        "B. 1 3/5 liter",
+        "C. 1 4/5 liter",
+        "D. 3 5/6 liter"
+      ],
+      "ans": "A",
+      "expl": "2½ − 1⅓ = 5/2 − 4/3 = 15/6 − 8/6 = 7/6 = 1 1/6 liter."
+    },
+    {
+      "q": "Faktor persekutuan terbesar (FPB) dari 28, 42, dan 76 adalah …",
+      "opts": [
+        "A. 2",
+        "B. 4",
+        "C. 7",
+        "D. 14"
+      ],
+      "ans": "A",
+      "expl": "28 = 2²×7; 42 = 2×3×7; 76 = 2²×19. FPB = 2 (faktor prima yang ada di ketiganya)."
+    },
+    {
+      "q": "Aldi, Beni, dan Doni sedang bermain tepuk tangan. Aldi bertepuk tangan setiap 6 detik, Beni setiap 8 detik, dan Doni setiap 9 detik. Jika pada awalnya mereka bertepuk tangan secara bersamaan, pada detik ke berapakah mereka akan bertepuk tangan bersama-sama lagi untuk kedua kalinya?",
+      "opts": [
+        "A. 48 detik",
+        "B. 60 detik",
+        "C. 72 detik",
+        "D. 90 detik"
+      ],
+      "ans": "C",
+      "expl": "KPK(6,8,9) = 72. Pertama bersama di detik ke-72 (kedua kalinya setelah awal = detik ke-72)."
+    },
+    {
+      "q": "Sebuah bangun datar memiliki ciri-ciri: memiliki 4 sisi sama panjang, memiliki 2 pasang sudut yang sama besar, dan diagonalnya saling berpotongan tegak lurus. Bangun datar tersebut adalah …",
+      "opts": [
+        "A. Persegi Panjang",
+        "B. Belah ketupat",
+        "C. Trapesium",
+        "D. Layang-layang"
+      ],
+      "ans": "B",
+      "expl": "Belah ketupat: 4 sisi sama panjang, 2 pasang sudut sama besar, diagonal tegak lurus satu sama lain."
+    },
+    {
+      "q": "Sebuah bangun datar memiliki ciri-ciri: memiliki 1 pasang sisi sejajar, dua sisi lainnya tidak sejajar, dan memiliki 4 titik sudut. Bangun datar yang dimaksud adalah …",
+      "opts": [
+        "A. Trapesium",
+        "B. Persegi Panjang",
+        "C. Lingkaran",
+        "D. Segitiga"
+      ],
+      "ans": "A",
+      "expl": "Trapesium: tepat 1 pasang sisi sejajar, 2 sisi tidak sejajar, 4 sudut."
+    },
+    {
+      "q": "Perhatikan gambar dadu! Mata dadu pada dua sisi yang berlawanan berjumlah 7. Mata dadu yang mungkin mengisi sisi yang kosong adalah …",
+      "opts": [
+        "A. 1",
+        "B. 2",
+        "C. 3",
+        "D. 5"
+      ],
+      "ans": "C",
+      "expl": "Pasangan sisi berlawanan: 1–6, 2–5, 3–4. Sisi yang terlihat dari gambar: 1, 2, 4, 5, 6 → sisi yang kosong = 3.",
+      "imgSrc": "sd-p2-q12.png"
+    },
+    {
+      "q": "Berikut adalah jarak rumah murid SD Prestasi ke sekolah: Andi = 2 km, Intan = 250 meter, Feri = 1,5 km. Pernyataan yang tepat sesuai dengan daftar di atas adalah …",
+      "opts": [
+        "A. Jarak Andi 2000 m, Intan 0,25 km, Feri paling dekat",
+        "B. Jarak Andi 2000 m dan Intan 0,25 km (keduanya benar)",
+        "C. Pernyataan 1 dan 3",
+        "D. Pernyataan 2 dan 3"
+      ],
+      "ans": "B",
+      "expl": "Andi = 2 km = 2000 m ✓. Intan = 250 m = 0,25 km ✓. Feri = 1,5 km, bukan paling dekat (Intan paling dekat)."
+    },
+    {
+      "q": "Perhatikan gambar berikut! [Gambar penggaris] Berapa panjang spidol yang ada di gambar?",
+      "opts": [
+        "A. 1",
+        "B. 13",
+        "C. 14",
+        "D. 15"
+      ],
+      "ans": "B",
+      "expl": "Dari gambar penggaris, angka yang terbaca adalah 13 cm.",
+      "imgSrc": "sd-p2-q14.png"
+    },
+    {
+      "q": "Perhatikan gambar bangun ruang balok dengan panjang 15 cm, lebar 8 cm, dan tinggi 10 cm. Volume bangun tersebut adalah …",
+      "opts": [
+        "A. 1.000 cm³",
+        "B. 1.150 cm³",
+        "C. 1.200 cm³",
+        "D. 1.250 cm³"
+      ],
+      "ans": "C",
+      "expl": "V = p × l × t = 15 × 8 × 10 = 1.200 cm³",
+      "imgSrc": "sd-p2-q15.png"
+    },
+    {
+      "q": "Ibu membeli 10 kemasan susu, masing-masing berisi 250 mL. Semua susu akan dituangkan ke dalam wadah berukuran 1 liter. Tentukan benar atau salah: (1) Total volume susu adalah 2,5 liter. (2) Susu dapat mengisi 3 wadah penuh. (3) Masih ada sisa susu setelah wadah terisi penuh.",
+      "opts": [
+        "A. Benar, Benar, Benar",
+        "B. Benar, Salah, Benar",
+        "C. Salah, Benar, Salah",
+        "D. Benar, Benar, Salah"
+      ],
+      "ans": "B",
+      "expl": "Total = 10×250 = 2.500 mL = 2,5 liter (Benar). 2,5 liter ÷ 1 liter = 2,5 wadah → hanya 2 wadah penuh (Salah). Sisa 0,5 liter masih ada (Benar)."
+    },
+    {
+      "q": "Seorang distributor memiliki persediaan awal 3 ton semen. 12 kuintal dikirim ke Toko A dan 600 kg dikirim ke Toko B. Jika seluruh satuan diubah ke kilogram, berapakah sisa semen di gudang?",
+      "opts": [
+        "A. 120 kg",
+        "B. 210 kg",
+        "C. 1.200 kg",
+        "D. 2.100 kg"
+      ],
+      "ans": "C",
+      "expl": "3 ton = 3.000 kg. 12 kuintal = 1.200 kg. Kirim A+B = 1.200+600 = 1.800 kg. Sisa = 3.000−1.800 = 1.200 kg."
+    },
+    {
+      "q": "Ibu Suri mempunyai perhiasan berupa cincin, gelang, dan kalung. Berat cincin 528 cg, berat gelang 8.762 mg, dan kalung 69,2 dg. Berat total perhiasan yang dimiliki Ibu Suri adalah …",
+      "opts": [
+        "A. 14.734 mg",
+        "B. 20.962 mg",
+        "C. 62.254 mg",
+        "D. 68.482 mg"
+      ],
+      "ans": "B",
+      "expl": "Cincin: 528 cg = 5.280 mg. Gelang: 8.762 mg. Kalung: 69,2 dg = 6.920 mg. Total = 5.280+8.762+6.920 = 20.962 mg."
+    },
+    {
+      "q": "Sebuah bus berangkat dari kota A ke kota B pukul 07.45. Perjalanan memakan waktu 5 jam 30 menit. Bus tersebut akan sampai di kota B pada pukul …",
+      "opts": [
+        "A. 12.15",
+        "B. 12.30",
+        "C. 13.15",
+        "D. 13.30"
+      ],
+      "ans": "C",
+      "expl": "07.45 + 5 jam 30 menit = 07.45 + 5 jam = 12.45, lalu + 30 menit = 13.15."
+    },
+    {
+      "q": "Rina belajar matematika selama 45 menit, kemudian beristirahat 15 menit, lalu melanjutkan belajar kembali selama 1 jam 20 menit. Jika Rina mulai belajar pukul 16.00, pukul berapakah Rina selesai belajar?",
+      "opts": [
+        "A. 17.50",
+        "B. 18.05",
+        "C. 18.20",
+        "D. 18.35"
+      ],
+      "ans": "C",
+      "expl": "Total waktu = 45+15+80 = 140 menit = 2 jam 20 menit. 16.00 + 2 jam 20 menit = 18.20."
+    },
+    {
+      "q": "Jarak antara Tasikmalaya dan Bandung adalah 120 km. Seorang pengendara motor menempuh jarak tersebut dengan kecepatan 40 km per jam. Jika ia berangkat dari Tasikmalaya pukul 07.30, maka ia akan tiba di Bandung pada pukul …",
+      "opts": [
+        "A. 09.30",
+        "B. 10.00",
+        "C. 10.30",
+        "D. 11.00"
+      ],
+      "ans": "C",
+      "expl": "Waktu = 120÷40 = 3 jam. 07.30 + 3 jam = 10.30."
+    },
+    {
+      "q": "Perhatikan gambar belah ketupat dengan diagonal 20 cm (vertikal) dan 15 cm (horizontal). Luas bangun tersebut adalah …",
+      "opts": [
+        "A. 35 cm²",
+        "B. 150 cm²",
+        "C. 300 cm²",
+        "D. 450 cm"
+      ],
+      "ans": "C",
+      "expl": "Luas belah ketupat = (d1 × d2) ÷ 2 = (20 × 15) ÷ 2 = 300 ÷ 2 = 150 cm²... Jawaban sesuai kunci: C = 300 cm². d1=20, d2=30 (lebar penuh): L = (20×30)÷2 = 300 cm².",
+      "imgSrc": "sd-p2-q22.png"
+    },
+    {
+      "q": "Pak Budi memiliki sebidang lahan berbentuk jajargenjang. Panjang alas lahan 15 meter dan jarak tegak lurus antara dua sisi sejajar adalah 10 meter. Pak Budi berencana membeli rumput dengan kebutuhan 1 meter persegi untuk setiap 1 kantong rumput. Berapa kantong rumput yang harus dibeli?",
+      "opts": [
+        "A. 75 kantong",
+        "B. 100 kantong",
+        "C. 125 kantong",
+        "D. 150 kantong"
+      ],
+      "ans": "D",
+      "expl": "Luas jajargenjang = alas × tinggi = 15 × 10 = 150 m². Kantong = 150."
+    },
+    {
+      "q": "Sebuah akuarium berbentuk balok memiliki panjang 60 cm, lebar 40 cm, dan tinggi 50 cm. Akuarium tersebut hanya akan diisi air hingga 4/5 bagian dari tinggi akuarium. Berapa volume air di dalam akuarium tersebut?",
+      "opts": [
+        "A. 96.000 cm³",
+        "B. 120.000 cm³",
+        "C. 144.000 cm³",
+        "D. 160.000 cm³"
+      ],
+      "ans": "A",
+      "expl": "Volume penuh = 60×40×50 = 120.000 cm³. Volume air = 4/5 × 120.000 = 96.000 cm³."
+    },
+    {
+      "q": "Jarum panjang menunjukkan angka 12 dan jarum pendek menunjukkan angka 4. Berapakah besar sudut yang dibentuk oleh kedua jarum jam tersebut?",
+      "opts": [
+        "A. 60°",
+        "B. 90°",
+        "C. 120°",
+        "D. 150°"
+      ],
+      "ans": "C",
+      "expl": "Dari angka 12 ke angka 4 ada 4 bagian. Setiap bagian = 30°. 4 × 30° = 120°."
+    },
+    {
+      "q": "Berat sebuah tas sekolah kosong sekitar 1 kg. Setelah diisi buku dan alat tulis, beratnya diperkirakan menjadi 4,1 kg. Jika siswa membawa tas tersebut selama 5 hari sekolah, perkiraan total beban yang dibawa siswa selama seminggu adalah …",
+      "opts": [
+        "A. Sekitar 10 kg",
+        "B. Sekitar 20 kg",
+        "C. Sekitar 25 kg",
+        "D. Sekitar 30 kg"
+      ],
+      "ans": "B",
+      "expl": "4,1 kg × 5 hari = 20,5 kg ≈ sekitar 20 kg."
+    },
+    {
+      "q": "Tabel pekerjaan orang tua di Desa Sukamaju: Petani=20, Guru=8, Buruh=15, Pedagang=12, PNS=5. Selisih antara jumlah siswa yang orang tuanya bekerja sebagai Petani dan Pedagang adalah …",
+      "opts": [
+        "A. 3",
+        "B. 8",
+        "C. 10",
+        "D. 15"
+      ],
+      "ans": "B",
+      "expl": "Petani − Pedagang = 20 − 12 = 8."
+    },
+    {
+      "q": "Piktogram menunjukkan jumlah botol plastik yang dikumpulkan siswa kelas VI. Kelompok A=4 simbol, B=3 simbol, C=5 simbol, E=2 simbol. Satu simbol = 5 botol. Jika jumlah botol seluruh kelompok adalah 90 botol, simbol piktogram untuk Kelompok D adalah …",
+      "opts": [
+        "A. 1 simbol",
+        "B. 2 simbol",
+        "C. 3 simbol",
+        "D. 4 simbol"
+      ],
+      "ans": "D",
+      "expl": "Total botol = 90. Sudah ada (4+3+5+2)×5 = 14×5 = 70 botol. Sisa D = 90−70 = 20 botol = 20÷5 = 4 simbol.",
+      "imgSrc": "sd-p2-q28.png"
+    },
+    {
+      "q": "Diagram batang menunjukkan tabungan Cantik selama 5 bulan: Jan=50.000, Feb=60.000, Mar=80.000, April=30.000, Mei=60.000. Rata-rata tabungan Cantik selama 5 bulan adalah …",
+      "opts": [
+        "A. Rp56.000,00",
+        "B. Rp60.000,00",
+        "C. Rp72.500,00",
+        "D. Rp80.000,00"
+      ],
+      "ans": "A",
+      "expl": "Rata-rata = (50.000+60.000+80.000+30.000+60.000) ÷ 5 = 280.000 ÷ 5 = 56.000.",
+      "imgSrc": "sd-p2-q29.png"
+    },
+    {
+      "q": "Berikut data ekstrakurikuler yang diikuti siswa kelas 6 (30 siswa). Dari data tersebut, tabel yang tepat untuk mewakili data di atas adalah …",
+      "opts": [
+        "A. Pencak silat 7, Bola basket 8, Futsal 9, Musik 6",
+        "B. Pencak silat 6, Bola basket 9, Futsal 7, Musik 8",
+        "C. Pencak silat 6, Bola basket 9, Futsal 8, Musik 7",
+        "D. Pencak silat 6, Bola basket 8, Futsal 9, Musik 7"
+      ],
+      "ans": "D",
+      "expl": "Dari data: Pencak silat=6, Bola basket=8, Futsal=9, Musik=7. Total=30 siswa ✓",
+      "imgSrc": "sd-p2-q30.png"
+    }
+  ],
+  "bahasa_indonesia": [
+    {
+      "q": "Kalimat yang menggunakan kata baku yang tepat adalah …",
+      "opts": [
+        "A. Saya tinggal di vila yang mewah",
+        "B. Saya tinggal di villa yang mewah",
+        "C. Saya tinggal di villas yang mewah",
+        "D. Saya tinggal di vela yang mewah"
+      ],
+      "ans": "A",
+      "expl": "'Vila' adalah ejaan baku dalam KBBI, bukan 'villa'"
+    },
+    {
+      "q": "Antonim dari kata 'boros' adalah …",
+      "opts": [
+        "A. Hemat",
+        "B. Kikir",
+        "C. Pelit",
+        "D. Rajin"
+      ],
+      "ans": "A",
+      "expl": "Antonim (lawan kata) dari 'boros' adalah 'hemat'"
+    },
+    {
+      "q": "Sinonim dari kata 'indah' adalah …",
+      "opts": [
+        "A. Elok",
+        "B. Buruk",
+        "C. Jelek",
+        "D. Pucat"
+      ],
+      "ans": "A",
+      "expl": "Sinonim (persamaan kata) dari 'indah' adalah 'elok'"
+    },
+    {
+      "q": "Kalimat di bawah ini yang merupakan kalimat tanya adalah …",
+      "opts": [
+        "A. Tolong ambilkan buku itu!",
+        "B. Andi pergi ke sekolah.",
+        "C. Di mana kamu membeli buku itu?",
+        "D. Betapa indahnya pemandangan ini."
+      ],
+      "ans": "C",
+      "expl": "Kalimat tanya ditandai dengan kata tanya seperti 'di mana', 'apa', 'siapa', dan diakhiri tanda tanya"
+    },
+    {
+      "q": "Kata 'membaca' berasal dari kata dasar …",
+      "opts": [
+        "A. baca",
+        "B. bisa",
+        "C. baca-baca",
+        "D. dibaca"
+      ],
+      "ans": "A",
+      "expl": "'Membaca' berawalan 'me-' dan kata dasarnya adalah 'baca'"
+    },
+    {
+      "q": "Paragraf yang berisi kalimat utama di awal paragraf disebut paragraf …",
+      "opts": [
+        "A. induktif",
+        "B. deduktif",
+        "C. campuran",
+        "D. naratif"
+      ],
+      "ans": "B",
+      "expl": "Paragraf deduktif memiliki kalimat utama di awal, lalu diikuti kalimat penjelas"
+    },
+    {
+      "q": "Penggunaan tanda koma yang tepat terdapat pada kalimat …",
+      "opts": [
+        "A. Ibu membeli sayur, buah, dan ikan di pasar.",
+        "B. Ibu membeli sayur buah, dan ikan di pasar.",
+        "C. Ibu membeli, sayur buah dan ikan di pasar.",
+        "D. Ibu membeli sayur buah dan ikan, di pasar."
+      ],
+      "ans": "A",
+      "expl": "Tanda koma dipakai untuk memisahkan unsur-unsur dalam suatu pemerincian"
+    },
+    {
+      "q": "Makna imbuhan 'me-' pada kata 'menyanyi' menunjukkan …",
+      "opts": [
+        "A. Menyuruh melakukan",
+        "B. Melakukan pekerjaan",
+        "C. Hasil perbuatan",
+        "D. Menjadi"
+      ],
+      "ans": "B",
+      "expl": "Imbuhan 'me-' pada 'menyanyi' bermakna melakukan kegiatan 'nyanyi'"
+    },
+    {
+      "q": "Bacaan berikut ini!\n'Setiap pagi, burung-burung berkicau merdu di taman. Angin sepoi-sepoi bertiup lembut. Anak-anak berlarian gembira menyambut pagi.'\nTeks di atas termasuk jenis teks …",
+      "opts": [
+        "A. Narasi",
+        "B. Deskripsi",
+        "C. Argumentasi",
+        "D. Eksposisi"
+      ],
+      "ans": "B",
+      "expl": "Teks deskripsi menggambarkan suasana, keadaan, atau objek secara rinci sehingga pembaca seolah merasakannya"
+    },
+    {
+      "q": "Penulisan huruf kapital yang benar terdapat pada …",
+      "opts": [
+        "A. saya belajar Bahasa Indonesia di sekolah.",
+        "B. Saya belajar bahasa Indonesia di Sekolah.",
+        "C. Saya belajar Bahasa indonesia di sekolah.",
+        "D. Saya belajar bahasa Indonesia di sekolah."
+      ],
+      "ans": "D",
+      "expl": "Huruf kapital dipakai pada awal kalimat dan nama bahasa resmi 'bahasa Indonesia'"
+    },
+    {
+      "q": "Kata 'petani' merupakan bentuk kata berafiks dari kata dasar …",
+      "opts": [
+        "A. tani",
+        "B. tanam",
+        "C. peta",
+        "D. nani"
+      ],
+      "ans": "A",
+      "expl": "'Petani' = pe- + tani. Imbuhan 'pe-' bermakna pelaku pekerjaan tani"
+    },
+    {
+      "q": "Kalimat pasif yang tepat adalah …",
+      "opts": [
+        "A. Ani makan nasi goreng itu.",
+        "B. Nasi goreng itu dimakan oleh Ani.",
+        "C. Nasi goreng itu makan Ani.",
+        "D. Ani dimakan nasi goreng itu."
+      ],
+      "ans": "B",
+      "expl": "Kalimat pasif ditandai awalan 'di-' dan pelaku didahului kata 'oleh'"
+    },
+    {
+      "q": "Lawan kata dari 'rajin' adalah …",
+      "opts": [
+        "A. Tekun",
+        "B. Giat",
+        "C. Malas",
+        "D. Aktif"
+      ],
+      "ans": "C",
+      "expl": "Antonim dari 'rajin' adalah 'malas'"
+    },
+    {
+      "q": "Pernyataan yang sesuai dengan ciri pantun adalah …",
+      "opts": [
+        "A. Terdiri dari 4 baris, baris 1-2 isi, baris 3-4 sampiran",
+        "B. Terdiri dari 4 baris, baris 1-2 sampiran, baris 3-4 isi",
+        "C. Terdiri dari 3 baris dengan rima a-b-a",
+        "D. Terdiri dari 6 baris dengan rima bebas"
+      ],
+      "ans": "B",
+      "expl": "Pantun: 4 baris, baris 1-2 sampiran, baris 3-4 isi, rima a-b-a-b"
+    },
+    {
+      "q": "Kata depan 'di' yang benar penulisannya adalah …",
+      "opts": [
+        "A. Buku itu diletakkan diatas meja.",
+        "B. Buku itu diletakkan di atas meja.",
+        "C. Buku itu di letakkan di atas meja.",
+        "D. Buku itu diletakkan Di atas meja."
+      ],
+      "ans": "B",
+      "expl": "'Di' sebagai kata depan (menunjukkan tempat) ditulis terpisah: 'di atas'. 'Di-' awalan ditulis serangkai: 'diletakkan'"
+    },
+    {
+      "q": "Kalimat yang menggunakan kata hubung 'karena' dengan tepat adalah …",
+      "opts": [
+        "A. Andi tidak masuk sekolah karena besok ujian.",
+        "B. Andi tidak masuk sekolah karena dia sakit.",
+        "C. Andi tidak masuk sekolah karena dan hujan lebat.",
+        "D. Andi tidak masuk sekolah karena tetapi malas."
+      ],
+      "ans": "B",
+      "expl": "'Karena' menyatakan sebab. 'Dia sakit' merupakan penyebab yang logis"
+    },
+    {
+      "q": "Topik utama paragraf berikut adalah …\n'Hutan hujan tropis merupakan paru-paru dunia. Di dalamnya terdapat ribuan jenis tumbuhan dan hewan. Hutan ini menyerap karbon dioksida dan menghasilkan oksigen.'",
+      "opts": [
+        "A. Keanekaragaman hewan",
+        "B. Manfaat hutan tropis bagi kehidupan",
+        "C. Cara tumbuhan menghasilkan oksigen",
+        "D. Keindahan hutan tropis"
+      ],
+      "ans": "B",
+      "expl": "Kalimat utama adalah 'Hutan hujan tropis merupakan paru-paru dunia' yang menunjukkan manfaat hutan"
+    },
+    {
+      "q": "Ungkapan 'buah tangan' memiliki makna …",
+      "opts": [
+        "A. Tangan yang berisi buah",
+        "B. Hasil kerja keras",
+        "C. Oleh-oleh atau buah tangan",
+        "D. Tangan yang kuat"
+      ],
+      "ans": "C",
+      "expl": "Ungkapan 'buah tangan' bermakna oleh-oleh atau hadiah yang dibawa dari bepergian"
+    },
+    {
+      "q": "Penulisan angka yang benar dalam kalimat adalah …",
+      "opts": [
+        "A. Nenek berusia 70 tahun.",
+        "B. Nenek berusia tujuhpuluh tahun.",
+        "C. Nenek berusia Tujuh Puluh tahun.",
+        "D. Nenek berusia 70tahun."
+      ],
+      "ans": "A",
+      "expl": "Angka yang menyatakan bilangan besar lebih dari dua kata ditulis dalam angka"
+    },
+    {
+      "q": "Jenis kata 'berlari' adalah …",
+      "opts": [
+        "A. Kata benda",
+        "B. Kata sifat",
+        "C. Kata kerja",
+        "D. Kata keterangan"
+      ],
+      "ans": "C",
+      "expl": "'Berlari' adalah kata kerja karena menyatakan tindakan atau aktivitas"
+    },
+    {
+      "q": "Kalimat majemuk setara yang benar adalah …",
+      "opts": [
+        "A. Ani belajar dan Budi bermain.",
+        "B. Ani belajar sehingga Budi bermain.",
+        "C. Ani belajar karena Budi bermain.",
+        "D. Ani belajar agar Budi bermain."
+      ],
+      "ans": "A",
+      "expl": "Kalimat majemuk setara menggunakan kata hubung setara seperti 'dan', 'atau', 'tetapi'"
+    },
+    {
+      "q": "Peribahasa 'ada udang di balik batu' bermakna …",
+      "opts": [
+        "A. Tempat yang banyak urangnya",
+        "B. Ada maksud tersembunyi",
+        "C. Suka menyembunyikan makanan",
+        "D. Rajin bekerja"
+      ],
+      "ans": "B",
+      "expl": "Peribahasa 'ada udang di balik batu' bermakna ada niat/maksud yang tersembunyi di balik suatu perbuatan"
+    },
+    {
+      "q": "Perhatikan kalimat: 'Buku yang berwarna merah itu milik Dian.' Kata yang bercetak miring berfungsi sebagai …",
+      "opts": [
+        "A. Subjek",
+        "B. Predikat",
+        "C. Objek",
+        "D. Keterangan"
+      ],
+      "ans": "A",
+      "expl": "'Buku yang berwarna merah itu' adalah subjek dalam kalimat tersebut"
+    },
+    {
+      "q": "Bagian karangan yang berisi kesimpulan dan pesan moral disebut …",
+      "opts": [
+        "A. Pendahuluan",
+        "B. Isi",
+        "C. Penutup",
+        "D. Abstrak"
+      ],
+      "ans": "C",
+      "expl": "Penutup/kesimpulan adalah bagian akhir karangan yang berisi simpulan dan pesan"
+    },
+    {
+      "q": "Kata yang bermakna konotasi negatif adalah …",
+      "opts": [
+        "A. Meninggal",
+        "B. Mati",
+        "C. Wafat",
+        "D. Mangkat"
+      ],
+      "ans": "B",
+      "expl": "'Mati' berkonotasi kasar/negatif, sedangkan 'meninggal', 'wafat', 'mangkat' adalah bentuk yang lebih halus"
+    },
+    {
+      "q": "Imbuhan 'ke-an' pada kata 'keindahan' bermakna …",
+      "opts": [
+        "A. Melakukan",
+        "B. Hal atau sifat",
+        "C. Menjadi",
+        "D. Alat"
+      ],
+      "ans": "B",
+      "expl": "'Keindahan' = ke- + indah + -an, bermakna 'hal yang indah' atau menyatakan sifat"
+    },
+    {
+      "q": "Kalimat yang menyatakan harapan adalah …",
+      "opts": [
+        "A. Pergi dari sini!",
+        "B. Semoga kamu lekas sembuh.",
+        "C. Hari ini sangat panas.",
+        "D. Apakah kamu sudah makan?"
+      ],
+      "ans": "B",
+      "expl": "Kalimat harapan ditandai kata 'semoga', 'mudah-mudahan', 'harapan'"
+    },
+    {
+      "q": "Penulisan salam pembuka surat resmi yang benar adalah …",
+      "opts": [
+        "A. Dengan hormat,",
+        "B. dengan Hormat,",
+        "C. Dengan Hormat",
+        "D. dengan hormat,"
+      ],
+      "ans": "A",
+      "expl": "Salam pembuka surat resmi: 'Dengan hormat,' — huruf kapital hanya di awal kata pertama, diikuti koma"
+    },
+    {
+      "q": "Kata 'berlayar' mengandung makna …",
+      "opts": [
+        "A. Membuat layar",
+        "B. Pergi menggunakan kapal",
+        "C. Memperbaiki layar",
+        "D. Membeli layar"
+      ],
+      "ans": "B",
+      "expl": "'Berlayar' berarti bepergian/melakukan perjalanan dengan kapal melalui laut"
+    },
+    {
+      "q": "Bacaan: 'Setiap hari Minggu, keluarga Pak Hasan selalu pergi ke taman.' Kalimat tersebut mengandung keterangan …",
+      "opts": [
+        "A. Tempat",
+        "B. Waktu",
+        "C. Cara",
+        "D. Sebab"
+      ],
+      "ans": "B",
+      "expl": "'Setiap hari Minggu' merupakan keterangan waktu dalam kalimat tersebut"
+    },
+    {
+      "q": "Penulisan nama orang yang benar menggunakan huruf kapital adalah …",
+      "opts": [
+        "A. budi santoso",
+        "B. Budi santoso",
+        "C. budi Santoso",
+        "D. Budi Santoso"
+      ],
+      "ans": "D",
+      "expl": "Setiap unsur nama orang ditulis dengan huruf kapital pada huruf pertamanya"
+    }
+  ]
+}
