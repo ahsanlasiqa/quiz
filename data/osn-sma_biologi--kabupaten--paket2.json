@@ -1,0 +1,342 @@
+{
+  "label": "Paket 2",
+  "sumber": "Kumpulan Soal OSN Biologi — Tingkat Kabupaten",
+  "soal": [
+    {
+      "q": "Organel sel yang berperan dalam sintesis protein dan terdapat bebas di sitoplasma maupun menempel pada retikulum endoplasma adalah ….",
+      "opts": ["A. Mitokondria", "B. Ribosom", "C. Lisosom", "D. Badan Golgi", "E. Vakuola"],
+      "ans": "B",
+      "expl": "Ribosom adalah organel tempat sintesis protein. Ribosom bebas di sitoplasma mensintesis protein untuk kebutuhan sel sendiri, sedangkan ribosom yang menempel pada RE kasar mensintesis protein untuk sekresi atau membran."
+    },
+    {
+      "q": "Perhatikan ciri-ciri berikut:\n1. Tidak memiliki membran inti\n2. DNA berbentuk sirkuler\n3. Memiliki ribosom 70S\n4. Dapat membentuk spora endospora\n\nCiri tersebut dimiliki oleh ….",
+      "opts": ["A. Fungi", "B. Protozoa", "C. Bakteri", "D. Alga hijau", "E. Virus"],
+      "ans": "C",
+      "expl": "Bakteri adalah organisme prokariot: tidak bermembran inti, DNA sirkuler, ribosom 70S, dan beberapa spesies dapat membentuk endospora sebagai struktur bertahan dalam kondisi ekstrem."
+    },
+    {
+      "q": "Pada proses respirasi aerob, tahapan yang menghasilkan jumlah ATP terbanyak adalah ….",
+      "opts": ["A. Glikolisis", "B. Dekarboksilasi oksidatif", "C. Siklus Krebs", "D. Rantai transpor elektron", "E. Fermentasi"],
+      "ans": "D",
+      "expl": "Rantai transpor elektron (fosforilasi oksidatif) menghasilkan sekitar 32–34 ATP dari NADH dan FADH₂ yang dihasilkan pada tahap sebelumnya. Glikolisis hanya menghasilkan 2 ATP neto, siklus Krebs 2 ATP."
+    },
+    {
+      "q": "Jaringan tumbuhan yang berfungsi sebagai pengangkut hasil fotosintesis dari daun ke seluruh bagian tubuh tumbuhan adalah ….",
+      "opts": ["A. Xilem", "B. Floem", "C. Kolenkim", "D. Sklerenkim", "E. Parenkim"],
+      "ans": "B",
+      "expl": "Floem mengangkut hasil fotosintesis (fotosintat) berupa sukrosa dari daun (source) ke bagian lain yang membutuhkan (sink) seperti akar, buah, dan biji. Xilem mengangkut air dan mineral dari akar ke daun."
+    },
+    {
+      "q": "Reaksi terang fotosintesis berlangsung di ….",
+      "opts": ["A. Stroma kloroplas", "B. Membran tilakoid", "C. Matriks mitokondria", "D. Membran dalam mitokondria", "E. Sitoplasma"],
+      "ans": "B",
+      "expl": "Reaksi terang (fotofosforilasi) berlangsung di membran tilakoid kloroplas. Di sini terjadi penyerapan cahaya oleh fotosistem I dan II, pemecahan air (fotolisis), pembentukan ATP dan NADPH."
+    },
+    {
+      "q": "Hewan berikut yang termasuk kelompok Echinodermata adalah ….",
+      "opts": ["A. Ubur-ubur", "B. Cumi-cumi", "C. Bintang laut", "D. Kepiting", "E. Udang"],
+      "ans": "C",
+      "expl": "Bintang laut termasuk filum Echinodermata yang memiliki ciri: simetri radial, sistem pembuluh air (vascular water system), dan permukaan berduri. Ubur-ubur adalah Cnidaria, cumi-cumi Mollusca, kepiting dan udang Arthropoda."
+    },
+    {
+      "q": "Persilangan antara tanaman bunga merah (MM) dengan bunga putih (mm) menghasilkan F1 semuanya berbunga merah muda. Fenomena ini disebut ….",
+      "opts": ["A. Dominansi penuh", "B. Ko-dominansi", "C. Dominansi tidak penuh (intermediet)", "D. Epistasis", "E. Hipostasis"],
+      "ans": "C",
+      "expl": "Dominansi tidak penuh (incomplete dominance/intermediet) terjadi ketika fenotip heterozigot berada di antara kedua fenotip homozigot. MM (merah) × mm (putih) → Mm (merah muda) menunjukkan tidak ada alel yang dominan penuh."
+    },
+    {
+      "q": "Proses pembelahan sel yang menghasilkan 4 sel anak dengan jumlah kromosom setengah dari sel induk disebut ….",
+      "opts": ["A. Mitosis", "B. Meiosis", "C. Amitosis", "D. Endomitosis", "E. Sitokinesis"],
+      "ans": "B",
+      "expl": "Meiosis adalah pembelahan sel reduksi yang menghasilkan 4 sel anak haploid (n) dari sel induk diploid (2n). Proses ini terjadi pada pembentukan sel gamet (spermatogenesis dan oogenesis)."
+    },
+    {
+      "q": "Enzim yang berperan memotong DNA pada situs spesifik dalam teknologi rekombinasi DNA adalah ….",
+      "opts": ["A. DNA polimerase", "B. Ligase", "C. Restriksi endonuklease", "D. Helikase", "E. Primase"],
+      "ans": "C",
+      "expl": "Enzim restriksi (restriction endonuclease) memotong DNA pada sekuens spesifik (palindromik). Digunakan dalam kloning DNA untuk memotong vektor dan DNA sisipan. Ligase menyambung, DNA polimerase mensintesis, helikase membuka ikatan hidrogen."
+    },
+    {
+      "q": "Perhatikan ciri sistem saraf berikut:\n- Mempercepat denyut jantung\n- Melebarkan pupil\n- Menghambat peristaltik usus\n\nCiri tersebut merupakan fungsi dari ….",
+      "opts": ["A. Saraf parasimpatis", "B. Saraf simpatis", "C. Saraf somatik", "D. Saraf kranial", "E. Saraf spinal"],
+      "ans": "B",
+      "expl": "Saraf simpatis aktif dalam kondisi 'fight or flight': mempercepat denyut jantung, melebarkan pupil, menghambat pencernaan. Saraf parasimpatis kebalikannya ('rest and digest'): memperlambat jantung, menyempitkan pupil, merangsang pencernaan."
+    },
+    {
+      "q": "Pada ekosistem, organisme yang mampu menguraikan sisa organisme mati menjadi senyawa anorganik disebut ….",
+      "opts": ["A. Produsen", "B. Konsumen primer", "C. Konsumen sekunder", "D. Dekomposer", "E. Omnivora"],
+      "ans": "D",
+      "expl": "Dekomposer (pengurai) seperti bakteri dan fungi menguraikan bahan organik dari organisme mati menjadi senyawa anorganik (mineralisasi). Hasil penguraian ini dikembalikan ke tanah dan dapat digunakan kembali oleh produsen."
+    },
+    {
+      "q": "Pernyataan yang benar tentang virus adalah ….",
+      "opts": [
+        "A. Virus dapat berkembang biak di luar sel inang",
+        "B. Virus memiliki ribosom untuk sintesis protein",
+        "C. Virus hanya memiliki satu jenis asam nukleat (DNA atau RNA)",
+        "D. Semua virus memiliki selubung lipid",
+        "E. Virus termasuk dalam kingdom Monera"
+      ],
+      "ans": "C",
+      "expl": "Virus hanya memiliki satu jenis asam nukleat, yaitu DNA saja (virus DNA) atau RNA saja (virus RNA). Virus tidak dapat bereplikasi di luar sel inang, tidak memiliki ribosom, tidak semua memiliki selubung lipid, dan bukan termasuk makhluk hidup dalam kingdom manapun."
+    },
+    {
+      "q": "Hormon yang dihasilkan oleh pankreas untuk menurunkan kadar glukosa darah adalah ….",
+      "opts": ["A. Glukagon", "B. Insulin", "C. Kortisol", "D. Adrenalin", "E. Tiroksin"],
+      "ans": "B",
+      "expl": "Insulin dihasilkan sel beta pankreas dan berfungsi menurunkan kadar glukosa darah dengan cara merangsang penyerapan glukosa oleh sel dan pembentukan glikogen (glikogenesis) di hati dan otot. Glukagon sebaliknya, meningkatkan kadar glukosa darah."
+    },
+    {
+      "q": "Urutan lapisan meninges dari luar ke dalam yang menyelimuti otak dan sumsum tulang belakang adalah ….",
+      "opts": [
+        "A. Piameter → Araknoid → Durameter",
+        "B. Durameter → Araknoid → Piameter",
+        "C. Araknoid → Durameter → Piameter",
+        "D. Durameter → Piameter → Araknoid",
+        "E. Piameter → Durameter → Araknoid"
+      ],
+      "ans": "B",
+      "expl": "Meninges terdiri dari tiga lapisan dari luar ke dalam: Durameter (lapisan keras terluar), Araknoid (lapisan tengah seperti jaring laba-laba), dan Piameter (lapisan tipis terdalam yang menempel langsung pada otak/sumsum tulang belakang)."
+    },
+    {
+      "q": "Proses yang tepat menggambarkan siklus nitrogen di alam adalah ….",
+      "opts": [
+        "A. N₂ atmosfer → nitrifikasi → fiksasi → denitrifikasi",
+        "B. N₂ atmosfer → fiksasi → amonifikasi → nitrifikasi → denitrifikasi",
+        "C. N₂ atmosfer → denitrifikasi → nitrifikasi → amonifikasi",
+        "D. Amonifikasi → nitrifikasi → fiksasi → denitrifikasi",
+        "E. Nitrifikasi → fiksasi → denitrifikasi → amonifikasi"
+      ],
+      "ans": "B",
+      "expl": "Siklus nitrogen: N₂ difiksasi oleh bakteri (Rhizobium, Azotobacter) → NH₃/NH₄⁺ (amonifikasi dari dekomposisi) → NO₂⁻ → NO₃⁻ (nitrifikasi oleh Nitrosomonas, Nitrobacter) → NO₃⁻ diserap tanaman atau dikembalikan ke N₂ (denitrifikasi)."
+    },
+    {
+      "q": "Pada percobaan Griffith, faktor yang menyebabkan transformasi bakteri Pneumococcus strain R menjadi virulen (strain S) adalah ….",
+      "opts": ["A. Protein", "B. Lipid", "C. DNA", "D. RNA", "E. Polisakarida"],
+      "ans": "C",
+      "expl": "Avery, MacLeod, dan McCarty (1944) membuktikan bahwa faktor transformasi Griffith adalah DNA. Perlakuan dengan DNase menghilangkan kemampuan transformasi, membuktikan DNA sebagai materi genetik."
+    },
+    {
+      "q": "Struktur yang membedakan sel tumbuhan dari sel hewan adalah ….",
+      "opts": [
+        "A. Mitokondria dan ribosom",
+        "B. Dinding sel, kloroplas, dan vakuola sentral besar",
+        "C. Membran plasma dan nukleus",
+        "D. Retikulum endoplasma dan badan Golgi",
+        "E. Lisosom dan sentriol"
+      ],
+      "ans": "B",
+      "expl": "Sel tumbuhan memiliki dinding sel (selulosa), kloroplas (untuk fotosintesis), dan vakuola sentral besar yang tidak dimiliki sel hewan. Sebaliknya, sel hewan memiliki sentriol dan lisosom yang umumnya tidak dimiliki sel tumbuhan."
+    },
+    {
+      "q": "Pada mekanisme transpor aktif, zat berpindah ….",
+      "opts": [
+        "A. Dari konsentrasi tinggi ke rendah, memerlukan energi",
+        "B. Dari konsentrasi rendah ke tinggi, memerlukan energi",
+        "C. Dari konsentrasi tinggi ke rendah, tanpa energi",
+        "D. Dari konsentrasi rendah ke tinggi, tanpa energi",
+        "E. Mengikuti gradien elektrokimia, memerlukan energi"
+      ],
+      "ans": "B",
+      "expl": "Transpor aktif memindahkan zat melawan gradien konsentrasi (dari konsentrasi rendah ke tinggi), sehingga memerlukan energi (ATP). Contoh: pompa Na⁺-K⁺ ATPase yang memompa Na⁺ keluar dan K⁺ masuk sel."
+    },
+    {
+      "q": "Perhatikan pernyataan tentang DNA berikut:\n1. Basa pirimidin terdiri dari sitosin dan urasil\n2. Pasangan basa: Adenin–Timin dan Guanin–Sitosin\n3. Struktur berupa double helix antiparalel\n4. Gula penyusunnya adalah ribosa\n\nPernyataan yang BENAR adalah ….",
+      "opts": ["A. 1 dan 2", "B. 2 dan 3", "C. 1 dan 4", "D. 3 dan 4", "E. 1, 2, dan 3"],
+      "ans": "B",
+      "expl": "DNA memiliki basa pirimidin: sitosin dan TIMIN (bukan urasil — urasil ada di RNA). Pasangan basa: A-T dan G-C. Strukturnya double helix antiparalel. Gulanya adalah DEOKSIRIBOSA (bukan ribosa). Jadi pernyataan 2 dan 3 yang benar."
+    },
+    {
+      "q": "Adaptasi hewan berdarah dingin (ektotermik) terhadap lingkungan dingin adalah ….",
+      "opts": [
+        "A. Menghasilkan lebih banyak panas metabolik",
+        "B. Meningkatkan laju pernapasan",
+        "C. Memperbanyak lemak coklat (brown fat)",
+        "D. Menurunkan titik beku cairan tubuh dengan akumulasi solut",
+        "E. Bermigrasi ke tempat hangat"
+      ],
+      "ans": "D",
+      "expl": "Hewan ektotermik seperti ikan di air dingin mengadaptasi dengan menurunkan titik beku cairan tubuh melalui akumulasi solut (gula, garam, asam amino, antifreeze protein) sehingga cairan tubuh tidak membeku. Produksi panas metabolik dan brown fat adalah adaptasi endotermik."
+    },
+    {
+      "q": "Jenis simbiosis di mana satu organisme diuntungkan sedangkan organisme lain tidak dirugikan maupun diuntungkan disebut ….",
+      "opts": ["A. Mutualisme", "B. Komensalisme", "C. Parasitisme", "D. Predasi", "E. Kompetisi"],
+      "ans": "B",
+      "expl": "Komensalisme: satu organisme diuntungkan (+), yang lain tidak terpengaruh (0). Contoh: anggrek epifit pada pohon besar. Mutualisme (+/+), Parasitisme (+/−), Predasi (+/−), Kompetisi (−/−)."
+    },
+    {
+      "q": "Pada manusia, penyakit genetik yang disebabkan oleh trisomi kromosom 21 adalah ….",
+      "opts": ["A. Sindrom Turner", "B. Sindrom Klinefelter", "C. Sindrom Down", "D. Sindrom Patau", "E. Sindrom Edwards"],
+      "ans": "C",
+      "expl": "Sindrom Down (trisomi 21) disebabkan kelebihan satu kromosom nomor 21 (47 kromosom). Sindrom Turner (45, X0), Klinefelter (47, XXY), Sindrom Patau (trisomi 13), Sindrom Edwards (trisomi 18)."
+    },
+    {
+      "q": "Peristiwa di mana fragmen kromosom patah dan menyambung ke kromosom homolog disebut ….",
+      "opts": ["A. Inversi", "B. Translokasi", "C. Delesi", "D. Duplikasi", "E. Insersi"],
+      "ans": "B",
+      "expl": "Translokasi adalah mutasi kromosom di mana segmen kromosom pindah ke kromosom non-homolog. Inversi: urutan gen terbalik. Delesi: kehilangan segmen. Duplikasi: penggandaan segmen. Insersi: penambahan basa dalam gen."
+    },
+    {
+      "q": "Lapisan germinal mesoderm pada embrio berkembang menjadi ….",
+      "opts": [
+        "A. Sistem pencernaan dan pernapasan",
+        "B. Kulit dan sistem saraf",
+        "C. Otot, tulang, ginjal, dan sistem sirkulasi",
+        "D. Mata dan telinga",
+        "E. Kelenjar endokrin dan eksokrin"
+      ],
+      "ans": "C",
+      "expl": "Mesoderm berkembang menjadi: otot, tulang dan tulang rawan, sistem sirkulasi (jantung, pembuluh darah), ginjal, gonad, jaringan ikat, dan dermis kulit. Ektoderm → kulit (epidermis), sistem saraf. Endoderm → saluran pencernaan, pernapasan, hati, pankreas."
+    },
+    {
+      "q": "Mekanisme pewarisan sifat buta warna pada manusia bersifat ….",
+      "opts": [
+        "A. Autosomal dominan",
+        "B. Autosomal resesif",
+        "C. X-linked resesif",
+        "D. X-linked dominan",
+        "E. Y-linked"
+      ],
+      "ans": "C",
+      "expl": "Buta warna disebabkan alel resesif pada kromosom X (X-linked resesif). Laki-laki hanya memiliki satu kromosom X sehingga lebih sering terkena (XᵇY). Perempuan pembawa (carrier) memiliki genotip XᴮXᵇ."
+    },
+    {
+      "q": "Perbedaan antara fotosintesis C3 dan C4 terletak pada ….",
+      "opts": [
+        "A. C4 tidak menggunakan siklus Calvin",
+        "B. C4 memfiksasi CO₂ menggunakan PEP karboksilase di sel mesofil",
+        "C. C3 lebih efisien pada suhu tinggi dan intensitas cahaya tinggi",
+        "D. C4 menghasilkan 2-fosfoglikolat sebagai produk pertama",
+        "E. C3 dan C4 menghasilkan produk awal yang sama"
+      ],
+      "ans": "B",
+      "expl": "Tanaman C4 (jagung, tebu) memfiksasi CO₂ pertama kali menggunakan enzim PEP karboksilase di sel mesofil, menghasilkan oksaloasetat (4C). Hasilnya dipindahkan ke sel bundle sheath untuk siklus Calvin. C4 lebih efisien di lingkungan panas, kering, dan cahaya tinggi karena meminimalkan fotorespirasi."
+    },
+    {
+      "q": "Jika seorang wanita bergolongan darah A heterozigot menikah dengan pria bergolongan darah B heterozigot, kemungkinan golongan darah anak adalah ….",
+      "opts": [
+        "A. A dan B saja",
+        "B. A, B, AB, dan O",
+        "C. AB dan O saja",
+        "D. A dan O saja",
+        "E. B dan O saja"
+      ],
+      "ans": "B",
+      "expl": "Ibu: IᴬIᴼ × Ayah: IᴮIᴼ → keturunan: IᴬIᴮ (AB), IᴬIᴼ (A), IᴮIᴼ (B), IᴼIᴼ (O). Rasio fenotip 1:1:1:1. Semua golongan darah A, B, AB, O mungkin."
+    },
+    {
+      "q": "Pada ekosistem laut, organisme yang menjadi produsen utama adalah ….",
+      "opts": ["A. Ikan kecil", "B. Zooplankton", "C. Fitoplankton", "D. Krustasea", "E. Rumput laut besar"],
+      "ans": "C",
+      "expl": "Fitoplankton (alga mikroskopis dan sianobakteri) adalah produsen utama ekosistem laut, bertanggung jawab atas sekitar 50% produksi oksigen di bumi melalui fotosintesis. Zooplankton adalah konsumen primer yang memakan fitoplankton."
+    },
+    {
+      "q": "Struktur yang berfungsi mempertahankan keseimbangan tubuh pada manusia terdapat di ….",
+      "opts": ["A. Koklea", "B. Tuba Eustachius", "C. Kanalis semisirkularis", "D. Membran timpani", "E. Tulang sanggurdi"],
+      "ans": "C",
+      "expl": "Kanalis semisirkularis (saluran setengah lingkaran) di telinga dalam mendeteksi gerakan rotasi kepala dan berperan dalam keseimbangan dinamis. Koklea mendeteksi suara, Tuba Eustachius menyeimbangkan tekanan, membran timpani menerima getaran suara."
+    },
+    {
+      "q": "Teori endosimbiosis menyatakan bahwa mitokondria berasal dari ….",
+      "opts": [
+        "A. Retikulum endoplasma yang bermembran ganda",
+        "B. Bakteri aerob yang difagositosis sel inang eukariotik purba",
+        "C. Nukleus yang membelah dan bermigrasi ke sitoplasma",
+        "D. Vakuola sel yang berevolusi mendapat fungsi baru",
+        "E. Simbion virus yang mengintegrasikan diri ke sel inang"
+      ],
+      "ans": "B",
+      "expl": "Teori endosimbiosis Lynn Margulis menyatakan mitokondria berasal dari α-proteobakteri aerob yang ditelan (difagositosis) oleh sel eukariotik purba dan tidak dicerna, melainkan hidup bersimbiosis. Bukti: mitokondria punya DNA sirkuler, ribosom 70S, membran ganda."
+    },
+    {
+      "q": "Proses sintesis RNA dari cetakan DNA disebut ….",
+      "opts": ["A. Replikasi", "B. Translasi", "C. Transkripsi", "D. Transduksi", "E. Transformasi"],
+      "ans": "C",
+      "expl": "Transkripsi adalah proses sintesis RNA (mRNA, tRNA, rRNA) menggunakan DNA sebagai cetakan, dikatalisis oleh RNA polimerase. Translasi: sintesis protein dari mRNA. Replikasi: penggandaan DNA. Transduksi/transformasi: perpindahan gen pada bakteri."
+    },
+    {
+      "q": "Sel darah yang berperan dalam pembekuan darah adalah ….",
+      "opts": ["A. Eritrosit", "B. Leukosit", "C. Trombosit", "D. Limfosit", "E. Neutrofil"],
+      "ans": "C",
+      "expl": "Trombosit (platelet) adalah fragmen sel (megakariosit) yang berperan penting dalam hemostasis (pembekuan darah). Trombosit menempel pada luka, melepaskan faktor pembekuan, dan membentuk sumbat trombosit awal."
+    },
+    {
+      "q": "Bentuk adaptasi morfologi hewan yang hidup di gurun untuk menghemat air adalah ….",
+      "opts": [
+        "A. Kulit tipis dan lembab untuk penguapan",
+        "B. Banyak kelenjar keringat",
+        "C. Urin sangat pekat dan feses sangat kering",
+        "D. Aktivitas tinggi di siang hari",
+        "E. Pembuluh darah di permukaan kulit melebar"
+      ],
+      "ans": "C",
+      "expl": "Hewan gurun (seperti tikus kangaroo) menghasilkan urin sangat pekat (ginjal dengan loop Henle sangat panjang) dan feses kering untuk meminimalkan kehilangan air. Mereka juga nokturnal untuk menghindari panas siang hari."
+    },
+    {
+      "q": "Persilangan monohibrid antara tanaman tinggi heterozigot (Tt) dengan tanaman pendek (tt) menghasilkan keturunan dengan rasio fenotip ….",
+      "opts": ["A. 3 tinggi : 1 pendek", "B. 1 tinggi : 1 pendek", "C. 1 tinggi : 2 sedang : 1 pendek", "D. Semua tinggi", "E. Semua pendek"],
+      "ans": "B",
+      "expl": "Tt × tt (testcross): menghasilkan Tt (tinggi) dan tt (pendek) dengan rasio 1:1. Berbeda dengan F1 × F1 (Tt × Tt) yang menghasilkan 3:1."
+    },
+    {
+      "q": "Pada respirasi anaerob (fermentasi alkohol), produk akhir yang dihasilkan adalah ….",
+      "opts": [
+        "A. Asam laktat dan CO₂",
+        "B. Etanol, CO₂, dan ATP",
+        "C. Asam piruvat dan NADH",
+        "D. Asetil KoA dan CO₂",
+        "E. Asam asetat dan H₂O"
+      ],
+      "ans": "B",
+      "expl": "Fermentasi alkohol (oleh khamir/ragi): glukosa → piruvat → asetaldehida (+ CO₂) → etanol. Menghasilkan etanol, CO₂, dan 2 ATP neto. Fermentasi asam laktat (otot) menghasilkan asam laktat tanpa CO₂."
+    },
+    {
+      "q": "Sistem kekebalan tubuh non-spesifik (innate immunity) meliputi ….",
+      "opts": [
+        "A. Antibodi dan sel B memori",
+        "B. Sel T sitotoksik dan MHC",
+        "C. Kulit, mukus, fagosit, dan protein komplemen",
+        "D. Vaksinasi dan imunisasi aktif",
+        "E. Interferon spesifik patogen"
+      ],
+      "ans": "C",
+      "expl": "Imunitas non-spesifik (bawaan) adalah lini pertahanan pertama tanpa memerlukan pengenalan antigen spesifik. Meliputi: barier fisik (kulit, mukus), sel fagosit (neutrofil, makrofag), protein komplemen, sel NK, dan respons inflamasi. Antibodi dan sel memori adalah imunitas adaptif (spesifik)."
+    },
+    {
+      "q": "Organisme yang mampu melakukan kemosintesis sebagai sumber energi adalah ….",
+      "opts": [
+        "A. Tumbuhan hijau",
+        "B. Alga eukariotik",
+        "C. Bakteri nitrifikasi seperti Nitrosomonas",
+        "D. Jamur saprofit",
+        "E. Protozoa heterotrof"
+      ],
+      "ans": "C",
+      "expl": "Kemosintesis: proses menghasilkan energi dari oksidasi senyawa anorganik (bukan cahaya). Bakteri nitrifikasi seperti Nitrosomonas mengoksidasi NH₃ → NO₂⁻ untuk mendapatkan energi, lalu menggunakannya untuk mereduksi CO₂. Contoh lain: bakteri sulfur di ventilasi hidrotermal."
+    },
+    {
+      "q": "Pernyataan yang tepat mengenai seleksi alam menurut Darwin adalah ….",
+      "opts": [
+        "A. Seleksi alam menciptakan variasi baru dalam populasi",
+        "B. Organisme yang beradaptasi paling baik akan lebih berhasil bereproduksi",
+        "C. Perubahan lingkungan langsung menyebabkan perubahan genetik",
+        "D. Semua individu dalam populasi memiliki peluang sama untuk bertahan",
+        "E. Seleksi alam bekerja pada gen, bukan fenotip"
+      ],
+      "ans": "B",
+      "expl": "Seleksi alam Darwin: individu dengan variasi yang lebih adaptif terhadap lingkungan memiliki keberhasilan reproduksi lebih tinggi (fitness lebih besar), mewariskan sifat menguntungkan ke generasi berikutnya. Seleksi alam tidak menciptakan variasi — variasi sudah ada sebelumnya."
+    },
+    {
+      "q": "Jaringan pada akar tumbuhan yang berfungsi mengontrol masuknya air dan mineral ke xilem adalah ….",
+      "opts": ["A. Epidermis", "B. Korteks", "C. Endodermis", "D. Perisikel", "E. Sklerenkim"],
+      "ans": "C",
+      "expl": "Endodermis adalah lapisan sel terdalam korteks yang memiliki Pita Caspary (penebalan suberin). Pita Caspary memaksa air dan mineral melewati protoplas sel endodermis (jalur simplas), sehingga sel endodermis berfungsi sebagai 'gatekeeper' selektif sebelum masuk ke xilem."
+    },
+    {
+      "q": "Dalam piramida energi ekosistem, transfer energi dari satu tingkat trofi ke tingkat berikutnya rata-rata sebesar ….",
+      "opts": ["A. 1%", "B. 10%", "C. 50%", "D. 90%", "E. 100%"],
+      "ans": "B",
+      "expl": "Aturan 10% (hukum Lindeman): rata-rata hanya 10% energi dari satu tingkat trofi yang ditransfer ke tingkat trofi berikutnya. Sebagian besar energi (90%) hilang sebagai panas melalui respirasi, gerak, dan sisa metabolisme."
+    }
+  ]
+}

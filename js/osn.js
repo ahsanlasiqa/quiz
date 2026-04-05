@@ -359,7 +359,8 @@ window.OSN = (function() {
       return;
     }
 
-    state.allQuestions = shuffle(soal).slice(0, lc.jumlah);
+    const jumlah = lvMeta?.count || lc.jumlah;
+    state.allQuestions = shuffle(soal).slice(0, jumlah);
     state.answers      = new Array(state.allQuestions.length).fill(null);
     state.currentIdx   = 0;
     state.phase        = 'quiz';
@@ -425,7 +426,7 @@ window.OSN = (function() {
       </div>
       <p class="tka-q-text">${escHtml(q.q)}</p>
       <div class="tka-options" id="osn-options">
-        ${q.opts.map((opt, oi) => {
+        ${(q.opts || []).map((opt, oi) => {
           const letter   = ['A','B','C','D','E'][oi];
           const selected = state.answers[idx] === letter;
           return `<button class="tka-opt${selected ? ' selected' : ''}" onclick="window.OSN.selectAnswer(${idx},'${letter}')">
@@ -592,7 +593,7 @@ window.OSN = (function() {
           </div>
           <p class="tka-review-q">${escHtml(q.q)}</p>
           <div class="tka-review-opts">
-            ${q.opts.map((opt, oi) => {
+            ${(q.opts || []).map((opt, oi) => {
               const l   = ['A','B','C','D','E'][oi];
               let   cls = 'tka-review-opt';
               if (l === q.ans)        cls += ' review-opt-correct';

@@ -79,15 +79,20 @@
     "icon": "🧬",
     "levels": {
       "kabupaten": {
-        "count": 32,
+        "count": 72,
         "type": "paket",
-        "format": "benar_salah",
         "pakets": [
           {
             "key": "paket1",
             "label": "Paket 1",
-            "count": 8,
+            "count": 32,
             "file": "osn-sma_biologi--kabupaten--paket1.json"
+          },
+          {
+            "key": "paket2",
+            "label": "Paket 2",
+            "count": 40,
+            "file": "osn-sma_biologi--kabupaten--paket2.json"
           }
         ]
       },
