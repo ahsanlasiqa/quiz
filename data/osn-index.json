@@ -79,7 +79,17 @@
     "icon": "🧬",
     "levels": {
       "kabupaten": {
-        "count": 0
+        "count": 32,
+        "type": "paket",
+        "format": "benar_salah",
+        "pakets": [
+          {
+            "key": "paket1",
+            "label": "Paket 1",
+            "count": 8,
+            "file": "osn-sma_biologi--kabupaten--paket1.json"
+          }
+        ]
       },
       "provinsi": {
         "count": 0
