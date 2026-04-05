@@ -6,10 +6,33 @@
     "mapel": "Ilmu Pengetahuan Alam",
     "icon": "🔬",
     "levels": {
-      "kabupaten": 43,
-      "provinsi": 0,
-      "semifinal": 0,
-      "final": 0
+      "kabupaten": {
+        "count": 80,
+        "type": "paket",
+        "pakets": [
+          {
+            "key": "paket1",
+            "label": "Paket 1",
+            "count": 40,
+            "file": "osn-sd_ipa--kabupaten--paket1.json"
+          },
+          {
+            "key": "paket2",
+            "label": "Paket 2",
+            "count": 40,
+            "file": "osn-sd_ipa--kabupaten--paket2.json"
+          }
+        ]
+      },
+      "provinsi": {
+        "count": 0
+      },
+      "semifinal": {
+        "count": 0
+      },
+      "final": {
+        "count": 0
+      }
     }
   },
   {
@@ -19,10 +42,33 @@
     "mapel": "Ilmu Pengetahuan Alam",
     "icon": "⚗️",
     "levels": {
-      "kabupaten": 31,
-      "provinsi": 0,
-      "semifinal": 0,
-      "final": 0
+      "kabupaten": {
+        "count": 80,
+        "type": "paket",
+        "pakets": [
+          {
+            "key": "paket1",
+            "label": "Paket 1",
+            "count": 40,
+            "file": "osn-smp_ipa--kabupaten--paket1.json"
+          },
+          {
+            "key": "paket2",
+            "label": "Paket 2",
+            "count": 40,
+            "file": "osn-smp_ipa--kabupaten--paket2.json"
+          }
+        ]
+      },
+      "provinsi": {
+        "count": 0
+      },
+      "semifinal": {
+        "count": 0
+      },
+      "final": {
+        "count": 0
+      }
     }
   },
   {
@@ -32,10 +78,18 @@
     "mapel": "Biologi",
     "icon": "🧬",
     "levels": {
-      "kabupaten": 8,
-      "provinsi": 0,
-      "semifinal": 0,
-      "final": 0
+      "kabupaten": {
+        "count": 0
+      },
+      "provinsi": {
+        "count": 0
+      },
+      "semifinal": {
+        "count": 0
+      },
+      "final": {
+        "count": 0
+      }
     }
   },
   {
@@ -45,10 +99,18 @@
     "mapel": "Fisika",
     "icon": "⚛️",
     "levels": {
-      "kabupaten": 0,
-      "provinsi": 0,
-      "semifinal": 0,
-      "final": 0
+      "kabupaten": {
+        "count": 0
+      },
+      "provinsi": {
+        "count": 0
+      },
+      "semifinal": {
+        "count": 0
+      },
+      "final": {
+        "count": 0
+      }
     }
   }
 ]
