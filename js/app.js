@@ -148,7 +148,7 @@ window.startCheckout = async function(pack) {
     const res = await fetch('/api/create-transaction', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken },
-      body: JSON.stringify({ pack: pack || 60 })
+      body: JSON.stringify({ pack: pack || 40 })
     });
     const data = await res.json();
     if (!data.token) {
@@ -158,7 +158,7 @@ window.startCheckout = async function(pack) {
     // Open Midtrans Snap payment popup
     window.snap.pay(data.token, {
       onSuccess: function(result) {
-        window._currentCredits += (pack === 30 ? 30 : 60);
+        window._currentCredits += pack; // pack sudah 20 atau 40
         window.renderCreditsBanner();
         generateHint.textContent = '🎉 Pembayaran berhasil! Kredit ditambahkan.';
       },

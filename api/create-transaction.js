@@ -37,9 +37,12 @@ export default async function handler(req, res) {
     const name = decoded.name || email;
     if (!email) return res.status(401).json({ error: 'No email' });
 
-    const packSize = parseInt(req.body?.pack) === 30 ? 30 : 60;
+    const packSize = [20, 40].includes(parseInt(req.body?.pack))
+      ? parseInt(req.body?.pack)
+      : 40; // default fallback ke 40 credits
     console.log('create-transaction: pack received:', req.body?.pack, '→ packSize:', packSize, 'email:', email);
     const pack = PACKS[packSize];
+    if (!pack) return res.status(400).json({ error: `Pack tidak valid: ${packSize}` });
     const orderId = `quizgen-${packSize}cr-${email.replace(/[^a-z0-9]/g, '-')}-${Date.now()}`;
 
     const snap = new midtransClient.Snap({
