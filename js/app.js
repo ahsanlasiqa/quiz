@@ -104,13 +104,8 @@ if (window.pdfjsLib) {
     setTimeout(() => generateHint.textContent = '⏳ Pembayaran pending. Kredit aktif setelah dikonfirmasi.', 800);
   }
 
-  // ── Hook logout: reset profil state saat user sign out ───────
-  const btnSignout = document.getElementById('btn-signout');
-  if (btnSignout) {
-    btnSignout.addEventListener('click', () => {
-      window.PROFIL?.resetOnLogout();
-    }, true); // capture=true → jalan sebelum auth.js handle signOut
-  }
+  // Logout ditangani sepenuhnya oleh onAuthStateChanged(null) di auth.js
+  // — tidak perlu listener duplikat di sini
 })();
 
 // ── Credits UI ────────────────────────────

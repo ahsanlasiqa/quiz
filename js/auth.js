@@ -148,7 +148,17 @@ function startAuth() {
       setBtnLoading('Verifying…');
       showOverlay('Memverifikasi akun…');
       checkAndShowApp(user);
-    } else if (!user && !window.quizgenAuthed) {
+    } else if (!user) {
+      // User logged out (atau belum login) — reset profil agar data
+      // user sebelumnya tidak bocor ke sesi berikutnya.
+      // Ini mencakup SEMUA jalur logout: button, token expiry, auth error, dll.
+      if (window.quizgenAuthed) {
+        // Baru saja logout (sebelumnya sudah login)
+        window.PROFIL?.resetOnLogout();
+      }
+      window.quizgenAuthed = false;
+      window.quizgenUser   = null;
+      window.quizgenAccess = null;
       showLogin();
     }
   });
@@ -197,14 +207,10 @@ function startAuth() {
       }
     });
 
-  // Sign out
+  // Sign out — cukup panggil signOut(); onAuthStateChanged(null) akan
+  // otomatis handle reset profil dan redirect ke login screen.
   btnSignout.addEventListener('click', function() {
-    window.firebaseAuth.signOut().then(function() {
-      window.quizgenAuthed = false;
-      window.quizgenUser = null;
-      window.quizgenAccess = null;
-      showLogin();
-    });
+    window.firebaseAuth.signOut();
   });
 }
 

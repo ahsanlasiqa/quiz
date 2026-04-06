@@ -777,6 +777,13 @@ window.PROFIL = (function () {
   // ── Public API ────────────────────────────────────────────────
   // ── Reset state saat logout ────────────────────────────────────
   function resetOnLogout() {
+    // 1. Batalkan debounced save yang mungkin masih pending —
+    //    setelah user logout, uid sudah null sehingga cloud save gagal
+    //    dan data akan hilang. Cancel dulu agar tidak ada race condition.
+    clearTimeout(_saveTimeout);
+    _saveTimeout = null;
+
+    // 2. Reset in-memory state
     profile = {
       displayName: '', email: '', photoURL: '', bio: '',
       targetUjian: [], targetMapel: [], targetTanggal: '',
@@ -784,6 +791,9 @@ window.PROFIL = (function () {
     };
     sessionHistory = {};
     _cloudSynced   = false;
+
+    // 3. Bersihkan localStorage — pastikan user berikutnya tidak
+    //    melihat data user sebelumnya saat loadFromStorage() dijalankan
     try {
       localStorage.removeItem('drillsoal_profile');
       localStorage.removeItem('drillsoal_sessions');
