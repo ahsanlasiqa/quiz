@@ -379,6 +379,16 @@ window.CPNS = (function () {
     const minsE = Math.floor(elapsed / 60), secsE = elapsed % 60;
     const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
 
+    // ── Catat ke Profil ──────────────────────────────────────
+    const maxSkorTotal = CONFIG.sections.reduce((s, sec) => s + sec.jumlah * 5, 0);
+    window.PROFIL_recordSession?.('cpns_skd', {
+      pct:        Math.round(totalScore / maxSkorTotal * 100),
+      totalBenar: totalScore,
+      totalSoal:  maxSkorTotal,
+      scores,
+      elapsed,
+    });
+
     const pg = { twk: 65, tiu: 80, tkp: 166 };
     const lulusSemua = CONFIG.sections.every(sec => scores[sec.key] >= pg[sec.key]);
     const lulusTotal = totalScore >= CONFIG.totalPG;

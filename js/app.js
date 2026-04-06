@@ -103,6 +103,14 @@ if (window.pdfjsLib) {
     window.history.replaceState({}, '', window.location.pathname);
     setTimeout(() => generateHint.textContent = '⏳ Pembayaran pending. Kredit aktif setelah dikonfirmasi.', 800);
   }
+
+  // ── Hook logout: reset profil state saat user sign out ───────
+  const btnSignout = document.getElementById('btn-signout');
+  if (btnSignout) {
+    btnSignout.addEventListener('click', () => {
+      window.PROFIL?.resetOnLogout();
+    }, true); // capture=true → jalan sebelum auth.js handle signOut
+  }
 })();
 
 // ── Credits UI ────────────────────────────
@@ -113,6 +121,11 @@ window.updateSubscriptionUI = function(accessData) {
   window._isInvited = accessData.isInvited || false;
   window._currentCredits = accessData.credits ?? 0;
   window.renderCreditsBanner();
+  // Setelah login & auth siap → sync profil dari cloud
+  if (window.PROFIL) {
+    window.PROFIL._cloudSynced = false; // paksa re-fetch
+    window.PROFIL.init();
+  }
 };
 
 window.renderCreditsBanner = function() {
@@ -2116,34 +2129,8 @@ window.backToTryoutHub = function() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-// ── Patch PROFIL_recordSession ke modul tryout ────────────────
-// Setiap modul (TKA/CPNS/SNBT/OSN) memanggil window._onTryoutResult
-// saat quiz selesai. Kita patch setelah DOM siap.
-(function patchTryoutResultHooks() {
-  // TKA
-  const _tkaSubmit = window.TKA?.submitQuiz;
-  if (window.TKA && _tkaSubmit) {
-    window.TKA.submitQuiz = function(isAuto) {
-      _tkaSubmit.call(this, isAuto);
-      // TKA result — dipanggil setelah render, ambil dari state internal via DOM
-      setTimeout(() => {
-        const pctEl = document.querySelector('#tka-container .tka-score-pct');
-        if (!pctEl) return;
-        const m = pctEl.textContent.match(/(\d+)%/);
-        const bEl = document.querySelector('#tka-container .tka-score-num');
-        const parts = bEl ? bEl.textContent.split('/') : [];
-        window.PROFIL_recordSession?.('tka_sma', {
-          pct: m ? parseInt(m[1]) : 0,
-          totalBenar: parts[0] ? parseInt(parts[0].trim()) : 0,
-          totalSoal:  parts[1] ? parseInt(parts[1].trim()) : 0,
-          scores: {}, elapsed: 0,
-        });
-      }, 100);
-    };
-  }
-})();
-
-// Simpler: hook via window event yang dipanggil tiap modul selesai
+// ── Jembatan: modul tryout memanggil ini saat quiz selesai ───
+// (Backup hook — modul kini memanggil PROFIL_recordSession langsung)
 window._onTryoutResult = function(jenis, pct, totalBenar, totalSoal, scores, elapsed) {
   window.PROFIL_recordSession?.(jenis, { pct, totalBenar, totalSoal, scores: scores || {}, elapsed: elapsed || 0 });
 };

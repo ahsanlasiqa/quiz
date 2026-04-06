@@ -434,6 +434,12 @@ window.TKA = (function() {
     const jenjang = state.jenjang;
     const jMeta   = _getJenjangMeta(jenjang);
     const emoji   = pct >= 85 ? '🏆' : pct >= 70 ? '🥈' : pct >= 55 ? '🥉' : '📚';
+
+    // ── Catat ke Profil ──────────────────────────────────────
+    const jenisKey = 'tka_' + (jenjang || 'sma').toLowerCase();
+    window.PROFIL_recordSession?.(jenisKey, {
+      pct, totalBenar: totalCorrect, totalSoal: totalQs, scores, elapsed,
+    });
     const msg     = pct >= 85 ? 'Luar Biasa!' : pct >= 70 ? 'Bagus Sekali!' : pct >= 55 ? 'Cukup Baik' : 'Tetap Semangat!';
     const grade   = pct >= 85 ? 'A' : pct >= 70 ? 'B' : pct >= 55 ? 'C' : pct >= 40 ? 'D' : 'E';
     const minsE   = Math.floor(elapsed / 60);

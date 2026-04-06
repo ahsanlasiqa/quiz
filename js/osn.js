@@ -520,6 +520,13 @@ window.OSN = (function() {
     const container = document.getElementById('osn-container');
     const total     = state.allQuestions.length;
     const pct       = Math.round((benar / total) * 100);
+
+    // ── Catat ke Profil ──────────────────────────────────────
+    window.PROFIL_recordSession?.('osn', {
+      pct, totalBenar: benar, totalSoal: total,
+      scores: { bankKey: getBankKey(), level: state.levelKey },
+      elapsed,
+    });
     const lc        = LEVEL_CONFIG[state.levelKey];
     const bankMeta  = _getBankMeta(getBankKey());
     const minsE     = Math.floor(elapsed / 60), secsE = elapsed % 60;

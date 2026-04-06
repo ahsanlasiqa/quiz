@@ -51,14 +51,19 @@ window.PROFIL = (function () {
       .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  // ── Flag sync ─────────────────────────────────────────────────
+  let _cloudSynced = false;  // sudah fetch dari Firestore?
+  let _saveTimeout = null;   // debounce save ke cloud
+
   // ── Init ──────────────────────────────────────────────────────
   function init() {
-    loadFromStorage();
-    syncFromFirebase();
+    loadFromStorage();      // tampilkan data lokal dulu (cepat)
+    syncFromFirebase();     // isi nama/foto dari Auth
     render();
+    _ensureCloudSync();     // lalu fetch dari Firestore (async, re-render jika ada data baru)
   }
 
-  // ── Load/Save ─────────────────────────────────────────────────
+  // ── Load/Save lokal (localStorage) ────────────────────────────
   function loadFromStorage() {
     try {
       const saved = localStorage.getItem('drillsoal_profile');
@@ -72,9 +77,10 @@ window.PROFIL = (function () {
     try {
       localStorage.setItem('drillsoal_profile', JSON.stringify(profile));
     } catch (e) {}
+    _saveToCloud();
   }
 
-  // Sinkron nama/email/foto dari Firebase Auth
+  // ── Sinkron nama/email/foto dari Firebase Auth ─────────────────
   function syncFromFirebase() {
     const user = window.quizgenUser;
     if (!user) return;
@@ -83,22 +89,96 @@ window.PROFIL = (function () {
     if (!profile.photoURL)    profile.photoURL    = user.photoURL || '';
   }
 
-  // ── Catat sesi try out (dipanggil dari luar saat quiz selesai) ─
+  // ── Firestore helpers ──────────────────────────────────────────
+  function _getUserId() {
+    return window.quizgenUser?.uid || null;
+  }
+
+  function _db() {
+    // Firestore tersedia via compat SDK
+    if (window.firebase?.firestore) return window.firebase.firestore();
+    return null;
+  }
+
+  // Fetch profil + riwayat dari Firestore (saat init / re-login)
+  async function _ensureCloudSync() {
+    if (_cloudSynced) return;
+    const uid = _getUserId();
+    const db  = _db();
+    if (!uid || !db) {
+      // Firestore belum siap — coba lagi saat firebase-ready
+      window.addEventListener('firebase-ready', () => _ensureCloudSync(), { once: true });
+      return;
+    }
+    try {
+      const docRef  = db.collection('profiles').doc(uid);
+      const snap    = await docRef.get();
+      if (snap.exists) {
+        const data = snap.data();
+        // Merge: cloud wins untuk profil, merge sesi (gabung & dedup)
+        if (data.profile)  Object.assign(profile, data.profile);
+        if (data.sessions) {
+          // Gabungkan sesi cloud dengan sesi lokal, dedup by date
+          Object.entries(data.sessions).forEach(([jenis, sesiCloud]) => {
+            const sesiLokal = sessionHistory[jenis] || [];
+            const merged = [...sesiLokal, ...sesiCloud];
+            // Dedup berdasarkan date
+            const seen = new Set();
+            sessionHistory[jenis] = merged
+              .filter(s => { const k = s.date; if (seen.has(k)) return false; seen.add(k); return true; })
+              .sort((a, b) => new Date(b.date) - new Date(a.date))
+              .slice(0, 50);
+          });
+        }
+        // Simpan hasil merge ke lokal
+        saveToStorage();
+        try { localStorage.setItem('drillsoal_sessions', JSON.stringify(sessionHistory)); } catch(e) {}
+      }
+      _cloudSynced = true;
+      // Re-render dengan data terbaru dari cloud
+      syncFromFirebase();
+      render();
+    } catch (e) {
+      console.warn('Profil cloud sync error:', e);
+    }
+  }
+
+  // Simpan profil + sesi ke Firestore (debounced 1,5 detik)
+  function _saveToCloud() {
+    clearTimeout(_saveTimeout);
+    _saveTimeout = setTimeout(async () => {
+      const uid = _getUserId();
+      const db  = _db();
+      if (!uid || !db) return;
+      try {
+        await db.collection('profiles').doc(uid).set({
+          profile,
+          sessions: sessionHistory,
+          updatedAt: new Date().toISOString(),
+        }, { merge: true });
+      } catch (e) {
+        console.warn('Profil cloud save error:', e);
+      }
+    }, 1500);
+  }
+
+  // ── Catat sesi try out (dipanggil dari modul quiz saat selesai) ─
   window.PROFIL_recordSession = function(jenis, data) {
-    // jenis: 'tka_sd' | 'tka_smp' | 'tka_sma' | 'cpns_skd' | 'snbt'
-    // data: { pct, totalBenar, totalSoal, scores, elapsed }
     if (!sessionHistory[jenis]) sessionHistory[jenis] = [];
     sessionHistory[jenis].unshift({
-      date: new Date().toISOString(),
-      pct:  data.pct || 0,
+      date:       new Date().toISOString(),
+      pct:        data.pct        || 0,
       totalBenar: data.totalBenar || 0,
       totalSoal:  data.totalSoal  || 0,
       scores:     data.scores     || {},
       elapsed:    data.elapsed    || 0,
     });
-    // Simpan maks 50 sesi per jenis
+    // Maks 50 sesi per jenis
     if (sessionHistory[jenis].length > 50) sessionHistory[jenis] = sessionHistory[jenis].slice(0, 50);
+    // Simpan lokal (cepat)
     try { localStorage.setItem('drillsoal_sessions', JSON.stringify(sessionHistory)); } catch(e) {}
+    // Simpan ke cloud (debounced)
+    _saveToCloud();
   };
 
   // ── Hitung statistik ──────────────────────────────────────────
@@ -695,6 +775,21 @@ window.PROFIL = (function () {
   }
 
   // ── Public API ────────────────────────────────────────────────
+  // ── Reset state saat logout ────────────────────────────────────
+  function resetOnLogout() {
+    profile = {
+      displayName: '', email: '', photoURL: '', bio: '',
+      targetUjian: [], targetMapel: [], targetTanggal: '',
+      studyHariPerMinggu: 5, studyMenitPerHari: 60, catatan: '',
+    };
+    sessionHistory = {};
+    _cloudSynced   = false;
+    try {
+      localStorage.removeItem('drillsoal_profile');
+      localStorage.removeItem('drillsoal_sessions');
+    } catch(e) {}
+  }
+
   return {
     init,
     render,
@@ -705,5 +800,9 @@ window.PROFIL = (function () {
     saveStudyPlan,
     toggleUjian,
     toggleMapel,
+    resetOnLogout,
+    // Diakses dari app.js untuk paksa re-sync setelah login
+    get _cloudSynced()    { return _cloudSynced; },
+    set _cloudSynced(val) { _cloudSynced = val;  },
   };
 })();

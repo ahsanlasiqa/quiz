@@ -425,6 +425,12 @@ window.SNBT = (function() {
     const totalBenar = Object.values(scores).reduce((a,s) => a+s.benar, 0);
     const totalSoal  = state.allQuestions.length;
     const pct        = Math.round(totalBenar/totalSoal*100);
+
+    // ── Catat ke Profil ──────────────────────────────────────
+    window.PROFIL_recordSession?.('snbt', {
+      pct, totalBenar, totalSoal, scores, elapsed,
+    });
+
     const mc         = MODES[state.mode];
     const emoji      = pct>=80?'🏆':pct>=65?'🥈':pct>=50?'🥉':'📚';
     const msg        = pct>=80?'Luar Biasa!':pct>=65?'Bagus!':pct>=50?'Cukup Baik':'Tetap Semangat!';
