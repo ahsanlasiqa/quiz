@@ -95,8 +95,14 @@ window.PROFIL = (function () {
   }
 
   function _db() {
-    // Firestore tersedia via compat SDK
-    if (window.firebase?.firestore) return window.firebase.firestore();
+    // Firestore tersedia via compat SDK.
+    // FIX #1: Cek apps.length terlebih dahulu — window.firebase.firestore adalah fungsi
+    // (selalu truthy), tapi akan throw "No Firebase App" jika belum ada app aktif.
+    try {
+      if (window.firebase?.apps?.length > 0) return window.firebase.firestore();
+    } catch (e) {
+      console.warn('Profil _db() error:', e);
+    }
     return null;
   }
 
@@ -106,10 +112,15 @@ window.PROFIL = (function () {
     const uid = _getUserId();
     const db  = _db();
     if (!uid || !db) {
-      // Firestore belum siap — coba lagi saat firebase-ready
+      // FIX #3: Jika firebase sudah ada tapi user belum login, tidak perlu pasang listener.
+      // Hanya pasang listener jika firebase-nya sendiri yang belum siap.
+      if (window.firebase?.apps?.length > 0) return; // firebase siap, tapi belum login — tunggu auth
       window.addEventListener('firebase-ready', () => _ensureCloudSync(), { once: true });
       return;
     }
+    // FIX #2 (bagian 1): Set flag SEBELUM await agar tidak ada dua fetch berjalan paralel
+    // jika init() dipanggil dua kali cepat (misal: switch tab cepat-cepat).
+    _cloudSynced = true;
     try {
       const docRef  = db.collection('profiles').doc(uid);
       const snap    = await docRef.get();
@@ -130,15 +141,18 @@ window.PROFIL = (function () {
               .slice(0, 50);
           });
         }
-        // Simpan hasil merge ke lokal
-        saveToStorage();
+        // FIX #2 (bagian 2): Simpan hasil merge ke lokal SAJA — JANGAN panggil saveToStorage()
+        // karena saveToStorage() juga memanggil _saveToCloud(), yang menyebabkan kita langsung
+        // write balik ke Firestore data yang baru saja kita baca (race condition + loop).
+        try { localStorage.setItem('drillsoal_profile', JSON.stringify(profile)); } catch(e) {}
         try { localStorage.setItem('drillsoal_sessions', JSON.stringify(sessionHistory)); } catch(e) {}
       }
-      _cloudSynced = true;
       // Re-render dengan data terbaru dari cloud
       syncFromFirebase();
       render();
     } catch (e) {
+      // Reset flag agar bisa dicoba lagi di lain waktu
+      _cloudSynced = false;
       console.warn('Profil cloud sync error:', e);
     }
   }
@@ -151,10 +165,13 @@ window.PROFIL = (function () {
       const db  = _db();
       if (!uid || !db) return;
       try {
+        // FIX #4: Gunakan serverTimestamp() agar timestamp konsisten di semua timezone
+        // dan bisa di-query/sort dengan benar di Firestore.
+        const serverTs = window.firebase.firestore.FieldValue.serverTimestamp();
         await db.collection('profiles').doc(uid).set({
           profile,
           sessions: sessionHistory,
-          updatedAt: new Date().toISOString(),
+          updatedAt: serverTs,
         }, { merge: true });
       } catch (e) {
         console.warn('Profil cloud save error:', e);
