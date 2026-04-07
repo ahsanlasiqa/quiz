@@ -14,8 +14,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <!-- Midtrans Snap -->
-  <script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-SlhoAop1NZxXT_c6"></script>
+
 </head>
 <body>
 
@@ -903,6 +902,8 @@
       if (quotes.length > 1) { _pqIdx = (_pqIdx + 1) % quotes.length; switchQuote(_pqIdx); }
     }, 5000);
   </script>
+  <!-- Midtrans Snap — di-load di sini (non-blocking) -->
+  <script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-SlhoAop1NZxXT_c6"></script>
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/curriculum.js"></script>
