@@ -47,7 +47,7 @@ const fs   = require('fs');
 const path = require('path');
 
 const INPUT  = path.join(__dirname, 'js', 'osn-questions.js');
-const OUTDIR = path.join(__dirname, 'data');
+const OUTDIR = path.join(__dirname, 'data', 'osn');
 
 const src   = fs.readFileSync(INPUT, 'utf8');
 const match = src.match(/window\.OSN_QUESTIONS\s*=\s*(\{[\s\S]*\});?\s*$/);
@@ -145,5 +145,5 @@ keys.forEach(bankKey => {
 });
 
 // ── Tulis index ────────────────────────────────────────────────────────────
-fs.writeFileSync(path.join(OUTDIR, 'osn-index.json'), JSON.stringify(index, null, 2));
+fs.writeFileSync(path.join(OUTDIR, 'index.json'), JSON.stringify(index, null, 2));
 console.log(`\n✅ osn-index.json + ${keys.length} bank → ${OUTDIR}`);

@@ -61,7 +61,7 @@ window.SNBT = (function() {
 
   async function _fetchIndex() {
     if (_cache['__index__']) return _cache['__index__'];
-    const res = await fetch('/data/index.json');
+    const res = await fetch('/data/snbt/index.json');
     if (!res.ok) throw new Error('Gagal memuat daftar paket');
     _cache['__index__'] = await res.json();
     return _cache['__index__'];
@@ -69,7 +69,7 @@ window.SNBT = (function() {
 
   async function _fetchPaket(paketId) {
     if (_cache[paketId]) return _cache[paketId];
-    const res = await fetch(`/data/${paketId}.json`);
+    const res = await fetch(`/data/snbt/${paketId}.json`);
     if (!res.ok) throw new Error(`Paket "${paketId}" tidak ditemukan`);
     _cache[paketId] = await res.json();
     return _cache[paketId];

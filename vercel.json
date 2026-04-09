@@ -1,93 +1,39 @@
 {
   "functions": {
-    "api/generate.js": {
-      "maxDuration": 60
-    },
-    "api/extract.js": {
-      "maxDuration": 60
-    },
-    "api/check-auth.js": {
-      "maxDuration": 15
-    },
-    "api/create-transaction.js": {
-      "maxDuration": 15
-    },
-    "api/midtrans-webhook.js": {
-      "maxDuration": 15
-    },
-    "api/get-status.js": {
-      "maxDuration": 15
-    },
-    "api/firebase-client-config.js": {
-      "maxDuration": 5
-    },
-    "api/my-orders.js": {
-      "maxDuration": 15
-    },
-    "api/resume-order.js": {
-      "maxDuration": 15
-    },
-    "api/tka-submit.js": {
-      "maxDuration": 15
-    },
-    "api/tka-leaderboard.js": {
-      "maxDuration": 10
-    }
+    "api/generate.js": { "maxDuration": 60 },
+    "api/extract.js": { "maxDuration": 60 },
+    "api/check-auth.js": { "maxDuration": 15 },
+    "api/create-transaction.js": { "maxDuration": 15 },
+    "api/midtrans-webhook.js": { "maxDuration": 15 },
+    "api/get-status.js": { "maxDuration": 15 },
+    "api/firebase-client-config.js": { "maxDuration": 5 },
+    "api/my-orders.js": { "maxDuration": 15 },
+    "api/resume-order.js": { "maxDuration": 15 },
+    "api/tka-submit.js": { "maxDuration": 15 },
+    "api/tka-leaderboard.js": { "maxDuration": 10 }
   },
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/(.*)\\.html",
-      "destination": "/$1.html"
-    },
-    {
-      "source": "/data/(.*)",
-      "destination": "/data/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)\\.html", "destination": "/$1.html" },
+    { "source": "/data/(.*)", "destination": "/data/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
       "source": "/assets/soal/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     },
     {
-      "source": "/data/(.*)\\.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=604800"
-        }
-      ]
+      "source": "/data/snbt/(.*)\\.json",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
     },
     {
-      "source": "/data/cpns-(.*)\\.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=604800"
-        }
-      ]
+      "source": "/data/cpns/(.*)\\.json",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
     },
     {
-      "source": "/data/osn-(.*)\\.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=604800"
-        }
-      ]
+      "source": "/data/osn/(.*)\\.json",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
     }
   ]
 }

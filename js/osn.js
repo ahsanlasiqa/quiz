@@ -34,7 +34,7 @@ window.OSN = (function() {
 
   async function _fetchIndex() {
     if (_cache['__index__']) return _cache['__index__'];
-    const res = await fetch('/data/osn-index.json');
+    const res = await fetch('/data/osn/index.json');
     if (!res.ok) throw new Error('Gagal memuat index OSN');
     _cache['__index__'] = await res.json();
     return _cache['__index__'];
@@ -42,7 +42,7 @@ window.OSN = (function() {
 
   async function _fetchFile(filename) {
     if (_cache[filename]) return _cache[filename];
-    const res = await fetch(`/data/${filename}`);
+    const res = await fetch(`/data/osn/${filename}`);
     if (!res.ok) throw new Error(`Gagal memuat ${filename}`);
     _cache[filename] = await res.json();
     return _cache[filename];

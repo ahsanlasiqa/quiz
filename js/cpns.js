@@ -41,7 +41,7 @@ window.CPNS = (function () {
 
   async function _fetchIndex() {
     if (_cache['__idx__']) return _cache['__idx__'];
-    const r = await fetch('/data/cpns-index.json');
+    const r = await fetch('/data/cpns/index.json');
     if (!r.ok) throw new Error('Gagal memuat daftar paket CPNS');
     _cache['__idx__'] = await r.json();
     return _cache['__idx__'];
@@ -49,7 +49,7 @@ window.CPNS = (function () {
 
   async function _fetchPaket(paketId) {
     if (_cache[paketId]) return _cache[paketId];
-    const r = await fetch('/data/cpns-' + paketId + '.json');
+    const r = await fetch('/data/cpns/' + paketId + '.json');
     if (!r.ok) throw new Error('Paket "' + paketId + '" tidak ditemukan');
     _cache[paketId] = await r.json();
     return _cache[paketId];

@@ -12,7 +12,7 @@ const fs   = require('fs');
 const path = require('path');
 
 const INPUT  = path.join(__dirname, 'js', 'snbt-questions.js');
-const OUTDIR = path.join(__dirname, 'data');
+const OUTDIR = path.join(__dirname, 'data', 'snbt');
 
 const src   = fs.readFileSync(INPUT, 'utf8');
 const match = src.match(/window\.SNBT_QUESTIONS\s*=\s*(\{[\s\S]*\});?\s*$/);
