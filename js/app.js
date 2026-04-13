@@ -2071,7 +2071,7 @@ window.switchAppMode = function(mode) {
   if (mode === 'tryout') {
     const hub = document.getElementById('tryout-hub');
     if (hub) hub.classList.remove('hidden');
-    ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner','osn-soal-inner'].forEach(id => {
+    ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner','osn-soal-inner','evaluasi-soal-inner'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.classList.add('hidden');
     });
@@ -2089,7 +2089,7 @@ window.switchAppMode = function(mode) {
 window.startTryout = function(type) {
   document.getElementById('tryout-hub').classList.add('hidden');
   // Hide all inner panels first
-  ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner','osn-soal-inner'].forEach(id => {
+  ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner','osn-soal-inner','evaluasi-soal-inner'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.add('hidden');
   });
@@ -2106,13 +2106,15 @@ window.startTryout = function(type) {
   } else if (type === 'osn') {
     document.getElementById('osn-soal-inner').classList.remove('hidden');
     if (window.OSN) window.OSN.init();
+  } else if (type === 'evaluasi') {
+    document.getElementById('evaluasi-soal-inner').classList.remove('hidden');
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 // ── Kembali ke hub dari dalam tryout ─────────────────────────
 window.backToTryoutHub = function() {
-  ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner','osn-soal-inner'].forEach(id => {
+  ['tka-soal-inner','cpns-soal-inner','snbt-soal-inner','osn-soal-inner','evaluasi-soal-inner'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.add('hidden');
   });
@@ -2129,6 +2131,496 @@ window.backToTryoutHub = function() {
 window._onTryoutResult = function(jenis, pct, totalBenar, totalSoal, scores, elapsed) {
   window.PROFIL_recordSession?.(jenis, { pct, totalBenar, totalSoal, scores: scores || {}, elapsed: elapsed || 0 });
 };
+
+// ══════════════════════════════════════════════════════════════
+//  EVALUASI HARIAN — Generate soal dari topik kurikulum
+//  Hidup di dalam tryout-soal-section → evaluasi-soal-inner
+// ══════════════════════════════════════════════════════════════
+
+// ── State evaluasi (terpisah dari state drill) ─────────────────
+const evaluasiState = {
+  settings: {
+    level: 'elementary',
+    grade: 1,
+    numQuestions: 10,
+    types: ['multiple_choice', 'true_false', 'fill_blank', 'short_answer'],
+    studentName: '',
+    date: '',
+  },
+  topic:    { jenjang: '', mapel: '', topik: '' },
+  quizData: null,
+};
+
+// ── DOM refs evaluasi ──────────────────────────────────────────
+const evalLevelToggle      = document.getElementById('evaluasi-level-toggle');
+const evalGradePills       = document.getElementById('evaluasi-grade-pills');
+const evalGradeSelector    = document.getElementById('evaluasi-grade-selector');
+const evalNumInput         = document.getElementById('evaluasi-num-questions');
+const evalNumMinus         = document.getElementById('evaluasi-num-minus');
+const evalNumPlus          = document.getElementById('evaluasi-num-plus');
+const evalCounter          = document.getElementById('evaluasi-questions-counter');
+const evalBtnGenerate      = document.getElementById('evaluasi-btn-generate');
+const evalGenerateHint     = document.getElementById('evaluasi-generate-hint');
+const evalStepResults      = document.getElementById('evaluasi-step-results');
+const evalQuizOutput       = document.getElementById('evaluasi-quiz-output');
+const evalQuizMetaBar      = document.getElementById('evaluasi-quiz-meta-bar');
+const evalQuizMetaText     = document.getElementById('evaluasi-quiz-meta-text');
+const evalBtnPdf           = document.getElementById('evaluasi-btn-pdf');
+const evalBtnInteractive   = document.getElementById('evaluasi-btn-interactive');
+const evalBtnNew           = document.getElementById('evaluasi-btn-new');
+const evalBtnRegenerate    = document.getElementById('evaluasi-btn-regenerate');
+const evalSelJenjang       = document.getElementById('evaluasi-sel-jenjang');
+const evalSelMapel         = document.getElementById('evaluasi-sel-mapel');
+const evalSelTopik         = document.getElementById('evaluasi-sel-topik');
+const evalTopicHint        = document.getElementById('evaluasi-topic-hint');
+
+// ── Init evaluasi UI ───────────────────────────────────────────
+(function initEvaluasi() {
+  if (!evalBtnGenerate) return; // guard: DOM belum ada
+
+  // Tanggal default hari ini
+  const evalDateInput = document.getElementById('evaluasi-quiz-date');
+  if (evalDateInput) evalDateInput.valueAsDate = new Date();
+
+  // Level toggle (SD/SMP/SMA)
+  if (evalLevelToggle) {
+    evalLevelToggle.querySelectorAll('.level-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        evalLevelToggle.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        evaluasiState.settings.level = btn.dataset.value;
+        evalRenderGrades(btn.dataset.value);
+      });
+    });
+    evalRenderGrades('elementary');
+  }
+
+  // Jumlah soal ±
+  if (evalNumMinus) evalNumMinus.addEventListener('click', () => evalChangeNum(-1));
+  if (evalNumPlus)  evalNumPlus.addEventListener('click',  () => evalChangeNum(+1));
+  if (evalNumInput) evalNumInput.addEventListener('input',  () => {
+    let v = parseInt(evalNumInput.value) || 10;
+    v = Math.max(1, Math.min(LIMITS.maxQuestions, v));
+    evalNumInput.value = v;
+    evaluasiState.settings.numQuestions = v;
+    evalUpdateCounter(v);
+  });
+
+  // Curriculum dropdown — isi jenjang
+  if (evalSelJenjang) {
+    getCurriculumJenjang().forEach(j => {
+      const opt = document.createElement('option');
+      opt.value = j; opt.textContent = j;
+      evalSelJenjang.appendChild(opt);
+    });
+  }
+
+  // Tombol generate
+  evalBtnGenerate.addEventListener('click', evaluasiGenerateQuiz);
+  if (evalBtnRegenerate) evalBtnRegenerate.addEventListener('click', evaluasiGenerateQuiz);
+
+  // Tombol PDF
+  if (evalBtnPdf) evalBtnPdf.addEventListener('click', () => {
+    if (!evaluasiState.quizData) return;
+    evalQuizOutput?.classList.remove('hidden');
+    evalQuizMetaBar?.classList.remove('hidden');
+    // generatePDF membaca state drill — pinjam sementara
+    const _mode = state.mode, _topic = state.topic, _settings = state.settings;
+    state.mode     = 'topic';
+    state.topic    = { ...evaluasiState.topic };
+    state.settings = { ...evaluasiState.settings };
+    generatePDF(evaluasiState.quizData);
+    state.mode     = _mode;
+    state.topic    = _topic;
+    state.settings = _settings;
+  });
+
+  // Tombol Interaktif
+  if (evalBtnInteractive) evalBtnInteractive.addEventListener('click', () => {
+    if (!evaluasiState.quizData) return;
+    startInteractiveQuiz(evaluasiState.quizData);
+  });
+
+  // Tombol Soal Baru
+  if (evalBtnNew) evalBtnNew.addEventListener('click', () => {
+    evaluasiState.quizData = null;
+    if (evalQuizOutput)   { evalQuizOutput.innerHTML = ''; evalQuizOutput.classList.add('hidden'); }
+    if (evalQuizMetaBar)  evalQuizMetaBar.classList.add('hidden');
+    if (evalStepResults)  evalStepResults.classList.add('hidden');
+    if (evalGenerateHint) evalGenerateHint.textContent = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+// ── Grade pills evaluasi ───────────────────────────────────────
+function evalRenderGrades(level) {
+  if (!evalGradePills) return;
+  const config = GRADE_CONFIG[level];
+  if (!config) return;
+  evalGradePills.innerHTML = '';
+  config.grades.forEach((g, i) => {
+    const pill = document.createElement('button');
+    pill.className = 'grade-pill' + (i === 0 ? ' active' : '');
+    pill.textContent = g.label;
+    pill.dataset.value = g.value;
+    pill.addEventListener('click', () => {
+      evalGradePills.querySelectorAll('.grade-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      evaluasiState.settings.grade = parseInt(g.value);
+    });
+    evalGradePills.appendChild(pill);
+  });
+  evaluasiState.settings.grade = config.grades[0].value;
+  if (evalGradeSelector) evalGradeSelector.classList.add('visible');
+}
+
+function evalChangeNum(delta) {
+  if (!evalNumInput) return;
+  let v = (parseInt(evalNumInput.value) || 10) + delta;
+  v = Math.max(1, Math.min(LIMITS.maxQuestions, v));
+  evalNumInput.value = v;
+  evaluasiState.settings.numQuestions = v;
+  evalUpdateCounter(v);
+}
+
+function evalUpdateCounter(v) {
+  if (!evalCounter) return;
+  if (v >= LIMITS.maxQuestions) {
+    evalCounter.textContent = `${v} / ${LIMITS.maxQuestions} soal · Batas tercapai`;
+    evalCounter.className = 'questions-counter warn';
+  } else if (v >= LIMITS.warnQuestions) {
+    evalCounter.textContent = `${v} / ${LIMITS.maxQuestions} soal · Mendekati batas`;
+    evalCounter.className = 'questions-counter warn-soft';
+  } else {
+    evalCounter.textContent = `${v} / ${LIMITS.maxQuestions} soal`;
+    evalCounter.className = 'questions-counter';
+  }
+}
+
+// ── Curriculum dropdowns evaluasi ──────────────────────────────
+window.evaluasiOnJenjangChange = function() {
+  if (!evalSelJenjang || !evalSelMapel || !evalSelTopik) return;
+  const jenjang = evalSelJenjang.value;
+  evaluasiState.topic.jenjang = jenjang;
+  evaluasiState.topic.mapel   = '';
+  evaluasiState.topic.topik   = '';
+
+  evalSelMapel.innerHTML = '<option value="">— Pilih Mapel —</option>';
+  evalSelTopik.innerHTML = '<option value="">— Pilih Topik —</option>';
+  evalSelTopik.disabled  = true;
+
+  if (!jenjang) { evalSelMapel.disabled = true; return; }
+  getMapelForJenjang(jenjang).forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m; opt.textContent = m;
+    evalSelMapel.appendChild(opt);
+  });
+  evalSelMapel.disabled = false;
+  if (evalTopicHint) evalTopicHint.textContent = '';
+};
+
+window.evaluasiOnMapelChange = function() {
+  if (!evalSelJenjang || !evalSelMapel || !evalSelTopik) return;
+  const jenjang = evalSelJenjang.value;
+  const mapel   = evalSelMapel.value;
+  evaluasiState.topic.mapel = mapel;
+  evaluasiState.topic.topik = '';
+
+  evalSelTopik.innerHTML = '<option value="">— Pilih Topik —</option>';
+
+  if (!mapel) { evalSelTopik.disabled = true; return; }
+  getTopikForMapel(jenjang, mapel).forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t; opt.textContent = t;
+    evalSelTopik.appendChild(opt);
+  });
+  evalSelTopik.disabled = false;
+  evalSelTopik.onchange = () => {
+    evaluasiState.topic.topik = evalSelTopik.value;
+    if (evalTopicHint) evalTopicHint.textContent = evalSelTopik.value
+      ? `✅ Topik dipilih: ${evalSelTopik.value}`
+      : '';
+  };
+};
+
+// ── Collect settings evaluasi ──────────────────────────────────
+function evalCollectSettings() {
+  try {
+    const activeLevel = evalLevelToggle?.querySelector('.level-btn.active');
+    if (activeLevel) evaluasiState.settings.level = activeLevel.dataset.value;
+  } catch(e) {}
+  try {
+    const activePill = evalGradePills?.querySelector('.grade-pill.active');
+    if (activePill) evaluasiState.settings.grade = parseInt(activePill.dataset.value);
+  } catch(e) {}
+  try {
+    evaluasiState.settings.numQuestions = parseInt(evalNumInput?.value) || 10;
+  } catch(e) {}
+  try {
+    const checked = document.querySelectorAll('input[name="evaluasi-qtype"]:checked');
+    const types = Array.from(checked).map(c => c.value);
+    evaluasiState.settings.types = types.length > 0
+      ? types
+      : ['multiple_choice', 'true_false', 'fill_blank', 'short_answer'];
+  } catch(e) {
+    evaluasiState.settings.types = ['multiple_choice', 'true_false', 'fill_blank', 'short_answer'];
+  }
+  try {
+    const nameEl = document.getElementById('evaluasi-student-name');
+    const dateEl = document.getElementById('evaluasi-quiz-date');
+    evaluasiState.settings.studentName = nameEl?.value.trim() || '';
+    evaluasiState.settings.date        = dateEl?.value || '';
+  } catch(e) {}
+}
+
+// ── Main generate evaluasi ─────────────────────────────────────
+async function evaluasiGenerateQuiz() {
+  evalCollectSettings();
+
+  const { jenjang, mapel, topik } = evaluasiState.topic;
+  if (!jenjang || !mapel || !topik) {
+    if (evalGenerateHint) evalGenerateHint.textContent = 'Pilih kelas, mata pelajaran, dan topik terlebih dahulu.';
+    return;
+  }
+  if (evaluasiState.settings.types.length === 0) {
+    if (evalGenerateHint) evalGenerateHint.textContent = 'Pilih minimal satu jenis soal.';
+    return;
+  }
+
+  // Credit check
+  const credits   = window._currentCredits ?? 0;
+  const isInvited = window._isInvited ?? false;
+  if (!isInvited && credits <= 0) {
+    if (evalGenerateHint) evalGenerateHint.textContent = '';
+    window.renderCreditsBanner?.();
+    window.startCheckout?.();
+    return;
+  }
+
+  if (evalGenerateHint) evalGenerateHint.textContent = '';
+
+  // Tampilkan loading
+  evalShowLoading('Membuat soal evaluasi…', `${mapel} — ${topik}`);
+
+  try {
+    const quiz = await evalCallClaudeTopic();
+    evalFinishGenerate(quiz);
+  } catch (err) {
+    evalHandleError(err);
+  } finally {
+    evalHideLoading();
+  }
+}
+
+// ── Panggil Claude untuk evaluasi ─────────────────────────────
+async function evalCallClaudeTopic() {
+  const { jenjang, mapel, topik } = evaluasiState.topic;
+  const { numQuestions, types, level } = evaluasiState.settings;
+
+  const levelLabel = level === 'elementary' ? 'SD'
+    : level === 'junior_high' ? 'SMP' : 'SMA';
+
+  const typeNames = {
+    multiple_choice: 'Pilihan Ganda',
+    true_false:      'Benar / Salah',
+    fill_blank:      'Isian Singkat',
+    short_answer:    'Uraian',
+  };
+  const selectedTypes = types.map(t => typeNames[t] || t).join(', ');
+
+  const idToken = await window.getIdToken?.() || await firebase.auth().currentUser?.getIdToken(true);
+
+  const prompt = `You are an expert Indonesian curriculum teacher. Generate a quiz based on the following:
+
+KELAS: ${jenjang}
+MATA PELAJARAN: ${mapel}
+TOPIK / BAB: ${topik}
+JUMLAH SOAL: ${numQuestions}
+TIPE SOAL: ${selectedTypes}
+TINGKAT: ${levelLabel}
+
+INSTRUCTIONS:
+1. Generate exactly ${numQuestions} questions strictly about the topic "${topik}" for ${mapel}, ${jenjang}.
+2. Follow the Indonesian ${jenjang.includes('Merdeka') ? 'Kurikulum Merdeka' : 'K13 Revisi'} curriculum standard.
+3. Use Bahasa Indonesia for all questions and answers.
+   - For true_false questions: answer must be exactly "Benar" or "Salah"
+4. Distribute types evenly across: ${selectedTypes}
+5. For multiple choice: exactly 4 options labeled A, B, C, D.
+6. For fill in blank: replace key terms with ___.
+7. For short answer: open-ended questions about main concepts.
+8. EXPLANATION: Write a concise 1–2 sentence explanation per question.
+   - State the correct answer value first, then explain why.
+9. Adjust difficulty for ${levelLabel} students studying ${topik}.
+
+CRITICAL — ANSWER VERIFICATION:
+For EVERY multiple choice question, before writing the JSON:
+1. Solve the question yourself from scratch using the correct method.
+2. Confirm which option (A/B/C/D) matches your calculated answer.
+3. NEVER set "answer" to an option that is mathematically or factually wrong.
+
+Set "imageCrop" to null and "svg" to null for all questions.
+
+Respond ONLY with valid JSON, no markdown:
+{"subject":"${mapel} — ${topik}","language":"id","questions":[{"number":1,"type":"multiple_choice","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A. ...","explanation":"...","svg":null,"imageCrop":null}]}`;
+
+  const dynamicTokens = Math.min(12000, Math.max(4000, numQuestions * 450));
+
+  const res = await fetchWithRetry('/api/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-id-token': idToken || '' },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: dynamicTokens,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    if (res.status === 403 && err?.error === 'no_credits') throw new Error('no_credits');
+    throw new Error(err.error || `Generate gagal (${res.status})`);
+  }
+
+  const raw = await res.json();
+
+  if (typeof raw._credits === 'number') {
+    window._currentCredits = raw._credits;
+    window.renderCreditsBanner?.();
+  }
+
+  // Parse JSON dari response
+  let data = raw;
+  if (!data.questions) {
+    const textContent = (raw.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    if (textContent) {
+      try {
+        const clean = textContent.replace(/```json|```/g, '').trim();
+        data = JSON.parse(clean);
+      } catch(e) {
+        try {
+          const match = textContent.match(/\{[\s\S]*"questions"\s*:\s*\[[\s\S]*/);
+          if (match) {
+            let attempt = match[0];
+            const opens = (attempt.match(/\[/g)||[]).length - (attempt.match(/\]/g)||[]).length;
+            const openB = (attempt.match(/\{/g)||[]).length - (attempt.match(/\}/g)||[]).length;
+            attempt += ']'.repeat(Math.max(0,opens)) + '}'.repeat(Math.max(0,openB));
+            data = JSON.parse(attempt);
+          }
+        } catch(e2) {}
+      }
+    }
+  }
+
+  if (!data.questions || !Array.isArray(data.questions)) {
+    throw new Error('Format soal tidak valid. Coba lagi.');
+  }
+
+  data.questions = data.questions.map(q => ({ ...q, svg: null, imageCrop: null }));
+
+  // Sisipkan metadata settings ke quiz agar PDF/renderQuiz bisa pakai
+  data._evalSettings = { ...evaluasiState.settings };
+
+  return data;
+}
+
+// ── Setelah soal berhasil dibuat ───────────────────────────────
+function evalFinishGenerate(quiz) {
+  evaluasiState.quizData = quiz;
+  evalRenderQuiz(quiz);
+  if (evalStepResults) {
+    evalStepResults.classList.remove('hidden');
+    evalStepResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// ── Render soal evaluasi ke DOM-nya sendiri ────────────────────
+function evalRenderQuiz(quiz) {
+  if (!evalQuizOutput) return;
+
+  const { jenjang, mapel, topik } = evaluasiState.topic;
+
+  // Meta bar
+  if (evalQuizMetaText) {
+    evalQuizMetaText.textContent =
+      `${quiz.subject || mapel + ' — ' + topik} · 📚 ${jenjang} · ${quiz.questions?.length || 0} soal`;
+  }
+
+  if (!quiz.questions || !Array.isArray(quiz.questions)) return;
+
+  const typeLabelMap = {
+    multiple_choice: 'Pilihan Ganda',
+    true_false:      'Benar / Salah',
+    fill_blank:      'Isian',
+    short_answer:    'Uraian',
+  };
+
+  let html = '';
+  quiz.questions.forEach((q, i) => {
+    const typeLabel = typeLabelMap[q.type] || q.type;
+
+    let body = '';
+    if (q.type === 'multiple_choice' && q.options?.length) {
+      const optHtml = q.options.map(o => `<li>${o}</li>`).join('');
+      body = `<p class="q-text">${q.question}</p><ul class="q-options">${optHtml}</ul>`;
+    } else if (q.type === 'true_false') {
+      const tfA = (q.answer || '').toLowerCase();
+      const tfOpts = (tfA === 'benar' || tfA === 'salah') ? ['Benar', 'Salah'] : ['True', 'False'];
+      body = `<p class="q-text">${q.question}</p><ul class="q-options"><li>A. ${tfOpts[0]}</li><li>B. ${tfOpts[1]}</li></ul>`;
+    } else if (q.type === 'fill_blank') {
+      const rendered = q.question.replace(/___/g, '<span class="q-blank-line"></span>');
+      body = `<p class="q-text">${rendered}</p>`;
+    } else {
+      body = `<p class="q-text">${q.question}</p><p class="q-essay-hint">Jawab dalam 2–4 kalimat.</p>`;
+    }
+
+    html += `
+      <div class="quiz-question" style="animation-delay:${i * 0.04}s">
+        <div>
+          <span class="q-number">Soal ${q.number}</span>
+          <span class="q-type-badge">${typeLabel}</span>
+        </div>
+        ${body}
+      </div>`;
+  });
+
+  // Kunci jawaban
+  html += `
+    <div class="answer-key-section">
+      <div class="answer-key-title">🗝 Kunci Jawaban</div>
+      <ul class="answer-key-list">
+        ${quiz.questions.map(q => `<li><strong>No ${q.number}.</strong> ${q.answer}</li>`).join('')}
+      </ul>
+    </div>`;
+
+  evalQuizOutput.innerHTML = html;
+  evalQuizOutput.classList.remove('hidden');
+  if (evalQuizMetaBar) evalQuizMetaBar.classList.remove('hidden');
+}
+
+// ── Loading helpers evaluasi ───────────────────────────────────
+function evalShowLoading(msg, sub) {
+  if (loadingText) loadingText.textContent = msg || 'Membuat soal…';
+  if (loadingSub)  loadingSub.textContent  = sub  || '';
+  if (loadingOverlay) loadingOverlay.classList.remove('hidden');
+  if (evalBtnGenerate) evalBtnGenerate.disabled = true;
+}
+function evalHideLoading() {
+  if (loadingOverlay) loadingOverlay.classList.add('hidden');
+  if (evalBtnGenerate) evalBtnGenerate.disabled = false;
+}
+function evalHandleError(err) {
+  console.error('Evaluasi error:', err);
+  if (!evalGenerateHint) return;
+  if (err.message === 'no_credits' || err.message?.includes('no_credits')) {
+    evalGenerateHint.textContent = '';
+    window.renderCreditsBanner?.();
+    window.startCheckout?.();
+  } else if (err.status === 529 || err.status === 503 || err.message?.includes('kelebihan beban')) {
+    evalGenerateHint.textContent = '⚠️ API Anthropic sedang sibuk. Tunggu 30 detik lalu coba lagi.';
+  } else {
+    evalGenerateHint.textContent = 'Error: ' + (err.message || 'Gagal membuat soal.');
+  }
+}
 
 // ══════════════════════════════════════════════════════════════
 //  BANTAI SOAL — Logic
