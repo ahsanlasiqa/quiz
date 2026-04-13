@@ -425,6 +425,118 @@
           <span class="app-mode-tab-sub">Progress &amp; rencana studi</span>
         </button>
       </div>
+      <!-- ══ PREDIKSI TKA SECTION ══ -->
+      <div id="tryout-soal-section" class="hidden">
+
+        <!-- ── Try Out Hub ── -->
+        <div id="tryout-hub" class="tryout-hub">
+          <div class="tryout-hub-header">
+            <h2 class="tryout-hub-title">🎯 Pilih Simulasi Ujian</h2>
+            <p class="tryout-hub-sub">Pilih ujian yang sedang kamu persiapkan dan mulai latihan sekarang.</p>
+          </div>
+
+          <div class="tryout-cards-grid">
+
+            <!-- TKA 2026 — AKTIF & HOT -->
+            <button class="tryout-card tryout-card-hot" onclick="window.startTryout('tka')">
+              <div class="tryout-card-badge tryout-badge-hot">🔥 Sedang Berlangsung</div>
+              <div class="tryout-card-icon">🏆</div>
+              <div class="tryout-card-body">
+                <div class="tryout-card-title">Prediksi TKA 2026</div>
+                <div class="tryout-card-desc">SD, SMP, SMA — Matematika, Bahasa Indonesia, Bahasa Inggris</div>
+                <div class="tryout-card-meta">
+                  <span>⏱ Simulasi penuh</span>
+                  <span>🏅 Papan peringkat</span>
+                  <span class="tryout-meta-free">Gratis</span>
+                </div>
+              </div>
+              <div class="tryout-card-arrow">→</div>
+            </button>
+
+            <!-- CPNS SKD — AKTIF -->
+            <button class="tryout-card tryout-card-hot" onclick="window.startTryout('cpns')" style="border-color:#8b2a8b;background:linear-gradient(135deg,rgba(139,42,139,0.04) 0%,var(--warm-white) 100%)">
+              <div class="tryout-card-badge" style="background:rgba(139,42,139,0.12);color:#8b2a8b;border-color:rgba(139,42,139,0.25)">🆕 Tersedia</div>
+              <div class="tryout-card-icon">📋</div>
+              <div class="tryout-card-body">
+                <div class="tryout-card-title" style="color:#8b2a8b">Simulasi SKD CPNS</div>
+                <div class="tryout-card-desc">TWK, TIU, TKP — 100 soal, 90 menit</div>
+                <div class="tryout-card-meta">
+                  <span>⏱ 90 menit</span>
+                  <span>📊 Nilai passing grade</span>
+                  <span class="tryout-meta-free" style="background:rgba(139,42,139,0.1)!important;color:#8b2a8b!important">Tersedia</span>
+                </div>
+              </div>
+              <div class="tryout-card-arrow" style="color:#8b2a8b">→</div>
+            </button>
+
+            <!-- SNBT — AKTIF -->
+            <button class="tryout-card tryout-card-hot" onclick="window.startTryout('snbt')" style="border-color:#1a5a9a;background:linear-gradient(135deg,rgba(26,90,154,0.04) 0%,var(--warm-white) 100%)">
+              <div class="tryout-card-badge" style="background:rgba(26,90,154,0.12);color:#1a5a9a;border-color:rgba(26,90,154,0.25)">🆕 Tersedia</div>
+              <div class="tryout-card-icon">🎓</div>
+              <div class="tryout-card-body">
+                <div class="tryout-card-title" style="color:#1a5a9a">Try Out UTBK SNBT</div>
+                <div class="tryout-card-desc">PU, PPU, PBM, PK — 90 soal, 90 menit</div>
+                <div class="tryout-card-meta">
+                  <span>⏱ 90 menit</span>
+                  <span>📊 4 subtes TPS</span>
+                  <span class="tryout-meta-free" style="background:rgba(26,90,154,0.1)!important;color:#1a5a9a!important">Tersedia</span>
+                </div>
+              </div>
+              <div class="tryout-card-arrow" style="color:#1a5a9a">→</div>
+            </button>
+
+            <!-- OSN — AKTIF -->
+            <button class="tryout-card tryout-card-hot" onclick="window.startTryout('osn')" style="border-color:#1a7a6e;background:linear-gradient(135deg,rgba(26,122,110,0.04) 0%,var(--warm-white) 100%)">
+              <div class="tryout-card-badge" style="background:rgba(26,122,110,0.12);color:#1a7a6e;border-color:rgba(26,122,110,0.25)">🆕 Tersedia</div>
+              <div class="tryout-card-icon">🏅</div>
+              <div class="tryout-card-body">
+                <div class="tryout-card-title" style="color:#1a7a6e">Simulasi OSN</div>
+                <div class="tryout-card-desc">SD · SMP · SMA — IPA, Biologi, Fisika, Kimia</div>
+                <div class="tryout-card-meta">
+                  <span>🏘️ Kab → Final</span>
+                  <span>🥇 4 Level</span>
+                  <span class="tryout-meta-free" style="background:rgba(26,122,110,0.1)!important;color:#1a7a6e!important">Tersedia</span>
+                </div>
+              </div>
+              <div class="tryout-card-arrow" style="color:#1a7a6e">→</div>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- ── TKA Section ── -->
+        <div id="tka-soal-inner" class="hidden">
+          <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
+            ← Kembali ke Try Out
+          </button>
+          <div id="tka-container"></div>
+        </div>
+
+        <!-- ── CPNS Section ── -->
+        <div id="cpns-soal-inner" class="hidden">
+          <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
+            ← Kembali ke Try Out
+          </button>
+          <div id="cpns-container"></div>
+        </div>
+
+        <!-- ── SNBT Section ── -->
+        <div id="snbt-soal-inner" class="hidden">
+          <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
+            ← Kembali ke Try Out
+          </button>
+          <div id="snbt-container"></div>
+        </div>
+
+        <!-- ── OSN Section ── -->
+        <div id="osn-soal-inner" class="hidden">
+          <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
+            ← Kembali ke Try Out
+          </button>
+          <div id="osn-container"></div>
+        </div>
+
+      </div><!-- /tryout-soal-section -->
 
       <!-- ══ DRILL SOAL SECTION ══ -->
       <div id="drill-soal-section">
@@ -713,118 +825,6 @@
 
       </div><!-- /bantai-soal-section -->
 
-      <!-- ══ PREDIKSI TKA SECTION ══ -->
-      <div id="tryout-soal-section" class="hidden">
-
-        <!-- ── Try Out Hub ── -->
-        <div id="tryout-hub" class="tryout-hub">
-          <div class="tryout-hub-header">
-            <h2 class="tryout-hub-title">🎯 Pilih Simulasi Ujian</h2>
-            <p class="tryout-hub-sub">Pilih ujian yang sedang kamu persiapkan dan mulai latihan sekarang.</p>
-          </div>
-
-          <div class="tryout-cards-grid">
-
-            <!-- TKA 2026 — AKTIF & HOT -->
-            <button class="tryout-card tryout-card-hot" onclick="window.startTryout('tka')">
-              <div class="tryout-card-badge tryout-badge-hot">🔥 Sedang Berlangsung</div>
-              <div class="tryout-card-icon">🏆</div>
-              <div class="tryout-card-body">
-                <div class="tryout-card-title">Prediksi TKA 2026</div>
-                <div class="tryout-card-desc">SD, SMP, SMA — Matematika, Bahasa Indonesia, Bahasa Inggris</div>
-                <div class="tryout-card-meta">
-                  <span>⏱ Simulasi penuh</span>
-                  <span>🏅 Papan peringkat</span>
-                  <span class="tryout-meta-free">Gratis</span>
-                </div>
-              </div>
-              <div class="tryout-card-arrow">→</div>
-            </button>
-
-            <!-- CPNS SKD — AKTIF -->
-            <button class="tryout-card tryout-card-hot" onclick="window.startTryout('cpns')" style="border-color:#8b2a8b;background:linear-gradient(135deg,rgba(139,42,139,0.04) 0%,var(--warm-white) 100%)">
-              <div class="tryout-card-badge" style="background:rgba(139,42,139,0.12);color:#8b2a8b;border-color:rgba(139,42,139,0.25)">🆕 Tersedia</div>
-              <div class="tryout-card-icon">📋</div>
-              <div class="tryout-card-body">
-                <div class="tryout-card-title" style="color:#8b2a8b">Simulasi SKD CPNS</div>
-                <div class="tryout-card-desc">TWK, TIU, TKP — 100 soal, 90 menit</div>
-                <div class="tryout-card-meta">
-                  <span>⏱ 90 menit</span>
-                  <span>📊 Nilai passing grade</span>
-                  <span class="tryout-meta-free" style="background:rgba(139,42,139,0.1)!important;color:#8b2a8b!important">Tersedia</span>
-                </div>
-              </div>
-              <div class="tryout-card-arrow" style="color:#8b2a8b">→</div>
-            </button>
-
-            <!-- SNBT — AKTIF -->
-            <button class="tryout-card tryout-card-hot" onclick="window.startTryout('snbt')" style="border-color:#1a5a9a;background:linear-gradient(135deg,rgba(26,90,154,0.04) 0%,var(--warm-white) 100%)">
-              <div class="tryout-card-badge" style="background:rgba(26,90,154,0.12);color:#1a5a9a;border-color:rgba(26,90,154,0.25)">🆕 Tersedia</div>
-              <div class="tryout-card-icon">🎓</div>
-              <div class="tryout-card-body">
-                <div class="tryout-card-title" style="color:#1a5a9a">Try Out UTBK SNBT</div>
-                <div class="tryout-card-desc">PU, PPU, PBM, PK — 90 soal, 90 menit</div>
-                <div class="tryout-card-meta">
-                  <span>⏱ 90 menit</span>
-                  <span>📊 4 subtes TPS</span>
-                  <span class="tryout-meta-free" style="background:rgba(26,90,154,0.1)!important;color:#1a5a9a!important">Tersedia</span>
-                </div>
-              </div>
-              <div class="tryout-card-arrow" style="color:#1a5a9a">→</div>
-            </button>
-
-            <!-- OSN — AKTIF -->
-            <button class="tryout-card tryout-card-hot" onclick="window.startTryout('osn')" style="border-color:#1a7a6e;background:linear-gradient(135deg,rgba(26,122,110,0.04) 0%,var(--warm-white) 100%)">
-              <div class="tryout-card-badge" style="background:rgba(26,122,110,0.12);color:#1a7a6e;border-color:rgba(26,122,110,0.25)">🆕 Tersedia</div>
-              <div class="tryout-card-icon">🏅</div>
-              <div class="tryout-card-body">
-                <div class="tryout-card-title" style="color:#1a7a6e">Simulasi OSN</div>
-                <div class="tryout-card-desc">SD · SMP · SMA — IPA, Biologi, Fisika, Kimia</div>
-                <div class="tryout-card-meta">
-                  <span>🏘️ Kab → Final</span>
-                  <span>🥇 4 Level</span>
-                  <span class="tryout-meta-free" style="background:rgba(26,122,110,0.1)!important;color:#1a7a6e!important">Tersedia</span>
-                </div>
-              </div>
-              <div class="tryout-card-arrow" style="color:#1a7a6e">→</div>
-            </button>
-
-          </div>
-        </div>
-
-        <!-- ── TKA Section ── -->
-        <div id="tka-soal-inner" class="hidden">
-          <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
-            ← Kembali ke Try Out
-          </button>
-          <div id="tka-container"></div>
-        </div>
-
-        <!-- ── CPNS Section ── -->
-        <div id="cpns-soal-inner" class="hidden">
-          <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
-            ← Kembali ke Try Out
-          </button>
-          <div id="cpns-container"></div>
-        </div>
-
-        <!-- ── SNBT Section ── -->
-        <div id="snbt-soal-inner" class="hidden">
-          <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
-            ← Kembali ke Try Out
-          </button>
-          <div id="snbt-container"></div>
-        </div>
-
-        <!-- ── OSN Section ── -->
-        <div id="osn-soal-inner" class="hidden">
-          <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
-            ← Kembali ke Try Out
-          </button>
-          <div id="osn-container"></div>
-        </div>
-
-      </div><!-- /tryout-soal-section -->
 
       <!-- ── PROFIL SECTION ── -->
       <div id="profil-section" class="hidden">
