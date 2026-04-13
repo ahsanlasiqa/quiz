@@ -411,7 +411,7 @@
         </button>
         <button class="app-mode-tab" id="tab-drill" onclick="switchAppMode('drill')">
           <span class="app-mode-tab-icon">⚡</span>
-          <span class="app-mode-tab-label">Drill Soal</span>
+          <span class="app-mode-tab-label">Buat Soal</span>
           <span class="app-mode-tab-sub">Buat soal dari materi</span>
         </button>
         <button class="app-mode-tab" id="tab-bantai" onclick="switchAppMode('bantai')">
@@ -502,42 +502,25 @@
               <div class="tryout-card-arrow" style="color:#1a7a6e">→</div>
             </button>
 
+            <!-- Evaluasi Harian — Buat soal dari topik kurikulum -->
+            <button class="tryout-card tryout-card-hot" onclick="window.startTryout('evaluasi')" style="border-color:#e8a020;background:linear-gradient(135deg,rgba(232,160,32,0.04) 0%,var(--warm-white) 100%)">
+              <div class="tryout-card-badge" style="background:rgba(232,160,32,0.12);color:#e8a020;border-color:rgba(232,160,32,0.25)">🆕 Tersedia</div>
+              <div class="tryout-card-icon">📝</div>
+              <div class="tryout-card-body">
+                <div class="tryout-card-title" style="color:#e8a020">Evaluasi Harian</div>
+                <div class="tryout-card-desc">Pilih topik dari kurikulum — soal dibuat otomatis oleh AI</div>
+                <div class="tryout-card-meta">
+                  <span>🎒 SD–SMA</span>
+                  <span>📚 Semua Mapel</span>
+                  <span class="tryout-meta-free" style="background:rgba(232,160,32,0.1)!important;color:#e8a020!important">Tersedia</span>
+                </div>
+              </div>
+              <div class="tryout-card-arrow" style="color:#e8a020">→</div>
+            </button>
+
           </div>
-        </div>
-<!-- trial-->
-        <!-- MODE: Pilih Topik -->
-        <div id="mode-topic">
-          <div class="topic-selectors">
-            <div class="topic-field">
-              <label class="topic-label">Kelas</label>
-              <select class="topic-select" id="sel-jenjang" onchange="onJenjangChange()">
-                <option value="">— Pilih Kelas —</option>
-              </select>
-            </div>
-            <div class="topic-field">
-              <label class="topic-label">Mata Pelajaran</label>
-              <select class="topic-select" id="sel-mapel" onchange="onMapelChange()" disabled>
-                <option value="">— Pilih Mapel —</option>
-              </select>
-            </div>
-            <div class="topic-field">
-              <label class="topic-label">Topik / Bab</label>
-              <select class="topic-select" id="sel-topik" disabled>
-                <option value="">— Pilih Topik —</option>
-              </select>
-            </div>
-          </div>
-          <p class="topic-hint" id="topic-hint"></p>
         </div>
 
-      <div class="generate-wrap">
-        <button class="btn-generate" id="btn-generate">
-          <span class="btn-icon">⚡</span>
-          <span class="btn-text">Buat Soal</span>
-        </button>
-        <p class="generate-hint" id="generate-hint"></p>
-      </div>
-<!-- trial-->
         <!-- ── TKA Section ── -->
         <div id="tka-soal-inner" class="hidden">
           <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
@@ -569,6 +552,147 @@
           </button>
           <div id="osn-container"></div>
         </div>
+
+        <!-- ── Evaluasi Harian Section ── -->
+        <div id="evaluasi-soal-inner" class="hidden">
+          <button class="tryout-back-btn" onclick="window.backToTryoutHub()">
+            ← Kembali ke Try Out
+          </button>
+
+          <!-- Pengaturan soal evaluasi -->
+          <section class="card step-card" id="evaluasi-step-settings">
+            <div class="step-label">Langkah 1</div>
+            <h2 class="step-title">Pengaturan Soal</h2>
+            <div class="settings-grid">
+
+              <div class="setting-group full-width">
+                <label class="setting-label">Jenjang Sekolah</label>
+                <div class="level-toggle-group" id="evaluasi-level-toggle">
+                  <button class="level-btn active" data-value="elementary">
+                    <span class="level-emoji">🎒</span>
+                    <span class="level-name">SD</span>
+                    <span class="level-sub">Kelas 1–6</span>
+                  </button>
+                  <button class="level-btn" data-value="junior_high">
+                    <span class="level-emoji">📚</span>
+                    <span class="level-name">SMP</span>
+                    <span class="level-sub">Kelas 7–9</span>
+                  </button>
+                  <button class="level-btn" data-value="high_school">
+                    <span class="level-emoji">🎓</span>
+                    <span class="level-name">SMA</span>
+                    <span class="level-sub">Kelas 10–12</span>
+                  </button>
+                </div>
+                <div class="grade-selector" id="evaluasi-grade-selector">
+                  <label class="setting-label">Kelas</label>
+                  <div class="grade-pills" id="evaluasi-grade-pills"></div>
+                </div>
+              </div>
+
+              <div class="setting-group">
+                <label class="setting-label">Jumlah Soal</label>
+                <div class="number-input-wrap">
+                  <button class="num-btn" id="evaluasi-num-minus">−</button>
+                  <input type="number" id="evaluasi-num-questions" value="10" min="1" max="20" />
+                  <button class="num-btn" id="evaluasi-num-plus">+</button>
+                </div>
+                <p class="questions-counter" id="evaluasi-questions-counter">10 / 20 soal</p>
+              </div>
+
+              <div class="setting-group full-width">
+                <label class="setting-label">Jenis Soal</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="evaluasi-qtype" value="multiple_choice" checked />
+                    <span class="checkbox-box"></span><span>Pilihan Ganda</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="evaluasi-qtype" value="true_false" checked />
+                    <span class="checkbox-box"></span><span>Benar / Salah</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="evaluasi-qtype" value="fill_blank" checked />
+                    <span class="checkbox-box"></span><span>Isian</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="evaluasi-qtype" value="short_answer" checked />
+                    <span class="checkbox-box"></span><span>Uraian / Esai</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="setting-group full-width">
+                <label class="setting-label">Info Siswa pada PDF</label>
+                <div class="two-col">
+                  <div class="input-field">
+                    <label>Nama Siswa (opsional)</label>
+                    <input type="text" id="evaluasi-student-name" placeholder="cth. Andi" />
+                  </div>
+                  <div class="input-field">
+                    <label>Tanggal (opsional)</label>
+                    <input type="date" id="evaluasi-quiz-date" />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- Pilih Topik Kurikulum -->
+          <section class="card step-card" id="evaluasi-step-topic">
+            <div class="step-label">Langkah 2</div>
+            <h2 class="step-title">Pilih Topik</h2>
+            <p class="step-desc">Pilih kelas, mata pelajaran, dan topik dari kurikulum — AI akan langsung membuat soal.</p>
+            <div class="topic-selectors">
+              <div class="topic-field">
+                <label class="topic-label">Kelas</label>
+                <select class="topic-select" id="evaluasi-sel-jenjang" onchange="evaluasiOnJenjangChange()">
+                  <option value="">— Pilih Kelas —</option>
+                </select>
+              </div>
+              <div class="topic-field">
+                <label class="topic-label">Mata Pelajaran</label>
+                <select class="topic-select" id="evaluasi-sel-mapel" onchange="evaluasiOnMapelChange()" disabled>
+                  <option value="">— Pilih Mapel —</option>
+                </select>
+              </div>
+              <div class="topic-field">
+                <label class="topic-label">Topik / Bab</label>
+                <select class="topic-select" id="evaluasi-sel-topik" disabled>
+                  <option value="">— Pilih Topik —</option>
+                </select>
+              </div>
+            </div>
+            <p class="topic-hint" id="evaluasi-topic-hint"></p>
+          </section>
+
+          <div class="generate-wrap">
+            <button class="btn-generate" id="evaluasi-btn-generate">
+              <span class="btn-icon">⚡</span>
+              <span class="btn-text">Buat Soal Evaluasi</span>
+            </button>
+            <p class="generate-hint" id="evaluasi-generate-hint"></p>
+          </div>
+
+          <!-- Hasil soal evaluasi -->
+          <section class="card step-card hidden" id="evaluasi-step-results">
+            <div class="step-label">Langkah 3</div>
+            <h2 class="step-title">Soal Siap Dibuat! 🎉</h2>
+            <p class="step-desc">Pilih cara menggunakan soal ini:</p>
+            <div class="result-actions result-actions-top">
+              <button class="btn-pdf" id="evaluasi-btn-pdf"><span>⬇</span> Unduh PDF</button>
+              <button class="btn-interactive" id="evaluasi-btn-interactive"><span>▶</span> Mulai Kuis Interaktif</button>
+              <button class="btn-new" id="evaluasi-btn-new"><span>＋</span> Soal Baru</button>
+            </div>
+            <div id="evaluasi-quiz-meta-bar" class="quiz-meta-bar hidden">
+              <span id="evaluasi-quiz-meta-text"></span>
+              <button class="btn-regenerate" id="evaluasi-btn-regenerate">↺ Buat Ulang</button>
+            </div>
+            <div id="evaluasi-quiz-output" class="hidden"></div>
+          </section>
+
+        </div><!-- /evaluasi-soal-inner -->
 
       </div><!-- /tryout-soal-section -->
 
@@ -657,12 +781,12 @@
       <section class="card step-card" id="step-upload">
         <div class="step-label">Langkah 2</div>
         <h2 class="step-title">Sumber Materi</h2>
-        <p class="step-desc">Pilih cara memasukkan materi — upload foto buku atau langsung pilih topik dari kurikulum.</p>
+        <p class="step-desc">Upload foto buku, dokumen, atau PDF sebagai sumber materi.</p>
 
         <!-- Mode switcher -->
         <div class="mode-tabs">
           <button class="mode-tab active" id="tab-upload" onclick="switchMode('upload')">📎 Upload Materi</button>
-          <button class="mode-tab" id="tab-topic" onclick="switchMode('topic')">📚 Pilih Topik</button>
+
         </div>
 
         <!-- MODE: Upload -->
@@ -686,30 +810,6 @@
           <div class="image-preview-grid" id="image-preview-grid"></div>
         </div>
 
-        <!-- MODE: Pilih Topik -->
-        <div id="mode-topic" class="hidden">
-          <div class="topic-selectors">
-            <div class="topic-field">
-              <label class="topic-label">Kelas</label>
-              <select class="topic-select" id="sel-jenjang" onchange="onJenjangChange()">
-                <option value="">— Pilih Kelas —</option>
-              </select>
-            </div>
-            <div class="topic-field">
-              <label class="topic-label">Mata Pelajaran</label>
-              <select class="topic-select" id="sel-mapel" onchange="onMapelChange()" disabled>
-                <option value="">— Pilih Mapel —</option>
-              </select>
-            </div>
-            <div class="topic-field">
-              <label class="topic-label">Topik / Bab</label>
-              <select class="topic-select" id="sel-topik" disabled>
-                <option value="">— Pilih Topik —</option>
-              </select>
-            </div>
-          </div>
-          <p class="topic-hint" id="topic-hint"></p>
-        </div>
       </section>
 
       <div class="generate-wrap">
