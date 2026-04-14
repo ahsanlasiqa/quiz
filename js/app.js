@@ -184,34 +184,113 @@ window.renderCreditsBanner = function() {
   banner.classList.remove('hidden');
 };
 
-window.startCheckout = async function(pack) {
+// ── Pricing Modal ─────────────────────────────────────────────────────────────
+// Dipanggil dari banner: showPricingModal('starter') atau showPricingModal('pro')
+window.showPricingModal = function(tier) {
+  // Hapus modal lama jika ada
+  document.getElementById('pricing-modal-overlay')?.remove();
+
+  const packs = {
+    starter: {
+      label:   'Starter',
+      monthly: { id: 'starter_monthly', price: 'Rp 19.900 / bulan', credits: '5 kredit',  billingNote: 'per bulan' },
+      yearly:  { id: 'starter_yearly',  price: 'Rp 200.000 / tahun', credits: '60 kredit', billingNote: 'per tahun · hemat 16%' },
+    },
+    pro: {
+      label:   'Pro',
+      monthly: { id: 'pro_monthly', price: 'Rp 49.900 / bulan',  credits: '40 kredit',  billingNote: 'per bulan' },
+      yearly:  { id: 'pro_yearly',  price: 'Rp 500.000 / tahun', credits: '480 kredit', billingNote: 'per tahun · hemat 17%' },
+    },
+  };
+
+  const p = packs[tier];
+  if (!p) return;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'pricing-modal-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
+
+  overlay.innerHTML = `
+    <div style="background:var(--warm-white,#fff);border-radius:16px;padding:28px 24px;max-width:360px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,0.18);position:relative">
+      <button onclick="document.getElementById('pricing-modal-overlay').remove()"
+        style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#888">✕</button>
+      <h3 style="margin:0 0 4px;font-size:1.15rem">Paket ${p.label}</h3>
+      <p style="margin:0 0 20px;color:#666;font-size:.85rem">Pilih periode langganan</p>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <!-- Bulanan -->
+        <button onclick="window._doCheckout('${p.monthly.id}')"
+          style="text-align:left;border:2px solid #e0d5c8;border-radius:12px;padding:14px 16px;background:#fff;cursor:pointer;transition:border-color .15s"
+          onmouseover="this.style.borderColor='#c8a96e'" onmouseout="this.style.borderColor='#e0d5c8'">
+          <div style="font-weight:600;font-size:.95rem">${p.monthly.price}</div>
+          <div style="font-size:.82rem;color:#888;margin-top:2px">${p.monthly.credits} · ${p.monthly.billingNote}</div>
+        </button>
+        <!-- Tahunan -->
+        <button onclick="window._doCheckout('${p.yearly.id}')"
+          style="text-align:left;border:2px solid #c8a96e;border-radius:12px;padding:14px 16px;background:linear-gradient(135deg,#fffaf3,#fff8ec);cursor:pointer;transition:border-color .15s;position:relative"
+          onmouseover="this.style.borderColor='#a07840'" onmouseout="this.style.borderColor='#c8a96e'">
+          <span style="position:absolute;top:-10px;right:12px;background:#c8a96e;color:#fff;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:20px">HEMAT</span>
+          <div style="font-weight:600;font-size:.95rem">${p.yearly.price}</div>
+          <div style="font-size:.82rem;color:#888;margin-top:2px">${p.yearly.credits} · ${p.yearly.billingNote}</div>
+        </button>
+      </div>
+    </div>`;
+
+  // Tutup jika klik overlay
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) overlay.remove();
+  });
+
+  document.body.appendChild(overlay);
+};
+
+// Internal: panggil setelah user pilih pack dari modal
+window._doCheckout = async function(packId) {
+  document.getElementById('pricing-modal-overlay')?.remove();
+  await window.startCheckout(packId);
+};
+
+// ── startCheckout ─────────────────────────────────────────────────────────────
+// packId: string seperti 'starter_monthly', 'pro_yearly', dll
+window.startCheckout = async function(packId) {
+  if (!packId || typeof packId !== 'string') {
+    alert('Pack tidak valid. Silakan pilih paket terlebih dahulu.');
+    return;
+  }
   try {
     const idToken = await window.getIdToken();
     const res = await fetch('/api/create-transaction', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-id-token': idToken },
-      body: JSON.stringify({ pack: pack || 40 })
+      body: JSON.stringify({ pack: packId })
     });
     const data = await res.json();
     if (!data.token) {
       alert('Gagal memulai pembayaran: ' + (data.error || 'Error tidak diketahui'));
       return;
     }
-    // Open Midtrans Snap payment popup
     window.snap.pay(data.token, {
-      onSuccess: function(result) {
-        window._currentCredits += pack; // pack sudah 20 atau 40
-        window.renderCreditsBanner();
-        generateHint.textContent = '🎉 Pembayaran berhasil! Kredit ditambahkan.';
+      onSuccess: async function(result) {
+        // Refresh kredit dari server (jangan update manual)
+        try {
+          const freshToken = await window.getIdToken();
+          const authRes = await fetch('/api/check-auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idToken: freshToken })
+          });
+          const authData = await authRes.json();
+          if (authData.ok) window.updateSubscriptionUI(authData);
+        } catch(e) { /* silent */ }
       },
       onPending: function(result) {
-        generateHint.textContent = '⏳ Pembayaran pending. Kredit aktif setelah dikonfirmasi.';
+        // Webhook akan update ketika payment dikonfirmasi
       },
       onError: function(result) {
-        generateHint.textContent = '❌ Pembayaran gagal. Silakan coba lagi.';
+        alert('❌ Pembayaran gagal. Silakan coba lagi.');
       },
       onClose: function() {
-        // User closed popup without paying — do nothing
+        // User tutup popup tanpa bayar — tidak perlu action
       }
     });
   } catch (err) {
@@ -537,7 +616,7 @@ async function generateQuiz() {
   if (!isInvited && credits <= 0) {
     generateHint.textContent = '';
     window.renderCreditsBanner();
-    window.startCheckout();
+    window.showPricingModal('pro');
     return;
   }
 
@@ -585,7 +664,7 @@ function handleGenerateError(err) {
   if (err.message === 'no_credits' || (err.message && err.message.includes('no_credits'))) {
     generateHint.textContent = '';
     window.renderCreditsBanner();
-    window.startCheckout();
+    window.showPricingModal('pro');
   } else if (err.status === 529 || err.status === 503 ||
              (err.message && err.message.includes('kelebihan beban'))) {
     generateHint.textContent = '⚠️ API Anthropic sedang sibuk. Tunggu 30 detik lalu coba lagi.';
@@ -877,7 +956,7 @@ document.getElementById('detect-btn-bantai-solve').addEventListener('click', asy
   const isInvited = window._isInvited ?? false;
   if (!isInvited && credits <= 0) {
     window.renderCreditsBanner?.();
-    window.startCheckout?.();
+    window.showPricingModal?.('pro');
     return;
   }
 
@@ -938,7 +1017,7 @@ ATURAN: Steps minimal 4. Untuk pilihan ganda: verifikasi dan jelaskan mengapa pi
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      if (res.status === 403 && err?.error === 'no_credits') { window.renderCreditsBanner?.(); window.startCheckout?.(); return; }
+      if (res.status === 403 && err?.error === 'no_credits') { window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return; }
       throw new Error(err?.error?.message || err?.error || 'Error ' + res.status);
     }
 
@@ -2427,7 +2506,7 @@ async function evaluasiGenerateQuiz() {
   if (!isInvited && credits <= 0) {
     if (evalGenerateHint) evalGenerateHint.textContent = '';
     window.renderCreditsBanner?.();
-    window.startCheckout?.();
+    window.showPricingModal?.('pro');
     return;
   }
 
@@ -2648,7 +2727,7 @@ function evalHandleError(err) {
   if (err.message === 'no_credits' || err.message?.includes('no_credits')) {
     evalGenerateHint.textContent = '';
     window.renderCreditsBanner?.();
-    window.startCheckout?.();
+    window.showPricingModal?.('pro');
   } else if (err.status === 529 || err.status === 503 || err.message?.includes('kelebihan beban')) {
     evalGenerateHint.textContent = '⚠️ API Anthropic sedang sibuk. Tunggu 30 detik lalu coba lagi.';
   } else {
@@ -2969,7 +3048,7 @@ async function solveBantaiSoal() {
   const isInvited = window._isInvited ?? false;
   if (!isInvited && credits <= 0) {
     window.renderCreditsBanner?.();
-    window.startCheckout?.();
+    window.showPricingModal?.('pro');
     return;
   }
 
@@ -3051,7 +3130,7 @@ ATURAN OUTPUT:
       const err = await res.json().catch(() => ({}));
       if (res.status === 403 && err?.error === 'no_credits') {
         window.renderCreditsBanner?.();
-        window.startCheckout?.();
+        window.showPricingModal?.('pro');
         return;
       }
       throw new Error(err?.error?.message || err?.error || `Error ${res.status}`);
