@@ -146,7 +146,7 @@
 </div>
 
 <!-- Midtrans Snap -->
-<script src="https://app.midtrans.com/snap/snap.js" data-client-key="REPLACE_WITH_PRODUCTION_CLIENT_KEY"></script>
+<script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-SlhoAop1NZxXT_c6"></script>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -252,14 +252,38 @@
       const ordersData = await ordersRes.json();
       const statusData = statusRes.ok ? await statusRes.json() : null;
 
-      const orders = ordersData.orders || [];
-      const credits = statusData?.credits ?? null;
+      const orders              = ordersData.orders || [];
+      const credits             = statusData?.credits             ?? null;
+      const subStatus           = statusData?.subscriptionStatus  || 'free';
+      const subLabel            = statusData?.subscriptionPackLabel|| null;
+      const subExpiresAt        = statusData?.subscriptionExpiresAt|| null;
 
       let html = '';
 
-      // Credits banner
+      // Subscription / credits banner
       if (credits !== null) {
-        html += `<div class="credits-banner">💰 Kredit tersisa kamu saat ini: <strong>${credits} kredit</strong></div>`;
+        if (subStatus === 'active' && subLabel) {
+          const expStr = subExpiresAt
+            ? new Date(subExpiresAt).toLocaleDateString('id-ID',
+                { day:'2-digit', month:'long', year:'numeric' })
+            : '';
+          html += `
+            <div class="credits-banner" style="flex-direction:column;align-items:flex-start;gap:4px">
+              <div>🎟️ <strong>Paket ${subLabel}</strong> — Aktif</div>
+              <div style="font-size:0.85rem">⚡ <strong>${credits} kredit</strong> tersisa
+                ${expStr ? `· Berakhir: <strong>${expStr}</strong>` : ''}</div>
+            </div>`;
+        } else if (subStatus === 'expired') {
+          html += `
+            <div class="credits-banner" style="background:#fef2f2;border-color:#fecaca;color:#991b1b">
+              ⏰ Langganan kamu telah berakhir.
+              <a href="/" style="color:#991b1b;font-weight:700">Perbarui sekarang →</a>
+            </div>`;
+        } else {
+          html += `<div class="credits-banner">💰 Kredit tersisa: <strong>${credits} kredit</strong>
+            ${credits === 0 ? ' · <a href="/" style="color:var(--teal);font-weight:600">Beli paket →</a>' : ''}</div>`;
+        }
+      }
       }
 
       // Refresh button
@@ -281,10 +305,15 @@
             <div class="order-card">
               <div class="order-icon">${statusIcon(o.status)}</div>
               <div class="order-info">
-                <div class="order-title">${o.credits} Kredit — ${formatRupiah(o.amount)}</div>
+                <div class="order-title">${o.packId
+                  ? (o.credits + ' Kredit · ' + (o.packId.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())))
+                  : (o.credits + ' Kredit')} — ${formatRupiah(o.amount)}</div>
                 <div class="order-meta">
                   ${o.status === 'paid' && o.paidAt
                     ? '✅ Dibayar: ' + formatDate(o.paidAt)
+                    + (o.subscriptionExpiresAt
+                        ? ' · Aktif hingga: ' + formatDate(o.subscriptionExpiresAt)
+                        : '')
                     : '📅 Dibuat: ' + formatDate(o.createdAt)}
                 </div>
                 <div class="order-id">${o.orderId}</div>

@@ -5204,3 +5204,296 @@ body {
   .profil-stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .profil-stat-num  { font-size: 1.3rem; }
 }
+
+
+/* ══════════════════════════════════════════════════════════════
+   PRICING — Toggle bulanan/tahunan & update cards
+   ══════════════════════════════════════════════════════════════ */
+
+.landing-pricing-sub {
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--ink-muted);
+  margin-bottom: 24px;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Billing toggle */
+.pricing-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 32px;
+  background: rgba(26,18,8,0.06);
+  border-radius: 40px;
+  padding: 4px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pricing-toggle-btn {
+  padding: 8px 22px;
+  border-radius: 36px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pricing-toggle-btn.pricing-toggle-active {
+  background: white;
+  color: var(--ink);
+  box-shadow: 0 2px 8px rgba(26,18,8,0.12);
+}
+.pricing-toggle-save {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--amber);
+  color: white;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+/* Savings label inside card */
+.pricing-save {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--teal);
+  background: var(--teal-pale);
+  padding: 4px 10px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  display: inline-block;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PRICING MODAL (in-app, muncul saat klik beli dari banner)
+   ══════════════════════════════════════════════════════════════ */
+
+#pricing-modal-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.pm-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(26,18,8,0.5);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.pm-sheet {
+  position: relative;
+  background: var(--warm-white);
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px 24px 36px;
+  box-shadow: 0 -8px 48px rgba(26,18,8,0.2);
+  animation: pmSlideUp 0.28s cubic-bezier(.4,0,.2,1);
+}
+@keyframes pmSlideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.pm-close {
+  position: absolute;
+  top: 18px; right: 20px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(26,18,8,0.08);
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.pm-close:hover { background: rgba(26,18,8,0.15); }
+
+.pm-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.pm-sub {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Modal billing toggle */
+.pm-toggle-row {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  background: rgba(26,18,8,0.06);
+  border-radius: 40px;
+  padding: 4px;
+  width: fit-content;
+}
+.pm-toggle-btn {
+  padding: 7px 18px;
+  border-radius: 36px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.pm-toggle-btn.pm-toggle-active {
+  background: white;
+  color: var(--ink);
+  box-shadow: 0 2px 8px rgba(26,18,8,0.12);
+}
+.pm-toggle-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--amber);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 20px;
+}
+
+/* Plan cards dalam modal */
+.pm-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+@media (max-width: 480px) {
+  .pm-cards { grid-template-columns: 1fr; }
+}
+
+.pm-card {
+  background: white;
+  border: 1.5px solid rgba(26,18,8,0.1);
+  border-radius: 16px;
+  padding: 20px 18px;
+  position: relative;
+}
+.pm-card-featured {
+  border-color: var(--teal);
+  box-shadow: 0 4px 24px rgba(26,122,110,0.15);
+}
+
+.pm-plan-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--teal);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.pm-plan-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.pm-plan-price {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--ink);
+  margin-bottom: 2px;
+  line-height: 1.1;
+}
+.pm-plan-price span {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+.pm-plan-save {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--teal);
+  background: var(--teal-pale);
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+.pm-plan-feats {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pm-plan-feats li {
+  font-size: 0.8rem;
+  color: var(--ink-light);
+}
+
+.pm-btn-buy {
+  width: 100%;
+  padding: 11px 0;
+  border: none;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.pm-btn-starter {
+  background: rgba(26,18,8,0.07);
+  color: var(--ink);
+}
+.pm-btn-starter:hover { background: rgba(26,18,8,0.13); }
+.pm-btn-pro {
+  background: var(--teal);
+  color: white;
+}
+.pm-btn-pro:hover {
+  background: var(--teal-light);
+  transform: translateY(-1px);
+}
+
+.pm-note {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+/* ── Banner plan label ───────────────────────────────────────── */
+.banner-plan-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--teal-pale);
+  color: var(--teal);
+  padding: 2px 8px;
+  border-radius: 20px;
+  vertical-align: middle;
+}

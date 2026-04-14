@@ -109,16 +109,24 @@ if (window.pdfjsLib) {
 })();
 
 // ── Credits UI ────────────────────────────
-window._currentCredits = 0;
-window._isInvited = false;
+window._currentCredits       = 0;
+window._isInvited            = false;
+window._subscriptionStatus   = 'free';   // 'free' | 'active' | 'expired'
+window._subscriptionPackId   = null;
+window._subscriptionPackLabel= null;
+window._subscriptionExpiresAt= null;
 
 window.updateSubscriptionUI = function(accessData) {
-  window._isInvited = accessData.isInvited || false;
-  window._currentCredits = accessData.credits ?? 0;
+  window._isInvited             = accessData.isInvited             || false;
+  window._currentCredits        = accessData.credits               ?? 0;
+  window._subscriptionStatus    = accessData.subscriptionStatus    || 'free';
+  window._subscriptionPackId    = accessData.subscriptionPackId    || null;
+  window._subscriptionPackLabel = accessData.subscriptionPackLabel || null;
+  window._subscriptionExpiresAt = accessData.subscriptionExpiresAt || null;
   window.renderCreditsBanner();
   // Setelah login & auth siap → sync profil dari cloud
   if (window.PROFIL) {
-    window.PROFIL._cloudSynced = false; // paksa re-fetch
+    window.PROFIL._cloudSynced = false;
     window.PROFIL.init();
   }
 };
@@ -127,8 +135,54 @@ window.renderCreditsBanner = function() {
   const banner = document.getElementById('subscription-banner');
   if (!banner) return;
 
-  // Invited (family) — no banner needed
-  if (window._isInvited) {
+  if (window._isInvited) { banner.classList.add('hidden'); return; }
+
+  const credits = window._currentCredits;
+  const status  = window._subscriptionStatus;
+  const label   = window._subscriptionPackLabel;
+  const exp     = window._subscriptionExpiresAt;
+
+  // Format tanggal berakhir
+  let expStr = '';
+  if (exp) {
+    const d = new Date(exp);
+    expStr = d.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
+  }
+
+  let statusHtml, bannerClass;
+
+  if (status === 'active') {
+    bannerClass = 'subscription-banner trial';
+    statusHtml  = `
+      <span>
+        ⚡ <strong>${credits} kredit</strong> tersisa
+        ${label ? `· <span class="banner-plan-label">${label}</span>` : ''}
+        ${expStr ? `· Aktif hingga ${expStr}` : ''}
+      </span>`;
+  } else if (status === 'expired') {
+    bannerClass = 'subscription-banner expired';
+    statusHtml  = `<span>⏰ Langganan berakhir ${expStr || ''}. Perpanjang untuk lanjutkan.</span>`;
+  } else {
+    // free
+    bannerClass = credits > 0
+      ? 'subscription-banner trial'
+      : 'subscription-banner expired';
+    statusHtml = credits > 0
+      ? `<span>⚡ <strong>${credits} kredit</strong> percobaan tersisa</span>`
+      : `<span>🪫 Kredit habis — pilih paket untuk lanjutkan.</span>`;
+  }
+
+  banner.className = bannerClass;
+  banner.innerHTML = `
+    ${statusHtml}
+    <a href="/payment-status.html" class="banner-status-link">Riwayat →</a>
+    <div class="banner-buy-btns">
+      <button class="btn-subscribe btn-subscribe-sm"  onclick="window.showPricingModal('starter')">Starter</button>
+      <button class="btn-subscribe btn-subscribe-hot" onclick="window.showPricingModal('pro')">🔥 Pro</button>
+    </div>
+  `;
+  banner.classList.remove('hidden');
+};  if (window._isInvited) {
     banner.classList.add('hidden');
     return;
   }

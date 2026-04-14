@@ -7,7 +7,14 @@ export const config = {
 };
 
 const FREE_CREDITS = 3;
-const PAID_CREDITS = 40;
+
+// Label paket untuk ditampilkan ke user
+const PACK_LABELS = {
+  starter_monthly: 'Starter Bulanan',
+  starter_yearly:  'Starter Tahunan',
+  pro_monthly:     'Pro Bulanan',
+  pro_yearly:      'Pro Tahunan',
+};
 
 function getAdminApp() {
   if (getApps().length > 0) return getApps()[0];
@@ -25,42 +32,78 @@ export default async function handler(req, res) {
   if (!idToken) return res.status(400).json({ error: 'Missing token' });
 
   try {
-    const app = getAdminApp();
-    const db = getFirestore(app);
+    const app  = getAdminApp();
+    const db   = getFirestore(app);
     const auth = getAuth(app);
 
     const decoded = await auth.verifyIdToken(idToken);
-    const email = decoded.email?.toLowerCase();
+    const email   = decoded.email?.toLowerCase();
     if (!email) return res.status(401).json({ error: 'No email in token' });
 
     const userRef = db.collection('users').doc(email);
     const userDoc = await userRef.get();
 
-    // ── NEW USER ──────────────────────────────
+    // ── NEW USER ──────────────────────────────────────────────
     if (!userDoc.exists) {
-      const validInvite = inviteCode && inviteCode.trim() === (process.env.INVITE_CODE || '').trim();
+      const validInvite = inviteCode &&
+        inviteCode.trim() === (process.env.INVITE_CODE || '').trim();
       await userRef.set({
         email,
-        name: decoded.name || '',
-        createdAt: new Date().toISOString(),
-        isInvited: validInvite,
-        credits: FREE_CREDITS,
+        name:           decoded.name || '',
+        createdAt:      new Date().toISOString(),
+        isInvited:      validInvite,
+        credits:        FREE_CREDITS,
         totalPurchased: 0,
       });
       return res.status(200).json({
         ok: true, email,
-        isInvited: validInvite,
-        credits: FREE_CREDITS,
-        newUser: true,
+        isInvited:          validInvite,
+        credits:            FREE_CREDITS,
+        subscriptionStatus: 'free',
+        newUser:            true,
       });
     }
 
-    // ── EXISTING USER ─────────────────────────
+    // ── EXISTING USER ─────────────────────────────────────────
     const user = userDoc.data();
+    const now  = new Date();
+
+    // Cek apakah subscription masih aktif
+    const expiresAt = user.subscriptionExpiresAt
+      ? new Date(user.subscriptionExpiresAt)
+      : null;
+
+    const isActive = expiresAt && expiresAt > now;
+    let   credits  = user.credits ?? 0;
+    let   subscriptionStatus = 'free';
+    let   updates  = null;
+
+    if (isActive) {
+      // Subscription aktif — gunakan kredit yang tersimpan
+      subscriptionStatus = 'active';
+    } else if (expiresAt && expiresAt <= now && user.subscriptionExpiresAt) {
+      // Subscription expired — reset kredit ke 0 jika belum di-reset
+      subscriptionStatus = 'expired';
+      if (credits > 0) {
+        credits = 0;
+        updates = { credits: 0, subscriptionStatus: 'expired' };
+      }
+    }
+
+    // Simpan update jika ada (misal reset kredit expired)
+    if (updates) {
+      await userRef.update(updates);
+    }
+
     return res.status(200).json({
-      ok: true, email,
-      isInvited: user.isInvited || false,
-      credits: user.credits ?? 0,
+      ok:    true,
+      email,
+      isInvited:              user.isInvited || false,
+      credits,
+      subscriptionStatus,                                      // 'free' | 'active' | 'expired'
+      subscriptionPackId:     user.subscriptionPackId || null,
+      subscriptionPackLabel:  PACK_LABELS[user.subscriptionPackId] || null,
+      subscriptionExpiresAt:  user.subscriptionExpiresAt || null,
     });
 
   } catch (err) {

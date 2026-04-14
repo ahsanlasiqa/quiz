@@ -16,6 +16,13 @@ function verifySignature(orderId, statusCode, grossAmount, serverKey) {
   return crypto.createHash('sha512').update(str).digest('hex');
 }
 
+// Hitung tanggal berakhir berdasarkan months dari order
+function calcExpiresAt(months) {
+  const d = new Date();
+  d.setMonth(d.getMonth() + (months || 1));
+  return d.toISOString();
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
@@ -23,40 +30,83 @@ export default async function handler(req, res) {
     const app = getAdminApp();
     const db = getFirestore(app);
 
-    const { order_id, status_code, gross_amount, signature_key, transaction_status, fraud_status, payment_type } = req.body;
+    const {
+      order_id, status_code, gross_amount, signature_key,
+      transaction_status, fraud_status,
+    } = req.body;
 
     // Verify signature
-    const expectedSig = verifySignature(order_id, status_code, gross_amount, process.env.MIDTRANS_SERVER_KEY);
+    const expectedSig = verifySignature(
+      order_id, status_code, gross_amount,
+      process.env.MIDTRANS_SERVER_KEY
+    );
     if (signature_key !== expectedSig) {
+      console.error('Webhook: invalid signature for', order_id);
       return res.status(403).json({ error: 'Invalid signature' });
     }
 
     const orderRef = db.collection('orders').doc(order_id);
     const orderDoc = await orderRef.get();
-    if (!orderDoc.exists) return res.status(404).json({ error: 'Order not found' });
+    if (!orderDoc.exists) {
+      console.error('Webhook: order not found', order_id);
+      return res.status(404).json({ error: 'Order not found' });
+    }
 
-    const order = orderDoc.data();
-    const email = order.email;
-    const creditsToAdd = order.credits || 60;
+    const order   = orderDoc.data();
+    const email   = order.email;
+    const credits = order.credits || 5;   // kredit dari paket yang dibeli
+    const months  = order.months  || 1;   // durasi dari paket
+    const packId  = order.packId  || '';
+
+    console.log('Webhook received:', order_id, '| status:', transaction_status,
+      '| email:', email, '| credits:', credits, '| months:', months);
 
     const isSuccess =
       (transaction_status === 'capture' && fraud_status === 'accept') ||
       transaction_status === 'settlement';
 
     if (isSuccess) {
-      // Add credits to user
-      await db.collection('users').doc(email).update({
-        credits: FieldValue.increment(creditsToAdd),
-        totalPurchased: FieldValue.increment(creditsToAdd),
-        lastPurchaseAt: new Date().toISOString(),
+      const paidAt       = new Date().toISOString();
+      const expiresAt    = calcExpiresAt(months);
+      const userRef      = db.collection('users').doc(email);
+      const userDoc      = await userRef.get();
+      const currentUser  = userDoc.exists ? userDoc.data() : {};
+
+      // Jika user sudah punya subscription aktif yang belum expired,
+      // perpanjang dari tanggal berakhir yang lama (bukan dari sekarang)
+      let baseDate = new Date();
+      if (currentUser.subscriptionExpiresAt) {
+        const existingExp = new Date(currentUser.subscriptionExpiresAt);
+        if (existingExp > baseDate) baseDate = existingExp;
+      }
+      const newExpiresAt = new Date(baseDate);
+      newExpiresAt.setMonth(newExpiresAt.getMonth() + months);
+
+      await userRef.set({
+        // Set kredit ke nilai paket (bukan increment) — reset per periode
+        credits:                credits,
+        subscriptionPackId:     packId,
+        subscriptionExpiresAt:  newExpiresAt.toISOString(),
+        totalPurchased:         FieldValue.increment(credits),
+        lastPurchaseAt:         paidAt,
+      }, { merge: true });
+
+      await orderRef.update({
+        status: 'paid',
+        paidAt,
+        subscriptionExpiresAt: newExpiresAt.toISOString(),
       });
-      await orderRef.update({ status: 'paid', paidAt: new Date().toISOString() });
+
+      console.log('Webhook: order paid', order_id,
+        '| credits set to', credits,
+        '| expires:', newExpiresAt.toISOString());
 
     } else if (transaction_status === 'pending') {
       await orderRef.update({ status: 'pending' });
 
-    } else if (['deny','cancel','expire','failure'].includes(transaction_status)) {
+    } else if (['deny', 'cancel', 'expire', 'failure'].includes(transaction_status)) {
       await orderRef.update({ status: 'failed' });
+      console.log('Webhook: order failed/cancelled', order_id);
     }
 
     return res.status(200).json({ ok: true });

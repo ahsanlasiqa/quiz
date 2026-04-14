@@ -237,44 +237,102 @@
     </section>
 
     <section class="landing-pricing">
-      <h2 class="landing-section-title">Harga Terjangkau</h2>
+      <h2 class="landing-section-title">Harga Transparan</h2>
+      <p class="landing-pricing-sub">Pilih paket yang sesuai kebutuhanmu. Bayar bulanan atau hemat lebih banyak dengan paket tahunan.</p>
+
+      <!-- Billing toggle -->
+      <div class="pricing-toggle-wrap">
+        <button class="pricing-toggle-btn pricing-toggle-active" id="ptoggle-monthly"
+          onclick="setPricingBilling('monthly')">Bulanan</button>
+        <button class="pricing-toggle-btn" id="ptoggle-yearly"
+          onclick="setPricingBilling('yearly')">Tahunan <span class="pricing-toggle-save">Hemat lebih!</span></button>
+      </div>
+
       <div class="pricing-cards">
+
+        <!-- Gratis -->
         <div class="pricing-card">
           <div class="pricing-badge-free">Gratis</div>
           <div class="pricing-price">Rp 0</div>
           <div class="pricing-desc">Untuk mencoba</div>
           <ul class="pricing-list">
-            <li>✅ 3 kali</li>
+            <li>✅ 3 kredit sekali pakai</li>
+            <li>✅ Try Out TKA, CPNS, SNBT, OSN</li>
             <li>✅ Semua jenis soal</li>
             <li>✅ Unduh PDF</li>
-            <li>✅ Kuis interaktif</li>
           </ul>
           <button class="btn-coba btn-coba-sm" id="btn-coba-free">Coba Gratis</button>
         </div>
-        <div class="pricing-card pricing-card-pop">
-          <div class="pricing-badge">Paling Hemat 🔥</div>
-          <div class="pricing-price">Rp 49.900</div>
-          <div class="pricing-desc">40 Credits</div>
-          <ul class="pricing-list">
-            <li>✅ 40 kali</li>
-            <li>✅ Semua jenis soal</li>
-            <li>✅ Unduh PDF</li>
-            <li>✅ Kuis interaktif</li>
-          </ul>
-          <button class="btn-coba btn-coba-sm" id="btn-coba-pop">Beli</button>
-        </div>
+
+        <!-- Starter -->
         <div class="pricing-card">
-          <div class="pricing-price">Rp 29.900</div>
-          <div class="pricing-desc">20 Credits</div>
+          <div class="pricing-badge-free" style="background:#e8f0fe;color:#1a4a8a">Starter</div>
+          <div class="pricing-price" id="lp-price-starter">Rp 19.900</div>
+          <div class="pricing-desc" id="lp-desc-starter">per bulan · 5 kredit</div>
+          <div class="pricing-save hidden" id="lp-save-starter">💡 Hemat 16% vs bulanan</div>
           <ul class="pricing-list">
-            <li>✅ 20 kali</li>
-            <li>✅ Semua jenis soal</li>
+            <li>✅ <span id="lp-cred-starter">5 kredit</span>/bulan</li>
+            <li>✅ Try Out TKA, CPNS, SNBT, OSN</li>
+            <li>✅ Evaluasi Harian AI</li>
             <li>✅ Unduh PDF</li>
             <li>✅ Kuis interaktif</li>
           </ul>
-          <button class="btn-coba btn-coba-sm" id="btn-coba-30">Beli</button>
+          <button class="btn-coba btn-coba-sm" id="btn-coba-starter"
+            onclick="setPricingBilling(window._lpBilling||'monthly'); window.showPricingModal('starter'); document.getElementById('btn-google-login')?.click()">
+            Mulai Starter
+          </button>
         </div>
+
+        <!-- Pro -->
+        <div class="pricing-card pricing-card-pop">
+          <div class="pricing-badge">Paling Populer 🔥</div>
+          <div class="pricing-price" id="lp-price-pro">Rp 49.900</div>
+          <div class="pricing-desc" id="lp-desc-pro">per bulan · 40 kredit</div>
+          <div class="pricing-save hidden" id="lp-save-pro">🔥 Hemat 79% vs bulanan!</div>
+          <ul class="pricing-list">
+            <li>✅ <span id="lp-cred-pro">40 kredit</span>/bulan</li>
+            <li>✅ Try Out TKA, CPNS, SNBT, OSN</li>
+            <li>✅ Evaluasi Harian AI</li>
+            <li>✅ Buat Soal & Bantai Soal</li>
+            <li>✅ Unduh PDF</li>
+            <li>✅ Kuis interaktif</li>
+          </ul>
+          <button class="btn-coba btn-coba-sm" id="btn-coba-pop"
+            onclick="setPricingBilling(window._lpBilling||'monthly'); sessionStorage.setItem('pendingPlan','pro_'+(window._lpBilling||'monthly')); document.getElementById('btn-google-login')?.click()">
+            Mulai Pro
+          </button>
+        </div>
+
       </div>
+
+      <script>
+        window._lpBilling = 'monthly';
+        function setPricingBilling(billing) {
+          window._lpBilling = billing;
+          document.getElementById('ptoggle-monthly')?.classList.toggle('pricing-toggle-active', billing==='monthly');
+          document.getElementById('ptoggle-yearly')?.classList.toggle('pricing-toggle-active',  billing==='yearly');
+          // Starter
+          if (billing === 'yearly') {
+            document.getElementById('lp-price-starter').textContent = 'Rp 200.000';
+            document.getElementById('lp-desc-starter').textContent  = 'per tahun · 60 kredit';
+            document.getElementById('lp-cred-starter').textContent  = '60 kredit';
+            document.getElementById('lp-save-starter')?.classList.remove('hidden');
+            document.getElementById('lp-price-pro').textContent     = 'Rp 500.000';
+            document.getElementById('lp-desc-pro').textContent      = 'per tahun · 480 kredit';
+            document.getElementById('lp-cred-pro').textContent      = '480 kredit';
+            document.getElementById('lp-save-pro')?.classList.remove('hidden');
+          } else {
+            document.getElementById('lp-price-starter').textContent = 'Rp 19.900';
+            document.getElementById('lp-desc-starter').textContent  = 'per bulan · 5 kredit';
+            document.getElementById('lp-cred-starter').textContent  = '5 kredit';
+            document.getElementById('lp-save-starter')?.classList.add('hidden');
+            document.getElementById('lp-price-pro').textContent     = 'Rp 49.900';
+            document.getElementById('lp-desc-pro').textContent      = 'per bulan · 40 kredit';
+            document.getElementById('lp-cred-pro').textContent      = '40 kredit';
+            document.getElementById('lp-save-pro')?.classList.add('hidden');
+          }
+        }
+      </script>
     </section>
 
     <!-- ── FAQ ── -->
@@ -286,7 +344,7 @@
           <button class="faq-q" onclick="toggleFaq(this)">
             Apakah DrillSoal gratis? <span class="faq-arrow">▾</span>
           </button>
-          <div class="faq-a">Ya! Kamu bisa mencoba DrillSoal secara gratis sebanyak 3 kali tanpa perlu kartu kredit. Setelah itu, kamu bisa membeli paket kredit mulai dari Rp 29.900 untuk 20 kali generate soal.</div>
+          <div class="faq-a">Ya! Kamu bisa mencoba DrillSoal secara gratis sebanyak 3 kali tanpa perlu kartu kredit. Setelah itu, pilih paket Starter (Rp 19.900/bulan, 5 kredit) atau Pro (Rp 49.900/bulan, 40 kredit). Bayar tahunan untuk harga yang jauh lebih hemat.</div>
         </div>
 
         <div class="faq-item">
@@ -328,7 +386,7 @@
           <button class="faq-q" onclick="toggleFaq(this)">
             Apakah kredit yang dibeli bisa kedaluwarsa? <span class="faq-arrow">▾</span>
           </button>
-          <div class="faq-a">Tidak. Kredit yang sudah dibeli tidak akan kedaluwarsa dan bisa digunakan kapan saja.</div>
+          <div class="faq-a">Kredit berlaku selama periode langganan aktif. Paket bulanan berlaku 1 bulan, paket tahunan berlaku 1 tahun sejak tanggal pembayaran. Kredit tidak rollover ke bulan berikutnya.</div>
         </div>
 
         <div class="faq-item">

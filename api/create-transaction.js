@@ -8,8 +8,14 @@ export const config = {
 };
 
 const PACKS = {
-  20: { price: 29900, credits: 20, name: 'DrillSoal 20 Credits' },
-  40: { price: 49900, credits: 40, name: 'DrillSoal 40 Credits' },
+  // Starter — bulanan
+  'starter_monthly': { price: 19900,  credits: 5,   name: 'DrillSoal Starter — Bulanan',  period: 'monthly', months: 1  },
+  // Starter — tahunan (diskon)
+  'starter_yearly':  { price: 200000, credits: 60,  name: 'DrillSoal Starter — Tahunan',  period: 'yearly',  months: 12 },
+  // Pro — bulanan
+  'pro_monthly':     { price: 49900,  credits: 40,  name: 'DrillSoal Pro — Bulanan',      period: 'monthly', months: 1  },
+  // Pro — tahunan (diskon)
+  'pro_yearly':      { price: 500000, credits: 480, name: 'DrillSoal Pro — Tahunan',      period: 'yearly',  months: 12 },
 };
 
 function getAdminApp() {
@@ -37,13 +43,12 @@ export default async function handler(req, res) {
     const name = decoded.name || email;
     if (!email) return res.status(401).json({ error: 'No email' });
 
-    const packSize = [20, 40].includes(parseInt(req.body?.pack))
-      ? parseInt(req.body?.pack)
-      : 40; // default fallback ke 40 credits
-    console.log('create-transaction: pack received:', req.body?.pack, '→ packSize:', packSize, 'email:', email);
-    const pack = PACKS[packSize];
-    if (!pack) return res.status(400).json({ error: `Pack tidak valid: ${packSize}` });
-    const orderId = `quizgen-${packSize}cr-${email.replace(/[^a-z0-9]/g, '-')}-${Date.now()}`;
+    const packId = req.body?.pack;
+    console.log('create-transaction: pack received:', packId, 'email:', email);
+    const pack = PACKS[packId];
+    if (!pack) return res.status(400).json({ error: `Pack tidak valid: ${packId}` });
+
+    const orderId = `ds-${packId}-${email.replace(/[^a-z0-9]/g, '-')}-${Date.now()}`;
 
     const snap = new midtransClient.Snap({
       isProduction: process.env.MIDTRANS_ENV === 'production',
@@ -56,7 +61,7 @@ export default async function handler(req, res) {
         gross_amount: pack.price,
       },
       item_details: [{
-        id: `quizgen-credits-${packSize}`,
+        id: `ds-${packId}`,
         price: pack.price,
         quantity: 1,
         name: pack.name,
@@ -81,13 +86,16 @@ export default async function handler(req, res) {
     // Save pending order including snapToken for resume
     await db.collection('orders').doc(orderId).set({
       orderId, email,
-      amount: pack.price,
-      credits: pack.credits,
-      status: 'pending',
+      packId,
+      amount:   pack.price,
+      credits:  pack.credits,
+      period:   pack.period,
+      months:   pack.months,
+      status:   'pending',
       snapToken: transaction.token,
       createdAt: new Date().toISOString(),
     });
-    console.log('Order saved to Firestore:', orderId);
+    console.log('Order saved to Firestore:', orderId, '| pack:', packId, '| credits:', pack.credits);
 
     return res.status(200).json({ token: transaction.token, orderId });
 
