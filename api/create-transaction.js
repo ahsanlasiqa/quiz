@@ -81,7 +81,7 @@ export default async function handler(req, res) {
     };
 
     const transaction = await snap.createTransaction(parameter);
-    console.log('Midtrans transaction created:', orderId, 'pack:', packSize, 'token:', transaction.token?.substring(0,10));
+    console.log('Midtrans transaction created:', orderId, 'pack:', packId, 'token:', transaction.token?.substring(0,10));
 
     // Save pending order including snapToken for resume
     await db.collection('orders').doc(orderId).set({
