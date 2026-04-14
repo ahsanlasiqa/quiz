@@ -48,7 +48,14 @@ export default async function handler(req, res) {
     const pack = PACKS[packId];
     if (!pack) return res.status(400).json({ error: `Pack tidak valid: ${packId}` });
 
-    const orderId = `ds-${packId}-${email.replace(/[^a-z0-9]/g, '-')}-${Date.now()}`;
+    // Midtrans limit: order_id max 50 karakter
+    // Format: ds-{pack_abbr}-{email_hash}-{timestamp6}
+    const packAbbr    = packId.replace('starter', 'st').replace('pro', 'pr').replace('_monthly', 'm').replace('_yearly', 'y');
+    const emailHash   = email.replace(/[^a-z0-9]/g, '').substring(0, 12);
+    const timestamp   = Date.now().toString().slice(-8);
+    const orderId     = `ds-${packAbbr}-${emailHash}-${timestamp}`;
+    // sanity check (should never happen, but log if it does)
+    if (orderId.length > 50) console.error('orderId too long:', orderId.length, orderId);
 
     const snap = new midtransClient.Snap({
       isProduction: process.env.MIDTRANS_ENV === 'production',

@@ -69,7 +69,7 @@ function startAuth() {
     if (pendingPack) {
       sessionStorage.removeItem('pendingPack');
       setTimeout(function() {
-        if (window.startCheckout) window.startCheckout(parseInt(pendingPack));
+        if (window.startCheckout) window.startCheckout(pendingPack);
       }, 600);
     }
 
