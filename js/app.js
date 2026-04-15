@@ -142,12 +142,22 @@ window.renderCreditsBanner = function() {
   const label   = window._subscriptionPackLabel;
   const exp     = window._subscriptionExpiresAt;
 
-  // Format tanggal berakhir
+  // Hitung sisa hari
   let expStr = '';
+  let daysLeft = null;
   if (exp) {
-    const d = new Date(exp);
-    expStr = d.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
+    const now  = new Date();
+    const expD = new Date(exp);
+    daysLeft   = Math.ceil((expD - now) / 86400000);
+    expStr     = expD.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
   }
+
+  // Label sisa hari
+  const daysHtml = daysLeft !== null
+    ? (daysLeft > 0
+        ? `<span class="banner-days-left ${daysLeft <= 7 ? 'banner-days-urgent' : ''}">⏳ ${daysLeft} hari lagi</span>`
+        : `<span class="banner-days-left banner-days-urgent">⚠️ Berakhir hari ini</span>`)
+    : '';
 
   let statusHtml, bannerClass;
 
@@ -157,7 +167,7 @@ window.renderCreditsBanner = function() {
       <span>
         ⚡ <strong>${credits} kredit</strong> tersisa
         ${label ? `· <span class="banner-plan-label">${label}</span>` : ''}
-        ${expStr ? `· Aktif hingga ${expStr}` : ''}
+        ${daysHtml}
       </span>`;
   } else if (status === 'expired') {
     bannerClass = 'subscription-banner expired';
@@ -251,10 +261,12 @@ window._doCheckout = async function(packId) {
 };
 
 // ── startCheckout ─────────────────────────────────────────────────────────────
-// packId: string seperti 'starter_monthly', 'pro_yearly', dll
+// packId: 'starter_monthly' | 'starter_yearly' | 'pro_monthly' | 'pro_yearly'
+// Jika dipanggil tanpa packId (dari modul TKA/CPNS/SNBT/OSN), tampilkan modal dulu.
 window.startCheckout = async function(packId) {
-  if (!packId || typeof packId !== 'string') {
-    alert('Pack tidak valid. Silakan pilih paket terlebih dahulu.');
+  // Jika tidak ada packId → tampilkan pricing modal terlebih dahulu
+  if (!packId || typeof packId !== 'string' || !packId.includes('_')) {
+    window.showPricingModal('pro');
     return;
   }
   try {
@@ -298,7 +310,20 @@ window.startCheckout = async function(packId) {
   }
 };
 
-// ── Level Toggle ───────────────────────────
+// ── Helper: cek apakah user punya akses premium (subscription aktif ATAU invited) ──
+window._isPremium = function() {
+  return window._isInvited || window._subscriptionStatus === 'active';
+};
+
+// ── Helper: tampilkan paywall dan return true jika TIDAK punya akses ────────
+// Gunakan: if (window._requirePremium()) return;
+window._requirePremium = function() {
+  if (window._isPremium()) return false; // punya akses, lanjut
+  window.renderCreditsBanner?.();
+  window.showPricingModal?.('pro');
+  return true; // tidak punya akses, stop
+
+};
 levelToggle.querySelectorAll('.level-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     levelToggle.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));

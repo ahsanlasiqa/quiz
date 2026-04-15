@@ -190,7 +190,7 @@ window.TKA = (function() {
     const isInvited = window._isInvited ?? false;
     if (!isInvited && credits <= 0) {
       window.renderCreditsBanner?.();
-      window.startCheckout?.();
+      window.showPricingModal?.('pro');
       return;
     }
 

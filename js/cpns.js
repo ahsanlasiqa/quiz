@@ -115,17 +115,22 @@ window.CPNS = (function () {
 
   function renderSelectPaket() {
     const container = document.getElementById('cpns-container');
+    const isPremium = window._isPremium?.() || false;
 
-    const paketCards = state._index.map(p => `
-      <button class="cpns-paket-btn" onclick="window.CPNS.previewPaket('${p.id}')">
-        <div class="cpns-paket-num">${p.label}</div>
+    const paketCards = state._index.map((p, idx) => {
+      const isLocked = idx > 0 && !isPremium; // paket 1 bebas, sisanya lock
+      return `
+      <button class="cpns-paket-btn${isLocked ? ' cpns-paket-locked' : ''}"
+        onclick="${isLocked ? `window._requirePremium()` : `window.CPNS.previewPaket('${p.id}')`}">
+        <div class="cpns-paket-num">${p.label}${isLocked ? ' 🔒' : ''}</div>
         <div class="cpns-paket-src">${p.sumber}</div>
         <div class="cpns-paket-meta">
           <span>📜 30 TWK</span>
           <span>🧮 35 TIU</span>
           <span>🧠 35 TKP</span>
+          ${isLocked ? '<span class="paket-lock-badge">Premium</span>' : ''}
         </div>
-      </button>`).join('');
+      </button>`}).join('');
 
     container.innerHTML = `
       <div class="cpns-select-wrap">
@@ -154,6 +159,10 @@ window.CPNS = (function () {
   }
 
   function previewPaket(paketId) {
+    // Guard: paket 2+ hanya untuk premium
+    const idx = state._index.findIndex(x => x.id === paketId);
+    if (idx > 0 && window._requirePremium?.()) return;
+
     document.querySelectorAll('#cpns-container .cpns-paket-btn').forEach(btn => {
       const lbl = btn.querySelector('.cpns-paket-num')?.textContent;
       const p = state._index.find(x => x.id === paketId);
@@ -175,7 +184,7 @@ window.CPNS = (function () {
     if (!state.paket) return;
     const credits   = window._currentCredits ?? 0;
     const isInvited = window._isInvited ?? false;
-    if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.startCheckout?.(); return; }
+    if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return; }
 
     loading('⏳ Memuat soal…');
 

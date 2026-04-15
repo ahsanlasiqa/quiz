@@ -131,16 +131,21 @@ window.SNBT = (function() {
   function renderSelectPaket(index) {
     // index = array { id, label, sumber, tahun } dari index.json
     const container = document.getElementById('snbt-container');
+    const isPremium = window._isPremium?.() || false;
 
-    const paketCards = index.map(p => `
-        <button class="cpns-paket-btn" onclick="window.SNBT.previewPaket('${p.id}')">
-          <div class="cpns-paket-num">${p.label}</div>
+    const paketCards = index.map((p, idx) => {
+      const isLocked = idx > 0 && !isPremium;
+      return `
+        <button class="cpns-paket-btn${isLocked ? ' cpns-paket-locked' : ''}"
+          onclick="${isLocked ? `window._requirePremium()` : `window.SNBT.previewPaket('${p.id}')`}">
+          <div class="cpns-paket-num">${p.label}${isLocked ? ' 🔒' : ''}</div>
           <div class="cpns-paket-src">${p.sumber}${p.tahun ? ' · '+p.tahun : ''}</div>
           <div class="cpns-paket-meta">
             <span>🧠 TPS (90 soal)</span>
             <span>📚 Literasi (70 soal)</span>
+            ${isLocked ? '<span class="paket-lock-badge">Premium</span>' : ''}
           </div>
-        </button>`).join('');
+        </button>`}).join('');
 
     container.innerHTML = `
       <div class="cpns-select-wrap">
@@ -175,6 +180,10 @@ window.SNBT = (function() {
 
   // previewPaket: gunakan data index (ringan), tidak perlu fetch soal
   function previewPaket(paketId) {
+    // Guard: paket 2+ hanya untuk premium
+    const idx = (state._index || []).findIndex(x => x.id === paketId);
+    if (idx > 0 && window._requirePremium?.()) return;
+
     document.querySelectorAll('#snbt-container .cpns-paket-btn').forEach(btn => {
       const key = btn.querySelector('.cpns-paket-num')?.textContent;
       const p   = (state._index || []).find(x => x.id === paketId);
@@ -220,7 +229,7 @@ window.SNBT = (function() {
     if (!state.paket || !state.mode) return;
     const credits   = window._currentCredits ?? 0;
     const isInvited = window._isInvited ?? false;
-    if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.startCheckout?.(); return; }
+    if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return; }
 
     // Tampilkan loading sebelum fetch
     const container = document.getElementById('snbt-container');
