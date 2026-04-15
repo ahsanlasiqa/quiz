@@ -5208,64 +5208,34 @@ body {
 /* ══════════════════════════════════════════════════════════════
    PAKET LOCK — Paket premium yang belum dibuka
    ══════════════════════════════════════════════════════════════ */
-
-/* CPNS / SNBT paket card locked */
 .cpns-paket-locked {
   opacity: 0.65;
   cursor: pointer;
-  position: relative;
   background: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 6px,
-    rgba(26,18,8,0.025) 6px,
-    rgba(26,18,8,0.025) 12px
+    -45deg, transparent, transparent 6px,
+    rgba(26,18,8,0.025) 6px, rgba(26,18,8,0.025) 12px
   ) !important;
 }
-.cpns-paket-locked:hover {
-  border-color: var(--amber) !important;
-  opacity: 0.85;
-}
-
-/* OSN level btn locked */
-.osn-level-locked {
-  opacity: 0.6;
-  cursor: pointer;
-}
-.osn-level-locked:hover {
-  opacity: 0.8;
-  border-color: var(--amber) !important;
-}
-
-/* Badge "Premium" pada paket yang terkunci */
+.cpns-paket-locked:hover { border-color: var(--amber) !important; opacity: 0.85; }
+.osn-level-locked { opacity: 0.6; cursor: pointer; }
+.osn-level-locked:hover { opacity: 0.8; border-color: var(--amber) !important; }
 .paket-lock-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font-size: 0.68rem;
-  font-weight: 700;
+  display: inline-flex; align-items: center;
+  font-size: 0.68rem; font-weight: 700;
   background: linear-gradient(135deg, var(--amber), #c8860a);
-  color: white;
-  padding: 3px 9px;
-  border-radius: 20px;
-  letter-spacing: 0.03em;
-  flex-shrink: 0;
+  color: white; padding: 3px 9px; border-radius: 20px;
+  letter-spacing: 0.03em; flex-shrink: 0;
 }
-
-/* Banner days remaining */
 .banner-days-left {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.75rem;
-  font-weight: 600;
-  background: var(--teal-pale);
-  color: var(--teal);
-  padding: 2px 8px;
-  border-radius: 20px;
-  vertical-align: middle;
-  margin-left: 4px;
+  display: inline-flex; align-items: center;
+  font-size: 0.75rem; font-weight: 600;
+  background: var(--teal-pale); color: var(--teal);
+  padding: 2px 8px; border-radius: 20px;
+  vertical-align: middle; margin-left: 4px;
 }
-.banner-days-urgent {
-  background: rgba(224,92,58,0.12);
-  color: var(--coral);
+.banner-days-urgent { background: rgba(224,92,58,0.12); color: var(--coral); }
+.banner-plan-label {
+  font-size: 0.75rem; font-weight: 700;
+  background: var(--teal-pale); color: var(--teal);
+  padding: 2px 8px; border-radius: 20px; vertical-align: middle;
 }

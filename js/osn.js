@@ -236,8 +236,8 @@ window.OSN = (function() {
     const bankMeta  = _getBankMeta(getBankKey());
     const lvMeta    = bankMeta?.levels?.[state.levelKey];
     const lc        = LEVEL_CONFIG[state.levelKey];
-    const isPremium = window._isPremium?.() || false;
 
+    const isPremium = window._isPremium?.() || false;
     const paketCards = lvMeta.pakets.map((p, idx) => {
       const isLocked = idx > 0 && !isPremium;
       return `
@@ -251,7 +251,7 @@ window.OSN = (function() {
         ${isLocked
           ? '<span class="paket-lock-badge">Premium</span>'
           : `<span class="osn-level-arrow" style="color:${lc.warna}">→</span>`}
-      </button>`}).join('');
+      </button>`;}).join('');
 
     container.innerHTML = `
       <div class="osn-select-wrap">
@@ -271,12 +271,10 @@ window.OSN = (function() {
   }
 
   function selectPaket(paketKey) {
-    // Guard: paket 2+ hanya untuk premium
-    const bankMeta = _getBankMeta(getBankKey());
-    const lvMeta   = bankMeta?.levels?.[state.levelKey];
-    const idx      = (lvMeta?.pakets || []).findIndex(p => p.key === paketKey);
+    const bMeta = _getBankMeta(getBankKey());
+    const lMeta = bMeta?.levels?.[state.levelKey];
+    const idx   = (lMeta?.pakets || []).findIndex(p => p.key === paketKey);
     if (idx > 0 && window._requirePremium?.()) return;
-
     state.paketKey = paketKey;
     renderConfirm();
   }
@@ -331,16 +329,18 @@ window.OSN = (function() {
             Mulai Simulasi ${lc.icon} ▶
           </button>
         </div>
-        <p class="tka-credit-note">⚡ Menggunakan 1 kredit</p>
+        <p class="tka-credit-note">${window._isPremium?.() ? '✅ Gratis untuk subscriber' : '⚡ Menggunakan 1 kredit'}</p>
       </div>`;
   }
 
   // ══ PHASE 5: QUIZ ════════════════════════════════════════════════
   // BARU di sini soal di-fetch (lazy) — pilih file yang tepat
   async function startQuiz() {
-    const credits   = window._currentCredits ?? 0;
-    const isInvited = window._isInvited ?? false;
-    if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return; }
+    const isPremium = window._isPremium?.() || false;
+    // Try out OSN tidak mengkonsumsi token AI — gratis untuk subscriber
+    if (!isPremium && (window._currentCredits ?? 0) <= 0) {
+      window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return;
+    }
 
     const container = document.getElementById('osn-container');
     const lc        = LEVEL_CONFIG[state.levelKey];

@@ -131,6 +131,20 @@ window.updateSubscriptionUI = function(accessData) {
   }
 };
 
+// ── Helpers: cek akses premium ─────────────────────────────────
+// Premium = invited (family/admin) ATAU subscription aktif
+window._isPremium = function() {
+  return window._isInvited || window._subscriptionStatus === 'active';
+};
+// Tampilkan paywall dan return true jika TIDAK premium
+// Penggunaan: if (window._requirePremium()) return;
+window._requirePremium = function() {
+  if (window._isPremium()) return false;
+  window.renderCreditsBanner?.();
+  window.showPricingModal?.('pro');
+  return true;
+};
+
 window.renderCreditsBanner = function() {
   const banner = document.getElementById('subscription-banner');
   if (!banner) return;
@@ -142,22 +156,12 @@ window.renderCreditsBanner = function() {
   const label   = window._subscriptionPackLabel;
   const exp     = window._subscriptionExpiresAt;
 
-  // Hitung sisa hari
+  // Format tanggal berakhir
   let expStr = '';
-  let daysLeft = null;
   if (exp) {
-    const now  = new Date();
-    const expD = new Date(exp);
-    daysLeft   = Math.ceil((expD - now) / 86400000);
-    expStr     = expD.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
+    const d = new Date(exp);
+    expStr = d.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
   }
-
-  // Label sisa hari
-  const daysHtml = daysLeft !== null
-    ? (daysLeft > 0
-        ? `<span class="banner-days-left ${daysLeft <= 7 ? 'banner-days-urgent' : ''}">⏳ ${daysLeft} hari lagi</span>`
-        : `<span class="banner-days-left banner-days-urgent">⚠️ Berakhir hari ini</span>`)
-    : '';
 
   let statusHtml, bannerClass;
 
@@ -167,7 +171,7 @@ window.renderCreditsBanner = function() {
       <span>
         ⚡ <strong>${credits} kredit</strong> tersisa
         ${label ? `· <span class="banner-plan-label">${label}</span>` : ''}
-        ${daysHtml}
+        ${expStr ? `· Aktif hingga ${expStr}` : ''}
       </span>`;
   } else if (status === 'expired') {
     bannerClass = 'subscription-banner expired';
@@ -196,62 +200,98 @@ window.renderCreditsBanner = function() {
 
 // ── Pricing Modal ─────────────────────────────────────────────────────────────
 // Dipanggil dari banner: showPricingModal('starter') atau showPricingModal('pro')
-window.showPricingModal = function(tier) {
-  // Hapus modal lama jika ada
+// ── Pricing Modal — tampilkan semua paket (Starter + Pro) ─────────────────────
+window.showPricingModal = function(highlightTier) {
+  // highlightTier: 'starter' atau 'pro' — menentukan tab aktif awal
   document.getElementById('pricing-modal-overlay')?.remove();
-
-  const packs = {
-    starter: {
-      label:   'Starter',
-      monthly: { id: 'starter_monthly', price: 'Rp 19.900 / bulan', credits: '5 kredit',  billingNote: 'per bulan' },
-      yearly:  { id: 'starter_yearly',  price: 'Rp 200.000 / tahun', credits: '60 kredit', billingNote: 'per tahun · hemat 16%' },
-    },
-    pro: {
-      label:   'Pro',
-      monthly: { id: 'pro_monthly', price: 'Rp 49.900 / bulan',  credits: '40 kredit',  billingNote: 'per bulan' },
-      yearly:  { id: 'pro_yearly',  price: 'Rp 500.000 / tahun', credits: '480 kredit', billingNote: 'per tahun · hemat 17%' },
-    },
-  };
-
-  const p = packs[tier];
-  if (!p) return;
 
   const overlay = document.createElement('div');
   overlay.id = 'pricing-modal-overlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding:0';
+
+  // Warna tab aktif
+  const tabStyle    = (active) => active
+    ? 'flex:1;padding:9px 0;border:none;border-radius:8px;background:white;font-family:inherit;font-size:.88rem;font-weight:700;color:#1a1208;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:all .18s'
+    : 'flex:1;padding:9px 0;border:none;border-radius:8px;background:transparent;font-family:inherit;font-size:.88rem;font-weight:600;color:#8a7a68;cursor:pointer;transition:all .18s';
+
+  const plans = {
+    starter: {
+      label: 'Starter', color: '#1a4a8a',
+      monthly: { id:'starter_monthly', price:'Rp 19.900', period:'/bulan',  credits:'5 kredit',   note:'' },
+      yearly:  { id:'starter_yearly',  price:'Rp 200.000', period:'/tahun', credits:'60 kredit',  note:'Hemat 16%' },
+    },
+    pro: {
+      label: 'Pro 🔥', color: '#1a7a6e',
+      monthly: { id:'pro_monthly', price:'Rp 49.900',  period:'/bulan',  credits:'40 kredit',  note:'' },
+      yearly:  { id:'pro_yearly',  price:'Rp 500.000', period:'/tahun',  credits:'480 kredit', note:'Hemat 17%' },
+    },
+  };
+
+  const makePlanCard = (tier) => {
+    const p = plans[tier];
+    return `
+      <div class="pm-plan-section" id="pm-section-${tier}">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <!-- Bulanan -->
+          <button onclick="window._doCheckout('${p.monthly.id}')"
+            style="text-align:left;border:2px solid #e0d5c8;border-radius:12px;padding:14px 16px;background:#fff;cursor:pointer;width:100%;font-family:inherit;transition:border-color .15s"
+            onmouseover="this.style.borderColor='#c8a96e'" onmouseout="this.style.borderColor='#e0d5c8'">
+            <div style="font-weight:700;font-size:1rem;color:#1a1208">${p.monthly.price} <span style="font-size:.8rem;font-weight:400;color:#8a7a68">${p.monthly.period}</span></div>
+            <div style="font-size:.82rem;color:#8a7a68;margin-top:2px">${p.monthly.credits}</div>
+          </button>
+          <!-- Tahunan -->
+          <button onclick="window._doCheckout('${p.yearly.id}')"
+            style="text-align:left;border:2px solid #c8a96e;border-radius:12px;padding:14px 16px;background:linear-gradient(135deg,#fffaf3,#fff8ec);cursor:pointer;width:100%;font-family:inherit;position:relative;transition:border-color .15s"
+            onmouseover="this.style.borderColor='#a07840'" onmouseout="this.style.borderColor='#c8a96e'">
+            ${p.yearly.note ? `<span style="position:absolute;top:-10px;right:12px;background:#c8a96e;color:#fff;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:20px">${p.yearly.note}</span>` : ''}
+            <div style="font-weight:700;font-size:1rem;color:#1a1208">${p.yearly.price} <span style="font-size:.8rem;font-weight:400;color:#8a7a68">${p.yearly.period}</span></div>
+            <div style="font-size:.82rem;color:#8a7a68;margin-top:2px">${p.yearly.credits}</div>
+          </button>
+        </div>
+      </div>`;
+  };
 
   overlay.innerHTML = `
-    <div style="background:var(--warm-white,#fff);border-radius:16px;padding:28px 24px;max-width:360px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,0.18);position:relative">
+    <div style="background:var(--warm-white,#fdf8f0);border-radius:24px 24px 0 0;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;box-shadow:0 -8px 40px rgba(0,0,0,0.2);padding:24px 20px 32px;position:relative;font-family:'Sora',sans-serif">
       <button onclick="document.getElementById('pricing-modal-overlay').remove()"
-        style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#888">✕</button>
-      <h3 style="margin:0 0 4px;font-size:1.15rem">Paket ${p.label}</h3>
-      <p style="margin:0 0 20px;color:#666;font-size:.85rem">Pilih periode langganan</p>
+        style="position:absolute;top:14px;right:16px;background:rgba(26,18,8,0.07);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:#666;display:flex;align-items:center;justify-content:center">✕</button>
 
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <!-- Bulanan -->
-        <button onclick="window._doCheckout('${p.monthly.id}')"
-          style="text-align:left;border:2px solid #e0d5c8;border-radius:12px;padding:14px 16px;background:#fff;cursor:pointer;transition:border-color .15s"
-          onmouseover="this.style.borderColor='#c8a96e'" onmouseout="this.style.borderColor='#e0d5c8'">
-          <div style="font-weight:600;font-size:.95rem">${p.monthly.price}</div>
-          <div style="font-size:.82rem;color:#888;margin-top:2px">${p.monthly.credits} · ${p.monthly.billingNote}</div>
-        </button>
-        <!-- Tahunan -->
-        <button onclick="window._doCheckout('${p.yearly.id}')"
-          style="text-align:left;border:2px solid #c8a96e;border-radius:12px;padding:14px 16px;background:linear-gradient(135deg,#fffaf3,#fff8ec);cursor:pointer;transition:border-color .15s;position:relative"
-          onmouseover="this.style.borderColor='#a07840'" onmouseout="this.style.borderColor='#c8a96e'">
-          <span style="position:absolute;top:-10px;right:12px;background:#c8a96e;color:#fff;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:20px">HEMAT</span>
-          <div style="font-weight:600;font-size:.95rem">${p.yearly.price}</div>
-          <div style="font-size:.82rem;color:#888;margin-top:2px">${p.yearly.credits} · ${p.yearly.billingNote}</div>
-        </button>
+      <h3 style="margin:0 0 4px;font-size:1.15rem;font-weight:700;color:#1a1208">Pilih Paket DrillSoal</h3>
+      <p style="margin:0 0 18px;color:#8a7a68;font-size:.83rem">Try Out + Evaluasi Harian + semua fitur</p>
+
+      <!-- Tab Starter / Pro -->
+      <div style="display:flex;gap:4px;background:rgba(26,18,8,0.06);border-radius:10px;padding:4px;margin-bottom:18px">
+        <button id="pm-tab-starter" style="${tabStyle(highlightTier !== 'pro')}"
+          onclick="window._pmSwitchTab('starter')">Starter</button>
+        <button id="pm-tab-pro" style="${tabStyle(highlightTier === 'pro')}"
+          onclick="window._pmSwitchTab('pro')">Pro 🔥</button>
       </div>
+
+      <!-- Starter plans -->
+      ${makePlanCard('starter')}
+      <!-- Pro plans -->
+      ${makePlanCard('pro')}
+
+      <p style="text-align:center;font-size:.72rem;color:#aaa;margin-top:16px">Pembayaran aman via Midtrans · Transfer, e-wallet, kartu kredit</p>
     </div>`;
 
-  // Tutup jika klik overlay
-  overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) overlay.remove();
-  });
-
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
   document.body.appendChild(overlay);
+
+  // Aktifkan tab awal
+  window._pmSwitchTab(highlightTier === 'pro' ? 'pro' : 'starter');
+};
+
+window._pmSwitchTab = function(tier) {
+  const tabStyle    = 'flex:1;padding:9px 0;border:none;border-radius:8px;background:transparent;font-family:inherit;font-size:.88rem;font-weight:600;color:#8a7a68;cursor:pointer;transition:all .18s';
+  const tabStyleAct = 'flex:1;padding:9px 0;border:none;border-radius:8px;background:white;font-family:inherit;font-size:.88rem;font-weight:700;color:#1a1208;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:all .18s';
+  const tabs = ['starter', 'pro'];
+  tabs.forEach(t => {
+    const tab = document.getElementById('pm-tab-' + t);
+    const sec = document.getElementById('pm-section-' + t);
+    if (tab) tab.style.cssText = t === tier ? tabStyleAct : tabStyle;
+    if (sec) sec.style.display = t === tier ? 'block' : 'none';
+  });
 };
 
 // Internal: panggil setelah user pilih pack dari modal
@@ -262,11 +302,10 @@ window._doCheckout = async function(packId) {
 
 // ── startCheckout ─────────────────────────────────────────────────────────────
 // packId: 'starter_monthly' | 'starter_yearly' | 'pro_monthly' | 'pro_yearly'
-// Jika dipanggil tanpa packId (dari modul TKA/CPNS/SNBT/OSN), tampilkan modal dulu.
+// Jika dipanggil tanpa packId (dari modul lama) → tampilkan modal dulu
 window.startCheckout = async function(packId) {
-  // Jika tidak ada packId → tampilkan pricing modal terlebih dahulu
   if (!packId || typeof packId !== 'string' || !packId.includes('_')) {
-    window.showPricingModal('pro');
+    window.showPricingModal?.('pro');
     return;
   }
   try {
@@ -310,20 +349,7 @@ window.startCheckout = async function(packId) {
   }
 };
 
-// ── Helper: cek apakah user punya akses premium (subscription aktif ATAU invited) ──
-window._isPremium = function() {
-  return window._isInvited || window._subscriptionStatus === 'active';
-};
-
-// ── Helper: tampilkan paywall dan return true jika TIDAK punya akses ────────
-// Gunakan: if (window._requirePremium()) return;
-window._requirePremium = function() {
-  if (window._isPremium()) return false; // punya akses, lanjut
-  window.renderCreditsBanner?.();
-  window.showPricingModal?.('pro');
-  return true; // tidak punya akses, stop
-
-};
+// ── Level Toggle ───────────────────────────
 levelToggle.querySelectorAll('.level-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     levelToggle.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));

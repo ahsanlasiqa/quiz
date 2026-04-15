@@ -115,10 +115,10 @@ window.CPNS = (function () {
 
   function renderSelectPaket() {
     const container = document.getElementById('cpns-container');
-    const isPremium = window._isPremium?.() || false;
 
+    const isPremium = window._isPremium?.() || false;
     const paketCards = state._index.map((p, idx) => {
-      const isLocked = idx > 0 && !isPremium; // paket 1 bebas, sisanya lock
+      const isLocked = idx > 0 && !isPremium;
       return `
       <button class="cpns-paket-btn${isLocked ? ' cpns-paket-locked' : ''}"
         onclick="${isLocked ? `window._requirePremium()` : `window.CPNS.previewPaket('${p.id}')`}">
@@ -130,7 +130,7 @@ window.CPNS = (function () {
           <span>🧠 35 TKP</span>
           ${isLocked ? '<span class="paket-lock-badge">Premium</span>' : ''}
         </div>
-      </button>`}).join('');
+      </button>`;}).join('');
 
     container.innerHTML = `
       <div class="cpns-select-wrap">
@@ -154,15 +154,13 @@ window.CPNS = (function () {
           <div class="cpns-confirm-info" id="cpns-confirm-info"></div>
           <button class="cpns-btn-start" onclick="window.CPNS.startPaket()">Mulai Simulasi ▶</button>
         </div>
-        <p class="tka-credit-note">⚡ Menggunakan 1 kredit</p>
+        <p class="tka-credit-note">${window._isPremium?.() ? '✅ Gratis untuk subscriber' : '⚡ Menggunakan 1 kredit'}</p>
       </div>`;
   }
 
   function previewPaket(paketId) {
-    // Guard: paket 2+ hanya untuk premium
     const idx = state._index.findIndex(x => x.id === paketId);
     if (idx > 0 && window._requirePremium?.()) return;
-
     document.querySelectorAll('#cpns-container .cpns-paket-btn').forEach(btn => {
       const lbl = btn.querySelector('.cpns-paket-num')?.textContent;
       const p = state._index.find(x => x.id === paketId);
@@ -182,9 +180,11 @@ window.CPNS = (function () {
   // ══════════════════════════════════════════════════════════
   async function startPaket() {
     if (!state.paket) return;
-    const credits   = window._currentCredits ?? 0;
-    const isInvited = window._isInvited ?? false;
-    if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return; }
+    const isPremium = window._isPremium?.() || false;
+    // Try out CPNS tidak mengkonsumsi token AI — gratis untuk subscriber
+    if (!isPremium && (window._currentCredits ?? 0) <= 0) {
+      window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return;
+    }
 
     loading('⏳ Memuat soal…');
 
