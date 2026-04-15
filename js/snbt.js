@@ -132,20 +132,15 @@ window.SNBT = (function() {
     // index = array { id, label, sumber, tahun } dari index.json
     const container = document.getElementById('snbt-container');
 
-    const isPremium = window._isPremium?.() || false;
-    const paketCards = index.map((p, idx) => {
-      const isLocked = idx > 0 && !isPremium;
-      return `
-        <button class="cpns-paket-btn${isLocked ? ' cpns-paket-locked' : ''}"
-          onclick="${isLocked ? `window._requirePremium()` : `window.SNBT.previewPaket('${p.id}')`}">
-          <div class="cpns-paket-num">${p.label}${isLocked ? ' 🔒' : ''}</div>
+    const paketCards = index.map(p => `
+        <button class="cpns-paket-btn" onclick="window.SNBT.previewPaket('${p.id}')">
+          <div class="cpns-paket-num">${p.label}</div>
           <div class="cpns-paket-src">${p.sumber}${p.tahun ? ' · '+p.tahun : ''}</div>
           <div class="cpns-paket-meta">
             <span>🧠 TPS (90 soal)</span>
             <span>📚 Literasi (70 soal)</span>
-            ${isLocked ? '<span class="paket-lock-badge">Premium</span>' : ''}
           </div>
-        </button>`;}).join('');
+        </button>`).join('');
 
     container.innerHTML = `
       <div class="cpns-select-wrap">
@@ -171,7 +166,7 @@ window.SNBT = (function() {
             Mulai Try Out ▶
           </button>
         </div>
-        <p class="tka-credit-note">${window._isPremium?.() ? '✅ Gratis untuk subscriber' : '⚡ Menggunakan 1 kredit'}</p>
+        <p class="tka-credit-note">${window._isPremium?.() ? '✅ Gratis untuk subscriber' : window._currentCredits > 0 ? '⚡ Menggunakan 1 kredit' : '🔓 Berlangganan untuk akses semua paket'}</p>
       </div>`;
 
     // Simpan index ke state agar previewPaket bisa pakai
@@ -180,8 +175,6 @@ window.SNBT = (function() {
 
   // previewPaket: gunakan data index (ringan), tidak perlu fetch soal
   function previewPaket(paketId) {
-    const idx = (state._index || []).findIndex(x => x.id === paketId);
-    if (idx > 0 && window._requirePremium?.()) return;
     document.querySelectorAll('#snbt-container .cpns-paket-btn').forEach(btn => {
       const key = btn.querySelector('.cpns-paket-num')?.textContent;
       const p   = (state._index || []).find(x => x.id === paketId);
@@ -225,11 +218,9 @@ window.SNBT = (function() {
   // startPaket: BARU di sini fetch soal lengkap (lazy)
   async function startPaket() {
     if (!state.paket || !state.mode) return;
-    const isPremium = window._isPremium?.() || false;
-    // Try out SNBT tidak mengkonsumsi token AI — gratis untuk subscriber
-    if (!isPremium && (window._currentCredits ?? 0) <= 0) {
-      window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return;
-    }
+    const credits   = window._currentCredits ?? 0;
+    const isInvited = window._isInvited ?? false;
+    if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.startCheckout?.(); return; }
 
     // Tampilkan loading sebelum fetch
     const container = document.getElementById('snbt-container');
