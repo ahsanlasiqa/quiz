@@ -236,17 +236,22 @@ window.OSN = (function() {
     const bankMeta  = _getBankMeta(getBankKey());
     const lvMeta    = bankMeta?.levels?.[state.levelKey];
     const lc        = LEVEL_CONFIG[state.levelKey];
+    const isPremium = window._isPremium?.() || false;
 
-    const paketCards = lvMeta.pakets.map(p => `
-      <button class="osn-level-btn" style="--lv-color:${lc.warna}"
-        onclick="window.OSN.selectPaket('${p.key}')">
+    const paketCards = lvMeta.pakets.map((p, idx) => {
+      const isLocked = idx > 0 && !isPremium;
+      return `
+      <button class="osn-level-btn${isLocked ? ' osn-level-locked' : ''}" style="--lv-color:${lc.warna}"
+        onclick="${isLocked ? `window._requirePremium()` : `window.OSN.selectPaket('${p.key}')`}">
         <span class="osn-level-icon">${lc.icon}</span>
         <div class="osn-level-body">
-          <div class="osn-level-label">${p.label}</div>
-          <div class="osn-level-meta">${p.count} soal · ${lc.waktu} menit</div>
+          <div class="osn-level-label">${p.label}${isLocked ? ' 🔒' : ''}</div>
+          <div class="osn-level-meta">${isLocked ? 'Paket Premium' : `${p.count} soal · ${lc.waktu} menit`}</div>
         </div>
-        <span class="osn-level-arrow" style="color:${lc.warna}">→</span>
-      </button>`).join('');
+        ${isLocked
+          ? '<span class="paket-lock-badge">Premium</span>'
+          : `<span class="osn-level-arrow" style="color:${lc.warna}">→</span>`}
+      </button>`;}).join('');
 
     container.innerHTML = `
       <div class="osn-select-wrap">
@@ -266,6 +271,12 @@ window.OSN = (function() {
   }
 
   function selectPaket(paketKey) {
+    // Guard: paket 2+ hanya untuk premium
+    const bMeta = _getBankMeta(getBankKey());
+    const lMeta = bMeta?.levels?.[state.levelKey];
+    const idx   = (lMeta?.pakets || []).findIndex(p => p.key === paketKey);
+    if (idx > 0 && window._requirePremium?.()) return;
+
     state.paketKey = paketKey;
     renderConfirm();
   }
@@ -327,9 +338,11 @@ window.OSN = (function() {
   // ══ PHASE 5: QUIZ ════════════════════════════════════════════════
   // BARU di sini soal di-fetch (lazy) — pilih file yang tepat
   async function startQuiz() {
-    const credits   = window._currentCredits ?? 0;
-    const isInvited = window._isInvited ?? false;
-    if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.startCheckout?.(); return; }
+    const isPremium = window._isPremium?.() || false;
+    // OSN tidak pakai token AI — gratis untuk subscriber & paket 1
+    if (!isPremium && (window._currentCredits ?? 0) <= 0) {
+      window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return;
+    }
 
     const container = document.getElementById('osn-container');
     const lc        = LEVEL_CONFIG[state.levelKey];

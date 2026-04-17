@@ -115,17 +115,22 @@ window.CPNS = (function () {
 
   function renderSelectPaket() {
     const container = document.getElementById('cpns-container');
+    const isPremium = window._isPremium?.() || false;
 
-    const paketCards = state._index.map(p => `
-      <button class="cpns-paket-btn" onclick="window.CPNS.previewPaket('${p.id}')">
-        <div class="cpns-paket-num">${p.label}</div>
+    const paketCards = state._index.map((p, idx) => {
+      const isLocked = idx > 0 && !isPremium;
+      return `
+      <button class="cpns-paket-btn${isLocked ? ' cpns-paket-locked' : ''}"
+        onclick="${isLocked ? `window._requirePremium()` : `window.CPNS.previewPaket('${p.id}')`}">
+        <div class="cpns-paket-num">${p.label}${isLocked ? ' 🔒' : ''}</div>
         <div class="cpns-paket-src">${p.sumber}</div>
         <div class="cpns-paket-meta">
           <span>📜 30 TWK</span>
           <span>🧮 35 TIU</span>
           <span>🧠 35 TKP</span>
+          ${isLocked ? '<span class="paket-lock-badge">Premium</span>' : ''}
         </div>
-      </button>`).join('');
+      </button>`;}).join('');
 
     container.innerHTML = `
       <div class="cpns-select-wrap">
@@ -149,11 +154,15 @@ window.CPNS = (function () {
           <div class="cpns-confirm-info" id="cpns-confirm-info"></div>
           <button class="cpns-btn-start" onclick="window.CPNS.startPaket()">Mulai Simulasi ▶</button>
         </div>
-        <p class="tka-credit-note">${window._isPremium?.() ? '✅ Gratis untuk subscriber' : window._currentCredits > 0 ? '⚡ Menggunakan 1 kredit' : '🔓 Berlangganan untuk akses semua paket'}</p>
+        <p class="tka-credit-note">${window._isPremium?.() ? '✅ Gratis untuk subscriber' : '🔓 Paket 1 gratis · Berlangganan untuk semua paket'}</p>
       </div>`;
   }
 
   function previewPaket(paketId) {
+    // Guard: paket 2+ hanya untuk premium
+    const idx = state._index.findIndex(x => x.id === paketId);
+    if (idx > 0 && window._requirePremium?.()) return;
+
     document.querySelectorAll('#cpns-container .cpns-paket-btn').forEach(btn => {
       const lbl = btn.querySelector('.cpns-paket-num')?.textContent;
       const p = state._index.find(x => x.id === paketId);
@@ -173,9 +182,12 @@ window.CPNS = (function () {
   // ══════════════════════════════════════════════════════════
   async function startPaket() {
     if (!state.paket) return;
-    const credits   = window._currentCredits ?? 0;
-    const isInvited = window._isInvited ?? false;
-    if (!isInvited && credits <= 0) { window.renderCreditsBanner?.(); window.startCheckout?.(); return; }
+    const isPremium = window._isPremium?.() || false;
+    // CPNS tidak pakai token AI — gratis untuk subscriber & paket 1
+    // Cek kredit hanya untuk user free non-premium
+    if (!isPremium && (window._currentCredits ?? 0) <= 0) {
+      window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return;
+    }
 
     loading('⏳ Memuat soal…');
 
