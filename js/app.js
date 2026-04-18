@@ -150,7 +150,7 @@ window._requirePremium = function() {
     window.PROFIL._cloudSynced = false;
     window.PROFIL.init();
   }
-};
+;
 
 window.renderCreditsBanner = function() {
   const banner = document.getElementById('subscription-banner');
