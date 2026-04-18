@@ -227,9 +227,11 @@ window.SNBT = (function() {
   // startPaket: BARU di sini fetch soal lengkap (lazy)
   async function startPaket() {
     if (!state.paket || !state.mode) return;
+    // Paket 1 bebas untuk semua user login; paket 2+ hanya premium
+    const paketIdx  = (state._index || []).findIndex(x => x.id === state.paket);
     const isPremium = window._isPremium?.() || false;
-    if (!isPremium && (window._currentCredits ?? 0) <= 0) {
-      window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return;
+    if (paketIdx > 0 && !isPremium) {
+      window._requirePremium?.(); return;
     }
 
     // Tampilkan loading sebelum fetch

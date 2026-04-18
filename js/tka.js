@@ -185,14 +185,8 @@ window.TKA = (function() {
     const jenjang = state.jenjang;
     if (!jenjang) return;
 
-    // Credit check
-    const credits   = window._currentCredits ?? 0;
-    const isInvited = window._isInvited ?? false;
-    if (!isInvited && credits <= 0) {
-      window.renderCreditsBanner?.();
-      window.showPricingModal?.('pro');
-      return;
-    }
+    // TKA tidak punya paket — semua jenjang bebas untuk user yang sudah login.
+    // Tidak ada credit check di sini; credit hanya dipotong oleh fitur AI (generate/bantai).
 
     // Loading state saat fetch soal
     const container = document.getElementById('tka-container');

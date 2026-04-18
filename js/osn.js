@@ -338,10 +338,13 @@ window.OSN = (function() {
   // ══ PHASE 5: QUIZ ════════════════════════════════════════════════
   // BARU di sini soal di-fetch (lazy) — pilih file yang tepat
   async function startQuiz() {
+    // Paket 1 bebas untuk semua user login; paket 2+ hanya premium
     const isPremium = window._isPremium?.() || false;
-    // OSN tidak pakai token AI — gratis untuk subscriber & paket 1
-    if (!isPremium && (window._currentCredits ?? 0) <= 0) {
-      window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return;
+    if (state.paketKey) {
+      const bMeta  = _getBankMeta(getBankKey());
+      const lMeta  = bMeta?.levels?.[state.levelKey];
+      const pkIdx  = (lMeta?.pakets || []).findIndex(p => p.key === state.paketKey);
+      if (pkIdx > 0 && !isPremium) { window._requirePremium?.(); return; }
     }
 
     const container = document.getElementById('osn-container');

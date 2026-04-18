@@ -182,11 +182,11 @@ window.CPNS = (function () {
   // ══════════════════════════════════════════════════════════
   async function startPaket() {
     if (!state.paket) return;
+    // Paket 1 bebas untuk semua user login; paket 2+ hanya premium
+    const paketIdx  = state._index.findIndex(x => x.id === state.paket);
     const isPremium = window._isPremium?.() || false;
-    // CPNS tidak pakai token AI — gratis untuk subscriber & paket 1
-    // Cek kredit hanya untuk user free non-premium
-    if (!isPremium && (window._currentCredits ?? 0) <= 0) {
-      window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return;
+    if (paketIdx > 0 && !isPremium) {
+      window._requirePremium?.(); return;
     }
 
     loading('⏳ Memuat soal…');
