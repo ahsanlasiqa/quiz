@@ -168,12 +168,22 @@ window.renderCreditsBanner = function() {
 
   if (status === 'active') {
     bannerClass = 'subscription-banner trial';
-    statusHtml  = `
-      <span>
-        ⚡ <strong>${credits} kredit</strong> tersisa
-        ${label ? `· <span class="banner-plan-label">${label}</span>` : ''}
-        ${expStr ? `· Aktif hingga ${expStr}` : ''}
-      </span>`;
+    if (credits <= 0) {
+      // Subscriber aktif tapi kredit habis → tawarkan top-up saja
+      statusHtml = `
+        <span>
+          🪫 <strong>Kredit habis</strong>
+          ${label ? `· <span class="banner-plan-label">${label}</span>` : ''}
+          ${expStr ? `· Aktif hingga ${expStr}` : ''}
+        </span>`;
+    } else {
+      statusHtml = `
+        <span>
+          ⚡ <strong>${credits} kredit</strong> tersisa
+          ${label ? `· <span class="banner-plan-label">${label}</span>` : ''}
+          ${expStr ? `· Aktif hingga ${expStr}` : ''}
+        </span>`;
+    }
   } else if (status === 'expired') {
     bannerClass = 'subscription-banner expired';
     statusHtml  = `<span>⏰ Langganan berakhir ${expStr || ''}. Perpanjang untuk lanjutkan.</span>`;
@@ -188,13 +198,26 @@ window.renderCreditsBanner = function() {
   }
 
   banner.className = bannerClass;
+
+  // Tentukan tombol aksi yang tepat
+  let actionBtns;
+  if (status === 'active' && credits <= 0) {
+    // Subscriber kehabisan kredit → tawarkan top-up saja
+    actionBtns = `<button class="btn-subscribe btn-subscribe-hot" onclick="window.showTopupModal()">⚡ Beli Kredit</button>`;
+  } else if (status === 'active') {
+    // Subscriber masih punya kredit → top-up opsional
+    actionBtns = `<button class="btn-subscribe btn-subscribe-sm" onclick="window.showTopupModal()">+ Kredit</button>`;
+  } else {
+    // Free / expired → tawarkan subscription
+    actionBtns = `
+      <button class="btn-subscribe btn-subscribe-sm"  onclick="window.showPricingModal('starter')">Starter</button>
+      <button class="btn-subscribe btn-subscribe-hot" onclick="window.showPricingModal('pro')">🔥 Pro</button>`;
+  }
+
   banner.innerHTML = `
     ${statusHtml}
     <a href="/payment-status.html" class="banner-status-link">Riwayat →</a>
-    <div class="banner-buy-btns">
-      <button class="btn-subscribe btn-subscribe-sm"  onclick="window.showPricingModal('starter')">Starter</button>
-      <button class="btn-subscribe btn-subscribe-hot" onclick="window.showPricingModal('pro')">🔥 Pro</button>
-    </div>
+    <div class="banner-buy-btns">${actionBtns}</div>
   `;
   banner.classList.remove('hidden');
 };
@@ -260,6 +283,63 @@ window.showPricingModal = function(tier) {
 };
 
 // Internal: panggil setelah user pilih pack dari modal
+// ── Top-up Modal — untuk subscriber yang kredit habis ─────────────────────────
+window.showTopupModal = function() {
+  document.getElementById('pricing-modal-overlay')?.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'pricing-modal-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;display:flex;align-items:flex-end;justify-content:center';
+
+  overlay.innerHTML = `
+    <div style="background:var(--warm-white,#fdf8f0);border-radius:24px 24px 0 0;width:100%;max-width:440px;max-height:85vh;overflow-y:auto;box-shadow:0 -8px 40px rgba(0,0,0,0.2);padding:24px 20px 36px;position:relative;font-family:'Sora',sans-serif">
+      <button onclick="document.getElementById('pricing-modal-overlay').remove()"
+        style="position:absolute;top:14px;right:16px;background:rgba(26,18,8,0.07);border:none;width:30px;height:30px;border-radius:50%;font-size:1rem;cursor:pointer;color:#666;display:flex;align-items:center;justify-content:center">✕</button>
+
+      <h3 style="margin:0 0 4px;font-size:1.15rem;font-weight:700;color:#1a1208">⚡ Beli Kredit Tambahan</h3>
+      <p style="margin:0 0 20px;color:#8a7a68;font-size:.83rem">Kredit dipakai untuk Evaluasi Harian AI, Buat Soal, dan Bantai Soal.<br>Try Out tidak membutuhkan kredit.</p>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+
+        <button onclick="window._doCheckout('topup_10')"
+          style="text-align:left;border:1.5px solid #e0d5c8;border-radius:12px;padding:14px 16px;background:#fff;cursor:pointer;width:100%;font-family:inherit;display:flex;justify-content:space-between;align-items:center;transition:border-color .15s"
+          onmouseover="this.style.borderColor='#1a7a6e'" onmouseout="this.style.borderColor='#e0d5c8'">
+          <div>
+            <div style="font-weight:700;font-size:.95rem;color:#1a1208">10 Kredit</div>
+            <div style="font-size:.8rem;color:#8a7a68;margin-top:2px">Rp 1.500 / kredit</div>
+          </div>
+          <div style="font-weight:700;color:#1a7a6e;font-size:1rem">Rp 15.000</div>
+        </button>
+
+        <button onclick="window._doCheckout('topup_30')"
+          style="text-align:left;border:1.5px solid #e0d5c8;border-radius:12px;padding:14px 16px;background:#fff;cursor:pointer;width:100%;font-family:inherit;display:flex;justify-content:space-between;align-items:center;transition:border-color .15s"
+          onmouseover="this.style.borderColor='#1a7a6e'" onmouseout="this.style.borderColor='#e0d5c8'">
+          <div>
+            <div style="font-weight:700;font-size:.95rem;color:#1a1208">30 Kredit</div>
+            <div style="font-size:.8rem;color:#8a7a68;margin-top:2px">Rp 1.300 / kredit</div>
+          </div>
+          <div style="font-weight:700;color:#1a7a6e;font-size:1rem">Rp 39.000</div>
+        </button>
+
+        <button onclick="window._doCheckout('topup_100')"
+          style="text-align:left;border:2px solid #c8a96e;border-radius:12px;padding:14px 16px;background:linear-gradient(135deg,#fffaf3,#fff8ec);cursor:pointer;width:100%;font-family:inherit;display:flex;justify-content:space-between;align-items:center;position:relative;transition:border-color .15s"
+          onmouseover="this.style.borderColor='#a07840'" onmouseout="this.style.borderColor='#c8a96e'">
+          <span style="position:absolute;top:-10px;right:12px;background:#c8a96e;color:#fff;font-size:.67rem;font-weight:700;padding:2px 8px;border-radius:20px">PALING HEMAT</span>
+          <div>
+            <div style="font-weight:700;font-size:.95rem;color:#1a1208">100 Kredit</div>
+            <div style="font-size:.8rem;color:#8a7a68;margin-top:2px">Rp 990 / kredit</div>
+          </div>
+          <div style="font-weight:700;color:#1a7a6e;font-size:1rem">Rp 99.000</div>
+        </button>
+
+      </div>
+      <p style="text-align:center;font-size:.72rem;color:#aaa;margin-top:16px">Kredit ditambahkan instan · Tidak mengubah masa langganan</p>
+    </div>`;
+
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+};
+
 window._doCheckout = async function(packId) {
   document.getElementById('pricing-modal-overlay')?.remove();
   await window.startCheckout(packId);

@@ -54,52 +54,65 @@ export default async function handler(req, res) {
 
     const order   = orderDoc.data();
     const email   = order.email;
-    const credits = order.credits || 5;   // kredit dari paket yang dibeli
-    const months  = order.months  || 1;   // durasi dari paket
+    const credits = order.credits || 5;
+    const months  = order.months  || 0;
     const packId  = order.packId  || '';
+    const isTopup = order.period  === 'topup';
 
     console.log('Webhook received:', order_id, '| status:', transaction_status,
-      '| email:', email, '| credits:', credits, '| months:', months);
+      '| email:', email, '| credits:', credits, '| topup:', isTopup);
 
     const isSuccess =
       (transaction_status === 'capture' && fraud_status === 'accept') ||
       transaction_status === 'settlement';
 
     if (isSuccess) {
-      const paidAt       = new Date().toISOString();
-      const expiresAt    = calcExpiresAt(months);
-      const userRef      = db.collection('users').doc(email);
-      const userDoc      = await userRef.get();
-      const currentUser  = userDoc.exists ? userDoc.data() : {};
+      const paidAt  = new Date().toISOString();
+      const userRef = db.collection('users').doc(email);
 
-      // Jika user sudah punya subscription aktif yang belum expired,
-      // perpanjang dari tanggal berakhir yang lama (bukan dari sekarang)
-      let baseDate = new Date();
-      if (currentUser.subscriptionExpiresAt) {
-        const existingExp = new Date(currentUser.subscriptionExpiresAt);
-        if (existingExp > baseDate) baseDate = existingExp;
+      if (isTopup) {
+        // ── TOP-UP: hanya tambah kredit, tidak ubah subscription ──────────
+        await userRef.set({
+          credits:        FieldValue.increment(credits),
+          totalPurchased: FieldValue.increment(credits),
+          lastPurchaseAt: paidAt,
+        }, { merge: true });
+
+        await orderRef.update({ status: 'paid', paidAt });
+
+        console.log('Webhook: topup paid', order_id, '| +credits:', credits);
+
+      } else {
+        // ── SUBSCRIPTION: set kredit baru + perpanjang expiry ─────────────
+        const userDoc    = await userRef.get();
+        const currentUser = userDoc.exists ? userDoc.data() : {};
+
+        // Perpanjang dari expiry lama jika masih aktif
+        let baseDate = new Date();
+        if (currentUser.subscriptionExpiresAt) {
+          const existingExp = new Date(currentUser.subscriptionExpiresAt);
+          if (existingExp > baseDate) baseDate = existingExp;
+        }
+        const newExpiresAt = new Date(baseDate);
+        newExpiresAt.setMonth(newExpiresAt.getMonth() + months);
+
+        await userRef.set({
+          credits:               credits,   // reset ke nilai paket
+          subscriptionPackId:    packId,
+          subscriptionExpiresAt: newExpiresAt.toISOString(),
+          totalPurchased:        FieldValue.increment(credits),
+          lastPurchaseAt:        paidAt,
+        }, { merge: true });
+
+        await orderRef.update({
+          status: 'paid',
+          paidAt,
+          subscriptionExpiresAt: newExpiresAt.toISOString(),
+        });
+
+        console.log('Webhook: subscription paid', order_id,
+          '| credits set to', credits, '| expires:', newExpiresAt.toISOString());
       }
-      const newExpiresAt = new Date(baseDate);
-      newExpiresAt.setMonth(newExpiresAt.getMonth() + months);
-
-      await userRef.set({
-        // Set kredit ke nilai paket (bukan increment) — reset per periode
-        credits:                credits,
-        subscriptionPackId:     packId,
-        subscriptionExpiresAt:  newExpiresAt.toISOString(),
-        totalPurchased:         FieldValue.increment(credits),
-        lastPurchaseAt:         paidAt,
-      }, { merge: true });
-
-      await orderRef.update({
-        status: 'paid',
-        paidAt,
-        subscriptionExpiresAt: newExpiresAt.toISOString(),
-      });
-
-      console.log('Webhook: order paid', order_id,
-        '| credits set to', credits,
-        '| expires:', newExpiresAt.toISOString());
 
     } else if (transaction_status === 'pending') {
       await orderRef.update({ status: 'pending' });

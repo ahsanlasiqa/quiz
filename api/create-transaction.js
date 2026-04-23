@@ -16,6 +16,10 @@ const PACKS = {
   'pro_monthly':     { price: 49900,  credits: 40,  name: 'DrillSoal Pro — Bulanan',      period: 'monthly', months: 1  },
   // Pro — tahunan (diskon)
   'pro_yearly':      { price: 500000, credits: 480, name: 'DrillSoal Pro — Tahunan',      period: 'yearly',  months: 12 },
+  // Top-up kredit saja (tanpa perpanjang subscription)
+  'topup_10':        { price: 15000,  credits: 10,  name: 'DrillSoal Top-up 10 Kredit',   period: 'topup',   months: 0  },
+  'topup_30':        { price: 39000,  credits: 30,  name: 'DrillSoal Top-up 30 Kredit',   period: 'topup',   months: 0  },
+  'topup_100':       { price: 99000,  credits: 100, name: 'DrillSoal Top-up 100 Kredit',  period: 'topup',   months: 0  },
 };
 
 function getAdminApp() {
