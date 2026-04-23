@@ -142,7 +142,7 @@ window._isPremium   = function() {
 window._requirePremium = function() {
   if (window._isPremium()) return false;   // punya akses, lanjut
   window.renderCreditsBanner?.();
-  window.showPricingModal?.('pro');
+  (window._isPremium?.() ? window.showTopupModal?.() : window.showPricingModal?.('pro'));
   return true;                             // blokir
 };
 
@@ -211,7 +211,7 @@ window.renderCreditsBanner = function() {
     // Free / expired → tawarkan subscription
     actionBtns = `
       <button class="btn-subscribe btn-subscribe-sm"  onclick="window.showPricingModal('starter')">Starter</button>
-      <button class="btn-subscribe btn-subscribe-hot" onclick="window.showPricingModal('pro')">🔥 Pro</button>`;
+      <button class="btn-subscribe btn-subscribe-hot" onclick="(window._isPremium?.() ? window.showTopupModal?.() : window.showPricingModal('pro'))">🔥 Pro</button>`;
   }
 
   banner.innerHTML = `
@@ -224,65 +224,91 @@ window.renderCreditsBanner = function() {
 
 // ── Pricing Modal ─────────────────────────────────────────────────────────────
 // Dipanggil dari banner: showPricingModal('starter') atau showPricingModal('pro')
-window.showPricingModal = function(tier) {
-  // Hapus modal lama jika ada
+// ── Pricing Modal — Starter + Pro dengan tab ──────────────────────────────────
+window.showPricingModal = function(highlightTier) {
   document.getElementById('pricing-modal-overlay')?.remove();
-
-  const packs = {
-    starter: {
-      label:   'Starter',
-      monthly: { id: 'starter_monthly', price: 'Rp 19.900 / bulan', credits: '5 kredit',  billingNote: 'per bulan' },
-      yearly:  { id: 'starter_yearly',  price: 'Rp 200.000 / tahun', credits: '60 kredit', billingNote: 'per tahun · hemat 16%' },
-    },
-    pro: {
-      label:   'Pro',
-      monthly: { id: 'pro_monthly', price: 'Rp 49.900 / bulan',  credits: '40 kredit',  billingNote: 'per bulan' },
-      yearly:  { id: 'pro_yearly',  price: 'Rp 500.000 / tahun', credits: '480 kredit', billingNote: 'per tahun · hemat 17%' },
-    },
-  };
-
-  const p = packs[tier];
-  if (!p) return;
 
   const overlay = document.createElement('div');
   overlay.id = 'pricing-modal-overlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;display:flex;align-items:flex-end;justify-content:center';
+
+  const plans = {
+    starter: {
+      monthly: { id:'starter_monthly', price:'Rp 19.900', period:'/bulan',  credits:'5 kredit',   note:'' },
+      yearly:  { id:'starter_yearly',  price:'Rp 200.000', period:'/tahun', credits:'60 kredit',  note:'Hemat 16%' },
+    },
+    pro: {
+      monthly: { id:'pro_monthly', price:'Rp 49.900',  period:'/bulan',  credits:'40 kredit',  note:'' },
+      yearly:  { id:'pro_yearly',  price:'Rp 500.000', period:'/tahun',  credits:'480 kredit', note:'Hemat 17%' },
+    },
+  };
+
+  const makeCard = (tier) => {
+    const p = plans[tier];
+    return `
+      <div class="pm-plan-section" id="pm-section-${tier}">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button onclick="window._doCheckout('${p.monthly.id}')"
+            style="text-align:left;border:2px solid #e0d5c8;border-radius:12px;padding:14px 16px;background:#fff;cursor:pointer;width:100%;font-family:inherit;transition:border-color .15s;display:flex;justify-content:space-between;align-items:center"
+            onmouseover="this.style.borderColor='#c8a96e'" onmouseout="this.style.borderColor='#e0d5c8'">
+            <div>
+              <div style="font-weight:700;font-size:1rem;color:#1a1208">${p.monthly.price} <span style="font-size:.8rem;font-weight:400;color:#8a7a68">${p.monthly.period}</span></div>
+              <div style="font-size:.82rem;color:#8a7a68;margin-top:2px">${p.monthly.credits}</div>
+            </div>
+          </button>
+          <button onclick="window._doCheckout('${p.yearly.id}')"
+            style="text-align:left;border:2px solid #c8a96e;border-radius:12px;padding:14px 16px;background:linear-gradient(135deg,#fffaf3,#fff8ec);cursor:pointer;width:100%;font-family:inherit;position:relative;transition:border-color .15s;display:flex;justify-content:space-between;align-items:center"
+            onmouseover="this.style.borderColor='#a07840'" onmouseout="this.style.borderColor='#c8a96e'">
+            ${p.yearly.note ? `<span style="position:absolute;top:-10px;right:12px;background:#c8a96e;color:#fff;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:20px">${p.yearly.note}</span>` : ''}
+            <div>
+              <div style="font-weight:700;font-size:1rem;color:#1a1208">${p.yearly.price} <span style="font-size:.8rem;font-weight:400;color:#8a7a68">${p.yearly.period}</span></div>
+              <div style="font-size:.82rem;color:#8a7a68;margin-top:2px">${p.yearly.credits}</div>
+            </div>
+          </button>
+        </div>
+      </div>`;
+  };
+
+  const actTab  = 'flex:1;padding:9px 0;border:none;border-radius:8px;background:white;font-family:inherit;font-size:.88rem;font-weight:700;color:#1a1208;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.1)';
+  const inactTab = 'flex:1;padding:9px 0;border:none;border-radius:8px;background:transparent;font-family:inherit;font-size:.88rem;font-weight:600;color:#8a7a68;cursor:pointer';
+  const starterAct = highlightTier !== 'pro';
 
   overlay.innerHTML = `
-    <div style="background:var(--warm-white,#fff);border-radius:16px;padding:28px 24px;max-width:360px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,0.18);position:relative">
+    <div style="background:var(--warm-white,#fdf8f0);border-radius:24px 24px 0 0;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;box-shadow:0 -8px 40px rgba(0,0,0,0.2);padding:24px 20px 36px;position:relative;font-family:'Sora',sans-serif">
       <button onclick="document.getElementById('pricing-modal-overlay').remove()"
-        style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#888">✕</button>
-      <h3 style="margin:0 0 4px;font-size:1.15rem">Paket ${p.label}</h3>
-      <p style="margin:0 0 20px;color:#666;font-size:.85rem">Pilih periode langganan</p>
+        style="position:absolute;top:14px;right:16px;background:rgba(26,18,8,0.07);border:none;width:30px;height:30px;border-radius:50%;font-size:1rem;cursor:pointer;color:#666;display:flex;align-items:center;justify-content:center">✕</button>
 
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <!-- Bulanan -->
-        <button onclick="window._doCheckout('${p.monthly.id}')"
-          style="text-align:left;border:2px solid #e0d5c8;border-radius:12px;padding:14px 16px;background:#fff;cursor:pointer;transition:border-color .15s"
-          onmouseover="this.style.borderColor='#c8a96e'" onmouseout="this.style.borderColor='#e0d5c8'">
-          <div style="font-weight:600;font-size:.95rem">${p.monthly.price}</div>
-          <div style="font-size:.82rem;color:#888;margin-top:2px">${p.monthly.credits} · ${p.monthly.billingNote}</div>
-        </button>
-        <!-- Tahunan -->
-        <button onclick="window._doCheckout('${p.yearly.id}')"
-          style="text-align:left;border:2px solid #c8a96e;border-radius:12px;padding:14px 16px;background:linear-gradient(135deg,#fffaf3,#fff8ec);cursor:pointer;transition:border-color .15s;position:relative"
-          onmouseover="this.style.borderColor='#a07840'" onmouseout="this.style.borderColor='#c8a96e'">
-          <span style="position:absolute;top:-10px;right:12px;background:#c8a96e;color:#fff;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:20px">HEMAT</span>
-          <div style="font-weight:600;font-size:.95rem">${p.yearly.price}</div>
-          <div style="font-size:.82rem;color:#888;margin-top:2px">${p.yearly.credits} · ${p.yearly.billingNote}</div>
-        </button>
+      <h3 style="margin:0 0 4px;font-size:1.15rem;font-weight:700;color:#1a1208">Pilih Paket DrillSoal</h3>
+      <p style="margin:0 0 18px;color:#8a7a68;font-size:.83rem">Try Out + Evaluasi Harian AI + semua fitur premium</p>
+
+      <div style="display:flex;gap:4px;background:rgba(26,18,8,0.06);border-radius:10px;padding:4px;margin-bottom:18px">
+        <button id="pm-tab-starter" style="${starterAct ? actTab : inactTab}"
+          onclick="window._pmSwitchTab('starter')">Starter</button>
+        <button id="pm-tab-pro" style="${starterAct ? inactTab : actTab}"
+          onclick="window._pmSwitchTab('pro')">Pro 🔥</button>
       </div>
+
+      ${makeCard('starter')}
+      ${makeCard('pro')}
+
+      <p style="text-align:center;font-size:.72rem;color:#aaa;margin-top:16px">Pembayaran aman via Midtrans · Transfer, e-wallet, kartu kredit</p>
     </div>`;
 
-  // Tutup jika klik overlay
-  overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) overlay.remove();
-  });
-
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
   document.body.appendChild(overlay);
+  window._pmSwitchTab(highlightTier === 'pro' ? 'pro' : 'starter');
 };
 
-// Internal: panggil setelah user pilih pack dari modal
+window._pmSwitchTab = function(tier) {
+  const act   = 'flex:1;padding:9px 0;border:none;border-radius:8px;background:white;font-family:inherit;font-size:.88rem;font-weight:700;color:#1a1208;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.1)';
+  const inact = 'flex:1;padding:9px 0;border:none;border-radius:8px;background:transparent;font-family:inherit;font-size:.88rem;font-weight:600;color:#8a7a68;cursor:pointer';
+  ['starter','pro'].forEach(t => {
+    const tab = document.getElementById('pm-tab-' + t);
+    const sec = document.getElementById('pm-section-' + t);
+    if (tab) tab.style.cssText = t === tier ? act : inact;
+    if (sec) sec.style.display = t === tier ? 'block' : 'none';
+  });
+};
 // ── Top-up Modal — untuk subscriber yang kredit habis ─────────────────────────
 window.showTopupModal = function() {
   document.getElementById('pricing-modal-overlay')?.remove();
@@ -350,7 +376,7 @@ window._doCheckout = async function(packId) {
 // Dipanggil tanpa/invalid packId → tampilkan pricing modal
 window.startCheckout = async function(packId) {
   if (!packId || typeof packId !== 'string' || !packId.includes('_')) {
-    window.showPricingModal?.('pro');
+    (window._isPremium?.() ? window.showTopupModal?.() : window.showPricingModal?.('pro'));
     return;
   }
   try {
@@ -712,7 +738,7 @@ async function generateQuiz() {
   if (!isInvited && credits <= 0) {
     generateHint.textContent = '';
     window.renderCreditsBanner();
-    window.showPricingModal('pro');
+    (window._isPremium?.() ? window.showTopupModal?.() : window.showPricingModal('pro'));
     return;
   }
 
@@ -760,7 +786,7 @@ function handleGenerateError(err) {
   if (err.message === 'no_credits' || (err.message && err.message.includes('no_credits'))) {
     generateHint.textContent = '';
     window.renderCreditsBanner();
-    window.showPricingModal('pro');
+    (window._isPremium?.() ? window.showTopupModal?.() : window.showPricingModal('pro'));
   } else if (err.status === 529 || err.status === 503 ||
              (err.message && err.message.includes('kelebihan beban'))) {
     generateHint.textContent = '⚠️ API Anthropic sedang sibuk. Tunggu 30 detik lalu coba lagi.';
@@ -1052,7 +1078,7 @@ document.getElementById('detect-btn-bantai-solve').addEventListener('click', asy
   const isInvited = window._isInvited ?? false;
   if (!isInvited && credits <= 0) {
     window.renderCreditsBanner?.();
-    window.showPricingModal?.('pro');
+    (window._isPremium?.() ? window.showTopupModal?.() : window.showPricingModal?.('pro'));
     return;
   }
 
@@ -1113,7 +1139,7 @@ ATURAN: Steps minimal 4. Untuk pilihan ganda: verifikasi dan jelaskan mengapa pi
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      if (res.status === 403 && err?.error === 'no_credits') { window.renderCreditsBanner?.(); window.showPricingModal?.('pro'); return; }
+      if (res.status === 403 && err?.error === 'no_credits') { window.renderCreditsBanner?.(); (window._isPremium?.() ? window.showTopupModal?.() : window.showPricingModal?.('pro')); return; }
       throw new Error(err?.error?.message || err?.error || 'Error ' + res.status);
     }
 
@@ -2602,7 +2628,7 @@ async function evaluasiGenerateQuiz() {
   if (!isInvited && credits <= 0) {
     if (evalGenerateHint) evalGenerateHint.textContent = '';
     window.renderCreditsBanner?.();
-    window.showPricingModal?.('pro');
+    (window._isPremium?.() ? window.showTopupModal?.() : window.showPricingModal?.('pro'));
     return;
   }
 
@@ -2823,7 +2849,7 @@ function evalHandleError(err) {
   if (err.message === 'no_credits' || err.message?.includes('no_credits')) {
     evalGenerateHint.textContent = '';
     window.renderCreditsBanner?.();
-    window.showPricingModal?.('pro');
+    (window._isPremium?.() ? window.showTopupModal?.() : window.showPricingModal?.('pro'));
   } else if (err.status === 529 || err.status === 503 || err.message?.includes('kelebihan beban')) {
     evalGenerateHint.textContent = '⚠️ API Anthropic sedang sibuk. Tunggu 30 detik lalu coba lagi.';
   } else {
@@ -3144,7 +3170,7 @@ async function solveBantaiSoal() {
   const isInvited = window._isInvited ?? false;
   if (!isInvited && credits <= 0) {
     window.renderCreditsBanner?.();
-    window.showPricingModal?.('pro');
+    (window._isPremium?.() ? window.showTopupModal?.() : window.showPricingModal?.('pro'));
     return;
   }
 
@@ -3226,7 +3252,7 @@ ATURAN OUTPUT:
       const err = await res.json().catch(() => ({}));
       if (res.status === 403 && err?.error === 'no_credits') {
         window.renderCreditsBanner?.();
-        window.showPricingModal?.('pro');
+        (window._isPremium?.() ? window.showTopupModal?.() : window.showPricingModal?.('pro'));
         return;
       }
       throw new Error(err?.error?.message || err?.error || `Error ${res.status}`);
